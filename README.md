@@ -19,4 +19,5 @@ The double H bridge motor drive module (uses ST company's L298N as the main driv
 ## Joystick-Uno-L298N Article
 
 ### Carpenter Software 
-Pending...Further details 
+
+- Introduction Robotics *Joystick-Uno-L298N* [New article](https://carpentersoftware.com/joystick-algorithm/)
