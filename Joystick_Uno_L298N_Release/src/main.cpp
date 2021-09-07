@@ -12,8 +12,10 @@
 // RAM:   [          ]   3.4% (used 69 bytes from 2048 bytes)
 // Flash: [==        ]  15.2% (used 4890 bytes from 32256 by
 //
-// updated: 20210907 Safety 
+// updated: 20210907 correction to same...
+//          Safety:
 //          on motors loop()-(ELSE) to PowerDownL298N();
+//           
 //
 // MIT LICENSE
 //
@@ -73,7 +75,7 @@ void updateAnalog()
     }
     else
     {
-        uno::L298N::PowerDownL298N();
+        mtr.PowerDownL298N();
     }
 }
 
