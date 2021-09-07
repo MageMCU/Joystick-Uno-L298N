@@ -10,7 +10,10 @@
 // Hardware (For further information, see Debug Version)
 //
 // RAM:   [          ]   3.4% (used 69 bytes from 2048 bytes)
-// Flash: [==        ]  15.2% (used 4890 bytes from 32256 byt
+// Flash: [==        ]  15.2% (used 4890 bytes from 32256 by
+//
+// updated: 20210907 Safety 
+//          on motors loop()-(ELSE) to PowerDownL298N();
 //
 // MIT LICENSE
 //
@@ -67,6 +70,10 @@ void updateAnalog()
         int left = stk.GetOutputLeftInteger(255);
         int right = stk.GetOutputRightInteger(255);
         mtr.updateL298N(left, right);
+    }
+    else
+    {
+        uno::L298N::PowerDownL298N();
     }
 }
 

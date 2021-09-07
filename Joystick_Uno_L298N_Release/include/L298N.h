@@ -52,6 +52,7 @@ namespace uno
               uint8_t RightMotorPWM);
         void SetupPinsL298N();
         void updateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB);
+        void PowerDownL298N();
     };
 
     L298N::L298N()
@@ -92,12 +93,9 @@ namespace uno
         analogWrite(_RightMotorPWM, abs(PWM_RightMotor));
     }
 
-    void L298N::_powerDownL298N()
+    void L298N::PowerDownL298N()
     {
-        digitalWrite(_LeftMotorIN1, LOW);
-        digitalWrite(_LeftMotorIN2, LOW);
-        digitalWrite(_RightMotorIN1, LOW);
-        digitalWrite(_RightMotorIN2, LOW);
+        _powerDownL298N();
     }
 
     void L298N::SetupPinsL298N()
@@ -109,6 +107,14 @@ namespace uno
         pinMode(_RightMotorIN2, OUTPUT);
         pinMode(_RightMotorPWM, OUTPUT);
         _powerDownL298N();
+    }
+
+    void L298N::_powerDownL298N()
+    {
+        digitalWrite(_LeftMotorIN1, LOW);
+        digitalWrite(_LeftMotorIN2, LOW);
+        digitalWrite(_RightMotorIN1, LOW);
+        digitalWrite(_RightMotorIN2, LOW);
     }
 
     void L298N::_setDirectionPins()
