@@ -25,7 +25,7 @@ void updateAnalog()
     }
     else
     {
-        mtr.PowerDownL298N(); // < --------------- New Call Method 20210910
+        mtr.PowerDownL298N(); // < --------------- New Call Method 20210910 Notice
     }
 }
 ```
@@ -58,8 +58,8 @@ class L298N
               uint8_t RightMotorIN1,
               uint8_t RightMotorIN2,
               uint8_t RightMotorPWM);
-        void SetupPinsL298N(); // < --------------- New Method 20210910
+        void SetupPinsL298N();
         void updateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB);
-        void PowerDownL298N();
+        void PowerDownL298N(); // < --------------- New Method 20210910 Notice
     };
 ```
