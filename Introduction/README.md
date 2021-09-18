@@ -5,6 +5,10 @@ File name: **Intro Robotics.pdf**
 
 There are two file sizes where the smaller one about 970 KB posted here (*can download*). The other is about 6.5 MB located at Google Drive (*cannot download*).
 
+### Notice 20210918-a
+
+It is best to download the pdf file because Github PDF view engine seems to have some quirks. There are multiple sections of the same file where there ought to be just the single section. 
+
 ### Notice 20210918
 
 Intro Robotics.pdf was updated 20210917...
