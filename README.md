@@ -1,4 +1,4 @@
-# Joystick-Uno-L298N Depository
+# Joystick Uno L298N Depository
 
 The Joystick-Uno-L298N depository is a complete C++ code for the **Thumb Joystick** and for the **L298N Motor Driver Module** using the **MCU Atmega329P (Uno)** for the  VS Code PlatformIO (or Arduino IDE). There are two versions, Debug and Release.
 
