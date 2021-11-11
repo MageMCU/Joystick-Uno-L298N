@@ -1,9 +1,7 @@
-# Joystick-Uno-L298N 
+# Introduction Robotics 
 
-File name: **Article 1000.pdf**<br/>
-Title name: *Introduction Robotics Joystick-Uno-L298N*<br/>
+File name: **1000_Introduction_Robotics.pdf**<br/>
+Title name: *Introduction Robotics*<br/>
 Author: *Jesse Carpenter*<br/>
 <br/>
-The text revision 20210917 is still a work in process. <br/>
-
-Notice 20211013: *Replaced Introduction folder.*
+The text revision 20211110 is still a work in process.

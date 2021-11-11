@@ -1,16 +1,18 @@
 //
 // Carpenter Software
 // File: L298N.h (release version)
+// Updated: 20211109 (See 1003 L298N Article)
+// Updated: 20210910
 // Date: 20210830
-// Folder: joystick_L298N_debug
+// Folder: bluBot_02_Release_Version
 // Purpose: Github Depository (MageMCU)
 //
 // Student Use...
 //
 // Hardware (For further information, see Debug Version)
 //
-// RAM:   [          ]   3.4% (used 69 bytes from 2048 bytes)
-// Flash: [==        ]  15.2% (used 4890 bytes from 32256 byt
+// RAM : [] 3.6 % (used 73 bytes from 2048 bytes)
+// Flash : [==] 15.6 % (used 5038 bytes from 32256 bytes)
 //
 // MIT LICENSE
 //
@@ -51,7 +53,7 @@ namespace uno
               uint8_t RightMotorIN2,
               uint8_t RightMotorPWM);
         void SetupPinsL298N();
-        void updateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB);
+        void UpdateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB);
         void PowerDownL298N();
     };
 
@@ -82,7 +84,18 @@ namespace uno
         _RightMotorPWM = RightMotorPWM;
     }
 
-    void L298N::updateL298N(int PWM_LeftMotor, int PWM_RightMotor)
+    void L298N::SetupPinsL298N()
+    {
+        pinMode(_LeftMotorPWM, OUTPUT);
+        pinMode(_LeftMotorIN1, OUTPUT);
+        pinMode(_LeftMotorIN2, OUTPUT);
+        pinMode(_RightMotorIN1, OUTPUT);
+        pinMode(_RightMotorIN2, OUTPUT);
+        pinMode(_RightMotorPWM, OUTPUT);
+        _powerDownL298N();
+    }
+
+    void L298N::UpdateL298N(int PWM_LeftMotor, int PWM_RightMotor)
     {
         _PWM_LeftMotor = PWM_LeftMotor;
         _PWM_RightMotor = PWM_RightMotor;
@@ -98,28 +111,21 @@ namespace uno
         _powerDownL298N();
     }
 
-    void L298N::SetupPinsL298N()
-    {
-        pinMode(_LeftMotorPWM, OUTPUT);
-        pinMode(_LeftMotorIN1, OUTPUT);
-        pinMode(_LeftMotorIN2, OUTPUT);
-        pinMode(_RightMotorIN1, OUTPUT);
-        pinMode(_RightMotorIN2, OUTPUT);
-        pinMode(_RightMotorPWM, OUTPUT);
-        _powerDownL298N();
-    }
-
     void L298N::_powerDownL298N()
     {
-        digitalWrite(_LeftMotorIN1, LOW);
-        digitalWrite(_LeftMotorIN2, LOW);
-        digitalWrite(_RightMotorIN1, LOW);
-        digitalWrite(_RightMotorIN2, LOW);
+        // Experimental
+        UpdateL298N((int)_ZERO, (int)_ZERO);
+
+        // NOT RECOMMENDED - READ ARTICLE 1003
+        // digitalWrite(_LeftMotorIN1, LOW);
+        // digitalWrite(_LeftMotorIN2, LOW);
+        // digitalWrite(_RightMotorIN1, LOW);
+        // digitalWrite(_RightMotorIN2, LOW);
     }
 
     void L298N::_setDirectionPins()
     {
-        if (_PWM_LeftMotor > _ZERO)
+        if (_PWM_LeftMotor >= _ZERO)
         {
             digitalWrite(_LeftMotorIN1, LOW);
             digitalWrite(_LeftMotorIN2, HIGH);
@@ -129,13 +135,16 @@ namespace uno
             digitalWrite(_LeftMotorIN2, LOW);
             digitalWrite(_LeftMotorIN1, HIGH);
         }
+
+        /* Not recommended
         else
         {
             digitalWrite(_LeftMotorIN1, LOW);
             digitalWrite(_LeftMotorIN2, LOW);
         }
+        */
 
-        if (_PWM_RightMotor > _ZERO)
+        if (_PWM_RightMotor >= _ZERO)
         {
             digitalWrite(_RightMotorIN1, LOW);
             digitalWrite(_RightMotorIN2, HIGH);
@@ -145,11 +154,14 @@ namespace uno
             digitalWrite(_RightMotorIN2, LOW);
             digitalWrite(_RightMotorIN1, HIGH);
         }
+
+        /*  Not recommended
         else
         {
             digitalWrite(_RightMotorIN1, LOW);
             digitalWrite(_RightMotorIN2, LOW);
         }
+        */
     }
 }
 
