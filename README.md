@@ -1,4 +1,4 @@
-# Joystick Uno L298N Depository
+# Joystick - Arduino Uno - L298N Depository
 
 The Joystick-Uno-L298N depository is a complete C++ code for the **Thumb Joystick** and for the **L298N Motor Driver Module** using the **MCU Atmega329P (Uno)** for the  VS Code PlatformIO (or Arduino IDE). There are two versions, Debug and Release.
 
@@ -16,14 +16,12 @@ The double H bridge motor drive module (uses ST company's L298N as the main driv
 
 **Notice:** *Never use any combination of input pins on **HIGH** at any one time or something may begin to smell or worse **smoke**. Always setup the input pins to **LOW**. When changing a pair of input pins from **LOW** to **HIGH** always set the top input pin to **LOW** first, then the next input pin to **HIGH**. This way no two pins are ever **HIGH** at the same time. This is referenced to Arduino's digitalWrite() when pinmode() is set to OUTPUT for the L298N input pins.*
 
-## Joystick-Uno-L298N Article
-
 ### Carpenter Software Updates
 
 - 1000 Introduction Robotics - updated pdf 20211110
 - 1001 Joystick              - new pdf 20211110
 - 1002 Uno                   - new pdf 20211110
 - 1003 L298N                 - new pdf 20211110
-- Release Code               - updated Class L298N 20211110 - updated commented code.
-- All articles have a better resolution than before...
+- Release Code               - updated Class L298N 20211110
+- Debug Code                 - updated Class L298N 20211114
    

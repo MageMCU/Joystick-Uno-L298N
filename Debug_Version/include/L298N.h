@@ -37,6 +37,8 @@
 // By Jesse Carpenter (Github as MageMCU)
 //
 // CHANGELOG
+// November 14, 2021 - New Lab Experiments 
+//                     (See 1003 L298N Article)
 // August 30, 2021 - debug comments
 // August 24, 2021 - editing
 // June 19, 2021 - programming debug version
@@ -193,14 +195,18 @@ namespace uno
 
     void L298N::_powerDownL298N()
     {
-        digitalWrite(_LeftMotorIN1, LOW);
-        _IN1_Flag = LOW;
-        digitalWrite(_LeftMotorIN2, LOW);
-        _IN2_Flag = LOW;
-        digitalWrite(_RightMotorIN1, LOW);
-        _IN3_Flag = LOW;
-        digitalWrite(_RightMotorIN2, LOW);
-        _IN4_Flag = LOW;
+        // Experimental
+        UpdateL298N((int)_ZERO, (int)_ZERO);
+
+        // NOT RECOMMENDED - READ ARTICLE 1003
+        // digitalWrite(_LeftMotorIN1, LOW);
+        // _IN1_Flag = LOW;
+        // digitalWrite(_LeftMotorIN2, LOW);
+        // _IN2_Flag = LOW;
+        // digitalWrite(_RightMotorIN1, LOW);
+        // _IN3_Flag = LOW;
+        // digitalWrite(_RightMotorIN2, LOW);
+        // _IN4_Flag = LOW;
     }
 
     void L298N::SetupPinsL298N()
@@ -248,6 +254,8 @@ namespace uno
             digitalWrite(_LeftMotorIN1, HIGH);
             _IN1_Flag = HIGH;
         }
+
+        /* Not recommended - READ ARTICLE 1003
         else
         {
             digitalWrite(_LeftMotorIN1, LOW);
@@ -255,6 +263,7 @@ namespace uno
             digitalWrite(_LeftMotorIN2, LOW);
             _IN2_Flag = LOW;
         }
+        */
 
         // RIGHT Motor //////////////////////////////////
         if (_PWM_RightMotor > _ZERO)
@@ -271,6 +280,8 @@ namespace uno
             digitalWrite(_RightMotorIN1, HIGH);
             _IN3_Flag = HIGH;
         }
+
+        /* Not recommended - READ ARTICLE 1003
         else
         {
             digitalWrite(_RightMotorIN1, LOW);
@@ -278,6 +289,7 @@ namespace uno
             digitalWrite(_RightMotorIN2, LOW);
             _IN4_Flag = LOW;
         }
+        */
     }
 
     void L298N::_debugConstructor(/* Debug Parameters */)
