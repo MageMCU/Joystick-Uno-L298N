@@ -21,7 +21,7 @@ The double H bridge motor drive module (uses ST company's L298N as the main driv
 - 1000 Introduction Robotics - updated pdf 20211110
 - 1001 Joystick              - new pdf 20211110
 - 1002 Uno                   - new pdf 20211110
-- 1003 L298N                 - new pdf 20211110
+- 1003 L298N                 - new pdf 20211202 (new material)
 - Release Code               - updated Class L298N 20211110
 - Debug Code                 - updated Class L298N 20211114
    
