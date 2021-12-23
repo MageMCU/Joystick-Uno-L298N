@@ -16,6 +16,14 @@ The double H bridge motor drive module (uses ST company's L298N as the main driv
 
 **Notice:** *Never use any combination of input pins on **HIGH** at any one time or something may begin to smell or worse **smoke**. Always setup the input pins to **LOW**. When changing a pair of input pins from **LOW** to **HIGH** always set the top input pin to **LOW** first, then the next input pin to **HIGH**. This way no two pins are ever **HIGH** at the same time. This is referenced to Arduino's digitalWrite() when pinmode() is set to OUTPUT for the L298N input pins.*
 
+## Joystick Algorithm Simulation
+
+The Youtube simulation demonstrates the joystick algorithm, used to control a simulated two-wheeled differential drive robot. 
+
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/maIHbdbDBwo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
+
 ### Carpenter Software Updates
 
 - 1000 Introduction Robotics - updated pdf 20211110
