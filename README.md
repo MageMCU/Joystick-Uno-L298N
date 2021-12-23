@@ -21,7 +21,7 @@ The double H bridge motor drive module (uses ST company's L298N as the main driv
 The Youtube simulation demonstrates the joystick algorithm, used to control a simulated two-wheeled differential drive robot. 
 
 <p align="center">
-[Joystick Algorithm Simulation](<https://www.youtube.com/embed/maIHbdbDBwo)
+[Joystick Algorithm Simulation](<https://www.youtube.com/embed/maIHbdbDBwo>)
 </p>
 
 ### Carpenter Software Updates
