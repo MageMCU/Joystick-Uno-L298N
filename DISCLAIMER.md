@@ -52,5 +52,5 @@ SOFTWARE.
 
 ## Github End-User License Agreement (EULA)
 
-- [Github EUAL](https://desktop.github.com/eula/)
+- [Github EULA](https://desktop.github.com/eula/)
 
