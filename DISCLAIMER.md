@@ -1,8 +1,10 @@
 ## Index
 
 - [Disclaimer](#disclaimer)
-  - [To Parents and Teachers](#parents-and-teachers)
-  - [To Minors (Children) and Teenagers](#minors-and-teeagers)
+- [To Parents and Teachers](#parents-and-teachers)
+- [To Minors (Children) and Teenagers](#minors-and-teeagers)
+- [MIT License](#mit-license-terms)
+- [Github EULA and Terms](#github-eula-and-terms)
 
 </hr>
 
