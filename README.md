@@ -33,4 +33,8 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 - 1003 L298N                    - new pdf 20211202 (new material)
 - Release Code                  - updated Class L298N 20211110
 - Debug Code                    - updated Class L298N 20211114
+
+## Disclaimer and Terms
+
+Please follow the ***Disclaimer*** and ***Terms*** in the ***Numerics*** Repository.
    
