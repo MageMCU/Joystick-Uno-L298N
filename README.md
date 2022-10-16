@@ -36,5 +36,5 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 ## Disclaimer and Terms
 
-Please follow the ***Disclaimer*** and ***Terms*** in the ***Numerics*** Repository.
+Please follow the ***Disclaimer*** and ***Terms*** in the ***Joystick - Arduino Uno - L298N*** Depository.
    
