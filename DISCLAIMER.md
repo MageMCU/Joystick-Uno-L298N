@@ -32,7 +32,7 @@
 
 ## MIT License terms
 
-Copyright (c) *2022* *Carpenter Software - MageMCU at Github*
+Copyright (c) *2022* *[Carpenter Software](https://carpentersoftware.com) - [MageMCU](https://github.com/MageMCU) at Github*
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
