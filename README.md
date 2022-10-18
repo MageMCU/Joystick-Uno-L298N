@@ -36,7 +36,7 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 ## In Development
 
-The JUL_Release_Version will test periodically as described in the Testing Platform and to the standards set in platformio.ini settings.
+The JUL_Release_Version will be tested periodically as described in the Testing Platform and to the standards set in platformio.ini settings.
 
 - Compiled 20221018 - Big Fixes
 
