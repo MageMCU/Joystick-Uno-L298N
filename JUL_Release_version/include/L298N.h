@@ -53,7 +53,7 @@ namespace uno
               uint8_t RightMotorIN2,
               uint8_t RightMotorPWM);
         void SetupPinsL298N();
-        void UpdateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB);
+        void UpdateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB); // FIXME 20221017 jc
         void PowerDownL298N();
     };
 

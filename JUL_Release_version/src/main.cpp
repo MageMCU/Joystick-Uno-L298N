@@ -15,7 +15,7 @@
 // updated: 20210907 correction to same...
 //          Safety:
 //          on motors loop()-(ELSE) to PowerDownL298N();
-//           
+// updated: 20221017 Compiled with an updated platformio.ini file
 //
 // MIT LICENSE
 //
@@ -71,7 +71,10 @@ void updateAnalog()
 
         int left = stk.GetOutputLeftInteger(255);
         int right = stk.GetOutputRightInteger(255);
-        mtr.updateL298N(left, right);
+        // Watch for different number of arguments between
+        // the Debug and the Release versions and also
+        // the capitalization when using UpdateL298N() versus updateL298N()...
+        mtr.UpdateL298N(left, right); // FIXME 20221017 jc
     }
     else
     {

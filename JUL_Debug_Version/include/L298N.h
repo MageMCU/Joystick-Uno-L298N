@@ -37,11 +37,12 @@
 // By Jesse Carpenter (Github as MageMCU)
 //
 // CHANGELOG
-// November 14, 2021 - New Lab Experiments 
+// November 14, 2021 - New Lab Experiments
 //                     (See 1003 L298N Article)
 // August 30, 2021 - debug comments
 // August 24, 2021 - editing
 // June 19, 2021 - programming debug version
+// October 17, 2022 - Compile with an updated platformio.ini file
 //
 // Atmega328P Total Usgae
 // RAM : [==] 15.3 % (used 314 bytes from 2048 bytes)
@@ -104,7 +105,7 @@ namespace uno
         // Place inside setup() function
         void SetupPinsL298N();
 
-        // Place inside loop() function
+        // Place inside loop() function ---- FIXME 20221017
         void updateL298N(bool debugMotors, int UnoPWM_ToENA, int UnoPWM_ToENB);
     };
 
@@ -196,7 +197,7 @@ namespace uno
     void L298N::_powerDownL298N()
     {
         // Experimental
-        UpdateL298N((int)_ZERO, (int)_ZERO);
+        updateL298N(false, 0, 0);
 
         // NOT RECOMMENDED - READ ARTICLE 1003
         // digitalWrite(_LeftMotorIN1, LOW);

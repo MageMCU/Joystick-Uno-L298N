@@ -495,7 +495,7 @@ void updateAnalog(bool debugMotors)
             bool debugL298N = true;
 
             // Update Motors
-            mtr.updateL298N(debugL298N, left, right);
+            mtr.updateL298N(debugL298N, left, right); // FIXME 20221017 jc
             _debug(xAnalog, yAnalog, left, right);
             // Motors Off - Safety Reasons
             // Notice: While debugging, the motors
