@@ -22,6 +22,28 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 - <a href="https://www.youtube.com/watch?v=maIHbdbDBwo&t=2s" target="_blank">Joystick Algorithm Simulation</a>
 </p>
 
+## Testing Platform
+
+- This MCU chip **Atmega328P** is well known and the price is affordable as well as most of the robotic hardware that is described here. The Arduino Uno board comes with a removable MCU.
+
+- **PlatformIO** is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. 
+
+- **Visual Studio Code** is a streamlined code editor and it runs on macOS, Linux, and Windows. The best thing about VSCode, it is free.
+
+## Issues
+
+- None
+
+## In Development
+
+The JUL_Release_Version will test periodically as described in the Testing Platform and to the standards set in platformio.ini settings.
+
+- Compiled 20221018 - Big Fixes
+
+## NOTICE
+
+- The JUL_Debug_Version will be removed November 2022.
+
 ## Disclaimer and Terms
 
 Please follow the ***Disclaimer*** and ***Terms*** in the ***Joystick - Arduino Uno - L298N*** Depository.

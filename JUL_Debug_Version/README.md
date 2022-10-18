@@ -21,3 +21,7 @@
 ## ***root folder***
 
 - platformio.ini        (please review this document for platform configuration while testing the code.)
+
+## NOTICE
+
+- The JUL_Debug_Version will be removed November 2022.
