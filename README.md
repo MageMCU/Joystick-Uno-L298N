@@ -1,4 +1,4 @@
-## Joystick - Arduino Uno - L298N Depository
+## Joystick - Arduino Uno - L298N Repository
 
 - namespace ***uno***
 
