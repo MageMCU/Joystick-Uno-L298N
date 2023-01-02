@@ -1,4 +1,4 @@
-## Simplified- Joystick - Arduino Uno - L298N (SJUL) Repository
+## Simplified-Joystick-Uno-L298N (SJUL) Repository
 
 - namespace ***uno***
 
