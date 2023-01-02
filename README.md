@@ -48,5 +48,5 @@ The SJUL_Release_Version will be tested periodically as described in the Testing
 
 ## Disclaimer and Terms
 
-Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino Uno-L298N*** Depository.
+Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino Uno-L298N*** Repository.
    
