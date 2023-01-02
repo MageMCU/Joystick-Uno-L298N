@@ -10,19 +10,19 @@
 
 ## Disclaimer <a name="disclaimer"></a>
 
-<p>Any Information, including the Electronic Schematics and the Software (AI_ES_S) is provided as is, without any representation or warranty of any kind, either express or implied, including without limitation any representations or endorsements regarding the use of, the results of, or performance of the AI_ES_S, its appropriateness, accuracy, reliability, or correctness. </p>
+<p><strong>Any Information</strong>, including the <strong>Electronic Schematics</strong> and the <strong>Software</strong> (<strong>AI_ES_S</strong>) is provided as is, without any representation or warranty of any kind, either express or implied, including without limitation any representations or endorsements regarding the use of, the results of, or performance of the <strong>AI_ES_S</strong>, its appropriateness, accuracy, reliability, or correctness. </p>
 
-<p>The entire risk as to the use of AI_ES_S is assumed by Licensee (MIT). </p>
+<p>The entire risk as to the use of <strong>AI_ES_S</strong> is assumed by <strong>Licensee</strong> (<strong>MIT</strong>). </p>
 
-<p>Carpenter Software LC (AUTHOR) does not assume liability for the use of this AI_ES_S. In no event will the AUTHOR be liable for additional direct or indirect damages including any lost profits, lost savings, or other incidental or consequential damages arising from any mishap, or the use or inability to use these AI_ES_S, even if AUTHOR has been advised of the possibility of such damages. </p>
+<p>Carpenter Software LC (<strong>AUTHOR</strong>) does not assume liability for the use of this <strong>AI_ES_S</strong>. In no event will the <strong>AUTHOR</strong> be liable for additional direct or indirect damages including any lost profits, lost savings, or other incidental or consequential damages arising from any mishap, or the use or inability to use these <strong>AI_ES_S</strong>, even if <strong>AUTHOR</strong> has been advised of the possibility of such damages. </p>
 
-<p>The MageMCU GitHub account is a living workspace used by the AUTHOR for the AUTHOR and if by consequence the AI_ES_S is used by a Licensee then the Licensee is solely responsible.</p>
+<p>The <strong>MageMCU GitHub account</strong> is a living workspace used by the <strong>AUTHOR</strong> for the <strong>AUTHOR</strong> and if by consequence the <strong>AI_ES_S</strong> is used by a <strong>Licensee</strong> then the <strong>Licensee</strong> is solely responsible.</p>
 
 </hr>
 
 ## Parents and Teachers <a name="parents-and-teachers"></a>
 
-<p></a><strong>Parents and Teachers:</strong> This Github Account is restricted to minors. When working with electricity of any kind, they should be directed and instructed by a responsible mentor. A USER (Licensee) must be at least 13 years of age when using GitHub. /p>
+<p></a><strong>Parents and Teachers:</strong> This Github Account is restricted to minors. When working with electricity of any kind, they should be directed and instructed by a responsible mentor. A USER (<strong>Licensee</strong>) must be at least 13 years of age when using GitHub. </p>
 
 </hr>
 
@@ -32,7 +32,7 @@
 
 ## MIT License terms
 
-Copyright (c) *2022* *[Carpenter Software](https://carpentersoftware.com) - [MageMCU](https://github.com/MageMCU) at Github*
+Copyright (c) *2023* *[Carpenter Software](https://carpentersoftware.com) - [MageMCU](https://github.com/MageMCU) at Github*
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
