@@ -66,7 +66,7 @@ void setup()
     // ---------------------------------------------------- NEW METHOD
     // There are 8 combinations for Reverse-Inputs and Direction-Motors
     // The boolean Order 
-        // (1)         Reverse Inouts: T/F
+        // (1)         Reverse Inputs: T/F
         // (2)   Direction Left Motor: T/F
         // (3) Direction Right Motoer: T/F
         // where TTT is the default setting...
