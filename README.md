@@ -40,11 +40,11 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 The SJUL_Release_Version will be tested periodically as described in the Testing Platform and to the standards set in platformio.ini settings.
 
-- Total Rewrite 20230102... The **SJUL project** is now under development...
+- Total Rewrite 20230102 where the **SJUL project** is now under development...
 
 ## NOTICE
 
-- The JUL_Debug_Version and the JUL_Release_Version have been removed January 02, 2023.
+- The JUL_Debug_Version and the JUL_Release_Version are removed since January 02, 2023.
 
 ## Disclaimer and Terms
 

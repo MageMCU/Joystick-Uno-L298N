@@ -5,9 +5,9 @@
 ## ***include folder***
 
 **Following classes are stand-alone**
-- **Bitwise.h**  
+- **Bitwise.h**   - (The file is located in the *Numerics* Repository)
 - **Button.h** 
-- **LinearMap.h** - Removed the mapping code from the Joystick Algorithm Class and placed it into Linear Map Class.
+- **LinearMap.h** - (The file is located in the *Numerics* Repository)
 - **Timer.h** 
 
 ***Followng classes are dependent on the stand-alones***
@@ -16,7 +16,7 @@
 
 ## ***src folder***
 
-- main.cpp - (has new method example to setup dc-motors instead of matching the system's wiring within the entire code... ALso mapping has been removed from the Joystick Algorithm Class and LinearMap.h is now used in the main.cpp. The Joystick Algorithm Class has been simplified for upcoming projects.)
+- main.cpp - (has new L298N method example to setup dc-motors instead of matching the system's wiring within the entire code... ALso mapping has been removed from the Joystick Algorithm Class and LinearMap.h is now used in the main.cpp. The Joystick Algorithm Class has been simplified for upcoming projects.)
 
 ## ***root folder***
 
@@ -24,5 +24,5 @@
 
 ## ***Notes***
 
-The older **Joystick-Uno-L298N** code especially the *Debug version* was too difficult to understand with its debugging and the *Release version* was too complicated with unnessary code. The **Simplified-Joystick-Uno-L298N** code is a trade off from the two older versions.
+The older **Joystick-Uno-L298N** code especially the *Debug version* was too difficult to understand the debugging and the *Release version* was too complicated with unnessary code. The **Simplified-Joystick-Uno-L298N** code is better than the two older versions.
 
