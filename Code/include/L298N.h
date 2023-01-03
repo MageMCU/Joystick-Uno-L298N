@@ -31,18 +31,18 @@ namespace uno
 {
     enum MotorBits {
         // Bit-Numbers
-        motors_bitZero = 0,
-        motors_bitOne,
-        motors_bitTwo,
-        // Bits-Values
-        motors_FFF = 0,
+        private_bitZero = 0,
+        private_bitOne,
+        private_bitTwo,
+        // Bits-Value
+        motors_FFF, // 3
         motors_FFT,
         motors_FTF,
         motors_FTT,
         motors_TFF,
         motors_TFT,
         motors_TTF,
-        motors_TTT
+        motors_TTT // 10
     };
 
     class L298N
@@ -87,7 +87,7 @@ namespace uno
 
         // Methods
         void PinsL298N();
-        void ReverseLeftRight(int conditions);
+        void ReverseLeftRight(MotorBits bitsValue);
         void UpdateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB, bool PowerMotors);
         void PowerDownL298N();
     };
@@ -136,28 +136,32 @@ namespace uno
         L_PowerDownL298N();
     }
 
-    void L298N::ReverseLeftRight(int bitsValue = (int)MotorBits::motors_TTT)
+    void L298N::ReverseLeftRight(MotorBits bitsValue)
     {
-        // The boolean Order 
-        // (1)         Reverse Inouts: T/F
-        // (2)   Direction Left Motor: T/F
-        // (3) Direction Right Motoer: T/F
-        // where TTT is the default setting...
-        // Check conditions:    FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT
-        // Bits Value:           0    1    2    3    4    5    6    7
-        // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
-        if (bitsValue >= (int)MotorBits::motors_FFF)
+        // localBitsValue from 0 to 7...  -------------------------------------------- BUG FIX
+        int localBitsValue = (int)bitsValue - (int)MotorBits::motors_FFF;
+        // The Boolean Order 
+            // (1)         Reverse Inouts: T/F
+            // (2)   Direction Left Motor: T/F
+            // (3) Direction Right Motoer: T/F
+            // Check conditions:    FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT
+            // Local-Bits-Value:     0    1    2    3    4    5    6    7
+            // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
+            // DO NOT USE the private constants belonging to MotorBits...
+        // Changing the truth table is much easier than switching the actual 
+        // wires around.... For my setup, TFF was used...
+        if ((int)bitsValue >= (int)MotorBits::motors_FFF) // ----------- conditional OK
         {
             // Set Bits-Value 
-            L_bWise.SetBitsValue(bitsValue);
+            L_bWise.SetBitsValue(localBitsValue);
             // DEBUG Bit Places
             // Serial.println(L_bWise.PrintBinaryBits());
             // Reverse L298N Inputs
-            L_ReverseInputs = L_bWise.IsBitNumberSet((int)MotorBits::motors_bitZero);
+            L_ReverseInputs = L_bWise.IsBitNumberSet((int)MotorBits::private_bitZero);
             // Change the Direction Left Motor
-            L_DirectionLeftMotor = L_bWise.IsBitNumberSet((int)MotorBits::motors_bitOne);
+            L_DirectionLeftMotor = L_bWise.IsBitNumberSet((int)MotorBits::private_bitOne);
             // Change the Direction Right Motor
-            L_DirectionRightMotor = L_bWise.IsBitNumberSet((int)MotorBits::motors_bitTwo);
+            L_DirectionRightMotor = L_bWise.IsBitNumberSet((int)MotorBits::private_bitTwo);
         }
     }
 

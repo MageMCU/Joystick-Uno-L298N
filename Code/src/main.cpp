@@ -65,17 +65,17 @@ void setup()
     motors.PinsL298N();
     // ---------------------------------------------------- NEW METHOD
     // There are 8 combinations for Reverse-Inputs and Direction-Motors
-    // The boolean Order 
+    // The Boolean Order 
         // (1)         Reverse Inputs: T/F
         // (2)   Direction Left Motor: T/F
         // (3) Direction Right Motoer: T/F
-        // where TTT is the default setting...
         // Check conditions:    FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT
         // Bits Value:           0    1    2    3    4    5    6    7
         // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
+        // DO NOT USE the private constants belonging to MotorBits...
     // Changing the truth table is much easier than switching the actual 
     // wires around.... For my setup, TFF was used...
-    motors.ReverseLeftRight((int)uno::MotorBits::motors_TFF);
+    motors.ReverseLeftRight(uno::MotorBits::motors_TFF);
 
     // Joystick Algorithm
     joystick = uno::Joystick<float>();
