@@ -38,9 +38,10 @@ uno::Button buttonMotors;
 
 void setup()
 {
-    // Debug Only ---------------------------------------------- DEBUG
-    Serial.begin(9600);
-    while (!Serial) {}
+    // Debug Only ------------------------------------- DEBUG DISABLED
+    // Serial.begin(9600);
+    // while (!Serial) {}
+    // Note: Serial Print uses a lot of memory..., use it sparingly.
 
     // Scope - Temporary Variables
     int buttonPin = 2;
@@ -94,16 +95,16 @@ void setup()
     buttonMotors = uno::Button(buttonPin, ledPin);
 }
 
-// -------------------------------------------------  DEBUG
+// -------------------------------------------------  DEBUG DISABLED
 // All debug statements occur here in the main.cpp file
-template<typename T>
-void Debug(T x, T y)
-{
-    Serial.print("X: ");
-    Serial.print(x);
-    Serial.print(" Y: ");
-    Serial.println(y);
-}
+// template<typename T>
+// void Debug(T x, T y)
+// {
+//     Serial.print("X: ");
+//     Serial.print(x);
+//     Serial.print(" Y: ");
+//     Serial.println(y);
+// }
 
 void updateMotors()
 {
@@ -113,13 +114,13 @@ void updateMotors()
         // Digital Values from 0 to 1023
         int xDigital = analogRead(A1);
         int yDigital = analogRead(A0);
-        // Debug<int>(xDigital, yDigital); // ----------- DEBUG
+        // Debug<int>(xDigital, yDigital); // ----------- DEBUG DISABLED
 
         // Map Analogs to Joystick Inputs
         // Values from -1 to 1
         float inputX = ADCtoJoystickInputs.Map((float)xDigital);
         float inputY = ADCtoJoystickInputs.Map((float)yDigital);
-        // Debug<float>(inputX, inputY); // ----------- DEBUG
+        // Debug<float>(inputX, inputY); // ----------- DEBUG DISABLED
 
         // Assume Joystick Potentiometers are not electrically centered to
         // exactly 2.5 volts... What this means the motors might move
@@ -133,7 +134,7 @@ void updateMotors()
         // Joystick Y-Input
         if (abs(inputY) < OFFSET)
             inputY = 0;
-        // Debug<float>(inputX, inputY); // ----------- DEBUG
+        // Debug<float>(inputX, inputY); // ----------- DEBUG DISABLED
 
         // Process Joystick Inputs
         joystick.UpdateInputs(inputX, inputY);
@@ -141,12 +142,12 @@ void updateMotors()
         // Joystick Outputs
         float outputX = joystick.OutLeft();
         float outputY = joystick.OutRight();
-        // Debug<float>(outputX, outputY); // ----------- DEBUG
+        // Debug<float>(outputX, outputY); // ----------- DEBUG DISABLED
 
         // Map Joystick Outputs to Motor Inputs
         int motorLeft = (int)joystickOutputsToMotors.Map(outputX);
         int motorRight = (int)joystickOutputsToMotors.Map(outputY);
-        // Debug<int>(motorLeft, motorRifgt); // ----------- DEBUG
+        // Debug<int>(motorLeft, motorRifgt); // ----------- DEBUG DISABLED
 
         // ------------------------------------------ FLAG_WATCH
         // For safety reasons, the UpdateL298N() method has a 

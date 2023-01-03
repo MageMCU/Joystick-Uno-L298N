@@ -138,7 +138,7 @@ namespace uno
 
     void L298N::ReverseLeftRight(MotorBits bitsValue)
     {
-        // localBitsValue from 0 to 7...  -------------------------------------------- BUG FIX
+        // localBitsValue from 0 to 7... BUG FIX
         int localBitsValue = (int)bitsValue - (int)MotorBits::motors_FFF;
         // The Boolean Order 
             // (1)         Reverse Inouts: T/F
@@ -150,7 +150,7 @@ namespace uno
             // DO NOT USE the private constants belonging to MotorBits...
         // Changing the truth table is much easier than switching the actual 
         // wires around.... For my setup, TFF was used...
-        if ((int)bitsValue >= (int)MotorBits::motors_FFF) // ----------- conditional OK
+        if ((int)bitsValue >= (int)MotorBits::motors_FFF)
         {
             // Set Bits-Value 
             L_bWise.SetBitsValue(localBitsValue);
