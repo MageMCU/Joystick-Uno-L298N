@@ -16,7 +16,7 @@
 
 ## ***src folder***
 
-- main.cpp - (has new L298N method example to setup dc-motors instead of matching the system's wiring throughout the entire code... ALso mapping has been removed from the Joystick Algorithm Class and LinearMap.h is now used in the main.cpp. The Joystick Algorithm Class has been simplified for upcoming projects.)
+- main.cpp - (has new L298N method example to setup dc-motors instead of matching the system's wiring throughout the entire code... Also mapping has been removed from the Joystick Algorithm Class and LinearMap.h is now used in the main.cpp. The Joystick Algorithm Class has been simplified for upcoming projects.)
 
 ## ***root folder***
 
