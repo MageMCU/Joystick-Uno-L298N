@@ -11,7 +11,7 @@
 - **Timer.h** 
 
 ***Followng classes are dependent on the stand-alones***
-+ ***Joystick.h***  - The Joystick Algorithm Class has been simplified for upcoming projects.
++ ***Joystick.h***  - The Joystick Algorithm Class has been simplified for upcoming projects. Removed unused methods...
 + ***L298N.h***     - The L298N Class has a new method to setup the dc-motors.
 
 ## ***src folder***

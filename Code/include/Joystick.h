@@ -58,10 +58,6 @@ namespace uno
 
     real OutLeft();
     real OutRight();
-
-    void CenterDigitalCalibration(real inputX, real inputY);
-    int CenterX();
-    int CenterY();
   };
 
   template<typename real>
