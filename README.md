@@ -4,7 +4,7 @@
 
 ## MCU Atmega328P chip 
 
-This MCU chip **Atmega328P** is well known and it can be used separately on a breadboard.
+This MCU chip **Atmega328P** is well known and the chip can be pulled out to be used separately on a breadboard.
 
 ## Joystick 
 
