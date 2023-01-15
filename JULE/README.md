@@ -16,7 +16,7 @@
 
 ## ***src folder***
 
-- main.cpp - NEW METHOD - Has experimental code for motor encoders using Arduino's Interrupt-Pins 2 and 3. There are 8 combinations for Reverse-Inputs and Direction-Motors, *motors.Bits(uno::MotorBits::motorsFFF);*...
+- main.cpp - NEW METHOD - Has experimental code for motor encoders using Arduino's Interrupt-Pins 2 and 3. There are 8 combinations for Reverse-Inputs and Direction-Motors, *motors.Bits(uno::MotorBits::motorsFFF);*... Simply plugin one 3-boolean value at a time from the eight possible values until the motors behave as expected. This is beeter than rearranging the actual wires among the two motors and the L298N module.
 
 ## ***root folder***
 
