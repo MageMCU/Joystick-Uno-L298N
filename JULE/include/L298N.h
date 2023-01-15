@@ -34,45 +34,54 @@ namespace uno
         private_bitZero = 0,
         private_bitOne,
         private_bitTwo,
-        // Bits-Value
-        motors_FFF, // 3
-        motors_FFT,
-        motors_FTF,
-        motors_FTT,
-        motors_TFF,
-        motors_TFT,
-        motors_TTF,
-        motors_TTT // 10
+        // Primary Inputs(bit-2xx) Left(bit-x1x) Right(bit-xx0) Motors Flags
+        motorsFFF, // 3
+        motorsFFT,
+        motorsFTF,
+        motorsFTT,
+        motorsTFF,
+        motorsTFT,
+        motorsTTF,
+        motorsTTT
     };
 
     class L298N
     {
     private:
+        // The names LEFT & RIGHT are misnomers and are 
+        // used only for name differenation...
+
         // Private Properties
+        // Although used, there are no saved-values
         nmr::Bitwise<int> L_bWise;
-        bool L_ReverseInputs;
-        bool L_DirectionLeftMotor;
-        bool L_DirectionRightMotor;
 
+        // Used with Arduino's digitalWrite()
+        bool L_IsLeftL1H2;
+        bool L_IsRightL1H2;
+
+        // Used for motors setup() which aligns the
+        // correct left and right directions...
+        bool L_bitRightFlag; // Right Motor Direction
+        bool L_bitLeftFlag; // Left Motor Direction
+        bool L_bitReverseInputsFlag; // Switch L298N Inputs
+
+        // Used for L298N Pins
         uint8_t L_ZERO;
-
         uint8_t L_LeftMotorPWM;
         uint8_t L_LeftMotorIN1;
         uint8_t L_LeftMotorIN2;
-
         uint8_t L_RightMotorIN1;
         uint8_t L_RightMotorIN2;
         uint8_t L_RightMotorPWM;
-
-        // Private Methods
+        // Input Values
         int L_PWM_LeftMotor;
         int L_PWM_RightMotor;
-
+        // Private Methods
         void L_SetDirectionPins();
-        void L_PowerDownL298N();
-
-        void L_LeftMotor();
-        void L_RightMotor();
+        void L_LeftL1H2(); // Priority Left
+        void L_LeftL2H1();
+        void L_RightL1H2();
+        void L_RightL2H1();
 
     public:
         // Contructors
@@ -85,13 +94,15 @@ namespace uno
             uint8_t RightMotorPWM);
         ~L298N() = default;
 
-        // Methods
+        // Public Methods
         void PinsL298N();
-        void ReverseLeftRight(MotorBits bitsValue);
+        void Bits(MotorBits bitsValue);
+        // PowerMotors safety switch (OFF false, ON true)
         void UpdateL298N(int UnoPWM_ToENA, int UnoPWM_ToENB, bool PowerMotors);
         void PowerDownL298N();
     };
 
+    // Default
     L298N::L298N()
     {
         L_ZERO = 0;
@@ -101,11 +112,9 @@ namespace uno
         L_RightMotorIN1 = 7;
         L_RightMotorIN2 = 6;
         L_RightMotorPWM = 5;
-        L_ReverseInputs = true;
-        L_DirectionLeftMotor = true;
-        L_DirectionRightMotor = true;
     }
 
+    // set L298N Pins in setup()
     L298N::L298N(uint8_t LeftMotorPWM,
         uint8_t LeftMotorIN1,
         uint8_t LeftMotorIN2,
@@ -120,11 +129,9 @@ namespace uno
         L_RightMotorIN1 = RightMotorIN1;
         L_RightMotorIN2 = RightMotorIN2;
         L_RightMotorPWM = RightMotorPWM;
-        L_ReverseInputs = true;
-        L_DirectionLeftMotor = true;
-        L_DirectionRightMotor = true;
     }
 
+    // Used in setup()
     void L298N::PinsL298N()
     {
         pinMode(L_LeftMotorPWM, OUTPUT);
@@ -133,41 +140,38 @@ namespace uno
         pinMode(L_RightMotorIN1, OUTPUT);
         pinMode(L_RightMotorIN2, OUTPUT);
         pinMode(L_RightMotorPWM, OUTPUT);
-        L_PowerDownL298N();
+        PowerDownL298N();
     }
 
-    void L298N::ReverseLeftRight(MotorBits bitsValue)
+    // Follow instructions in Supplimental Article...
+    void L298N::Bits(MotorBits bitsValue)
     {
-        // localBitsValue from 0 to 7... BUG FIX
-        int localBitsValue = (int)bitsValue - (int)MotorBits::motors_FFF;
+        int localBitsValue = (int)bitsValue - (int)MotorBits::motorsFFF;
+        // There are 8 combinations for Reverse-Inputs and Direction-Motors
         // The Boolean Order 
-            // (1)         Reverse Inouts: T/F
-            // (2)   Direction Left Motor: T/F
-            // (3) Direction Right Motoer: T/F
+            // (1)         Reverse Inouts: T/F (Bit-2)
+            // (2)   Direction Left Motor: T/F (Bit-1)
+            // (3) Direction Right Motoer: T/F (Bit-0)
             // Check conditions:    FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT
             // Local-Bits-Value:     0    1    2    3    4    5    6    7
             // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
             // DO NOT USE the private constants belonging to MotorBits...
         // Changing the truth table is much easier than switching the actual 
-        // wires around.... For my setup, TFF was used...
-        if ((int)bitsValue >= (int)MotorBits::motors_FFF)
-        {
-            // Set Bits-Value 
-            L_bWise.SetBitsValue(localBitsValue);
-            // DEBUG Bit Places
-            // Serial.println(L_bWise.PrintBinaryBits());
-            // Reverse L298N Inputs
-            L_ReverseInputs = L_bWise.IsBitNumberSet((int)MotorBits::private_bitZero);
-            // Change the Direction Left Motor
-            L_DirectionLeftMotor = L_bWise.IsBitNumberSet((int)MotorBits::private_bitOne);
-            // Change the Direction Right Motor
-            L_DirectionRightMotor = L_bWise.IsBitNumberSet((int)MotorBits::private_bitTwo);
-        }
+        // wires around on the L298N module.... For my setup, FFF was used...
+        //
+        // Change the Direction Right Motor (Bit-0)
+        L_bitRightFlag = L_bWise.IsBitNumberSetToBitsValue((int)MotorBits::private_bitZero, localBitsValue);
+        // Change the Direction Left Motor (Bit-1)
+        L_bitLeftFlag = L_bWise.IsBitNumberSetToBitsValue((int)MotorBits::private_bitOne, localBitsValue);
+        // Reverse L298N Inputs (Bit-2)
+        L_bitReverseInputsFlag = L_bWise.IsBitNumberSetToBitsValue((int)MotorBits::private_bitTwo, localBitsValue);
     }
 
+    // Used with a timer within loop()
     void L298N::UpdateL298N(int PWM_LeftMotor, int PWM_RightMotor, bool PowerMotors = false)
     {
-        if (L_ReverseInputs)
+        // Reverse L298N Inputs (Bit-2 Flag)
+        if (L_bitReverseInputsFlag)
         {
             L_PWM_LeftMotor = PWM_LeftMotor;
             L_PWM_RightMotor = PWM_RightMotor;
@@ -189,72 +193,81 @@ namespace uno
         }
     }
 
+    // Used with buttons-OFF
     void L298N::PowerDownL298N()
     {
-        L_PowerDownL298N();
-    }
-
-    void L298N::L_PowerDownL298N()
-    {
-        // Experimental
         UpdateL298N((int)L_ZERO, (int)L_ZERO);
     }
 
+    // Private Method
     void L298N::L_SetDirectionPins()
     {
         if (L_PWM_LeftMotor >= L_ZERO)
         {
-            if (L_DirectionLeftMotor)
-            {
-                digitalWrite(L_LeftMotorIN1, LOW);
-                digitalWrite(L_LeftMotorIN2, HIGH);
-            }
+            // Left Motor Bit-1 Flag
+            if (L_bitLeftFlag)
+                L_LeftL1H2();
             else
-            {
-                digitalWrite(L_LeftMotorIN2, LOW);
-                digitalWrite(L_LeftMotorIN1, HIGH);
-            }
+                L_LeftL2H1();
         }
         else if (L_PWM_LeftMotor < L_ZERO)
         {
-            if (L_DirectionLeftMotor)
-            {
-                digitalWrite(L_LeftMotorIN2, LOW);
-                digitalWrite(L_LeftMotorIN1, HIGH);
-            }
+            // Left Motor Bit-1 Flag
+            if (L_bitLeftFlag)
+                L_LeftL2H1();
             else
-            {
-                digitalWrite(L_LeftMotorIN1, LOW);
-                digitalWrite(L_LeftMotorIN2, HIGH);
-            }
+                L_LeftL1H2();
         }
 
         if (L_PWM_RightMotor >= L_ZERO)
         {
-            if (L_DirectionRightMotor)
-            {
-                digitalWrite(L_RightMotorIN1, LOW);
-                digitalWrite(L_RightMotorIN2, HIGH);
-            }
+            // Right Motor Bit-0 Flag
+            if (L_bitRightFlag)
+                L_RightL1H2();
             else
-            {
-                digitalWrite(L_RightMotorIN2, LOW);
-                digitalWrite(L_RightMotorIN1, HIGH);
-            }
+                L_RightL2H1();
         }
         else if (L_PWM_RightMotor < L_ZERO)
         {
-            if (L_DirectionRightMotor)
-            {
-                digitalWrite(L_RightMotorIN2, LOW);
-                digitalWrite(L_RightMotorIN1, HIGH);
-            }
+            // Right Motor Bit-0 Flag
+            if (L_bitRightFlag)
+                L_RightL2H1();
             else
-            {
-                digitalWrite(L_RightMotorIN1, LOW);
-                digitalWrite(L_RightMotorIN2, HIGH);
-            }
+                L_RightL1H2();
         }
+    }
+
+    // Private Method
+    void L298N::L_LeftL1H2()
+    {
+        // Motors Output
+        digitalWrite(L_LeftMotorIN1, LOW);
+        digitalWrite(L_LeftMotorIN2, HIGH);
+        L_IsLeftL1H2 = true;
+    }
+
+    // Private Method
+    void L298N::L_LeftL2H1()
+    {
+        digitalWrite(L_LeftMotorIN2, LOW);
+        digitalWrite(L_LeftMotorIN1, HIGH);
+        L_IsLeftL1H2 = false;
+    }
+
+    // Private Method
+    void L298N::L_RightL1H2()
+    {
+        digitalWrite(L_RightMotorIN1, LOW);
+        digitalWrite(L_RightMotorIN2, HIGH);
+        L_IsRightL1H2 = true;
+    }
+
+    // Private Method
+    void L298N::L_RightL2H1()
+    {
+        digitalWrite(L_RightMotorIN2, LOW);
+        digitalWrite(L_RightMotorIN1, HIGH);
+        L_IsRightL1H2 = false;
     }
 }
 

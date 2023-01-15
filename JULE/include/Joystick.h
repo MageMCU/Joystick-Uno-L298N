@@ -26,55 +26,56 @@
 
 namespace uno
 {
-  // The enumeration is used for Arduino Uno
-  // for the 10-bit Analog Digital Conversion 
-  // (ADC: 0 - 1023)...
-  enum {
-    _ZERO = 0,
-    _MIDPOINT_LO = 511,
-    _MIDPOINT_HI = 512,
-    _1023 = 1023
-  };
-  // Joystick Class (Simplified for upcoming
-  // projects...)
+  // Joystick Class (Simplified for upcoming projects...)
   template<typename real>
   class Joystick
   {
   private:
+    // PROPERTIES
+    real j_ZERO;
     // INPUT
     real j_inputX;
     real j_inputY;
     // OUTPUT
     real j_outputLeft;
     real j_outputRight;
-
+    // METHODS
     void j_joystick();
 
   public:
+    // Constructor
     Joystick();
     ~Joystick() = default;
-
+    // Getters
+    bool IsLeftForward();
+    bool IsRightForward();
+    // METHODS
     void UpdateInputs(real inputX, real inputY);
-
     real OutLeft();
     real OutRight();
   };
 
+  // Constructor
   template<typename real>
-  Joystick<real>::Joystick() {}
-
-  template<typename real>
-  real Joystick<real>::OutLeft()
+  Joystick<real>::Joystick()
   {
-    return j_outputLeft;
+    j_ZERO = (real)0;
+  }
+
+  // Getters
+  template<typename real>
+  bool Joystick<real>::IsLeftForward()
+  {
+    return j_outputLeft > (real)0;
   }
 
   template<typename real>
-  real Joystick<real>::OutRight()
+  bool Joystick<real>::IsRightForward()
   {
-    return j_outputRight;
+    return j_outputRight > (real)0;
   }
 
+  // Method update
   template<typename real>
   void Joystick<real>::UpdateInputs(real inputX, real inputY)
   {
@@ -85,10 +86,25 @@ namespace uno
     if (inputY >= -1 && inputY <= 1)
       j_inputY = inputY;
 
-    //
+    // Private
     j_joystick();
   }
 
+  // Method output
+  template<typename real>
+  real Joystick<real>::OutLeft()
+  {
+    return j_outputLeft;
+  }
+
+  // Method output
+  template<typename real>
+  real Joystick<real>::OutRight()
+  {
+    return j_outputRight;
+  }
+
+  // Private Method
   template<typename real>
   void Joystick<real>::j_joystick()
   {
@@ -109,47 +125,48 @@ namespace uno
     // Consitionals
     if (abs(_inputX) > _tol && abs(_inputY) > _tol)
     {
+      // Y-Dominator
       if (abs(_inputX) <= abs(_inputY))
       {
-        if (_inputX > _ZERO && _inputY > _ZERO)
+        if (_inputX > j_ZERO && _inputY > j_ZERO)
         {
           _x = _inputY;
           _y = delta;
         }
-        else if (_inputX > _ZERO && _inputY < _ZERO)
+        else if (_inputX > j_ZERO && _inputY < j_ZERO)
         {
           _x = -delta;
           _y = _inputY;
         }
-        else if (_inputX < _ZERO && _inputY > _ZERO)
+        else if (_inputX < j_ZERO && _inputY > j_ZERO)
         {
           _x = delta;
           _y = _inputY;
         }
-        else if (_inputX < _ZERO && _inputY < _ZERO)
+        else if (_inputX < j_ZERO && _inputY < j_ZERO)
         {
           _x = _inputY;
           _y = -delta;
         }
-      }
+      } // X-Dominator
       else if (abs(_inputX) > abs(_inputY))
       {
-        if (_inputX > _ZERO && _inputY > _ZERO)
+        if (_inputX > j_ZERO && _inputY > j_ZERO)
         {
           _x = _inputX;
           _y = -delta;
         }
-        else if (_inputX > _ZERO && _inputY < _ZERO)
+        else if (_inputX > j_ZERO && _inputY < j_ZERO)
         {
           _x = delta;
           _y = -_inputX;
         }
-        else if (_inputX < _ZERO && _inputY > _ZERO)
+        else if (_inputX < j_ZERO && _inputY > j_ZERO)
         {
           _x = -delta;
           _y = -_inputX;
         }
-        else if (_inputX < _ZERO && _inputY < _ZERO)
+        else if (_inputX < j_ZERO && _inputY < j_ZERO)
         {
           _x = _inputX;
           _y = delta;
@@ -158,16 +175,19 @@ namespace uno
     }
     else if (abs(_inputX) > _tol && abs(_inputY) < _tol)
     {
+      // Left & Right Turns
       _x = _inputX;
       _y = -_inputX;
     }
     else if (abs(_inputX) < _tol && abs(_inputY) > _tol)
     {
+      // Forward & Backward
       _x = _inputY;
       _y = _inputY;
     }
     else if (abs(_inputX) < _tol && abs(_inputY) < _tol)
     {
+      // Stop
       _x = 0;
       _y = 0;
     }

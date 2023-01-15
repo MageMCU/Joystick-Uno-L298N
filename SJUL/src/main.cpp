@@ -44,7 +44,9 @@ void setup()
     // Note: Serial Print uses a lot of memory..., use it sparingly.
 
     // Scope - Temporary Variables
-    int buttonPin = 2;
+    // New Change for upcoming projects...
+    // Need Arduino Uno interrupt pins 2 & 3....
+    int buttonPin = 4; // buttonPin was Arduino pin 2. 
     int ledPin = 12;
     int8_t ENA = 10;
     int8_t IN1 = 9;
@@ -75,8 +77,8 @@ void setup()
         // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
         // DO NOT USE the private constants belonging to MotorBits...
     // Changing the truth table is much easier than switching the actual 
-    // wires around.... For my setup, TFF was used...
-    motors.ReverseLeftRight(uno::MotorBits::motors_TFF);
+    // wires around.... For my setup, FFF was used...
+    motors.Bits(uno::MotorBits::motorsFFF);
 
     // Joystick Algorithm
     joystick = uno::Joystick<float>();
@@ -167,9 +169,9 @@ void loop()
     // Button Class
     buttonMotors.updateButton();
     // Timer Class
-    // (20 ticks per second) update Motors (50ms)
+    // (4 ticks per second) update Motors (250ms)
     // While Debugging increase time to 1000ms...
-    if (timerMotors.isTimer(50))
+    if (timerMotors.isTimer(250))
     {
         // Local Function
         updateMotors();

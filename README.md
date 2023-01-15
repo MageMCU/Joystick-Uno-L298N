@@ -1,8 +1,6 @@
-## Simplified-Joystick-Uno-L298N (SJUL) Repository
+## Simplified-Joystick-Uno-L298N Repository
 
 - namespace ***uno***
-
-The Debug and Release versions have been removed for a simplified version, a compromise if you will. The Joystick Algorithm had to be simplified for upcoming projects. Each of the classes, the Joystick ALgorithm Class, and the L298N Class have been rewritten. The dependencies are the Bitwise Class, the Button Class, the LinearMap Class and the Timer Class.
 
 ## MCU Atmega328P chip 
 
@@ -38,13 +36,13 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 ## In Development
 
-The SJUL_Release_Version will be tested periodically as described in the Testing Platform and to the standards set in platformio.ini settings.
+- In the **SJUL** folder is the version based on the older **JUL** without encoders. (**S**implified **J**oystick **U**no **L**298N)
 
-- Total Rewrite 20230102 where the **SJUL project** is now under development...
+- In the **JULE** folder is the version which has encoder code... (**J**oystick **U**no **L**298N **E**ncoders)
 
 ## NOTICE
 
-- The JUL_Debug_Version and the JUL_Release_Version are removed since January 02, 2023.
+- The JUL_Debug_Version folder and the JUL_Release_Version folder have been removed since January 02, 2023.
 
 ## Disclaimer and Terms
 
