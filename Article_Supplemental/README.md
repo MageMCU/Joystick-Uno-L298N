@@ -1,7 +1,7 @@
 # L298N 
 
-File name: Article Supplemental - **Pending**<br/>
+File name: Article Supplemental 1003 - **Pending**<br/>
 Title name: *New Method **Bits()** Explanation*<br/>
 Author: *Jesse Carpenter*<br/>
 <br/>
-The article is a work in progress...
+The article is pending and a work in progress...
