@@ -4,15 +4,15 @@
 
 ## MCU Atmega328P chip 
 
-This MCU chip **Atmega328P** is well known and the chip can be pulled out to be used separately on a breadboard.
+This MCU chip **Atmega328P** is well known and the chip can be pulled out to be used separately on a breadboard. Best to purchase directly from Arduino Online Store. There are fake boards...
 
 ## Joystick 
 
-The analog 2-axis thumb joystick with button by Makerfabs (China). The joystick has two analog(10k potentiometers), you'll need two analog (ADC) reading pins on your microcontroller to determine X and Y.
+The analog 2-axis thumb joystick with button. The joystick has two analog(10k potentiometers), you'll need two analog (ADC) reading pins on your microcontroller to determine X and Y. Can be purchased from Amazon online...
 
 ## L298N Motor Driver
 
-The double H bridge motor drive module (uses ST company's L298N as the main driver chip) by Album (China). The module is featuring strong driving capability, low heat generation and strong anti-interference ability. 
+The double H bridge motor drive module (uses ST company's L298N as the main driver chip). The module is featuring strong driving capability, low heat generation and strong anti-interference ability. Can be purchased from Amazon online...
 
 ## Joystick Algorithm Simulation
 
