@@ -44,6 +44,8 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 - The JUL_Debug_Version folder and the JUL_Release_Version folder have been removed since January 02, 2023.
 
+- Updated 20230116...There is a new article ***1009 L298N Supplemental*** I'll be changing the names of the article's folders for clarity...
+
 ## Disclaimer and Terms
 
 Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino Uno-L298N*** Repository.
