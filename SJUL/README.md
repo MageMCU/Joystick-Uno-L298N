@@ -24,5 +24,5 @@
 
 ## ***Notes***
 
-- Updated 20230114...
+- Updated 20230116...There is a new article ***1009 L298N Supplemental*** I'll be changing the names of the article's folders for clarity...
 
