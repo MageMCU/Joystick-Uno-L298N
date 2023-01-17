@@ -42,9 +42,11 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 ## NOTICE
 
-- The JUL_Debug_Version folder and the JUL_Release_Version folder have been removed since January 02, 2023.
+- The JUL_Debug_Version folder and the JUL_Release_Version folder have been removed since January 02, 2023. 
 
-- Updated 20230116...There is a new article ***1009 L298N Supplemental*** I'll be changing the names of the article's folders for clarity...
+- Updated 20230115...There is a new article ***1009 L298N Supplemental*** I'll be changing the names of the article's folders for clarity...
+
+- The article ***1009 L298N Supplemental*** has new material updated January 16, 2023. Made name changes to articles and folders updated January 16, 2023.
 
 ## Disclaimer and Terms
 
