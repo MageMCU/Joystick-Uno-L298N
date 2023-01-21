@@ -33,7 +33,7 @@ uno::L298N motors;
 uno::Joystick<float> joystick;
 nmr::LinearMap<float> ADCtoJoystickInputs;
 nmr::LinearMap<float> joystickOutputsToMotors;
-uno::Timer timerMotors;
+nmr::Timer timerMotors;
 uno::Button buttonMotors;
 
 // Experimantal Interrupts & Variables ////////////////
@@ -126,7 +126,7 @@ void setup()
     joystickOutputsToMotors = nmr::LinearMap<float>(-1.0, 1.0, -255, 255);
 
     // Utilities
-    timerMotors = uno::Timer();
+    timerMotors = nmr::Timer();
     buttonMotors = uno::Button(buttonPin, ledPin);
 
     // Interrupts

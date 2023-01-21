@@ -32,21 +32,15 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 
 ## Issues
 
-- None
+- None 
 
 ## In Development
 
-- In the **SJUL** folder is the version based on the older **JUL** without encoders. (**S**implified **J**oystick **U**no **L**298N)
-
-- In the **JULE** folder is the version which has encoder code... (**J**oystick **U**no **L**298N **E**ncoders)
+- Development continues - 20230120
 
 ## NOTICE
 
-- The JUL_Debug_Version folder and the JUL_Release_Version folder have been removed since January 02, 2023. 
-
-- Updated 20230115...There is a new article ***1009 L298N Supplemental*** I'll be changing the names of the article's folders for clarity...
-
-- The article ***1009 L298N Supplemental*** has new material updated January 16, 2023. Made name changes to articles and folders updated January 16, 2023.
+- Reorganization of main.ccp files - 20230120
 
 ## Disclaimer and Terms
 

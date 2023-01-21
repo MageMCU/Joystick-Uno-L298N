@@ -33,14 +33,14 @@ uno::L298N motors;
 uno::Joystick<float> joystick;
 nmr::LinearMap<float> ADCtoJoystickInputs;
 nmr::LinearMap<float> joystickOutputsToMotors;
-uno::Timer timerMotors;
+nmr::Timer timerMotors;
 uno::Button buttonMotors;
 
 void setup()
 {
     // Debug Only ------------------------------------- DEBUG DISABLED
-    // Serial.begin(9600);
-    // while (!Serial) {}
+    Serial.begin(9600);
+    while (!Serial) {}
     // Note: Serial Print uses a lot of memory..., use it sparingly.
 
     // Scope - Temporary Variables
@@ -93,20 +93,20 @@ void setup()
     joystickOutputsToMotors = nmr::LinearMap<float>(-1.0, 1.0, -255, 255);
 
     // Utilities
-    timerMotors = uno::Timer();
+    timerMotors = nmr::Timer();
     buttonMotors = uno::Button(buttonPin, ledPin);
 }
 
 // -------------------------------------------------  DEBUG DISABLED
 // All debug statements occur here in the main.cpp file
-// template<typename T>
-// void Debug(T x, T y)
-// {
-//     Serial.print("X: ");
-//     Serial.print(x);
-//     Serial.print(" Y: ");
-//     Serial.println(y);
-// }
+template<typename T>
+void Debug(T x, T y)
+{
+    Serial.print("X: ");
+    Serial.print(x);
+    Serial.print(" Y: ");
+    Serial.println(y);
+}
 
 void updateMotors()
 {
@@ -116,7 +116,24 @@ void updateMotors()
         // Digital Values from 0 to 1023
         int xDigital = analogRead(A1);
         int yDigital = analogRead(A0);
-        // Debug<int>(xDigital, yDigital); // ----------- DEBUG DISABLED
+        // In order for the Joystick Algorithm to
+        // work properly, the following INPUT has to occur:
+        //                 (y-axis)
+        //         FORWARD  | 1023
+        //                  |
+        //                  |
+        //                  |
+        //  0               | (511, 511)    1023
+        //  ------------------------------------ (x-axis)
+        //  LEFT TURN       |         RIGHT TURN         
+        //                  |
+        //                  |
+        //                  |
+        //         BACKWARD | 0
+        //                 
+        // If the input(s) are reversed, for example,
+        // use the following: xDigital = 1023 - analogRead(A1);
+        Debug<int>(xDigital, yDigital); // ----------- DEBUG DISABLED
 
         // Map Analogs to Joystick Inputs
         // Values from -1 to 1
