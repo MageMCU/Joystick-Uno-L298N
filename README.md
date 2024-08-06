@@ -1,5 +1,10 @@
 ## Simplified-Joystick-Uno-L298N Repository
 - namespace ***uno***
+- Notice: Sense this repository is under review, the namespace will change to ***csjc***.
+## Testing Platform
+- The MCU chip **Atmega328P** is well known and the price is affordable as well as most of the robotic hardware that is described here. The Arduino Uno board comes with a removable MCU.
+- **PlatformIO** is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. 
+- **Visual Studio Code** is a streamlined code editor and it runs on macOS, Linux, and Windows. The best thing about VSCode, it is free.
 
 ## MCU Atmega328P chip 
 This MCU chip **Atmega328P** is well known and the chip can be pulled out to be used separately on a breadboard. Best to purchase directly from Arduino online store. Beware of fake Arduino boards...
