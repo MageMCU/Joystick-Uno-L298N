@@ -33,10 +33,7 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 - 20240806 UNDERGOING REVISION 
 
 ## In Development
-- Development continues - 20230120
-
-## NOTICE
-- Reorganization of main.ccp files - 20230120
+- Development continues - 20240806
 
 ## Disclaimer and Terms
 Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino-Uno-L298N*** Repository.
