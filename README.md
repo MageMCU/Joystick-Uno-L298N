@@ -29,16 +29,10 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 - [1003 - L298N Motor Driver](https://drive.google.com/file/d/1YaN5VEbMAGPCDcwN3kG0DyclgSefXyRf)
 - [1005 - Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)
 - [1009 - L298N Supplemental](https://drive.google.com/file/d/1j1SUviVEkjZ4uBvj6zoOgvXrrAmbtQUz)
-## Testing Platform
-- This MCU chip **Atmega328P** is well known and the price is affordable as well as most of the robotic hardware that is described here. The Arduino Uno board comes with a removable MCU.
-- **PlatformIO** is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. 
-- **Visual Studio Code** is a streamlined code editor and it runs on macOS, Linux, and Windows. The best thing about VSCode, it is free.
 
 ## Issues
-- 20240806 UNDERGOING REVISION 
 
 ## In Development
-- Development continues - 20240806
 
 ## Disclaimer and Terms
 Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino-Uno-L298N*** Repository.
