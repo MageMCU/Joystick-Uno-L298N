@@ -21,7 +21,7 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 - [1000 - Introduction Robotics](https://drive.google.com/file/d/1Dmt-Lnc2KMzl4EjL4ihP7fVtk7ZHAiGV)
 - [1001 - Joystick Algorithm](https://drive.google.com/file/d/1LDAdAhGVo9aw0Ri38oj3zWppfJkAZNR3)
 - [1002 - Uno Cheat Sheet](https://drive.google.com/file/d/1ol310KDfcoGWQ2CjMeH3aOgvzGBN7_cK)
-- [1003 - L298N Motor Driver]()
+- [1003 - L298N Motor Driver](https://drive.google.com/file/d/1j1SUviVEkjZ4uBvj6zoOgvXrrAmbtQUz)
 - [1005 - Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)
 - [1009 - L298N Supplemental](https://drive.google.com/file/d/1j1SUviVEkjZ4uBvj6zoOgvXrrAmbtQUz)
 ## Testing Platform
