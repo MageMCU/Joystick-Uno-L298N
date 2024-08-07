@@ -1,6 +1,6 @@
 ## Simplified-Joystick-Uno-L298N Repository
 - namespace ***uno***
-- Notice: Sense this repository is under review, the namespace will change to ***csjc***.
+- Notice: Since this repository is under review, the namespace will change to ***csjc***.
 ## Testing Platform
 - The MCU chip **Atmega328P** is well known and the price is affordable as well as most of the robotic hardware that is described here. The Arduino Uno board comes with a removable MCU.
 - **PlatformIO** is a cross-platform, cross-architecture, multiple framework, professional tool for embedded systems engineers and for software developers who write applications for embedded products. 
