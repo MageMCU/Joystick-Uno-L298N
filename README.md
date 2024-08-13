@@ -1,4 +1,4 @@
-## Joystick-Uno-L298N Repository
+## Joystick Uno L298N (JUL) and Encoder (JULE) Repository
 - namespace ***csjc***
 - An acronym for **C**arpenter **S**oftware - **J**esse **C**arpenter.
 ## Testing Platform
