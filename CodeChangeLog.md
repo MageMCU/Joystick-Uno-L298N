@@ -4,4 +4,5 @@
 <p>20230113 SJUL - Cleaned up Joystick Class</p>
 <p>20230114 JULE - Added Encoders - Experimental</p>
 <p>20230120 Minor bug fixes...</p>
+<p>20240812 Total rewite....</p>
 

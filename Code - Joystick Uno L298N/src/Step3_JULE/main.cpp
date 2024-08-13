@@ -1,13 +1,9 @@
 //
 // Carpenter Software
-// File: Class main.cpp
-// Folder: Simplified-Joystick-Uno-L298N (SJUL)
-//
-// Purpose: Github Depository (MageMCU)
-//
-// Algebra OOP Library
-// The math is underneath the namespace
-// nmr for Numerics as in numeric computation.
+// Folder: src/Step5_JULE: File: Class main.cpp
+// Github: MageMCU
+// Repository: Joystick-UNO-L298N
+// Folder: Code
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //
@@ -19,22 +15,22 @@
 // MIT LICENSE
 //
 
-#include <Arduino.h>
-// Using Adruino Uno
+// NOTICE: CODE NOT UPDATED - PENDING -------------------------------
 
-#include "L298N.h"
-#include "Joystick.h"
-#include "LinearMap.h"
-#include "Timer.h"
-#include "Button.h"
+#include <Arduino.h>
+#include "Headers.h"
+#include "Common.h"
+
+// Carpenter Software - Jesse Carpenter
+using namespace csjc;
 
 // Declaration of GLOBAL VARIABLES
-uno::L298N motors;
-uno::Joystick<float> joystick;
-nmr::LinearMap<float> ADCtoJoystickInputs;
-nmr::LinearMap<float> joystickOutputsToMotors;
-nmr::Timer timerMotors;
-uno::Button buttonMotors;
+L298N motors;
+Joystick<float> joystick;
+LinearMap<float> mapInputFromDigital;
+LinearMap<float> mapOutFromJoystick;
+Timer timerDebug;
+Button buttonDebug;
 
 // Experimantal Interrupts & Variables ////////////////
 float dT;                                            //
@@ -93,41 +89,27 @@ void setup()
 
     // Instantiation of Global Variables and Setup
     // Motors
-    motors = uno::L298N(LeftMotorPWM, LeftMotorIN1, LeftMotorIN2,
+    motors = L298N(LeftMotorPWM, LeftMotorIN1, LeftMotorIN2,
         RightMotorIN1, RightMotorIN2, RightMotorPWM);
     // Setup the L298N Pins
     motors.PinsL298N();
-
-    // ----------------------------------------------------------------- NEW PLUGIN METHOD
-    // There are 8 combinations for Reverse-Inputs and Direction-Motors
-        // The Boolean Order 
-            // (1)         Reverse Inouts: T/F (Bit-2)
-            // (2)   Direction Left Motor: T/F (Bit-1)
-            // (3) Direction Right Motoer: T/F (Bit-0)
-            // Check conditions:    FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT
-            // Local-Bits-Value:     0    1    2    3    4    5    6    7
-            // Used 3 Bit Numbers:  000  001  010  011  100  101  110  111
-            // DO NOT USE the private constants belonging to MotorBits...
-        // Changing the truth table is much easier than switching the actual 
-        // wires around on the L298N module.... For my setup, FFF was used...
-        //
-    motors.Bits(uno::MotorBits::motorsFFF); // -------------------------- NEW PLUGIN METHOD
+    motors.Bits(BitsL298N::bits_1010);
 
     // Joystick Algorithm
-    joystick = uno::Joystick<float>();
+    joystick = Joystick<float>();
 
     // Map ADC digital values to joystick inputs
-    ADCtoJoystickInputs = nmr::LinearMap<float>(0, 1023, -1.0, 1.0);
+    mapInputFromDigital = LinearMap<float>(0, 1023, -1.0, 1.0);
 
     // Map joystick outputs to motor inputs
     // Remember that the L298N Class requires the negative sign
     // values but the L298N only uses values from 0 to 255...
     // See L298N Class for details...
-    joystickOutputsToMotors = nmr::LinearMap<float>(-1.0, 1.0, -255, 255);
+    mapOutFromJoystick = LinearMap<float>(-1.0, 1.0, -255, 255);
 
     // Utilities
-    timerMotors = nmr::Timer();
-    buttonMotors = uno::Button(buttonPin, ledPin);
+    timerDebug = Timer();
+    buttonDebug = Button(buttonPin, ledPin);
 
     // Interrupts
     // Left Motor
@@ -138,20 +120,9 @@ void setup()
     attachInterrupt(digitalPinToInterrupt(3), RightMotor, CHANGE);
 }
 
-// -------------------------------------------------  DEBUG DISABLED
-// All debug statements occur here in the main.cpp file
-// template<typename T>
-// void Debug(T x, T y)
-// {
-//     Serial.print("X: ");
-//     Serial.print(x);
-//     Serial.print(" Y: ");
-//     Serial.println(y);
-// }
-
-void updateMotors()
+void determineXY_Output()
 {
-    if (buttonMotors.isButtonOn())
+    if (buttonDebug.isButtonOn())
     {
         // Analog to Digital (10-bit) Conversion 
         // Uno's Digital Values from 0 to 1023
@@ -167,8 +138,8 @@ void updateMotors()
 
         // Map Analogs to Joystick Inputs
         // Values from -1 to 1
-        float inputX = ADCtoJoystickInputs.Map((float)xDigital);
-        float inputY = ADCtoJoystickInputs.Map((float)yDigital);
+        float inputX = mapInputFromDigital.Map((float)xDigital);
+        float inputY = mapInputFromDigital.Map((float)yDigital);
         // Debug<float>(inputX, inputY); // ----------- DEBUG DISABLED
 
         // Assume Joystick Potentiometers are not electrically centered to
@@ -194,8 +165,8 @@ void updateMotors()
         // Debug<float>(outputX, outputY); // ----------- DEBUG DISABLED
 
         // Map Joystick Outputs to Motor Inputs
-        int motorLeft = (int)joystickOutputsToMotors.Map(outputX);
-        int motorRight = (int)joystickOutputsToMotors.Map(outputY);
+        int motorLeft = (int)mapOutFromJoystick.Map(outputX);
+        int motorRight = (int)mapOutFromJoystick.Map(outputY);
         // Debug<int>(motorLeft, motorRifgt); // ----------- DEBUG DISABLED
 
         // ------------------------------------------ FLAG_WATCH
@@ -234,15 +205,15 @@ void DebugPrint()
 void loop()
 {
     // Button Update
-    buttonMotors.updateButton();
+    buttonDebug.updateButton();
 
     // Timer is set to 250 milliseconds
-    if (timerMotors.isTimer(250))
+    if (timerDebug.isTimer(250))
     {
         // MOTORS
-        updateMotors();
+        determineXY_Output();
         // Motor Speeds
-        dT = timerMotors.DeltaTimeSeconds();
+        dT = timerDebug.DeltaTimeSeconds();
         // Left & Right Pulses Per Second (PPS)
         LeftPPS = (float)leftPulseCounter * dT;
         RightPPS = (float)rightPulseCounter * dT;

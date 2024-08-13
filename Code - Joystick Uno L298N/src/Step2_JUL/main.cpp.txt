@@ -1,0 +1,35 @@
+//
+// Carpenter Software
+// Folder: src/Step2_Map_Func: File: main.cpp ()
+// Github: MageMCU
+// Repository: Joystick-UNO-L298N
+// Folder: Code
+//
+// By Jesse Carpenter (carpentersoftware.com)
+//
+// Testing Platform:
+//  * MCU:Atmega328P
+//  * IDE:PlatformIO
+//  * Editor: VSCode
+//
+// MIT LICENSE
+//
+
+// Study.txt
+
+#include <Arduino.h>
+
+void setup ()
+{
+
+}
+
+void updateJoystick()
+{
+
+}
+
+void loop()
+{
+    updateJoystick();
+}
