@@ -8,7 +8,9 @@
 ## History
 - The history in the development in the joystick algorithm took many years and many more to understand. See article 1001 - Joystick Algorithm. The problem once understood was how to quickly setup the devices, (1) Joystick, (2) Arduino Uno and (3) L298N driver. The frustration for each new project was setting this system it up, each every time. See article 1003 - L298N. Over the last four years, I studied how the inputs giving 16 differ combinations for EN, PWM, LeftIN & RightIN which effected how the motors moved. Because of the joystick algorithm as described in the article (8 octants), there are a possible 128 combinations for the motors' output. See article 1009 - L298N Supplemental. 
 ## Code Snippet
+
 '''
+
     // Joystick Algorithm
     joystick = Joystick<float>();
 
