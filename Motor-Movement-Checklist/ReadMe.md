@@ -9,19 +9,6 @@
 - The history in the development in the joystick algorithm took many years and many more to understand. See article 1001 - Joystick Algorithm. The problem once understood was how to quickly setup the devices, (1) Joystick, (2) Arduino Uno and (3) L298N driver. The frustration for each new project was setting this system it up, each every time. See article 1003 - L298N. Over the last four years, I studied how the inputs giving 16 differ combinations for EN, PWM, LeftIN & RightIN which effected how the motors moved. Because of the joystick algorithm as described in the article (8 octants), there are a possible 128 combinations for the motors' output. See article 1009 - L298N Supplemental. 
 ## Code Snippet
 '''
-
-setup()
-{
-    Serial.begin(9600);
-    while (!Serial)
-    {
-    };
-
-    // Button & Button-LED
-    int buttonPin = 2; // UNO D2 (CHIP-PD2)
-    int ledPin = 3;    // UNO D3 (CHIP-PD3)
-    buttonDebug = Button(buttonPin, ledPin);
-
     // Joystick Algorithm
     joystick = Joystick<float>();
 
@@ -69,48 +56,5 @@ setup()
     // the actual wires around on the L298N module....
     // For my setup, bits 1010 was used...
     motors.Bits(BitsL298N::bits_1010);
-}
-
-updateJoystick()
-{
-    if (buttonDebug.isButtonOn())
-    {
-        int xDigital = analogRead(A1);
-        int yDigital = analogRead(A0);
-
-        // MAP
-        float inputX = mapInputFromDigital.Map((float)xDigital);
-        float inputY = mapInputFromDigital.Map((float)yDigital);
-
-        // Center Joystick to Zero
-        float X_OFFSET = 0.05; // (0 < OFFSET < 1)
-        float Y_OFFSET = 0.06; // (0 < OFFSET < 1)
-        if (absT<float>(inputX) < X_OFFSET)
-            inputX = 0;
-        if (absT<float>(inputY) < Y_OFFSET)
-
-        // Process Joystick Inputs
-        joystick.UpdateInputs(inputX, inputY);
-        // Process Joystick Outputs
-        float outputLeft = joystick.OutLeft();
-        float outputRight = joystick.OutRight();
-
-        // MAP
-        int outMapLeft = (int)mapOutFromJoystick.Map(outputLeft);
-        int outMapRight = (int)mapOutFromJoystick.Map(outputRight);
-
-        // NEW CODE ------------------------------- FLAG_WATCH
-        // For safety reasons, the UpdateL298N() method has a
-        // Power Motors Flag set to false which de-activates
-        // the motors...
-        // SAFETY COMES FIRST (WATCH YOUR FINGERS)
-        motors.UpdateL298N(outMapLeft, outMapRight, true);
-    }
-    else
-    {
-        // SAFETY COMES FIRST (WATCH YOUR FINGERS)
-        motors.PowerDownL298N();
-    }
-}
 
 '''
