@@ -1,5 +1,5 @@
 # Motor Movement Checklist (MMC)
-- updated 20240814
+- updated for clarity - 20240814
 - [MMC](https://drive.google.com/file/d/1Cs-94KHmOfRT9C4QJFMCgcuQ93iygg6h)
 ## MMC Results for JUL
 - [Results](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ)
