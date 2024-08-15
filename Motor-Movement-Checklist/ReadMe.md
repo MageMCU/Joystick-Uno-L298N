@@ -10,7 +10,6 @@
 ## Code Snippet
 
 '''
-
     // Joystick Algorithm
     joystick = Joystick<float>();
 
@@ -58,5 +57,4 @@
     // the actual wires around on the L298N module....
     // For my setup, bits 1010 was used...
     motors.Bits(BitsL298N::bits_1010);
-
 '''
