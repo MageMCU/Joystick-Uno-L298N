@@ -83,17 +83,9 @@ void updateJoystick()
         int xDigital = analogRead(A1);
         int yDigital = analogRead(A0);
 
-#ifdef DEBUG_MAIN
-        Debug<int>("Analogs", xDigital, yDigital);
-#endif
-
         // MAP
         float inputX = mapInputFromDigital.Map((float)xDigital);
         float inputY = mapInputFromDigital.Map((float)yDigital);
-
-#ifdef DEBUG_MAIN
-        Debug<float>("Joystick Map Out: ", inputX, inputY);
-#endif
 
         // Center Joystick to Zero
         float X_OFFSET = 0.05; // (0 < OFFSET < 1)
@@ -101,11 +93,6 @@ void updateJoystick()
         if (absT<float>(inputX) < X_OFFSET)
             inputX = 0;
         if (absT<float>(inputY) < Y_OFFSET)
-            inputY = 0;
-
-#ifdef DEBUG_MAIN
-        Debug<float>("Joystick Input with OFFSET: ", inputX, inputY);
-#endif
 
         // Process Joystick Inputs
         joystick.UpdateInputs(inputX, inputY);
@@ -113,17 +100,9 @@ void updateJoystick()
         float outputLeft = joystick.OutLeft();
         float outputRight = joystick.OutRight();
 
-#ifdef DEBUG_MAIN
-        Debug<float>("Joystick Process Out: ", outputLeft, outputRight);
-#endif
-
         // MAP
         int outMapLeft = (int)mapOutFromJoystick.Map(outputLeft);
         int outMapRight = (int)mapOutFromJoystick.Map(outputRight);
-
-#ifdef DEBUG_MAIN
-        Debug<int>("L298N Input: ", outMapLeft, outMapRight);
-#endif
 
         // NEW CODE ------------------------------- FLAG_WATCH
         // For safety reasons, the UpdateL298N() method has a
@@ -134,9 +113,6 @@ void updateJoystick()
     }
     else
     {
-#ifdef DEBUG_MAIN
-        Debug("Button OFF");
-#endif
         // SAFETY COMES FIRST (WATCH YOUR FINGERS)
         motors.PowerDownL298N();
     }
