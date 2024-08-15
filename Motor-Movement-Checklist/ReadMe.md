@@ -11,12 +11,10 @@
 '''
 void setup()
 {
-#ifdef DEBUG_MAIN
     Serial.begin(9600);
     while (!Serial)
     {
-    }
-#endif
+    };
 
     // Button & Button-LED
     int buttonPin = 2; // UNO D2 (CHIP-PD2)
@@ -71,15 +69,12 @@ void setup()
     // For my setup, bits 1010 was used...
     motors.Bits(BitsL298N::bits_1010);
 }
-
+'''
+'''
 void updateJoystick()
 {
     if (buttonDebug.isButtonOn())
     {
-#ifdef DEBUG_MAIN
-        Debug("Button ON");
-#endif
-
         int xDigital = analogRead(A1);
         int yDigital = analogRead(A0);
 
