@@ -69,8 +69,7 @@ void setup()
     // For my setup, bits 1010 was used...
     motors.Bits(BitsL298N::bits_1010);
 }
-'''
-'''
+
 void updateJoystick()
 {
     if (buttonDebug.isButtonOn())
