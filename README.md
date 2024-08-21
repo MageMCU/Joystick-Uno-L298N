@@ -36,6 +36,7 @@ The Youtube simulation demonstrates the joystick algorithm, used to control a si
 ## In Development
 - UPDATED 20240812
 - The repository has been updated that reflects the observations as indicated in article 1009 - L298N Supplemental dated 20240812. Although the project has taken many years, it is still a work in progress. The repository Wireless Communication had difficulty using the ***OLD*** Joysrtick Uno L298N repository, so I decided to finally review it and finsih the testing and observations that fell short. Now that it is completed, I'll return to work on the Wireless Communication specifically nRF24L01+ radios and with that, incorporate this code.
+- Maybe by the end of 2024, I will finish the repository. The problem with the joystick is the uncertainty of the potentiometer's output. The output is not perfect and there needs to be a method to resolve this issue. I propose a new class that will incorporate the map() functions already in use and the class will have methods to tweak the joystick outputs to improve the performance of the motors' outputs. This would eliminate any dead or sloppiness pf the joystick that has no effect on the motors.
 
 ## Disclaimer and Terms
 Please follow the ***Disclaimer*** and ***Terms*** in the ***Simplified-Joystick-Arduino-Uno-L298N*** Repository.
