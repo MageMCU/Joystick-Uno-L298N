@@ -118,7 +118,7 @@ The repository uses the **revised joystick algorithm** with:
 - **Tolerance-based dead zone** — eliminates ADC noise automatically
 - **Forward/backward detection** — methods for advanced motor control
 
-For algorithm comparison and full study materials, see the PRIVATE repo: [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE).
+For algorithm comparison and full study materials, see the PRIVATE research repo (intentionally not publicly accessible).
 
 ---
 
@@ -156,7 +156,7 @@ For algorithm comparison and full study materials, see the PRIVATE repo: [Joysti
    ```
    Then use Serial Monitor (9600 baud) to view real-time values
 
-4. **Algorithm Research?** → See [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) for test data and study materials
+4. **Algorithm Research?** → Available in the PRIVATE research repository (not publicly accessible)
 
 5. **Motor Tuning?** → Check [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md)
 
@@ -165,7 +165,7 @@ For algorithm comparison and full study materials, see the PRIVATE repo: [Joysti
 ## Resources
 
 - **Algorithm Simulation:** [YouTube Video](https://www.youtube.com/watch?v=maIHbdbDBwo&t=2s)
-- **Study & Research:** [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE)
+- **Study & Research:** PRIVATE research repository (not publicly accessible)
 - **QA & Testing:** Available in the PRIVATE repository study materials
 
 ---
@@ -228,8 +228,8 @@ Need the experimental features or research data?
 
 | Resource | Location | Content |
 |----------|----------|---------|
-| **PRIVATE Repo** | [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) | Algorithm variants, selection system, study materials, dev logs |
-| **Study Materials** | [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) | Full QA reports, migration guides, benchmarks |
+| **PRIVATE Repo** | Internal/private repository | Algorithm variants, selection system, study materials, dev logs |
+| **Study Materials** | Internal/private repository | Full QA reports, migration guides, benchmarks |
 | **Articles** | Carpenter Software blog | Deep dives into algorithm design and performance |
 
 ---

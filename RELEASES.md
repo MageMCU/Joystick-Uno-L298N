@@ -46,7 +46,7 @@ The joystick algorithm continues to be researched and refined. Expected improvem
 - Algorithm refinement for edge cases
 
 **For experimental features:**
-- See the PRIVATE repo: [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE)
+- See the PRIVATE repo (intentionally not publicly accessible)
 - Includes 3-variant algorithm system and detailed QA reports
 
 ---

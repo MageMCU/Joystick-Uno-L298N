@@ -59,4 +59,4 @@ namespace **csjc**
 ## Additional Notes
 
 - **Algorithm:** This folder uses the **revised Joystick algorithm** exclusively.
-- **Study materials:** See the PRIVATE repo for algorithm comparison references and study implementations: [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE).
+- **Study materials:** See the PRIVATE research repo for algorithm comparison references and study implementations (not publicly accessible).
