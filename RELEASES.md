@@ -90,7 +90,7 @@ If you were using algorithm variants (ALGO_STUDY_*):
 - Created `RELEASES.md` for version tracking
 
 **Code Quality Fixes**
-- Fixed type mismatch in [Step2_JUL/main.cpp](Code%20-%20Joystick%20Uno%20L298N/src/Step2_JUL/main.cpp) line 48: `ActiveAlgorithm<float>()` → `Joystick<float>()`
+- Fixed type mismatch in [Code-JUL/src/Step2_JUL/main.cpp](Code-JUL/src/Step2_JUL/main.cpp) line 48: `ActiveAlgorithm<float>()` → `Joystick<float>()`
 - Removed outdated algorithm selection logic from main.cpp
 - Removed conditional compilation blocks for algorithm selection
 - Verified all includes and dependencies resolve correctly

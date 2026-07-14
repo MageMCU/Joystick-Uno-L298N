@@ -33,7 +33,8 @@
 
 4. **Open in VS Code**
    - File → Open Folder
-   - Navigate to `Code - Joystick Uno L298N/`
+   - Navigate to `Code-JUL/`
+   - **Important:** Open `Code-JUL/` only (do **not** open the repository root folder)
    - Wait for PlatformIO to index the project
 
 5. **Connect Arduino Uno**
@@ -44,6 +45,12 @@
    - Bottom bar → "Upload" button (or use keyboard shortcut)
    - Wait for compilation and upload to complete
    - Status will show "SUCCESS"
+
+### Important Folder Selection Rule
+
+- PlatformIO project root for this firmware is `Code-JUL/`.
+- If you open the full repository root in VS Code instead, PlatformIO/compile tasks can fail or report confusing path/source-filter errors.
+- If you see compiler complaints, close VS Code and reopen only `Code-JUL/`.
 
 ---
 
@@ -60,7 +67,7 @@
 
 ```
 Joystick-Uno-L298N/
-├── Code - Joystick Uno L298N/    ← Main firmware (upload this)
+├── Code-JUL/                     ← Main firmware (open this in VS Code)
 │   ├── include/                  ← Header files
 │   │   ├── Joystick.h            ← Motor control algorithm (revised)
 │   │   ├── L298N.h               ← Motor driver interface
@@ -73,11 +80,6 @@ Joystick-Uno-L298N/
 │   ├── platformio.ini            ← Build configuration
 │   └── README.md                 ← Firmware documentation
 ├── Motor-Movement-Checklist/     ← Mechanical test guide
-├── Joystick-Algorithm-Study/     ← Algorithm research & reference
-│   ├── MCU-Original/             ← Original algorithm
-│   ├── MCU-Revised/              ← Revised algorithm (current)
-│   ├── MCU-Compact/              ← Compact algorithm
-│   └── QA-Report.md              ← Full test results
 └── README.md                     ← This file
 ```
 
@@ -116,7 +118,7 @@ The repository uses the **revised joystick algorithm** with:
 - **Tolerance-based dead zone** — eliminates ADC noise automatically
 - **Forward/backward detection** — methods for advanced motor control
 
-See `Joystick-Algorithm-Study/` for algorithm comparison and study materials.
+For algorithm comparison and full study materials, see the PRIVATE repo: [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE).
 
 ---
 
@@ -134,7 +136,7 @@ See `Joystick-Algorithm-Study/` for algorithm comparison and study materials.
 
 ## Next Steps
 
-1. **First Time?** → Review [Code - Joystick Uno L298N/README.md](Code%20-%20Joystick%20Uno%20L298N/README.md) for detailed firmware docs
+1. **First Time?** → Review [Code-JUL/README.md](Code-JUL/README.md) for detailed firmware docs
 
 2. **Joystick API Reference**
    
@@ -154,7 +156,7 @@ See `Joystick-Algorithm-Study/` for algorithm comparison and study materials.
    ```
    Then use Serial Monitor (9600 baud) to view real-time values
 
-4. **Algorithm Research?** → See `Joystick-Algorithm-Study/QA-Report.md` for test data
+4. **Algorithm Research?** → See [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) for test data and study materials
 
 5. **Motor Tuning?** → Check [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md)
 
@@ -163,8 +165,8 @@ See `Joystick-Algorithm-Study/` for algorithm comparison and study materials.
 ## Resources
 
 - **Algorithm Simulation:** [YouTube Video](https://www.youtube.com/watch?v=maIHbdbDBwo&t=2s)
-- **Study & Research:** `Joystick-Algorithm-Study/` folder
-- **QA & Testing:** `Joystick-Algorithm-Study/QA-Report.md`
+- **Study & Research:** [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE)
+- **QA & Testing:** Available in the PRIVATE repository study materials
 
 ---
 
@@ -227,7 +229,7 @@ Need the experimental features or research data?
 | Resource | Location | Content |
 |----------|----------|---------|
 | **PRIVATE Repo** | [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) | Algorithm variants, selection system, study materials, dev logs |
-| **Study Materials** | `Joystick-Algorithm-Study/` folder (in PRIVATE) | Full QA reports, migration guides, benchmarks |
+| **Study Materials** | [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE) | Full QA reports, migration guides, benchmarks |
 | **Articles** | Carpenter Software blog | Deep dives into algorithm design and performance |
 
 ---

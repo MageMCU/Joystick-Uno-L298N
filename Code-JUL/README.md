@@ -2,6 +2,20 @@
 
 namespace **csjc**
 
+## Quick Use (PlatformIO)
+
+1. Open VS Code.
+2. Open this folder: `Code-JUL/`.
+3. Let PlatformIO load the project (`platformio.ini`).
+4. Connect Arduino Uno by USB.
+5. Click PlatformIO **Upload** to build and flash firmware.
+
+### Important
+
+- This firmware must be opened as the `Code-JUL/` folder itself in VS Code.
+- Do not open the full repository root as the active PlatformIO project.
+- If compiler/build errors appear due to project structure or source filters, reopen VS Code with only `Code-JUL/` selected.
+
 ## `include/` — Header Files
 
 | File | Purpose |
@@ -42,7 +56,7 @@ namespace **csjc**
 
 ---
 
-## Notes
+## Additional Notes
 
 - **Algorithm:** This folder uses the **revised Joystick algorithm** exclusively.
-- **Study materials:** See the root `Joystick-Algorithm-Study/` folder for algorithm comparison references and study implementations.
+- **Study materials:** See the PRIVATE repo for algorithm comparison references and study implementations: [Joystick-Uno-L298N-PRIVATE](https://github.com/MageMCU/Joystick-Uno-L298N-PRIVATE).

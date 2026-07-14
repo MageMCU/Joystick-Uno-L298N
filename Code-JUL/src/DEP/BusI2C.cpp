@@ -3,7 +3,7 @@
 // File: Class BusI2C.cpp (requires header file)
 // Github: MageMCU
 // Repository: Joystick-UNO-L298N
-// Folder: Code
+// Folder: Code-JUL
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //

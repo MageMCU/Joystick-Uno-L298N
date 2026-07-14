@@ -3,7 +3,7 @@
 // Folder: src/Step1_Joystick: File: Class main.cpp
 // Github: MageMCU
 // Repository: Joystick-UNO-L298N
-// Folder: Code
+// Folder: Code-JUL
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //
