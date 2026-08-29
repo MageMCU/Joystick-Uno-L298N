@@ -232,5 +232,10 @@ Need the experimental features or research data?
 | **Study Materials** | Internal/private repository | Full QA reports, migration guides, benchmarks |
 | **Articles** | Carpenter Software blog | Deep dives into algorithm design and performance |
 
+### Labs
+
+**Under development** 
+- Not easy to throw out ideas, how to coordinate articles and repositories.
+
 ---
    
