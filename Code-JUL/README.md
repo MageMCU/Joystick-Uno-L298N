@@ -16,6 +16,17 @@ namespace **csjc**
 - Do not open the full repository root as the active PlatformIO project.
 - If compiler/build errors appear due to project structure or source filters, reopen VS Code with only `Code-JUL/` selected.
 
+## Review Status
+
+This firmware is internally consistent and follows the expected Arduino/PlatformIO layout:
+
+- `src/Step2_JUL/main.cpp` is the active motor-control sketch for the final JUL build.
+- `Button.h` implements debounce and latching/momentary behavior compatible with the sketch's button-driven enable logic.
+- `Timer.h` provides the non-blocking scheduling used by the main loop.
+- The default tick rate is `100 ms` (`BUTTON_TIMER_mS` in `include/Common.h`); when debug serial is enabled, the timer is intentionally increased to `3000 ms` to reduce output noise.
+
+This source review did not run a full PlatformIO compile in this environment because the toolchain is not installed here. Validate with a local `pio run` or VS Code upload before connecting motors to power.
+
 ## `include/` — Header Files
 
 | File | Purpose |

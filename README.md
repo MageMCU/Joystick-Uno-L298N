@@ -52,6 +52,17 @@
 - If you open the full repository root in VS Code instead, PlatformIO/compile tasks can fail or report confusing path/source-filter errors.
 - If you see compiler complaints, close VS Code and reopen only `Code-JUL/`.
 
+### Repository Review Status
+
+The code inspected in this repo is structurally consistent with the intended design:
+
+- `Code-JUL/src/Step2_JUL/main.cpp` is the active firmware entry point.
+- `Button.h` and `Timer.h` match the intended non-blocking Arduino pattern and are compatible with the rest of the firmware.
+- The default runtime tick is set in `Code-JUL/include/Common.h` at `BUTTON_TIMER_mS = 100`, and the debug build increases that to `3000` when serial debug is enabled.
+- The joystick analog mapping aligns with the code: X on `A1`, Y on `A0`, joystick switch on `D2`, indicator LED on `D3`, and L298N pins on `D5`-`D10`.
+
+This review is based on source inspection. A full hardware build was not executed in this environment because the PlatformIO toolchain is not installed here, so a local compile should still be run on a machine with PlatformIO before flashing hardware.
+
 ---
 
 ## What This Repo Does

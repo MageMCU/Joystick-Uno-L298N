@@ -12,7 +12,11 @@
 
 ## How to Use
 
-The MMC is a step-by-step checklist for validating motor behavior across all 8 joystick octants (directions). Use it alongside the [Step2_JUL](../Code-JUL/src/Step2_JUL/) firmware to verify:
+The MMC is a step-by-step checklist for validating motor behavior across the 8 joystick octants (directions). Use it alongside the [Step2_JUL](../Code-JUL/src/Step2_JUL/) firmware to verify:
+
+### Current Review Note
+
+The algorithm and motor mapping in the code are internally consistent with the checklist: the firmware uses the revised joystick algorithm and the default control tick is 100 ms under normal operation. The checklist is still a useful bench validation tool, but any code changes should be checked against the current sketch before relying on the results.
 
 1. Motor response matches joystick input
 2. All 8 directional octants work smoothly
@@ -71,12 +75,3 @@ int currentOctant = joystick.Octant();  // Returns 0-8
 ```
 
 ---
-    // Bits:       0000  0001  0010  0011  0100  0101  0110  0111
-    // EN B & A ----------------------------------------------
-    // Bits-Value:  8     9     10    11    12    13    14    15
-    // Bits:       1000  1001  1010  1011  1100  1101  1110  1111
-    // -----------------------------------------------------------
-    // NOTICE: Changing the BITS is much easier than switching
-    // the actual wires around on the L298N module....
-    // For my setup, bits 1010 was used...
-    motors.Bits(BitsL298N::bits_1010);

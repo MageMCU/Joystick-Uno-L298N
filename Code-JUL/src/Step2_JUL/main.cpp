@@ -168,8 +168,8 @@ void loop()
     // Button Class
     buttonDebug.updateButton();
     // Timer Class
-    // (4 ticks per second) update Motors (250ms)
-    // While Debugging increase time to 1000ms...
+    // Normal update rate is 100 ms (BUTTON_TIMER_mS), which is set in Common.h.
+    // While debugging, the timer is intentionally increased to 3000 ms to reduce output noise.
     if (timerDebug.isTimer(BUTTON_TIMER_mS))
     {
         // Local Function
