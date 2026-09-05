@@ -243,10 +243,24 @@ Need the experimental features or research data?
 | **Study Materials** | Internal/private repository | Full QA reports, migration guides, benchmarks |
 | **Articles** | Carpenter Software blog | Deep dives into algorithm design and performance |
 
-### Labs
-
-**Under development** 
-- Not easy to throw out ideas, how to coordinate articles and repositories.
-
+### Experiments
+- Study Articles by Carpenter Software: 
+   - 1000 Introduction Robotics
+   - 1001 Joystick Algorithm
+   - 1002 Arduino Uno - Pins, Ports, and Peripherals
+   - 1003 L298N Motor Drive
+      - Update in progress
+   - 1009 Supplemental Guide for Teachers and Parents
+      - Is presently titled: L298N Supplemental
+      - Update in progress
+- Experiment 1
+   - Labs
+      - Lab 1: Delay function
+      - Lab 2: Timer.h class
+      - Lab 3: Button class
+   - Instructions
+      - Update in progress
+- Experiment 2 - Under development 
+Note: Not easy to throw out ideas, how to coordinate articles and repositories.
 ---
    
