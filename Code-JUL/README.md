@@ -1,73 +1,60 @@
-# Joystick Uno L298N (JUL) — Code Folder
+# Joystick-Uno-L298N (JUL), Code-JUL Folder
 
-namespace **csjc**
+Production firmware. Namespace **csjc** (Carpenter Software, Jesse Carpenter).
 
 ## Quick Use (PlatformIO)
 
 1. Open VS Code.
-2. Open this folder: `Code-JUL/`.
-3. Let PlatformIO load the project (`platformio.ini`).
-4. Connect Arduino Uno by USB.
-5. Click PlatformIO **Upload** to build and flash firmware.
+2. Open this folder, `Code-JUL/`, as the project (File, Open Folder).
+3. Let PlatformIO load `platformio.ini`.
+4. Connect the Arduino Uno by USB.
+5. Click PlatformIO **Upload** to build and flash the firmware.
 
 ### Important
 
-- This firmware must be opened as the `Code-JUL/` folder itself in VS Code.
-- Do not open the full repository root as the active PlatformIO project.
-- If compiler/build errors appear due to project structure or source filters, reopen VS Code with only `Code-JUL/` selected.
+- Open the `Code-JUL/` folder itself in VS Code, not the repository root.
+- If build errors mention the project structure or source filters, reopen VS Code with only `Code-JUL/` selected.
 
-## Review Status
+## Selecting a Program
 
-This firmware is internally consistent and follows the expected Arduino/PlatformIO layout:
+`platformio.ini` compiles one `src/` folder at a time through `build_src_filter`. A leading `+` includes a folder and a leading `-` excludes it. The shipped setting selects the full firmware:
 
-- `src/Step2_JUL/main.cpp` is the active motor-control sketch for the final JUL build.
-- `Button.h` implements debounce and latching/momentary behavior compatible with the sketch's button-driven enable logic.
-- `Timer.h` provides the non-blocking scheduling used by the main loop.
-- The default tick rate is `100 ms` (`BUTTON_TIMER_mS` in `include/Common.h`); when debug serial is enabled, the timer is intentionally increased to `3000 ms` to reduce output noise.
+```
+build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/>
+```
 
-This source review did not run a full PlatformIO compile in this environment because the toolchain is not installed here. Validate with a local `pio run` or VS Code upload before connecting motors to power.
+To run the joystick wiring test instead, swap the signs on the two folders.
 
-## `include/` — Header Files
+## `include/`, Header Files
 
-| File | Purpose |
-|---|---|
-| `Bitwise.h` | Bit-manipulation utilities |
-| `BusI2C.h` | I²C bus helpers |
-| `Button.h` | Momentary push-button handler |
-| `Common.h` | Shared constants and type definitions |
-| `Headers.h` | Aggregated include for convenience |
-| `Joystick.h` | **Revised** joystick algorithm (class `Joystick`, namespace `csjc`) |
-| `L298N.h` | L298N motor-driver interface |
-| `LinearMap.h` | Linear range-mapping utility |
-| `MiscMath.h` | General math helpers |
-| `Switch.h` | Toggle/switch handler |
-| `Timer.h` | Non-blocking millisecond timer |
-| `TypeConv.h` | Type-conversion helpers |
-| `Vector3.h` | 3-component vector math |
-
-## `src/` — Firmware Programs
-
-| Folder | File | Status |
+| File | Purpose | Used by |
 |---|---|---|
-| `DEP/` | `BusI2C.cpp` | I²C dependency (compiled with all targets) |
-| `Step1_Joystick/` | `main.cpp` | Joystick wiring validation — **tested** |
-| `Step2_JUL/` | `main.cpp` | Full Joystick + L298N motor control — **tested** |
-| `Step2_JUL/` | `main.cpp.txt` | Reference snapshot (plain-text backup, not compiled) |
+| `Common.h` | Debug flags and the control tick `BUTTON_TIMER_mS` | all |
+| `Headers.h` | Aggregated include | Step1, Step2 |
+| `Timer.h` | Nonblocking millisecond timer, drifting and fixed rate policies | Step1, Step2 |
+| `Button.h` | Debounced button, latching or momentary mode, optional indicator LED | Step1, Step2 |
+| `LinearMap.h` | Linear range mapping | Step2 |
+| `Joystick.h` | Revised joystick algorithm (class `Joystick`) | Step2 |
+| `L298N.h` | L298N motor driver interface, `Bits()` configuration | Step2 |
+| `Bitwise.h` | Bit manipulation used by `L298N.h` | Step2 |
+| `MiscMath.h` | `absT()` and the `Debug()` serial helpers | Step1, Step2 |
+| `Switch.h` | Simple switch handler | not used by the current sketches |
+| `TypeConv.h` | Type conversion helpers | not used by the current sketches |
+| `Vector3.h` | 3 component vector | not used by the current sketches |
 
-## Root
+## `src/`, Firmware Programs
 
-| File | Purpose |
-|---|---|
-| `platformio.ini` | Build configuration (environment, flags, upload settings) |
+| Folder | File | Purpose | Status |
+|---|---|---|---|
+| `Step1_Joystick/` | `main.cpp` | Joystick wiring validation; prints raw X and Y with `DEBUG_MAIN` enabled | Tested |
+| `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control | Tested |
+
+## Debugging
+
+In `include/Common.h` uncomment one flag: `DEBUG_MAIN` (Step1 output), `DEBUG_JOYSTICK` (values through the signal chain), or `DEBUG_L298N` (motor driver pin states). Any debug flag sets `DEBUG_SERIAL_ON`, which changes `BUTTON_TIMER_mS` from 100 ms to 3000 ms so the Serial Monitor (9600 baud) stays readable. Comment the flag out again for normal motor response.
 
 ## Notes
 
-- Code updated 20240820 (Article 1009).
-- `main.cpp.txt` in `Step2_JUL/` is a plain-text reference copy and is not compiled.
-
----
-
-## Additional Notes
-
-- **Algorithm:** This folder uses the **revised Joystick algorithm** exclusively.
-- **Study materials:** See the PRIVATE research repo for algorithm comparison references and study implementations (not publicly accessible).
+- Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` are identical apart from the folder line in the header comment.
+- The I2C helper (`BusI2C.h` and `src/DEP/BusI2C.cpp`) was removed in September 2026. Nothing in this folder uses I2C. The class lives on in the MageMCU Serial-Communication repository.
+- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). Run `pio run` locally before flashing hardware connected to motors.

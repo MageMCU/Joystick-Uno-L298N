@@ -2,7 +2,7 @@
 // Carpenter Software
 // File: Class Joystick.h
 // Github: MageMCU
-// Repository: Joystick-UNO-L298N
+// Repository: Joystick-Uno-L298N
 // Folder: Code-JUL
 //
 // By Jesse Carpenter (carpentersoftware.com)

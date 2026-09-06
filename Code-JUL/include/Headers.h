@@ -2,7 +2,7 @@
 // Carpenter Software
 // File: Class Headers.h
 // Github: MageMCU
-// Repository: Joystick-UNO-L298N
+// Repository: Joystick-Uno-L298N
 // Folder: Code-JUL
 //
 // By Jesse Carpenter (carpentersoftware.com)
@@ -21,7 +21,6 @@
 #include <Arduino.h>
 
 #include "Bitwise.h"
-#include "BusI2C.h"
 #include "Button.h"
 #include "TypeConv.h"
 #include "Joystick.h"

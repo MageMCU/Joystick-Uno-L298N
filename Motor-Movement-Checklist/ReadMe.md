@@ -3,7 +3,7 @@
 **Updated for Revised Algorithm — 2026-07-14**
 
 - Previously updated for clarity - 20240814
-- **Current Status:** Verified with revised joystick algorithm (octant-based, tolerance dead zone)
+- **Current Status:** Verified with the revised joystick algorithm (octant-based control, with both a center offset dead zone and an in-algorithm tolerance)
 - [MMC Reference](https://drive.google.com/file/d/1Cs-94KHmOfRT9C4QJFMCgcuQ93iygg6h)
 
 ## MMC Results for JUL
@@ -32,7 +32,7 @@ The revised joystick algorithm processes 2-axis input into 8 directional octants
 - **Octant 0:** Stop (dead zone)
 - **Octants 1–8:** Forward, forward-right, right, back-right, back, back-left, left, forward-left
 
-With **tolerance-based dead zone (0.001)** and **octant-based motor routing**, movement is smooth and responsive across the entire joystick range.
+With **center offsets applied before the algorithm** (`X_OFFSET = 0.05`, `Y_OFFSET = 0.06`) and an **in-algorithm tolerance of 0.001**, the controller treats a resting stick as neutral while still routing movement smoothly through the 8 octants.
 
 ## Code Snippet
 

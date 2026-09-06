@@ -4,6 +4,26 @@
 
 ---
 
+## Unreleased: v2.1.0 (2026-09-05)
+
+**Repository cleanup and Experiment-1**
+- Added `Experiments/Experiment-1` (delay, Timer, Button labs) with reader instructions in `Experiments/Experiment-1/Instructions/README.md`
+- Removed the `Labs - DELETEME` folder (the I2C Lab-1 draft is deferred to a later article)
+- Removed `BusI2C.h` and `src/DEP/BusI2C.cpp` from `Code-JUL`; nothing in this repository uses I2C
+- `Timer.h` revised: drifting policy `isTimer()` and fixed rate policy `isTimerFixedRate()`, `deltaTimeSeconds()`
+- `Button.h` revised: debounce, latching and momentary modes, `begin()`, `wasPressed()`, `heldForMs()`
+- Experiment-1 `platformio.ini`: `upload_port` no longer hard coded; `build_flags = -std=gnu++11` and `monitor_speed = 9600` added
+- Experiment-1 Lab 3: button wiring aligned with `Code-JUL` (switch to GND, `INPUT_PULLUP`); the pull down alternative is documented in the code comment
+- Root README rewritten: project tree includes `Experiments/`, debug tick note added, review notes moved here
+- `Code-JUL/README.md` corrected: removed the nonexistent `main.cpp.txt` entry and the DEP row
+- Header comments: repository name standardized to `Joystick-Uno-L298N`
+- Added `Discrepancies.md` with the review findings and their resolution
+
+**Build verification**
+- All five sketches (`1_Delay`, `2_Timer`, `3_Button`, `Step1_Joystick`, `Step2_JUL`) compiled for ATmega328P with avr-gcc 7.3.0 and the Arduino AVR core on 2026-09-05, no errors. Hardware test on the bench is still to be run by the author before release.
+
+---
+
 ## Current Status: v2.0.0
 
 **Released:** 2026-07-14  
@@ -90,11 +110,11 @@ If you were using algorithm variants (ALGO_STUDY_*):
 - Created `RELEASES.md` for version tracking
 
 **Code Quality Fixes**
-- Fixed type mismatch in [Code-JUL/src/Step2_JUL/main.cpp](Code-JUL/src/Step2_JUL/main.cpp) line 48: `ActiveAlgorithm<float>()` → `Joystick<float>()`
+- Fixed type mismatch in [Code-JUL/src/Step2_JUL/main.cpp](Code-JUL/src/Step2_JUL/main.cpp): `ActiveAlgorithm<float>()` → `Joystick<float>()`
 - Removed outdated algorithm selection logic from main.cpp
 - Removed conditional compilation blocks for algorithm selection
 - Verified all includes and dependencies resolve correctly
-- All code compiles without warnings or errors
+- Code compiled at the time of release
 
 **Verification**
 - Code syntax validated (no compilation errors)
