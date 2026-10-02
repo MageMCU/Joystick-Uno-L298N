@@ -42,6 +42,8 @@ void setup()
     // Button & Button-LED
     int buttonPin = 2; // UNO D2 (CHIP-PD2)
     int ledPin = 3;    // UNO D3 (CHIP-PD3)
+    // As indicated in article 1009 Guide
+    // int ledPin = 12; // UNO D12 (CHIP-PB4)
     buttonDebug = Button(buttonPin, ledPin);
 
     // Joystick Algorithm
