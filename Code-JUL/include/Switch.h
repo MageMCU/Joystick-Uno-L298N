@@ -23,109 +23,58 @@
 // Carpenter Software - Jesse Carpenter
 namespace csjc
 {
+    // Reads an active-high switch wired with an external pull-down resistor.
+    // Pin setup is deferred until begin() or the first updateSwitch() call.
     class Switch
     {
     private:
         int m_ledPin;
-        int m_ledState;
-
-        // Switch
-        // Use a GND single wire as a switch
         int m_switchPin;
         bool m_switchOn;
-
-        void m_data();
-        void m_pins();
-        void m_switch();
+        bool m_begun;
 
     public:
-        Switch();
-        Switch(int switchPin);
-        Switch(int switchPin, int ledPin);
+        Switch()
+            : m_ledPin(13), m_switchPin(2), m_switchOn(false), m_begun(false)
+        {
+        }
+
+        explicit Switch(int switchPin)
+            : m_ledPin(13), m_switchPin(switchPin), m_switchOn(false), m_begun(false)
+        {
+        }
+
+        Switch(int switchPin, int ledPin)
+            : m_ledPin(ledPin), m_switchPin(switchPin), m_switchOn(false), m_begun(false)
+        {
+        }
+
         ~Switch() = default;
 
-        bool isSwitchOn();
-        void updateSwitch();
+        void begin()
+        {
+            pinMode(m_switchPin, INPUT);
+            pinMode(m_ledPin, OUTPUT);
+            m_begun = true;
+            updateSwitch();
+        }
+
+        bool isSwitchOn() const
+        {
+            return m_switchOn;
+        }
+
+        void updateSwitch()
+        {
+            if (!m_begun)
+            {
+                begin();
+                return;
+            }
+
+            m_switchOn = digitalRead(m_switchPin) == HIGH;
+            digitalWrite(m_ledPin, m_switchOn ? HIGH : LOW);
+        }
     };
-
-    // Constructor
-    Switch::Switch()
-    {
-        m_pins();
-        m_data();
-    }
-
-    // Constructor
-    Switch::Switch(int switchPin)
-    {
-        m_pins();
-        m_data();
-        m_switchPin = switchPin;
-    }
-
-    // Constructor
-    Switch::Switch(int switchPin, int ledPin)
-    {
-        m_pins();
-        m_data();
-        m_switchPin = switchPin;
-        m_ledPin = ledPin;
-    }
-
-    // PUBLIC method: Is the Switch On = HIGH
-    bool Switch::isSwitchOn()
-    {
-        return m_switchOn;
-    }
-
-    // PUBLIC method: updateButton (used in the Arduino loop() function)
-    void Switch::updateSwitch()
-    {
-        m_switch();
-    }
-
-    // Private Method
-    void Switch::m_data()
-    {
-        m_switchPin = 2;
-        m_ledPin = 13;
-    }
-
-    // Private Method
-    void Switch::m_pins()
-    {
-        // INSTRUCTIONS ------------------------- README
-        // (1) Use 10K Ohm resistor as pulldown
-        // to GND with wire attached to
-        // m_switchPin as OFF...
-        // (2) Use 5V wire as switch placed
-        // between m_switchPin-wire and
-        // resistor as ON... Pull-Out
-        // 5V wire to switch off...
-        pinMode(m_switchPin, INPUT);
-        pinMode(m_ledPin, OUTPUT);
-    }
-
-    // Private Method
-    void Switch::m_switch()
-    {
-        // Digital Read
-        m_ledState = digitalRead(m_switchPin);
-
-        if (m_ledState == HIGH)
-        {
-            // Switch is ON
-            // wire is attached
-            m_switchOn = true;
-            digitalWrite(m_ledPin, HIGH);
-        }
-        else
-        {
-            // Switch is OFF
-            // wire is not attached
-            m_switchOn = false;
-            digitalWrite(m_ledPin, LOW);
-        }
-    }
 }
 #endif

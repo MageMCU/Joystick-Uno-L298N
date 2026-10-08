@@ -30,6 +30,16 @@ The `Timer` and `Button` classes are the same classes the full JUL firmware uses
 
 Lab 1 is blocking. Labs 2 and 3 are nonblocking.
 
+### Black-box investigation
+
+Treat the running sketch and Uno as the system under study. The controlled
+inputs are time and, in Lab 3, button presses; observable outputs are LED
+states, serial messages, and loop counts. Before each lab, predict those
+outputs, then change one condition at a time and compare the prediction with
+the observations. Use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md)
+to record the setup, expected and actual results, and what your observations
+do and do not reveal about `loop()`, `Timer`, and `Button`.
+
 ### Two styles of code
 
 Each `main.cpp` is written in the **procedural** style of the C language: a sequence of statements and function calls. `Timer.h` and `Button.h` are written in the **object oriented** style of C++: a class bundles data and the functions that operate on that data into one unit, the program creates an object of that class, and it calls the object's methods. A **method** is a function that belongs to a class. The sketches call `timer.isTimer()` and `button.updateButton()` without needing to know how they are implemented.
@@ -540,13 +550,27 @@ After the upload, the indicator LED is off, the onboard LED is off, and the moni
 
 Experiment-2 wires the thumb joystick to the Uno and reads it with `Code-JUL/src/Step1_Joystick`.
 
+For each lab, use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md).
+Record the date, active source/filter, board and wiring, your prediction,
+what the LED/Serial Monitor actually showed, and a conclusion. Keep
+observations factual and chronological, following the lab-notebook practice
+introduced in Article 1000. The GPIO, timing, and button pin choices also
+build familiarity with the Uno described in Article 1002.
+
 ---
 
 ## References
 
-1. Arduino. delay(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/delay/
-2. Arduino. millis(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/millis/
-3. Arduino. pinMode() and INPUT_PULLUP. Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/digital-io/pinMode/
-4. MageMCU. Joystick-Uno-L298N repository, `Code-JUL/include/Timer.h` and `Button.h`. https://github.com/MageMCU/Joystick-Uno-L298N
+Safety and draft status: this experiment has not been physically tested on
+hardware and remains a work in progress. Review the
+[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+before use.
+
+1. Carpenter Software. Article 1000, *Introduction Robotics*.
+2. Carpenter Software. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*.
+3. Arduino. delay(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/delay/
+4. Arduino. millis(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/millis/
+5. Arduino. pinMode() and INPUT_PULLUP. Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/digital-io/pinMode/
+6. MageMCU. Joystick-Uno-L298N repository, `Code-JUL/include/Timer.h` and `Button.h`. https://github.com/MageMCU/Joystick-Uno-L298N
 
 MIT License. Carpenter Software, Jesse Carpenter.

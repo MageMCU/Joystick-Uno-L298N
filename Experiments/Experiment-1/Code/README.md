@@ -35,3 +35,10 @@ The wildcard `+<*>` includes the `src/` folder and everything under it as the st
 ## C and C++ in this project
 
 Each `main.cpp` is written in the procedural style of C: a sequence of statements and function calls. `Timer.h` and `Button.h` are written in the object oriented style of C++: a class bundles data and the functions (methods) that operate on it, and the sketch creates an object and calls its methods without needing to know how they are implemented.
+
+## Draft and safety status
+
+This experiment is a work in progress and has not been physically tested on
+hardware. A successful build is not a hardware test. See the
+[experiment safety notice](../../../Experiments.md) and the
+[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md).

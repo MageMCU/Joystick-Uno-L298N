@@ -4,7 +4,30 @@
 
 ---
 
-## Unreleased: v2.1.0 (2026-09-05)
+## Unreleased: v2.1.0 (2026-10-07)
+
+**Header review follow-up (2026-10-07)**
+- Reviewed the remaining `Code-JUL/include/` headers against the production sketches and repository Markdown; `Button.h` and `Timer.h` were not changed
+- `Bitwise.h`: guarded invalid bit indexes and fixed lookup of the highest valid bit
+- `L298N.h`: initialized internal state, clamped PWM input to `-255…255`, and made header-defined functions inline
+- `Switch.h`: deferred hardware initialization until `begin()` or first update and initialized its state
+- `TypeConv.h`: initialized stored conversion values, made header definitions inline, and const-qualified getters
+- `MiscMath.h`: changed `AngleRadian()` to use `atan2()` and made the non-template `Debug()` helper inline
+- `Joystick.h`: const-qualified read-only getters
+- `Step2_JUL` built successfully for the Uno. A temporary simavr run reached the button-enabled motor-update path, but ADC reads were zero because AVCC was not modeled; joystick directions and motor behavior remain unverified in simulation and require targeted tests and bench validation. See `Discrepancies.md`.
+
+**Experiments 2-5 (2026-10-07)**
+- Initially added draft, self-contained Uno projects and learner instructions for joystick diagnostics (Experiment-2), one-motor L298N control (Experiment-3), two-motor/`Bits()` validation (Experiment-4), and joystick-to-motor integration with the Article 1009 checklist (Experiment-5)
+- Copied the production headers required by each experiment into its local `Code/include/` folder
+- Built all four draft projects successfully for the Uno; these materials need further review, and wiring, motor behavior, and the Article 1009 bench checks still require physical hardware validation
+- Related Article 1003/1009 material was used as context; `TempObjects/` was not modified
+
+**Article 1009 alignment follow-up**
+- Reorganized the draft sequence around Article 1009's two formal procedures: Experiment-2 is **Joystick Setup** (no motor driver connected), and Experiment-5 is **L298N Setup** (the full eight-direction `Bits()` checklist and post-check voltage worksheet)
+- Reframed Experiment-3 as optional one-motor familiarization and added a 300 ms zero-output interlock whenever the requested direction reverses; Experiment-4 is now a software-only `Bits()`/E/P/L/R decoding exercise
+- Mapped Articles 1000-1003 into the Article 1004 experiment sequence: notebook/scientific method; joystick voltages and X/Y algorithm; Uno pin/peripheral functions; and L298N H-bridge, PWM, voltage loss, and heating
+- Updated learner guides and the root experiment table to distinguish formal procedures from optional preparation; all four revised Uno projects build successfully, but physical movement and voltage measurements remain unverified
+- Kept unrelated peripheral topics outside the Article 1004 scope, and all `TempObjects/` source PDFs remain read-only.
 
 **Repository cleanup and Experiment-1**
 - Added `Experiments/Experiment-1` (delay, Timer, Button labs) with reader instructions in `Experiments/Experiment-1/Instructions/README.md`
@@ -146,4 +169,3 @@ If you were using algorithm variants (ALGO_STUDY_*):
 - Status: **Active through end of 2026**
 
 See [Repository Status & History](README.md#repository-status--history) for information about the relationship to the predecessor experimental repository.
-

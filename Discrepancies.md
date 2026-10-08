@@ -13,6 +13,21 @@ Review of the Joystick-Uno-L298N repository, September 5, 2026. Each item lists 
 | 5 | `Switch.h`, `Vector3.h`, and `TypeConv.h` are included through `Headers.h` but not used by either sketch. Templates cost nothing until instantiated, so this is a clarity issue. | `Code-JUL/include/Headers.h` | **Left as is.** Documented in `Code-JUL/README.md` as not used by the current sketches. Remove if no future sketch needs them. |
 | 6 | Two dead zones exist in the signal chain. `Step2_JUL/main.cpp` zeroes inputs below 0.05 (X) and 0.06 (Y) before the algorithm; `Joystick.h` applies its own tolerance of 0.001. Only the 0.001 value was documented. | `Code-JUL/src/Step2_JUL/main.cpp`, `Motor-Movement-Checklist/ReadMe.md`, root `README.md` | **Documented.** Root README now describes both. Article 1004 should explain both. |
 
+## Header Review (2026-10-07)
+
+The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the Markdown documentation, and the available build/simulation environment. Changes in this review were limited to `Code-JUL/include/`; `Button.h` and `Timer.h` were intentionally left unchanged.
+
+| Header | Review finding and change | Follow-up verification |
+|--------|---------------------------|------------------------|
+| `Bitwise.h` | Invalid indexes could be treated as bit 0, and the maximum bit was excluded from `GetBitNumber()`. Index checks now reject out-of-range operations, and lookup includes the highest valid bit. | Test bit 0, the highest valid bit, zero bits, and negative/out-of-range indexes with the target integer types. |
+| `L298N.h` | Configuration and PWM fields were uninitialized until configured. Constructors now initialize state; PWM values are clamped to `-255…255` before magnitude conversion; header definitions are inline and the safety argument is declared at the public API. | Exercise every `BitsL298N` value against the documented truth table, verify motor/enable pin mapping, and test `-255`, `255`, and extreme signed inputs. Confirm the L298N’s real direction/PWM behavior on the bench. |
+| `Switch.h` | Constructors called `pinMode()` before applying caller-provided pin numbers, and the on/off state was not initialized. Setup is deferred to `begin()` or the first update, and state is initialized. | Test default and custom pins, initial LED state, and active-high switch wiring with an external pull-down on hardware. |
+| `TypeConv.h` | Stored bytes/words were indeterminate until a conversion ran, and out-of-line header definitions risked duplicate symbols in multi-translation-unit builds. State is initialized, definitions are inline, and getters are const. | Test byte/word round trips and compile a multi-source sketch that includes the header in more than one translation unit. |
+| `MiscMath.h` | `AngleRadian()` divided by `a`, making axis cases fragile; it now uses `atan2()` and normalizes negative angles to `[0, 2π)`. The non-template `Debug(String)` definition is inline. | Verify the four quadrants and both axes, plus a multi-translation-unit include test. |
+| `Joystick.h` | Output getters only read state but were not const-qualified. They are now `const`. | Build succeeded; verify octant outputs and direction getters with representative inputs and the bench checklist. |
+
+**Validation performed:** the production `Step2_JUL` project built successfully for the Uno on 2026-10-07. A temporary debug build ran in simavr and exercised the button-enabled path through joystick processing and an L298N output command. simavr reported missing AVCC and returned zero for both analog reads, so the observed octant/output is not evidence of realistic joystick behavior. The attempted second-press simulation did not yield a usable trace. No physical hardware validation or systematic header unit tests were performed; the cases in the table remain follow-up work.
+
 ## Documentation
 
 | # | Finding | Location | Resolution |

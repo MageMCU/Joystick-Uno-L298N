@@ -57,14 +57,19 @@ namespace csjc
 
     public:
         // Constructor
-        TypeConv() = default;
+        TypeConv()
+            : b_dWordIN(0), b_dWordOUT(0),
+              b_byte3(0), b_byte2(0), b_byte1(0), b_byte0(0),
+              b_wordIN(0), b_wordOUT(0), b_byteHi(0), b_byteLo(0)
+        {
+        }
         ~TypeConv() = default;
 
         // Public Methods
         void WordTo2Bytes(uint16_t word);
         void DWordTo4Bytes(uint32_t dWord);
-        uint8_t GetHiByte();
-        uint8_t GetLoByte();
+        uint8_t GetHiByte() const;
+        uint8_t GetLoByte() const;
         uint16_t BytesToWord();
         uint32_t BytesToDWord();
         uint16_t BytesToWord(uint8_t hi, uint8_t lo);
@@ -72,21 +77,21 @@ namespace csjc
                               uint8_t b1, uint8_t b0);
 
         // NEW Methods
-        uint8_t GetByte3();
-        uint8_t GetByte2();
-        uint8_t GetByte1();
-        uint8_t GetByte0();
+        uint8_t GetByte3() const;
+        uint8_t GetByte2() const;
+        uint8_t GetByte1() const;
+        uint8_t GetByte0() const;
         void dWordTo4Bytes(uint32_t dWord);
     };
 
-    void TypeConv::WordTo2Bytes(uint16_t uint16)
+    inline void TypeConv::WordTo2Bytes(uint16_t uint16)
     {
         b_wordIN = uint16;
         b_setHiByte();
         b_setLoByte();
     }
 
-    void TypeConv::DWordTo4Bytes(uint32_t dWord)
+    inline void TypeConv::DWordTo4Bytes(uint32_t dWord)
     {
         b_dWordIN = dWord;
         b_setByte3();
@@ -95,60 +100,60 @@ namespace csjc
         b_setByte0();
     }
 
-    uint8_t TypeConv::GetHiByte()
+    inline uint8_t TypeConv::GetHiByte() const
     {
         return b_byteHi;
     }
 
-    uint8_t TypeConv::GetLoByte()
+    inline uint8_t TypeConv::GetLoByte() const
     {
         return b_byteLo;
     }
 
-    uint16_t TypeConv::BytesToWord()
+    inline uint16_t TypeConv::BytesToWord()
     {
         b_glue2Bytes();
         return b_wordOUT;
     }
 
-    uint32_t TypeConv::BytesToDWord()
+    inline uint32_t TypeConv::BytesToDWord()
     {
         b_glue4Bytes();
         return b_dWordOUT;
     }
 
-    uint8_t TypeConv::GetByte3()
+    inline uint8_t TypeConv::GetByte3() const
     {
         return b_byte3;
     }
 
-    uint8_t TypeConv::GetByte2()
+    inline uint8_t TypeConv::GetByte2() const
     {
         return b_byte2;
     }
 
-    uint8_t TypeConv::GetByte1()
+    inline uint8_t TypeConv::GetByte1() const
     {
         return b_byte1;
     }
 
-    uint8_t TypeConv::GetByte0()
+    inline uint8_t TypeConv::GetByte0() const
     {
         return b_byte0;
     }
 
-    uint16_t TypeConv::BytesToWord(uint8_t hi, uint8_t lo)
+    inline uint16_t TypeConv::BytesToWord(uint8_t hi, uint8_t lo)
     {
         return b_fGlue2Bytes(hi, lo);
     }
 
-    uint32_t TypeConv::BytesToDWord(uint8_t b3, uint8_t b2,
-                                    uint8_t b1, uint8_t b0)
+    inline uint32_t TypeConv::BytesToDWord(uint8_t b3, uint8_t b2,
+                                           uint8_t b1, uint8_t b0)
     {
         return b_fGlue4Bytes(b3, b2, b1, b0);
     }
 
-    void TypeConv::dWordTo4Bytes(uint32_t dWord)
+    inline void TypeConv::dWordTo4Bytes(uint32_t dWord)
     {
         b_dWordIN = dWord;
         b_setByte3();
@@ -157,52 +162,52 @@ namespace csjc
         b_setByte0();
     }
 
-    void TypeConv::b_setHiByte()
+    inline void TypeConv::b_setHiByte()
     {
         b_byteHi = (uint8_t)((b_wordIN >> 8) & 0xff);
     }
 
-    void TypeConv::b_setLoByte()
+    inline void TypeConv::b_setLoByte()
     {
         b_byteLo = (uint8_t)(b_wordIN & 0xff);
     }
 
-    void TypeConv::b_glue2Bytes()
+    inline void TypeConv::b_glue2Bytes()
     {
         b_wordOUT = b_fGlue2Bytes(b_byteHi, b_byteLo);
     }
 
-    void TypeConv::b_setByte3()
+    inline void TypeConv::b_setByte3()
     {
         b_byte3 = (uint8_t)((b_dWordIN >> 24) & 0xff);
     }
 
-    void TypeConv::b_setByte2()
+    inline void TypeConv::b_setByte2()
     {
         b_byte2 = (uint8_t)((b_dWordIN >> 16) & 0xff);
     }
 
-    void TypeConv::b_setByte1()
+    inline void TypeConv::b_setByte1()
     {
         b_byte1 = (uint8_t)((b_dWordIN >> 8) & 0xff);
     }
 
-    void TypeConv::b_setByte0()
+    inline void TypeConv::b_setByte0()
     {
         b_byte0 = (uint8_t)(b_dWordIN & 0xff);
     }
 
-    void TypeConv::b_glue4Bytes()
+    inline void TypeConv::b_glue4Bytes()
     {
         b_dWordOUT = b_fGlue4Bytes(b_byte3, b_byte2, b_byte1, b_byte0);
     }
 
-    uint16_t TypeConv::b_fGlue2Bytes(uint8_t hi, uint8_t lo)
+    inline uint16_t TypeConv::b_fGlue2Bytes(uint8_t hi, uint8_t lo)
     {
         return ((((uint16_t)hi << 8) & (uint16_t)0xff00) | (uint16_t)lo);
     }
 
-    uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2, uint8_t b1, uint8_t b0)
+    inline uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2, uint8_t b1, uint8_t b0)
     {
         return ((((uint32_t)b3 << 24) & (uint32_t)0xff000000) |
                 (((uint32_t)b2 << 16) & (uint32_t)0x00ff0000) |

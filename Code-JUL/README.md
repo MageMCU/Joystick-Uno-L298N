@@ -47,14 +47,22 @@ To run the joystick wiring test instead, swap the signs on the two folders.
 | Folder | File | Purpose | Status |
 |---|---|---|---|
 | `Step1_Joystick/` | `main.cpp` | Joystick wiring validation; prints raw X and Y with `DEBUG_MAIN` enabled | Tested |
-| `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control | Tested |
+| `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control | Build-verified; hardware validation pending |
 
 ## Debugging
 
 In `include/Common.h` uncomment one flag: `DEBUG_MAIN` (Step1 output), `DEBUG_JOYSTICK` (values through the signal chain), or `DEBUG_L298N` (motor driver pin states). Any debug flag sets `DEBUG_SERIAL_ON`, which changes `BUTTON_TIMER_mS` from 100 ms to 3000 ms so the Serial Monitor (9600 baud) stays readable. Comment the flag out again for normal motor response.
 
+## Header Review and Validation
+
+The remaining production headers were reviewed on 2026-10-07 against both sketches and the repository documentation. `L298N.h` now initializes its state and clamps PWM input to the Arduino range; `Bitwise.h` guards bit indexes and correctly searches the highest bit; `Switch.h` defers hardware setup until `begin()` or its first update; `TypeConv.h` initializes stored values and uses inline definitions; `MiscMath.h` uses `atan2()` for `AngleRadian()` and makes its non-template `Debug()` definition inline; and the `Joystick` read-only getters are `const`. `Button.h` and `Timer.h` were not changed in this review.
+
+The production `Step2_JUL` project builds for the Uno. A temporary debug build also ran in simavr and exercised the button-enabled path through joystick processing and the L298N command. The simulator reported missing AVCC, so the joystick ADC readings were zero; this run does not validate realistic analog input, all eight directions, motor electrical behavior, or reliable button-disable timing.
+
+Before relying on the changes on hardware, verify the `Bitwise` boundary cases (invalid indexes and the highest valid bit), the L298N bit-pattern table and PWM limits (including extreme signed inputs), and the `Switch` default/custom pins and active-high pull-down wiring. Then bench-test all eight joystick positions, neutral/dead-zone behavior, and prompt motor disable with the actual Uno, joystick, and L298N. See [`Discrepancies.md`](../Discrepancies.md) for the review record.
+
 ## Notes
 
 - Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` are identical apart from the folder line in the header comment.
 - The I2C helper (`BusI2C.h` and `src/DEP/BusI2C.cpp`) was removed in September 2026. Nothing in this folder uses I2C. The class lives on in the MageMCU Serial-Communication repository.
-- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). Run `pio run` locally before flashing hardware connected to motors.
+- Historical build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). The 2026-10-07 `Step2_JUL` build is recorded above and in `RELEASES.md`; run `pio run` locally before flashing hardware connected to motors.
