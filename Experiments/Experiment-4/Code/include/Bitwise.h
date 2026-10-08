@@ -29,9 +29,11 @@ namespace csjc
     private:
         // Private Properties
         integer b_bits;
+        integer b_maxSize;
         integer b_numberOfBits;
         // Private Methods
         integer b_powerOfTwo(integer bitNumber);
+        integer b_sumPowerOfTwo(integer bitNumber);
 
     public:
         // Constructor
@@ -56,33 +58,58 @@ namespace csjc
     {
         // Used in for loops
         b_numberOfBits = (sizeof(integer) * (integer)8);
+        // MINUS-ONE: assuming programmer might use a signed-integer.
+        b_maxSize = b_sumPowerOfTwo(b_numberOfBits - (integer)1);
         b_bits = (integer)0;
+
+        // DEBUG
+        // Serial.print("number of bits: ");
+        // Serial.print(b_numberOfBits);
+        // Serial.print(" max size: ");
+        // Serial.println(b_maxSize);
     }
 
     template <typename integer>
     integer Bitwise<integer>::b_powerOfTwo(integer bitNumber)
     {
+        integer value = (integer)1;
         if (bitNumber >= (integer)0 && bitNumber < b_numberOfBits)
         {
-            return (integer)(1UL << (int)bitNumber);
+            if (bitNumber == (integer)0)
+                return value;
+
+            for (int i = 0; i < (int)bitNumber; i++)
+            {
+                value *= (integer)2;
+            }
         }
-        Serial.println("Error - bitNumber size");
-        return (integer)0;
+        else
+        {
+            Serial.println("Error - bitNumber size");
+        }
+        return value;
+    }
+
+    template <typename integer>
+    integer Bitwise<integer>::b_sumPowerOfTwo(integer bitNumber)
+    {
+        integer sum = (integer)0;
+        for (int poT = 0; poT < (int)bitNumber; poT++)
+        {
+            sum += b_powerOfTwo(poT);
+        }
+        return sum;
     }
 
     template <typename integer>
     void Bitwise<integer>::SetBitNumber(integer bitNumber)
     {
-        if (bitNumber >= (integer)0 && bitNumber < b_numberOfBits)
-            b_bits |= b_powerOfTwo(bitNumber);
+        b_bits |= b_powerOfTwo(bitNumber);
     }
 
     template <typename integer>
     bool Bitwise<integer>::IsBitNumberSet(integer bitNumber)
     {
-        if (bitNumber < (integer)0 || bitNumber >= b_numberOfBits)
-            return false;
-
         if ((b_bits & b_powerOfTwo(bitNumber)) != 0)
             return true;
 
@@ -92,9 +119,6 @@ namespace csjc
     template <typename integer>
     bool Bitwise<integer>::IsBitNumberSetToBitsValue(integer bitNumber, integer bitsValue)
     {
-        if (bitNumber < (integer)0 || bitNumber >= b_numberOfBits)
-            return false;
-
         if ((bitsValue & b_powerOfTwo(bitNumber)) != 0)
             return true;
 
@@ -104,7 +128,8 @@ namespace csjc
     template <typename integer>
     integer Bitwise<integer>::GetBitNumber()
     {
-        if (b_bits != (integer)0)
+        // bit-numbers: 0, 1, 2, 3,  ... 13, 14, 15.
+        if (b_bits > (integer)0 && b_bits < b_maxSize)
         {
             for (int bitNumber = 0; bitNumber < (int)b_numberOfBits; bitNumber++)
             {
@@ -115,15 +140,17 @@ namespace csjc
                     return (integer)bitNumber;
             }
         }
-        Serial.println("Error - no such bit number");
+        else
+        {
+            Serial.println("Error - no such bit number");
+        }
         return (integer)-1;
     }
 
     template <typename integer>
     void Bitwise<integer>::ClearBitNumber(integer bitNumber)
     {
-        if (bitNumber >= (integer)0 && bitNumber < b_numberOfBits)
-            b_bits &= ~b_powerOfTwo(bitNumber);
+        b_bits &= ~b_powerOfTwo(bitNumber);
     }
 
     template <typename integer>

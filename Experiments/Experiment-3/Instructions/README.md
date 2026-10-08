@@ -1,175 +1,91 @@
-# Joystick-Uno-L298N Experiment-3
+# Experiment-3: L298N Single Motor
 
-## L298N Setup Preparation: One Motor
+*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
 
-Carpenter Software, Jesse Carpenter. STEM Starter Kit Series, Part 5
-(Article 1004), Experiment-3. This optional motor familiarization supports
-the second formal Article 1009 procedure, **L298N Setup**. It is preparation,
-not a substitute for that procedure or its Motor Movement Checklist.
+Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
-> **Draft:** Review the instructions and confirm them against the exact L298N
-> module before classroom or motor-power use. The Uno build succeeded; no
-> physical motor test has been performed.
+**Objective.** Measure the average voltage across one motor at several PWM duty cycles and compare it with the duty cycle equation of Article 1003.
 
----
+**Builds on.** Experiment-2; Article 1003, Pulse Width Modulation and Board Connections; Article 1009, Measuring the Motor Bus and the L298N Drop.
 
-## 1. Overview
+**Materials.** L298N module; one DC motor rated for the motor bus; the bench power supply; multimeter.
 
-The Uno controls the L298N logic inputs; a separate, correctly rated motor
-supply powers the motor. This sketch exercises one motor on channel A at a
-fixed, limited PWM value. While D2 is held, use the Serial Monitor to request
-forward (`w`), reverse (`s`), or stop (`x`). Before reversing, the code sets
-the command to zero for 300 ms. Releasing D2 removes PWM after the 50 ms
-button debounce.
+## Lab 1: MiscMath.h, Sign and Magnitude
 
-The experiment uses `L298N.h` and its `Bitwise.h` dependency. It does not yet
-use the joystick or attempt to drive a robot.
+**Objective.** Study the helper functions that the L298N class uses to turn a signed command into a direction and a PWM value, and the limits of the int type.
 
-### Black-box investigation
+A function template is a function written once with a type parameter; the compiler deduces the type from the arguments of each call. absT() returns the magnitude of a value of any numeric type. The L298N class writes the sign of a command to the IN pins and passes absT() of the command to analogWrite(). Overloading is the definition of several functions with the same name and different parameter lists; the compiler selects the one whose parameters match the arguments.
 
-For this optional activity, investigate the motor/driver/control path as the
-black box. Inputs are the D2 enable state and serial commands; observable
-outputs are the Uno's reported state and the motor's measured/observed
-movement. Predict each result before a trial, vary one command at a time, and
-record actual movement and operating conditions separately from code output.
-Use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md)
-to compare the prediction and evidence. Do not proceed to a powered test
-until the instructor has reviewed the exact hardware and safety setup.
+**Code.** Experiments/Experiment-3/Code/src/1_MiscMath/main.cpp, Code-7. Uno and USB cable only. The program prints absT<int>() of 255, −255, 0, −32767, and −32768; prints Map() of MiscMath.h for the ADC value 512 once with int arguments and once with float arguments; and calls the overloaded Debug() functions.
 
----
+**Prediction.** Predict each absT() result, and predict the two Map() results from Table-4.
 
-## 2. Materials
+1. Run the program and record every line beside the prediction.
 
-| Item | Qty | Notes |
-|------|-----|-------|
-| Arduino Uno and USB cable | 1 | Logic, upload and control |
-| L298N module | 1 | Check its exact board labels and jumper arrangement |
-| DC motor compatible with its supply and driver | 1 | Connect to channel A output terminals |
-| Motor power supply | 1 | Correct voltage/current for the motor |
-| Momentary push button | 1 | D2 to GND; internal pull-up is used |
-| Indicator LED and 220 Ohm resistor | 1 each | D3 indicator |
-| Jumper wires | as needed | Disconnect power before changing wiring |
+2. Explain absT<int>(−32768). An int on the Uno holds −32768 to 32767 in two's complement form, the binary representation in which the negative range is one value larger than the positive range. The value 32768 does not exist as an int, so the negation overflows, and the Uno returns −32768.
 
-Do not power a motor from an Uno I/O pin or the Uno 5V pin.
+3. Map(512, 0, 1023, −255, 255) with int arguments returns −256, as LinearMap<int> did in Experiment-2. Change the second argument to 0.0f, build, and record the compiler error: no matching function for call to Map(int, float, int, int, int), with the note deduced conflicting types for parameter real (int and float). Restore the line.
 
----
+4. Read the four Debug lines and name the version of Debug() that the compiler selected for each.
 
-## 3. Software Setup
+**Expected output and verification.** absT() gives the magnitude for every value except −32768. Map with int arguments prints −256 and with float arguments prints 0.25. Debug("Int and float", 3, 4.5f) uses the version with two type parameters, S and T, because the version with one type parameter T cannot be both int and float.
 
-Open `Experiments/Experiment-3/Code/` in VS Code. Build and upload with
-PlatformIO, then hold the D2 button to run the test. The project has one
-sketch. The copied `L298N`, `Bitwise`, `Button`, `Timer`, and support headers
-keep it independent of other project folders.
+## Lab 2: One Motor and the Duty Cycle
 
----
+**Objective.** Measure the average voltage across one motor at five duty cycles and compare it with Equation-4.
 
-## 4. Wiring and Safety
+**Wiring.** Circuit-3. Follow Article 1009, L298N Setup, steps 1 to 4: power down and measure 0 V across the filter capacitor, remove the ENA, ENB, and 5 V regulator jumpers, wire D5 to D10 as listed in Table-1, and move the 5V and GND leads of the joystick to the 5 V bus and the common ground. Connect the one motor to either Motor A or Motor B. Secure the motor so that it cannot move, and keep fingers clear of the shaft.
 
-Disconnect USB and motor supply before wiring. Use the pin assignments in the
-firmware:
+**Circuit-3.** Experiment-3, Lab 2. The L298N wired as in Article 1009, Circuit-1, with one motor. [Circuit placeholder: Article 1009, Circuit-1, with one motor on Motor A or Motor B; the joystick, SW resistor, and indicator LED as in Experiment-2.]
 
-| Uno pin | L298N connection |
-|---------|------------------|
-| D5 | ENA |
-| D6 | IN1 |
-| D7 | IN2 |
-| D2 | Momentary enable switch to GND |
-| D3 | Indicator LED through 220 Ohm resistor |
-| GND | L298N logic GND and motor-supply negative/common ground |
-| — | Motor connected only to channel A output terminals |
+**Code.** Experiments/Experiment-3/Code/src/2_DutyCycle/main.cpp, Code-8. The program sends the same command to the left and the right inputs of the L298N class, so the one motor turns on either output for any Bits() value; the pairing of the two channels is the subject of Experiment-4. The joystick push button, in latching mode, enables the output: while the state is OFF, PowerDownL298N() holds both enable inputs LOW. With the state ON, a key typed in the serial monitor selects the command: 0, 1, 2, 3, or 4 for a duty cycle of 0, 25, 50, 75, or 100 percent, f for forward, and r for reverse. A change of direction passes through zero for 300 ms before the new direction is applied, so the motor is never reversed at speed.
 
-Connect the motor supply to the module's motor-supply input according to that
-module's markings. Module jumper/regulator arrangements vary: follow the
-board manufacturer's documentation and the Article 1003 wiring plan. Never
-feed the motor supply into the Uno 5V pin, never connect motor outputs to Uno
-pins, and do not move jumpers while powered. Ensure the Uno and driver share
-ground.
+The duty cycle D of a PWM signal is the fraction of each period during which the signal is HIGH (Equation-3). The analogWrite() value v, from 0 to 255, sets D. The average voltage across the motor is approximately the duty cycle multiplied by the voltage that the bridge delivers when fully on, which is the motor bus voltage minus the drop of the two conducting transistors of the bridge (Equation-4).[5]
 
-Before the first powered test, raise and secure the motor so it cannot move
-the robot, keep hands clear, and have a way to disconnect motor power. Start
-with the motor disconnected and verify the logic wiring.
+**Equation-3.** `D = ton / T = v / 255`  
+Duty cycle from the on time ton and the period T, and from the analogWrite() value v.
 
----
+**Equation-4.** `Vavg ≈ D × (VS − Vdrop)`  
+Average motor voltage from the duty cycle D, the motor bus voltage VS, and the drop of the bridge Vdrop.
 
-## 5. Activity
+**Table-5.** Duty cycle record, copied into the notebook once for f and once for r.
 
-1. Upload the sketch with the motor supply disconnected.
-2. Verify the enable switch is released and the indicator is off.
-3. Recheck ENA/IN1/IN2, grounds, supply polarity, and the motor terminals.
-4. Secure the motor and connect the motor supply only after the checks pass.
-5. Hold D2 and send `w`. The motor runs at PWM 80/255.
-6. Send `x` to stop, then send `s` to request reverse. The firmware enforces
-   a 300 ms zero-output interval before applying reverse PWM, even if you
-   have already sent `x`.
-7. Release D2. After the button debounce, PWM is disabled.
-8. Disconnect motor power before changing any wiring.
+| Key | analogWrite() | D | Vavg predicted | Vavg measured | Shaft turns |
+|---|---|---|---|---|---|
+| 0 | 0 | 0.00 |   |   |   |
+| 1 | 64 | 0.25 |   |   |   |
+| 2 | 128 | 0.50 |   |   |   |
+| 3 | 191 | 0.75 |   |   |   |
+| 4 | 255 | 1.00 |   |   |   |
 
-PWM 80 is a limited test command, not a promise that every motor will start:
-motor friction and the L298N voltage drop affect the result. Do not increase
-the value until the wiring, supply and motor ratings are confirmed.
+**Prediction.** Using VS and the drop measured in Article 1009, Measuring the Motor Bus and the L298N Drop, steps 1 and 2, fill the predicted column of Table-5 before the motor is powered.
 
-Use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md) to
-record the supply and motor/module used, your prediction, requested command,
-observed direction, whether PWM 80 starts the motor, and any heating or
-unexpected behavior. Article 1003 explains why driver voltage loss affects
-motor voltage and why power dissipated in the L298N becomes heat; stop and
-investigate unexpected heating rather than treating it as a normal result.
+1. Upload the program with the bench supply unplugged. Confirm that the indicator LED is off and the serial monitor shows the start message.
 
-### What the code does
+2. Apply the motor bus last, as in Article 1009, Safety and Supervision.
 
-`PinsL298N()` configures the driver's six Uno pins and powers down the enable
-outputs. `Bits(bits_1100)` routes the first signed motor command to channel A
-with the direct left-input mapping. `Button` is configured in momentary mode
-so motor enable is true only while the operator holds the button. On a
-direction change, `Timer` holds the motor command at zero for 300 ms before
-applying the new direction; the interlock still applies if `x` was sent
-first. The button is sampled on every pass through `loop()`.
+3. Set the multimeter to DC volts across the two terminals of the motor.
 
-The sketch calls `PowerDownL298N()` whenever the enable is released. It uses
-channel A for the motor and sends zero PWM to channel B.
+4. Press the joystick button once (state ON). Send f, then 1. Record the meter reading and whether the shaft turns.
 
----
+5. Repeat for 2, 3, and 4. Send 0, then repeat the four readings with r.
 
-## 6. Verification and Troubleshooting
+6. Press the joystick button once (state OFF) and confirm that the motor stops. Unplug the bench supply before any change of wiring.
 
-| Check | Expected result |
-|-------|-----------------|
-| Button released | Indicator off; after 50 ms debounce, enable PWM disabled |
-| `w` sent while enabled | Channel A receives PWM 80 |
-| `s` sent after `w` | Output command is zero for 300 ms before reverse PWM |
-| `x` sent | Motor command is zero |
-| Button released during motion | PWM disable occurs after button debounce |
-| Motor does not start | First verify supply voltage, module wiring and ground; PWM 80 may be below its start threshold |
+**Expected output and verification.** The measured voltage rises in proportion to the duty cycle and agrees with Equation-4 within the meter tolerance, and its sign reverses with r. At a low duty cycle the motor may not turn although a voltage is present, because the motor needs a minimum voltage to overcome the friction of its gear train; record the lowest duty cycle at which it starts. A DC multimeter reads the average of a PWM waveform only approximately; record the meter model in the notebook. Experiment-7 returns to this measurement and finds the starting duty cycle with a line fit.
 
-| Symptom | Check |
-|---------|-------|
-| No motor movement | Confirm supply and motor ratings, common ground, ENA jumper/PWM arrangement, and OUT1/OUT2 connections |
-| Direction differs from expectation | Motor lead polarity and driver input mapping determine physical direction; document what the bench shows |
-| Uno resets | Separate motor supply, verify common ground and current capability, check for shorts |
-| Motor keeps receiving PWM after release | Check D2-to-GND wiring and ensure this experiment's sketch is uploaded |
+**Watch for.** A motor at full speed regardless of the key (an ENA or ENB jumper still fitted). No voltage at all (missing common ground, the motor bus not applied, or the button state OFF). The Uno resets when the motor starts (motor current returning through a logic ground path; check the ground wiring against Article 1009, Circuit-1). An L298N heat sink that becomes hot at a low duty cycle (stop and check the wiring).
 
----
 
-## 7. What Carries Forward
+## Related Articles
 
-Record which physical motor direction corresponds to each signed command.
-Do not assume that “forward” is universal: motor mounting and wire polarity
-matter. Experiment-4 is an optional `Bits()` familiarization. The formal
-L298N Setup procedure is completed in Experiment-5 with the joystick and the
-[Article 1009 Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
+- [1000 Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I)
+- [1001 Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO)
+- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq)
+- [1005 Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr)
+- [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4)
+- [1020 Note, Button.h and Timer.h](https://drive.google.com/file/d/1mLdqeahOOybPuAjdK8CqOVFJma677UWk)
 
-## References
-
-Safety and draft status: this experiment has not been physically tested on
-hardware and remains a work in progress. Do not connect or power the motor
-until the setup has been reviewed and supervised. Read the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
-before use.
-
-1. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals* (GPIO and PWM pins).
-2. Article 1003, *L298N Motor Driver* (H-bridge, voltage loss, and heating).
-3. Article 1009 [supplemental motor-movement checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) and parent/teacher/
-   student guide.
-4. `Code-JUL/include/L298N.h` and `Code-JUL/include/Bitwise.h`.
-
-MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.
+Copyright Jesse Carpenter (Carpenter Software). Software: MIT License; see the repository LICENSE and DISCLAIMER.md.

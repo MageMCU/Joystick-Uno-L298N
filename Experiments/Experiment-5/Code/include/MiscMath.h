@@ -42,9 +42,25 @@ namespace csjc
     template <typename real>
     real AngleRadian(real a, real b)
     {
-        real refAngle = (real)atan2((double)b, (double)a);
-        if (refAngle < (real)0)
-            refAngle += (real)2.0 * (real)PI;
+        // Division by zero requires no check
+        // QuadI (refAngle)
+        real refAngle = atan((double)b / (double)a);
+        // QuadII
+        if (a < (real)0 && b >= (real)0)
+        {
+            refAngle = (real)PI + refAngle;
+        }
+        // QuadIII
+        if (a < (real)0 && b < (real)0)
+        {
+            refAngle = (real)PI + refAngle;
+        }
+        // QuadIV
+        if (a >= (real)0 && b < (real)0)
+        {
+            refAngle = (real)2.0 * (real)PI + refAngle;
+        }
+
         return refAngle;
     }
 
@@ -123,7 +139,7 @@ namespace csjc
         return val;
     }
 
-    inline void Debug(String msg)
+    void Debug(String msg)
     {
         Serial.println(msg);
     }

@@ -1,20 +1,9 @@
-# Joystick-Uno-L298N, Experiment-3 Code
+# Experiment-3 Code
 
-Standalone PlatformIO draft for cautious, single-motor L298N familiarization. Open
-this folder in VS Code and follow [`../Instructions/README.md`](../Instructions/README.md).
+PlatformIO project for Article 1004, Experiment-3. Open this `Code` folder in VS Code, not the repository root.
 
-Draft project; confirm the mapping and safety instructions against the module.
+- `include/`: copies of the original header files of `Code-JUL/include` (commit f2307a1), unchanged. Labs that ask for a correction change the copy here, never the file in Code-JUL.
+- `src/`: one folder per lab: 1_MiscMath 2_DutyCycle 
+- `platformio.ini`: select one lab with `build_src_filter`; the comments list the line for every lab.
 
-The sketch uses the production `L298N`, `Bitwise`, `Button`, and `Timer`
-headers copied into this project's `include/` folder. It uses the direct
-channel-A mapping `bits_1100` and requires the operator to hold the enable
-button; after the button's 50 ms debounce, releasing it removes PWM. A change
-between forward and reverse enforces 300 ms at zero first, including when a
-stop command was sent before requesting the opposite direction.
-
-**Black-box boundary:** serial command and enable-button state are inputs;
-driver commands and actual motor movement are outputs to compare. This is a
-work in progress and has not been physically tested on hardware. Do not
-power the motor without instructor review. See the
-[experiment safety notice](../../../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
+Serial monitor: 9600 baud. Steps, predictions, and expected output: [Instructions/README.md](../Instructions/README.md).

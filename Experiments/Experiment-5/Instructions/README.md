@@ -1,185 +1,100 @@
-# Joystick-Uno-L298N, Experiment-5
+# Experiment-5: Joystick to Motors
 
-## Article 1009 Procedure 2: L298N Setup
+*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
 
-This draft integrates the joystick, the L298N driver, the `Bits()` settings,
-the Article 1009 Motor Movement Checklist, and the follow-up voltage
-measurements. Complete and record Experiment-2 (Article 1009 **Joystick
-Setup**) before connecting the motor driver.
+Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
-> **Draft and safety notice:** This guide and sketch require instructor review
-> against the exact module and bench setup. The Uno build has been checked;
-> no physical motor, direction, or voltage-measurement test has been
-> performed. Follow the exact L298N board documentation and Article 1003.
+**Objective.** Find the one Bits() value that makes every joystick position produce the expected motor movement, then measure the loaded motor bus and the L298N drop.
 
----
+**Builds on.** Experiments 2 and 4; Article 1009, L298N Setup and the Motor Movement Checklist.
 
-## 1. Goal and Sketch Behavior
+## Lab 1: Vector3.h and the Joystick Vector
 
-The sketch reads joystick X on A1 and Y on A0 every 100 ms while the D2
-joystick button is held. It reports the joystick octant and signed left/right
-PWM values over Serial. Releasing D2 powers down the L298N outputs after the
-button's 50 ms debounce; this does not wait for the next control interval.
+**Objective.** Treat the two joystick inputs as a vector, measure its magnitude and angle, and compare the two angle functions of MiscMath.h.
 
-The sketch starts with `bits_0000`. While D2 is released, enter one
-hexadecimal digit (`0` through `f`) in the Serial Monitor to select that
-`Bits()` configuration. The sketch prints the four flags in bit order
-E/P/L/R (bits 3/2/1/0). It ignores Bits input while D2 is held. The sketch
-does not decide which configuration matches the physical motor layout; that
-must be determined by the checklist.
+A vector has a magnitude and a direction; here it is the pair (x, y) of normalized joystick inputs, stored in a Vector3<float> with z equal to 0. Magnitude() returns the square root of x² + y². Operator overloading gives an operator, such as *, a meaning for a class; for Vector3, u * v is the dot product, which for two unit vectors equals the cosine of the angle between them.
 
-### Black-box investigation
+**Code.** Experiments/Experiment-5/Code/src/1_Vector3/main.cpp, Code-12. Before uploading, make the two analogRead() lines of loop() match the lines recorded in Experiment-2. For the test points (1, 0), (1, 1), (0, 1), (−1, 0), (0, −1), and (0, 0), and then for the live joystick once per second, the program prints Magnitude(), AngleRadian() and Angle2Radian() converted to degrees, and the octant computed from the angle as the whole part of the angle divided by 45, plus 1.
 
-The combined joystick, firmware, L298N, supply, and motors form the system
-under investigation. Inputs include stick position, enable state, selected
-`Bits()` pattern, and supply/motor conditions; observable outputs include
-ADC/serial diagnostics, wheel movement, and measured voltages. Predict the
-outcome for one direction before each supervised trial, vary one factor at a
-time, and compare serial commands with actual movement and meter readings.
-A software diagnostic is not proof of physical behavior. Use the
-[Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md) and
-preserve a separate record for each tested pattern.
+**Prediction.** Predict the magnitude and the two angles for each test point.
 
-## 2. Materials
+1. Run the program and record the table.
 
-| Item | Qty | Notes |
-|------|-----|-------|
-| Arduino Uno and USB cable | 1 | |
-| Two-axis joystick with SW contact | 1 | X=A1, Y=A0, SW to D2/GND |
-| L298N module and compatible DC motors | 1 each | Check ratings and exact module instructions |
-| Correctly rated motor supply | 1 | Never power motors from Uno 5V |
-| Indicator LED and 220 Ohm resistor | 1 each | D3 |
-| DC voltmeter | 1 | Use a suitable DC voltage range |
-| Breadboard and jumper wires | as needed | Common ground as required by module |
+2. Record the magnitude at (1, 1). It is 1.414, not 1. The joystick inputs fill a square from −1 to 1 on each axis, not a circle of radius 1; this square input space is the reason for the octant algorithm of Article 1001.
 
-## 3. Software and Wiring
+3. Compare the two angle functions. Both return 0, 45, 90, 180, and 270 degrees for the first five points. AngleRadian() divides y by x; at (0, 1) the division by zero gives infinity under the floating point standard (IEEE 754), and atan() of infinity is 90 degrees, so the axis is still correct. At (0, 0) the division 0 by 0 gives NaN (not a number), and AngleRadian() prints nan. Angle2Radian() uses atan2(), which takes y and x separately and returns 0 at the origin.
 
-Open `Experiments/Experiment-5/Code/` as the PlatformIO project. Build and
-upload with motor power disconnected. The project includes copied production
-headers for `Joystick`, `LinearMap`, `L298N`, `Bitwise`, `Button`, `Timer`,
-and their dependencies.
+4. Note that (1, 1) at 45 degrees gives octant 2 by the angle, while the Joystick class reports octant 1 for the same point (Lab 2). The point lies on the boundary between the two octants, and each method assigns the boundary to a different side.
 
-| Signal | Uno pin |
-|--------|---------|
-| Joystick VRx / VRy | A1 / A0 |
-| Joystick SW | D2 to GND; internal pull-up |
-| Enable indicator LED | D3 through 220 Ohm resistor to GND |
-| L298N ENA, IN1, IN2 | D5, D6, D7 |
-| L298N IN3, IN4, ENB | D8, D9, D10 |
-| Uno GND | L298N logic GND and common supply ground as required |
+5. Move the live joystick slowly around its full travel and record where the octant computed from the angle changes.
 
-With all power disconnected, inspect signal wiring, motor connections, supply
-polarity and common ground. Connect motors only to the L298N output
-terminals. Module regulator/enable jumpers vary: follow the exact module
-markings and Article 1003. Never connect motor supply voltage to Uno 5V, move
-jumpers while powered, or connect motor outputs to Uno pins. Raise and secure
-the wheels so the robot cannot drive off the bench. Keep hands, hair and loose
-objects clear. Stop if the driver or motor becomes unexpectedly hot.
+**Expected output and verification.** The recorded table agrees with steps 2 to 4, and the angle octant changes every 45 degrees.
 
-## 4. Article 1009 Motor Movement Checklist
+## Lab 2: Joystick.h, Test Vectors
 
-Use the [Article 1009 supplemental Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
-Have an instructor supervise the powered procedure. Keep motor power
-disconnected until the wiring and voltage/polarity checks are complete.
+**Objective.** Verify the octant algorithm in software, with known inputs, before the motors are connected. A test vector is a chosen input together with the output it must produce.
 
-1. Start with the joystick centered and D2 released. Open Serial Monitor at
-   9600 baud and confirm the startup setting is `bits_0000`.
-2. With motor power connected only after safety checks, hold D2 and test the
-   cardinal directions first, then the diagonals. Test one direction at a
-   time and record the expected arrow, observed movement, and pass/fail.
-   Release D2 between tests if needed to stop the motors.
-3. Complete all eight checklist positions for the selected configuration.
-   Record its E/P/L/R flags and the observed movement for every position.
-4. If any direction fails, release D2, enter the next pattern (`1` through
-   `f`, in order), and repeat the full eight-direction checklist. Change
-   patterns only while D2 is released. Stop at the first pattern that passes
-   all eight positions and record it. Do not change wiring or module jumpers
-   while powered.
-5. Preserve the completed checklist and note the selected pattern, motor
-   polarity, mounting orientation, supply, and test conditions. Use a
-   separate full checklist page for each pattern in the
-   [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md).
+**Code.** Experiments/Experiment-5/Code/src/2_Joystick/main.cpp, Code-13. Uno and USB cable only. The program passes each input of Table-8 to UpdateInputs(), prints Left(), Right(), and Octant() beside the expected values, marks each row PASS or FAIL, and prints the number of failures.
 
-The target behavior is the direction specified by the supplemental checklist,
-not merely a nonzero octant or PWM report. Serial output is diagnostic
-evidence only; it cannot prove that the physical wheels moved correctly.
+**Table-8.** Test vectors for the eight positions of the Motor Movement Checklist, with the expected outputs of Article 1009, Image-5, the octant that Joystick.h reports, and two tests of the tolerance of 0.001.
 
-| Checklist position | Expected direction | Observed direction | Pass/fail |
-|--------------------|--------------------|--------------------|-----------|
-| Forward | | | |
-| Forward-right | | | |
-| Right | | | |
-| Reverse-right | | | |
-| Reverse | | | |
-| Reverse-left | | | |
-| Left | | | |
-| Forward-left | | | |
+| Position | Input (x, y) | Expected [left, right] | Octant | Observed |
+|---|---|---|---|---|
+| Right Turn | (1, 0) | [1, −1] | 1 |   |
+| North-East | (1, 1) | [1, 0] | 1 |   |
+| Forward | (0, 1) | [1, 1] | 2 |   |
+| North-West | (−1, 1) | [0, 1] | 4 |   |
+| Left Turn | (−1, 0) | [−1, 1] | 4 |   |
+| South-West | (−1, −1) | [−1, 0] | 5 |   |
+| Backward | (0, −1) | [−1, −1] | 6 |   |
+| South-East | (1, −1) | [0, −1] | 8 |   |
+| Tolerance, stop | (0.0005, 0.0005) | [0, 0] | 0 |   |
+| Tolerance, octant 1 | (0.002, 0) | [0.002, −0.002] | 1 |   |
 
-## 5. Follow-up Voltage Measurements
+1. Run the program and fill in the Observed column. The program prints Failures: 0 when every row passes.
 
-After identifying a passing `Bits()` configuration, perform Article 1009's
-voltage checks with a DC voltmeter and the instructor's supervision. Use the
-guide's specified supply/motor conditions and meter connection points; avoid
-shorting adjacent terminals with the probes.
+2. Each position lies on a boundary between two octants, yet each reports one octant. Read the conditions of _joystick() in include/Joystick.h and explain why North-West reports 4 and Forward reports 2: the test |x| >= |y| comes first, and >= sends every tie to the x branch.
 
-1. Measure and record the unloaded motor-supply bus voltage (`VS` to GND).
-2. With the checklist configuration selected, measure the loaded bus voltage
-   while commanding full-duty forward.
-3. Measure the voltage across the motor output terminals under the specified
-   operating condition.
-4. Calculate the L298N drop as loaded bus voltage minus motor-terminal
-   voltage. Record units and conditions with every value.
-5. Repeat the measurements after changing the supply or motors, as directed
-   by Article 1009. Variac use is instructor/supervisor-led only.
+3. Read the last two lines, which move North-West by 0.01 to either side of its boundary: (−1.00, 0.99) reports octant 4 and (−0.99, 1.00) reports octant 3.
 
-Record your prediction and every actual movement and meter reading in the
-notebook. Include meter probe points, load state, units, supply and motor,
-and supervision. Preserve failed-pattern records; do not overwrite them with
-the final passing configuration.
+**Expected output and verification.** Every row agrees with Table-8. Together with Lab 1, the algorithm is verified before any motor turns, so a wrong movement in Lab 3 can only come from the Bits() value or the wiring.
 
-| Measurement | Reading | Conditions / notes |
-|-------------|---------|--------------------|
-| Unloaded bus, VS to GND | | |
-| Loaded bus, full-duty forward | | |
-| Motor output terminals | | |
-| Calculated driver drop | | |
+## Lab 3: Step2_JUL and the Motor Movement Checklist
 
-## 6. Verification and Troubleshooting
+**Code.** The Code-JUL folder, program Step2_JUL, Article 1009, Code-2. Select it with line 31 of platformio.ini, the shipped setting:
 
-| Check | Expected result |
-|-------|-----------------|
-| Uno build | PlatformIO succeeds for Uno/ATmega328P |
-| D2 released | L298N PWM outputs powered down after button debounce |
-| Hex input while released | Selected `Bits()` pattern and E/P/L/R flags reported |
-| D2 held | Octant and left/right PWM diagnostic output every 100 ms |
-| Eight checklist positions | Actual movement recorded; first all-pass Bits pattern retained |
-| Voltage worksheet | Measurements and operating conditions recorded after checklist |
+```
+build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_MathLessons/>
+```
 
-If an axis is wrong, revisit Experiment-2's joystick record. If the center
-drifts, verify joystick power/ground and documented center offsets. For
-incorrect motor direction, review the E/P/L/R pattern, motor leads, channel
-mapping, and mounting; stop and disconnect motor power before any wiring
-change. If the Uno resets or the driver overheats, stop and inspect ratings,
-supply capacity, grounds, shorts, and cooling before proceeding.
+The loop() function samples the push button on every pass and calls updateJoystick() once each control interval, BUTTON_TIMER_mS in Common.h: 100 ms in normal operation, 3000 ms when any debug flag is defined. While the button state is ON, updateJoystick() runs the signal chain and passes the two commands to UpdateL298N(). While the state is OFF, it calls PowerDownL298N(), which writes 0 to both enable inputs. Two dead zones act in series: Step2_JUL forces an input to zero when its magnitude is below X_OFFSET (0.05) or Y_OFFSET (0.06), and the Joystick class applies its own tolerance of 0.001.
 
-## 7. Scope and References
+**Prediction.** Before step 2, use Table-6 and the wiring of Table-1 to predict which group of values can pass. Values with bit 3 equal to 0 cross the enable pins. In a position where one motor reverses while the other is stopped, such as South-West [−1, 0], the stopped command then sets the speed of the running motor, so those values are expected to fail at that position.
 
-Experiment-5 is the draft for the second formal Article 1009 procedure. It
-does not claim physical validation, and it does not replace instructor
-supervision or the complete source checklists. The optional Experiments 3
-and 4 are preparation only.
+1. Copy the joystick result. Make the same changes to the two analogRead() lines of updateJoystick(), Step2_JUL, lines 106 and 107), that were recorded in Experiment-2. Set ledPin, line 44, to 12 by moving the comment marks to line 46. If the push button was measured as a pull down in Experiment-2, also give the Button activeLow = false, line 47). Article 1009 gives these lines as 103 and 104, 42, 44, and 45; the program now has two more comment lines above them.
 
-Safety and draft status: this experiment has not been physically tested on
-hardware and remains a work in progress. Do not power the L298N or motors
-until the exact setup has been reviewed and the activity is supervised.
-Review the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
-before use.
+2. Find the value. Carry out Article 1009, L298N Setup, steps 5, 7, and 9, with the Motor Movement Checklist. Start at bits_0000 in line 95. At the first wrong movement, stop, place the next value in the Bits() call, upload, and start the next row of the checklist. The first value that passes all eight positions is the value for this wiring.
 
-1. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*.
-2. Article 1001, *Joystick Algorithm* (X/Y normalization and octant routing).
-3. Article 1003, *L298N Motor Driver* (H-bridge, PWM, voltage loss, and heat).
-4. Article 1009, *Parent, Teacher, and Student Guide*.
-5. Article 1009 supplemental [*Motor Movement Checklist*](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
-6. `Code-JUL/src/Step2_JUL/main.cpp` and `Code-JUL/include/L298N.h`.
+3. Measure under load. With the passing value uploaded, carry out Article 1009, Measuring the Motor Bus and the L298N Drop, steps 3 to 8.
 
-MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.
+4. Tune the dead zone. With DEBUG_JOYSTICK defined, record the inputs printed at rest. Reduce X_OFFSET and Y_OFFSET only while a resting grip still produces commands of zero. Record the final values. Experiment-6 chooses the same values from statistics.
+
+5. Comment out the debug flag, upload, and test the eight positions once more at the normal 100 ms interval. The supervisor signs the notebook entry.
+
+**Expected output and verification.** One value passes all eight positions; on the author's bench it is bits_1010. The checklist rows for every value tried are kept, including the failed rows. The notebook records the passing value, the loaded measurements, and the final dead zone.
+
+**Watch for.** A robot that turns the wrong way (continue the checklist; do not move a motor lead). A motor that moves with the grip at rest (the dead zone too small, or the joystick supply moved without repeating the reading at rest; Article 1009, L298N Setup, step 7). A slow response (a debug flag left defined, which sets the control interval to 3000 ms).
+
+
+## Related Articles
+
+- [1000 Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I)
+- [1001 Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO)
+- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq)
+- [1005 Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr)
+- [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4)
+- [1020 Note, Button.h and Timer.h](https://drive.google.com/file/d/1mLdqeahOOybPuAjdK8CqOVFJma677UWk)
+
+Copyright Jesse Carpenter (Carpenter Software). Software: MIT License; see the repository LICENSE and DISCLAIMER.md.

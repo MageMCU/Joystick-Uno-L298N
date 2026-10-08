@@ -36,18 +36,18 @@ void setup()
     pinMode(LED_PIN, OUTPUT);
 
     // Temporary (local) variables
-    int buttonPin = 2; // UNO D2, push button to GND
-    int buttonLED = 3; // UNO D3, indicator LED through 220 ohm to GND
+    int buttonPin = 2;
+    int buttonLED = 3;
 
     // Instantiate Button Object
-    // Default wiring (activeLow = true): the button closes to GND and
-    // the class configures the pin as INPUT_PULLUP, so no external
-    // resistor is needed. This is the same wiring the joystick SW pin
-    // uses in Code-JUL. For a button wired to 5V with an external
-    // pull down resistor, use Button(buttonPin, buttonLED, false).
-    button = Button(buttonPin, buttonLED);
-    button.begin();
+    // FIXED 20261008: external pull-down resistor, so the button reads
+    // HIGH when pressed: activeLow = false. Button.h configures the pin
+    // (INPUT) the first time updateButton() runs. With the default
+    // activeLow = true, that first call would select INPUT_PULLUP and
+    // replace a pinMode(buttonPin, INPUT) written here.
+    button = Button(buttonPin, buttonLED, false);
 
+    // 
     timer.resetTimer();
 }
 
@@ -72,7 +72,7 @@ void loop()
                 Serial.println("Button ON...");
 
                 currentCount = counter - lastCount;
-                Serial.print("Number of Loops per 2000 mS: ");
+                Serial.print("Number of Loops/2000mS: ");
                 Serial.println(currentCount);
 
                 digitalWrite(LED_PIN, HIGH);
@@ -95,7 +95,8 @@ void loop()
             }
         }
     } 
-    else // Button OFF (always the first state after power up)
+    else // Button OFF (Should always 
+    // come first upon start-up)
     if (once && tickON)
     {
         // Simulate Motor Shutdown

@@ -19,8 +19,8 @@
 #define L298N_h
 
 #include <Arduino.h>
-#include "Bitwise.h"
-#include "MiscMath.h"
+#include "numerics/Bitwise.h"
+#include "numerics/MiscMath.h"
 #include "Common.h"
 
 #define ZERO 0x0
@@ -97,7 +97,7 @@ namespace csjc
         void _RightSet2();
 
     public:
-        // Constructors
+        // Contructors
         L298N();
         L298N(uint8_t LeftEN,
               uint8_t LeftA,
@@ -114,41 +114,39 @@ namespace csjc
 #endif
         void Bits(BitsL298N bitsValue);
         // PowerMotors safety switch (OFF false, ON true)
-        void UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag = false);
+        void UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag);
         void PowerDownL298N();
     };
 
     // Default
-    inline L298N::L298N()
-        : L298N(5, 6, 7, 8, 9, 10)
+    L298N::L298N()
     {
+        _EN_A = 5;
+        _LeftIN_A = 6;
+        _LeftIN_B = 7;
+        _RightIN_A = 8;
+        _RightIN_B = 9;
+        _EN_B = 10;
     }
 
     // set L298N Pins in setup()
-    inline L298N::L298N(uint8_t LeftEN,
-                        uint8_t LeftA,
-                        uint8_t LeftB,
-                        uint8_t RightA,
-                        uint8_t RightB,
-                        uint8_t RightEN)
-        : _bitsValue(0),
-          _bitRightIN_Flag(false),
-          _bitLeftIN_Flag(false),
-          _bitPWM_Flag(false),
-          _bitEN_Flag(false),
-          _EN_A(LeftEN),
-          _LeftIN_A(LeftA),
-          _LeftIN_B(LeftB),
-          _RightIN_A(RightA),
-          _RightIN_B(RightB),
-          _EN_B(RightEN),
-          _pwmA(0),
-          _pwmB(0)
+    L298N::L298N(uint8_t LeftEN,
+                 uint8_t LeftA,
+                 uint8_t LeftB,
+                 uint8_t RightA,
+                 uint8_t RightB,
+                 uint8_t RightEN)
     {
+        _EN_A = LeftEN;
+        _LeftIN_A = LeftA;
+        _LeftIN_B = LeftB;
+        _RightIN_A = RightA;
+        _RightIN_B = RightB;
+        _EN_B = RightEN;
     }
 
     // Used in setup()
-    inline void L298N::PinsL298N()
+    void L298N::PinsL298N()
     {
         pinMode(_EN_A, OUTPUT);
         pinMode(_LeftIN_A, OUTPUT);
@@ -160,7 +158,7 @@ namespace csjc
     }
 
 #ifdef DEBUG_L298N
-    inline void L298N::DebugBits()
+    void L298N::DebugBits()
     {
         if (_bitEN_Flag)
             Serial.print("bit-order(3210): 1");
@@ -183,7 +181,7 @@ namespace csjc
 #endif
 
     // Follow instructions in Supplimental Article...
-    inline void L298N::Bits(BitsL298N bitsValue)
+    void L298N::Bits(BitsL298N bitsValue)
     {
         // DO NOT STORE THE _bitsValue VARIABLE IN THE CLASS Bitwise.h.
         // USE IT IN THIS CLASS ONLY...
@@ -223,7 +221,7 @@ namespace csjc
     }
 
     // Used with a timer within loop()
-    inline void L298N::UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag)
+    void L298N::UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag = false)
     {
         uint8_t ENA;
         uint8_t ENB;
@@ -263,11 +261,6 @@ namespace csjc
 #endif
         }
 
-        // The L298N accepts an 8-bit PWM magnitude; clamp before abs()
-        // so even INT_MIN cannot overflow during magnitude conversion.
-        _pwmA = _pwmA > 255 ? 255 : (_pwmA < -255 ? -255 : _pwmA);
-        _pwmB = _pwmB > 255 ? 255 : (_pwmB < -255 ? -255 : _pwmB);
-
         // Direction Pins require the Negative and Positive values (-/+)
         _SetDirectionPins();
 
@@ -291,14 +284,14 @@ namespace csjc
     }
 
     // Used with buttons-OFF
-    inline void L298N::PowerDownL298N()
+    void L298N::PowerDownL298N()
     {
         analogWrite(_EN_A, LOW);
         analogWrite(_EN_B, LOW);
     }
 
     // Private Method
-    inline void L298N::_SetDirectionPins()
+    void L298N::_SetDirectionPins()
     {
         if (_pwmA >= ZERO)
         {
@@ -336,7 +329,7 @@ namespace csjc
     }
 
     // Private Method
-    inline void L298N::_LeftSet1()
+    void L298N::_LeftSet1()
     {
         // Motors Output
         digitalWrite(_LeftIN_A, LOW);
@@ -347,7 +340,7 @@ namespace csjc
     }
 
     // Private Method
-    inline void L298N::_LeftSet2()
+    void L298N::_LeftSet2()
     {
         digitalWrite(_LeftIN_B, LOW);
         digitalWrite(_LeftIN_A, HIGH);
@@ -357,7 +350,7 @@ namespace csjc
     }
 
     // Private Method
-    inline void L298N::_RightSet1()
+    void L298N::_RightSet1()
     {
         digitalWrite(_RightIN_A, LOW);
         digitalWrite(_RightIN_B, HIGH);
@@ -367,7 +360,7 @@ namespace csjc
     }
 
     // Private Method
-    inline void L298N::_RightSet2()
+    void L298N::_RightSet2()
     {
         digitalWrite(_RightIN_B, LOW);
         digitalWrite(_RightIN_A, HIGH);

@@ -6,7 +6,7 @@ Review of the Joystick-Uno-L298N repository, updated October 7, 2026. Each item 
 
 | # | Finding | Location | Resolution |
 |---|---------|----------|------------|
-| 1 | Button wiring conflicted with the class default. The sketch set `pinMode(buttonPin, INPUT)` with the comment "Uses pull-down resistor" but constructed `Button(buttonPin, buttonLED)` with the default `activeLow = true`. On the first `updateButton()` the class calls `begin()`, which reconfigures the pin as `INPUT_PULLUP` and treats LOW as pressed, so a pull down wired button read as pressed at idle. `Code-JUL` (Step1 and Step2) uses the same default and therefore assumes the switch closes to ground. | `Experiments/Experiment-1/Code/src/3_Button/main.cpp` | **Fixed.** Wiring aligned with `Code-JUL`: button between D2 and GND, no external resistor, `button.begin()` called in `setup()`, `pinMode` line removed. The pull down alternative (`Button(pin, led, false)`) is documented in the code comment and in the Instructions. |
+| 1 | Button wiring conflicted with the class default. The sketch set `pinMode(buttonPin, INPUT)` with the comment "Uses pull-down resistor" but constructed `Button(buttonPin, buttonLED)` with the default `activeLow = true`. On the first `updateButton()` the class calls `begin()`, which reconfigures the pin as `INPUT_PULLUP` and treats LOW as pressed, so a pull down wired button read as pressed at idle. `Code-JUL` (Step1 and Step2) uses the same default and therefore assumes the switch closes to ground. | `Experiments/Experiment-1/Code/src/3_Button/main.cpp` | **Fixed 20261008 (replaces the 20261007 fix).** The author's external 10 kΩ pull down wiring is kept, as Article 1009 describes, and the constructor is `Button(buttonPin, buttonLED, false)`; the `pinMode` line is removed. The series does not rely on the internal pull up resistors. |
 | 2 | `upload_port = /dev/ttyACM0` hard coded (Linux device name). Uploads fail on macOS and Windows until edited. `Code-JUL/platformio.ini` leaves the port to auto detection. | `Experiments/Experiment-1/Code/platformio.ini` | **Fixed.** Line commented out with examples for Linux, macOS, and Windows. `monitor_speed = 9600` added to both projects. |
 | 3 | `Code-JUL` compiles with `build_flags = -std=gnu++11`; the Experiment-1 project did not set a standard. | `Experiments/Experiment-1/Code/platformio.ini` | **Fixed.** Same flag added. |
 | 4 | I2C code linked into every `Code-JUL` build. `Headers.h` included `BusI2C.h` and `build_src_filter` always included `+<DEP/>`, so `Wire` and the TWI driver were compiled into Step1 and Step2 although neither uses I2C. The build produced two warnings from `BusI2C.cpp` (unused parameter, comparison always true). | `Code-JUL/include/Headers.h`, `Code-JUL/platformio.ini`, `Code-JUL/src/DEP/`, `Code-JUL/include/BusI2C.h` | **Fixed.** Include, filter entry, folder, and header removed. Step2_JUL program size fell from 8196 to 6960 bytes and static data from 544 to 329 bytes; Step1_Joystick from 4708 to 3472 bytes and 512 to 297 bytes. The class remains available in the MageMCU Serial-Communication repository. |
@@ -14,6 +14,8 @@ Review of the Joystick-Uno-L298N repository, updated October 7, 2026. Each item 
 | 6 | Two dead zones exist in the signal chain. `Step2_JUL/main.cpp` zeroes inputs below 0.05 (X) and 0.06 (Y) before the algorithm; `Joystick.h` applies its own tolerance of 0.001. Only the 0.001 value was documented. | `Code-JUL/src/Step2_JUL/main.cpp`, `Motor-Movement-Checklist/ReadMe.md`, root `README.md` | **Documented.** Root README now describes both. Article 1004 should explain both. |
 
 ## Header Review (2026-10-07)
+
+> **2026-10-08:** the header changes described in this section were reversed. `Code-JUL/include/` and `Code-JUL/src/` were restored to the bench verified commit f2307a1; the Numerics merge moved `Bitwise.h`, `LinearMap.h`, `MiscMath.h`, `TypeConv.h`, and `Vector3.h` unchanged into `include/numerics/` and added `include/Debug.h`, the Numerics classes, and `src/Step3_MathLessons/` (see `RELEASES.md`, v2.2.0). The findings below remain valid as review notes.
 
 The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the Markdown documentation, and the available build/simulation environment. Changes in this review were limited to `Code-JUL/include/`; `Button.h` and `Timer.h` were intentionally left unchanged.
 
@@ -27,6 +29,13 @@ The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the 
 | `Joystick.h` | Output getters only read state but were not const-qualified. They are now `const`. | Build succeeded; verify octant outputs and direction getters with representative inputs and the bench checklist. |
 
 **Validation performed:** on 2026-10-07, `pio run` succeeded for the production `Code-JUL` project and all five `Experiments/Experiment-N/Code` projects. The generated Uno firmware sizes are recorded below. A temporary debug build ran in simavr and exercised the button-enabled path through joystick processing and an L298N output command. simavr reported missing AVCC and returned zero for both analog reads, so the observed octant/output is not evidence of realistic joystick behavior. The attempted second-press simulation did not yield a usable trace. No systematic header unit tests or physical hardware validation have been performed; those checks remain open.
+
+## Article 1004 DRAFT 3 (2026-10-08)
+
+- Experiments 1 to 5 were rewritten from Article 1004 DRAFT 3; the Copilot drafts of Experiments 2 to 5, their modified header copies, and 160 committed `.pio` build files were removed. Every experiment `include/` folder now holds the original headers of commit f2307a1.
+- Each `Instructions/README.md` is generated from the article text. Experiments 6 to 9 (numerics) have instructions only; their code is `Code-JUL/src/Step3_MathLessons/`, including the new lessons 17, 18, and 19.
+- `Code-JUL/platformio.ini`: the active `build_src_filter` is back on line 31, where Article 1009 points. Every filter must now also exclude `Step3_MathLessons`; the filter lines printed in Article 1009 (Joystick Setup, step 3; L298N Setup, step 5) need that addition.
+- Article cross review (1000, 1001, 1002, 1003, 1005, 1009): see the Author Review section of Article 1004 DRAFT 3.
 
 ## Documentation
 

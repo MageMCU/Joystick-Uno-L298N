@@ -20,15 +20,15 @@
 
 #include <Arduino.h>
 
-#include "Bitwise.h"
+#include "numerics/Bitwise.h"
 #include "Button.h"
-#include "TypeConv.h"
+#include "numerics/TypeConv.h"
 #include "Joystick.h"
 #include "L298N.h"
-#include "LinearMap.h"
-#include "MiscMath.h"
+#include "numerics/LinearMap.h"
+#include "numerics/MiscMath.h"
 #include "Switch.h"
 #include "Timer.h"
-#include "Vector3.h"
+#include "numerics/Vector3.h"
 
 #endif

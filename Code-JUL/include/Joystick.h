@@ -23,7 +23,7 @@
 #define Code_JUL_Joystick_h
 
 #include <Arduino.h>
-#include "MiscMath.h"
+#include "numerics/MiscMath.h"
 #include "Common.h"
 
 // Carpenter Software - Jesse Carpenter
@@ -50,13 +50,13 @@ namespace csjc
         Joystick();
         ~Joystick() = default;
         // Getters
-        bool IsLeftForward() const;
-        bool IsRightForward() const;
+        bool IsLeftForward();
+        bool IsRightForward();
         // METHODS
         void UpdateInputs(real inputX, real inputY);
-        real Left() const;
-        real Right() const;
-        int Octant() const;
+        real Left();
+        real Right();
+        int Octant();
     };
 
     // Constructor
@@ -72,13 +72,13 @@ namespace csjc
 
     // Getters
     template <typename real>
-    bool Joystick<real>::IsLeftForward() const
+    bool Joystick<real>::IsLeftForward()
     {
         return _outputLeft > (real)0;
     }
 
     template <typename real>
-    bool Joystick<real>::IsRightForward() const
+    bool Joystick<real>::IsRightForward()
     {
         return _outputRight > (real)0;
     }
@@ -94,21 +94,21 @@ namespace csjc
 
     // Method output
     template <typename real>
-    real Joystick<real>::Left() const
+    real Joystick<real>::Left()
     {
         return _outputLeft;
     }
 
     // Method output
     template <typename real>
-    real Joystick<real>::Right() const
+    real Joystick<real>::Right()
     {
         return _outputRight;
     }
 
     // Method output
     template <typename real>
-    int Joystick<real>::Octant() const
+    int Joystick<real>::Octant()
     {
         return _octant;
     }

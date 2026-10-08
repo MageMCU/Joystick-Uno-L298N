@@ -1,10 +1,53 @@
 # Releases & Active Study
 
-**This repository is under active development.** All releases represent milestones in the ongoing joystick algorithm study and firmware refinement.
+**This repository is under active development.** All releases represent milestones in the ongoing joystick algorithm study and software refinement.
+
+---
+
+## Unreleased: v2.3.0 (2026-10-08), Article 1004 experiments
+
+- Experiments 1 to 5 rebuilt from Article 1004 DRAFT 3: every `include/` folder holds the original header files of commit f2307a1, unchanged; new labs Experiment-1 `4_Switch`; Experiment-2 `1_Preprocessor`, `2_LinearMap`; Experiment-3 `1_MiscMath`, `2_DutyCycle`; Experiment-4 `1_Bitwise`, `2_TypeConv`, `3_BitsLEDs`; Experiment-5 `1_Vector3`, `2_Joystick`. Experiment-2 and Experiment-5 use Step1_Joystick and Step2_JUL for the Article 1009 setup procedures
+- Experiment-1, Lab 3: `Button(buttonPin, buttonLED, false)` for the external pull down resistor (the class replaced the `pinMode(buttonPin, INPUT)` line with `INPUT_PULLUP`)
+- Experiments 6 to 9 (advanced, numerics): instructions; new lessons `17_DeadZone`, `18_MotorLineFit` (uses LineFit2.h, credit David Eberly), `19_JoystickFrame`
+- Instructions/README.md of every experiment generated from the article text; article links added to README.md
+- `Code-JUL/platformio.ini`: active `build_src_filter` returned to line 31 (Article 1009); notes moved below it
+- Removed the Copilot drafts of Experiments 2 to 5 and 160 committed `.pio` build files; added a root `.gitignore`
+- Verified: Step1_Joystick and Step2_JUL hex identical to f2307a1; all labs and lessons compile with avr-gcc 7.3.0 (`-Wall -Wextra`, no warnings); lab output confirmed in simavr
+
+## Unreleased: v2.2.0 (2026-10-08), Numerics merge
+
+**Code-JUL restored to the bench verified headers**
+- `Code-JUL/include/` and `Code-JUL/src/` restored to commit f2307a1 (2026-10-01). This reverses the v2.1.0 header review changes listed below, so that the repository again holds the code that was tested on the bench. The v2.1.0 changes are kept in the history and will be reconsidered as reviewed changes (see Article 1004 planning).
+
+**MageMCU Numerics merged into Code-JUL (additions only)**
+- Moved `Bitwise.h`, `LinearMap.h`, `MiscMath.h`, `TypeConv.h`, and `Vector3.h` from `Code-JUL/include/` into `Code-JUL/include/numerics/` with their contents unchanged. The only edits to files used by Step1_Joystick and Step2_JUL are the `#include` lines of `L298N.h`, `Joystick.h`, and `Headers.h`, which now name `numerics/`; the two `main.cpp` files are unchanged
+- Added `Code-JUL/include/numerics/` with the Numerics classes not already in Code-JUL (Algebra/include, 20241202): `Vector2.h`, `Point2.h`, `Point3.h`, `Matrix.h`, `Matrix2x2.h`, `Matrix3x3.h`, `Matrix4x4.h`, `Quaternion.h`, `Statistics.h`, `RandomNumber.h`
+- Added `Code-JUL/include/Debug.h`, the Numerics print helpers, without the `Debug()` overloads already defined in `MiscMath.h`
+- Added `Code-JUL/src/Step3_MathLessons/`: the Numerics test programs as 14 lessons, one folder per class (`01_Bitwise` to `14_Quaternion`), selected with `build_src_filter` (examples in `Code-JUL/platformio.ini`). Each lesson holds its class's test functions, moved from the Numerics `TESTS` files and calls them in order from `setup()`. Where a Numerics test called a function that the Code-JUL header does not have, the lesson was changed instead of the header: `01_Bitwise` defines its own `ReverseBits()`, and `02_TypeConv` uses the return value of `BytesToWord()` and `BytesToDWord()` in place of `GetWord()` and `GetDWord()`
+- `Code-JUL/platformio.ini`: the shipped filter also excludes `Step3_MathLessons/`, so Step2_JUL is still the program built by default
+- Not merged: the Numerics versions of the headers that already exist in Code-JUL (`Bitwise.h`, `TypeConv.h`, `LinearMap.h`, `MiscMath.h`, `Vector3.h`, `Button.h`, `Timer.h`); the Numerics Button and Timer tests (those classes are studied in Experiment-1); the archived `Joystick` and `L298N` text files. The `BusI2C` files are set aside for a later article
+- Removed `TempObjects/` (working copies of article PDFs; the published articles are linked from the README)
+- Experiments 1 to 5 are unchanged in this release; their `include/` folders still hold flat copies and will be rebuilt with the Article 1004 labs
+
+**Numerics bug fixes and Geometric Tools adaptations (2026-10-08)**
+- Fixed bugs in the ten Numerics headers that Step1 and Step2 do not use (Matrix3x3 `Solve()`, singular `Inverse()`, Matrix4x4 constructors and members, Quaternion `GetAxis()`, `NormDeviation()`, product renormalization, unused inheritance that enlarged every quaternion and matrix, Vector2/Vector3 `Angle()` and `ProjV()`, RandomNumber seeding and range, Statistics sorting stack and empty sets). Details in `Code-JUL/src/Step3_MathLessons/README.md`; each fix is marked `FIXED 20261008`
+- New banner (Author, Website, File, Folder, Github, Repository) on every numerics header
+- Added `numerics/LineFit2.h` and `numerics/Rotation.h`, adapted with credit from the Geometric Tools Engine by David Eberly (ApprHeightLine2.h, Rotation.h, Slerp.h; Boost Software License 1.0); each carries his notice and an adaptation clause
+- Added lessons `15_LineFit` and `16_Rotation` (self checking: expected, observed, PASS or FAIL)
+- AVR simulation (simavr) of all 16 lessons: each ran to its last test; lessons 15 and 16 report 0 failures
+
+**Build verification (avr-gcc 7.3.0, ATmega328P, `-Os -std=gnu++11`, 2026-10-08)**
+- `Step2_JUL` 6324 bytes program, 316 bytes data; `Step1_Joystick` 3048 bytes program, 284 bytes data. The Intel HEX output of both is byte for byte identical to commit f2307a1, so the merge changes no behavior of the bench verified program
+- `Step2_JUL` also builds with each of `DEBUG_MAIN`, `DEBUG_JOYSTICK`, and `DEBUG_L298N`
+- All 16 math lessons compile and link for the Uno with no warnings under `-Wall -Wextra` (program and data sizes in `Code-JUL/src/Step3_MathLessons/README.md`); the `build_src_filter` settings were checked with PlatformIO's own source matcher, and each selects exactly one program
+- Experiments 1 to 5 still build
+- Compilation is not hardware validation; run the math lessons on an Uno before relying on their printed results
 
 ---
 
 ## Unreleased: v2.1.0 (2026-10-07)
+
+> Note (2026-10-08): the header changes in this entry were reversed in v2.2.0.
 
 **Header review follow-up (2026-10-07)**
 - Reviewed the remaining `Code-JUL/include/` headers against the production sketches and repository Markdown; `Button.h` and `Timer.h` were not changed

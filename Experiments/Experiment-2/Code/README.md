@@ -1,23 +1,9 @@
-# Joystick-Uno-L298N, Experiment-2 Code
+# Experiment-2 Code
 
-Standalone PlatformIO project for Article 1009's **Joystick Setup** procedure.
-Open this folder in VS Code. See [`../Instructions/README.md`](../Instructions/README.md)
-for wiring and the learner guide.
+PlatformIO project for Article 1004, Experiment-2. Open this `Code` folder in VS Code, not the repository root.
 
-No motor driver or motors are connected. The sketch tests the joystick button
-with the production `Button` class, then reports raw X/Y analog readings. It
-uses the production `Button.h` and `Timer.h` copies in `include/`.
+- `include/`: copies of the original header files of `Code-JUL/include` (commit f2307a1), unchanged. Labs that ask for a correction change the copy here, never the file in Code-JUL.
+- `src/`: one folder per lab: 1_Preprocessor 2_LinearMap 
+- `platformio.ini`: select one lab with `build_src_filter`; the comments list the line for every lab.
 
-Draft project; physical joystick wiring and behavior still need review and
-testing.
-
-Build with PlatformIO for an Arduino Uno. The source filter includes this
-project's single `main.cpp`.
-
-**Black-box boundary:** joystick stick/button are inputs; ADC readings,
-button state, LED, and serial output are observable outputs. Use the
-instructions to make and test predictions.
-
-Work in progress; this project has not been physically tested on hardware.
-See [experiment safety notice](../../../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
+Serial monitor: 9600 baud. Steps, predictions, and expected output: [Instructions/README.md](../Instructions/README.md).

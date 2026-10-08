@@ -3,7 +3,7 @@
 // File: Class Button.h
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
-// Folder: Experiments/Experiment-1/Code/include (copy of Code-JUL/include)
+// Folder: Code-JUL
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //

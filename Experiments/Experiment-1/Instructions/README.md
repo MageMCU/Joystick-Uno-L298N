@@ -1,576 +1,139 @@
-# Joystick-Uno-L298N Experiment-1
+# Experiment-1: Timing and Button Input on the Uno
 
-## Timing and Button Input on the Arduino Uno
+*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
 
-Carpenter Software, Jesse Carpenter. STEM Starter Kit Series, Part 5 (Article 1004), Experiment-1.
+Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
----
+**Objective.** Learn the timing pattern that every later program of the series depends on: loop() must never stop, and the program waits for an interval without stopping it.
 
-## 1. Overview
+**Builds on.** Article 1000, the platformio.ini file and the Blink sketch; Article 1002, push buttons, pull down resistors, and the serial monitor.
 
-Experiment-1 is the first experiment in the Joystick-Uno-L298N (JUL) series. It uses the Arduino Uno alone: no motor driver, no motors, and no joystick. It teaches the timing pattern that every later part of the JUL firmware depends on.
+The drive program of this repository reads a joystick, runs a drive algorithm, and commands the L298N motor driver, all inside a single function called loop() that must never stop. Experiment-1 uses the Arduino Uno alone, with no motor driver, no motors, and no joystick. It has four labs. Lab 1 uses the Arduino delay() function to blink the onboard LED and shows what that function costs. Lab 2 replaces delay() with the Timer class from Timer.h, which waits for an interval while loop() continues to run. Lab 3 adds the Button class from Button.h and combines it with the Timer class, so that a push button turns the timed work on and off. Lab 4 reads the same push button with the Switch class from Switch.h, which does not debounce, and shows why the Button class does. The Timer and Button classes are the same classes used by the drive program in Code-JUL, so the student works with the tested code from the first lab.[1]
 
-The JUL firmware reads a joystick, runs a drive algorithm, and commands the L298N motor driver, all inside one function called `loop()` that must never stop. Before the motor hardware is introduced, you need to understand why `loop()` must keep running and how the firmware waits for an interval without stopping it.
+Two terms are used throughout. A blocking call is a function call that does not return until its work is finished; while it runs, nothing else in loop() can execute. A nonblocking design divides the work into short steps and returns from each step at once, so loop() can repeat many times per second and attend to several tasks in turn. Lab 1 is blocking. Labs 2, 3, and 4 are nonblocking.
 
-The experiment has three software labs. Each lab is a folder under `Code/src/`, and each is a complete program with its own `main.cpp`.
+The labs also introduce the two styles of code found in this repository. Each main.cpp is written in the procedural style of the C language: a sequence of statements and function calls. Timer.h and Button.h are written in the object oriented style of C++: a class bundles data and the functions that operate on that data into one unit, and the program creates an object of that class and calls its methods. A method is a function that belongs to a class. The main.cpp files call methods such as timer.isTimer() and button.updateButton() without needing to know how they are implemented.
 
-| Lab | Folder | What it shows |
-|-----|--------|---------------|
-| Lab 1 | `1_Delay` | Blinks the onboard LED with `delay()` and shows what that function costs |
-| Lab 2 | `2_Timer` | Replaces `delay()` with the `Timer` class, which waits while `loop()` keeps running |
-| Lab 3 | `3_Button` | Adds the `Button` class so a push button turns the timed work on and off |
+## Materials
 
-The `Timer` and `Button` classes are the same classes the full JUL firmware uses in `Code-JUL`, so you are working with production code from the first lab.
+Labs 1 and 2 need only the Arduino Uno and a USB cable; the onboard LED on digital pin 13 is the only output. Labs 3 and 4 add a push button and an indicator LED on the breadboard (Table-3).
 
-### Two terms used throughout
+**Table-3.** Experiment-1 materials. The indicator LED is on D3 in this experiment because no L298N is connected; from Experiment-2 onward it is on D12, as in Article 1009, Circuit-1.
 
-**Blocking call.** A function call that does not return until its work is finished. While it runs, nothing else in `loop()` can execute.
+| Item | Qty | Used in | Note |
+|---|---|---|---|
+| Arduino Uno R3 | 1 | Labs 1 to 4 | Onboard LED on pin 13 |
+| USB cable, Uno to computer | 1 | Labs 1 to 4 | Power, upload, and serial monitor |
+| Breadboard and jumper wires | 1 set | Labs 3, 4 | Electronics Lab bench supplies |
+| Tactile push button, momentary | 1 | Labs 3, 4 | Normally open; wired to digital pin 2 |
+| Resistor, 10 kΩ, 1/4 W | 1 | Labs 3, 4 | Pull down resistor on the button pin |
+| LED, 5 mm | 1 | Labs 3, 4 | Indicator LED on digital pin 3 |
+| Resistor, 220 Ω, 1/4 W | 1 | Labs 3, 4 | Current limiting resistor for the indicator LED |
 
-**Nonblocking design.** The work is divided into short steps and each step returns at once, so `loop()` repeats many times per second and attends to several tasks in turn.
+## Software Setup
 
-Lab 1 is blocking. Labs 2 and 3 are nonblocking.
-
-### Black-box investigation
-
-Treat the running sketch and Uno as the system under study. The controlled
-inputs are time and, in Lab 3, button presses; observable outputs are LED
-states, serial messages, and loop counts. Before each lab, predict those
-outputs, then change one condition at a time and compare the prediction with
-the observations. Use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md)
-to record the setup, expected and actual results, and what your observations
-do and do not reveal about `loop()`, `Timer`, and `Button`.
-
-### Two styles of code
-
-Each `main.cpp` is written in the **procedural** style of the C language: a sequence of statements and function calls. `Timer.h` and `Button.h` are written in the **object oriented** style of C++: a class bundles data and the functions that operate on that data into one unit, the program creates an object of that class, and it calls the object's methods. A **method** is a function that belongs to a class. The sketches call `timer.isTimer()` and `button.updateButton()` without needing to know how they are implemented.
-
----
-
-## 2. Materials
-
-Labs 1 and 2 need only the Uno and a USB cable. The onboard LED on digital pin 13 is the only output. Lab 3 adds a push button and an indicator LED on the breadboard.
-
-| Item | Qty | Used in | Notes |
-|------|-----|---------|-------|
-| Arduino Uno, Rev3 | 1 | Labs 1, 2, 3 | Onboard LED on pin 13 |
-| USB cable, Uno to computer | 1 | Labs 1, 2, 3 | Power, upload, and Serial Monitor |
-| Breadboard and jumper wires | 1 set | Lab 3 | |
-| Tactile push button, momentary, normally open | 1 | Lab 3 | Wired between D2 and GND |
-| LED, 5 mm | 1 | Lab 3 | Indicator LED on D3 |
-| Resistor, 220 ohm, 1/4 W | 1 | Lab 3 | Current limiting resistor for the LED |
-
-No pull up or pull down resistor is needed for the button. The `Button` class enables the Uno's internal pull up resistor on the button pin (see Lab 3).
-
----
-
-## 3. Software Setup
-
-### 3.1 Open the project
-
-The labs are built with **PlatformIO**, an embedded development extension for Visual Studio Code. The PlatformIO project for this experiment is the folder `Experiments/Experiment-1/Code`.
-
-1. Open Visual Studio Code.
-2. File, Open Folder, and select `Experiments/Experiment-1/Code`.
-3. Wait for PlatformIO to finish indexing (the status bar at the bottom stops changing).
-
-Open that folder, not the repository root. Opening the root makes PlatformIO search the wrong directories and report path errors.
+The PlatformIO project for this experiment is the folder Experiments/Experiment-1/Code. Open that folder in Visual Studio Code. The four labs are the folders src/1_Delay, src/2_Timer, src/3_Button, and src/4_Switch, each with its own main.cpp, and the include folder holds Timer.h, Button.h, Switch.h, and the other original header files. The repository ships with Lab 1 selected:
 
 ```
-Joystick-Uno-L298N/
-  Experiments/
-    Experiment-1/
-      Instructions/
-        README.md            this file
-      Code/                  open this folder in Visual Studio Code
-        platformio.ini
-        README.md
-        include/
-          Timer.h
-          Button.h
-        src/
-          1_Delay/main.cpp   Lab 1
-          2_Timer/main.cpp   Lab 2
-          3_Button/main.cpp  Lab 3
+build_src_filter = +<*> +<1_Delay/> -<2_Timer/> -<3_Button/> -<4_Switch/>
 ```
 
-### 3.2 Select a lab in platformio.ini
+To run another lab, copy its line from the comments of platformio.ini, so that its folder has the plus sign and the other three have the minus sign. Without the wildcard +<*> the starting set would be empty and the exclusions would have nothing to act on. PlatformIO finds the serial port of the Uno automatically; the upload_port line is left as a comment and is set only if detection fails, for example /dev/ttyACM0 on Linux, /dev/cu.usbmodem followed by a board number on macOS, or COM3 on Windows.
 
-All three labs share one PlatformIO project, and only one may be compiled at a time because each defines its own `setup()` and `loop()`. The active lab is chosen with the `build_src_filter` line in `platformio.ini`. A **source filter** is a list of folder patterns under `src/`; a pattern with a plus sign is included in the build and a pattern with a minus sign is excluded.
+Every lab prints to the serial port at 9600 baud. Baud is the signaling rate of the serial link, and the rate set in the program by Serial.begin(9600) must match the rate selected in the monitor. Open the PlatformIO serial monitor after each upload; the first line printed is Serial 9600 baudrate, which confirms that the rates match.
 
-```
-build_src_filter = +<*> +<1_Delay/> -<2_Timer/> -<3_Button/>
-```
+## Lab 1: The delay() Function
 
-The wildcard `+<*>` includes the `src/` folder and everything under it as the starting set. The exclusions then remove the two folders that are not wanted. Without the wildcard the starting set would be empty and the exclusions would have nothing to act on.
+**Objective.** Blink the onboard LED once per two seconds with delay(), count how many times loop() runs, and observe that the count advances by exactly one per blink.
 
-| To run | Set build_src_filter to |
-|--------|-------------------------|
-| Lab 1 | `+<*> +<1_Delay/> -<2_Timer/> -<3_Button/>` |
-| Lab 2 | `+<*> -<1_Delay/> +<2_Timer/> -<3_Button/>` |
-| Lab 3 | `+<*> -<1_Delay/> -<2_Timer/> +<3_Button/>` |
+**Code.** Experiments/Experiment-1/Code/src/1_Delay/main.cpp, Code-1. No additional wiring.
 
-Save the file after each change. PlatformIO reads it at the next build.
+The Arduino framework calls setup() once after power up or reset and then calls loop() repeatedly for as long as the board is powered. In setup(), Serial.begin() opens the serial port, the while (!Serial) loop waits until the port is ready, and pinMode() configures pin 13 as an output. In loop(), the global variable counter is printed and then incremented, so the first line reads Number of Loops: 0. The LED is turned on with digitalWrite(LED_PIN, HIGH), and delay(1000) then holds the processor for 1000 milliseconds. The delay() function is a blocking call: the processor executes nothing else in the program until the interval has elapsed.[3] The LED is turned off and a second delay(1000) follows. One pass through loop() therefore takes about two seconds.
 
-### 3.3 Serial port
+**Prediction.** Write the first three values of Number of Loops and the time between them.
 
-`platformio.ini` leaves `upload_port` unset so that PlatformIO detects the Uno automatically. If the upload fails with a port error, uncomment the `upload_port` line and set it to the device name for your computer. On Linux the Uno appears as `/dev/ttyACM0`, on macOS as `/dev/cu.usbmodemXXXX` where XXXX varies by board, and on Windows as a COM port such as `COM3`.
+**Expected output and verification.** Number of Loops advances by exactly one per blink, and the LED is on for one second and off for one second. During each delay(1000) the program cannot read a sensor, sample a button, or update a motor command. In a robot, a blocking wait of one second means that a joystick released at the start of the wait is not noticed until the wait ends. Lab 2 removes this limitation.
 
-### 3.4 Build, upload, and monitor
+## Lab 2: The Timer Class
 
-1. Click the **Build** button (check mark) in the PlatformIO toolbar at the bottom of the window. The terminal ends with SUCCESS.
-2. Click **Upload** (right arrow). The terminal ends with SUCCESS and the Uno resets.
-3. Click **Serial Monitor** (plug icon). The monitor opens at 9600 baud, set by `monitor_speed` in `platformio.ini`.
+**Objective.** Blink the onboard LED on the same schedule as Lab 1 without stopping loop(), and count how many times loop() runs during each one second interval.
 
-**Baud** is the signaling rate of the serial link. The rate set in the sketch by `Serial.begin(9600)` must match the rate of the monitor. The first line printed by every lab is `Serial 9600 baudrate`, which confirms that the rates match. If you see nothing or unreadable characters, the rates differ.
+**Code.** Experiments/Experiment-1/Code/src/2_Timer/main.cpp, Code-2, which includes Timer.h. No additional wiring.
 
----
+Timer.h declares the class Timer inside the namespace csjc. A namespace is a named scope that keeps the class name from colliding with any other Timer in the program; the line using namespace csjc; lets the program write Timer instead of csjc::Timer. The class is built on millis(), an Arduino function that returns the number of milliseconds since the board was powered up as an unsigned long, a 32 bit unsigned integer.[4] The method isTimer(ms) returns true once each time ms milliseconds have elapsed since the previous time it returned true, and false on every other call. It never waits. The first call after construction or after resetTimer() arms the timer: it records the current millis() value as the starting point and returns false. Elapsed time is computed as now minus the recorded start with unsigned subtraction, so the comparison remains correct when millis() rolls over to zero after about 49.7 days. Timer.h also provides isTimerFixedRate(ms), which schedules each interval from the previous deadline rather than from the moment the timer fired, and deltaTimeSeconds(), which reports the measured length of the last interval; a given Timer object uses one policy or the other, not both.
 
-## 4. Lab 1: The delay() Function
+The variable counter is incremented on every pass through loop(). The Boolean toggle records which half of the blink is due next. It starts false, so the second if block acts first: when isTimer(1000) fires, the LED is set LOW, toggle becomes true, and lastCount is set to the current counter value. One second later the first if block fires: it prints counter minus lastCount, the number of passes completed during the interval, sets the LED HIGH, and clears toggle. Each if condition tests toggle before calling isTimer(). Because the && operator evaluates its right operand only when the left operand is true, isTimer() is called from exactly one of the two blocks on any pass, so both blocks share one timer.
 
-**Objective.** Blink the onboard LED once per two seconds with `delay()`, count how many times `loop()` runs, and observe that the count advances by exactly one per blink.
+**Prediction.** Estimate the order of magnitude of Number of Loops per second.
 
-**Source folder.** `Code/src/1_Delay/main.cpp`. No additional wiring.
+**Expected output and verification.** The LED blinks on the same schedule as Lab 1, but loop() now runs on the order of one hundred thousand times per second instead of once per two seconds. The exact count depends on the board and on how many characters are printed during the interval. Every one of those passes is an opportunity to read an input or update an output; this is the pattern the drive program uses to sample the joystick and drive the motors while a timer paces the control update.
 
-**Set the filter.** `build_src_filter = +<*> +<1_Delay/> -<2_Timer/> -<3_Button/>`
+## Lab 3: The Button Class with the Timer Class
 
-### 4.1 The code
+**Objective.** Use a push button to turn the timed blink of Lab 2 on and off, with an indicator LED that shows the button state, and confirm that both the button and the timer are serviced on every pass through loop().
 
-```cpp
-#include <Arduino.h>
+**Code.** Experiments/Experiment-1/Code/src/3_Button/main.cpp, Code-3, which includes Timer.h and Button.h.
 
-#define LED_PIN 13
+**Wiring.** Circuit-1 adds a push button and an indicator LED to the Uno. The button is wired with a pull down resistor: a resistor from the input pin to ground that holds the pin LOW while the button is open, so that the pin reads HIGH only while the button is pressed and connects it to 5 V.
 
-// Global
-int counter = 0;
+**Circuit-1.** Experiment-1, Labs 3 and 4. The push button with its external pull down resistor on D2 and the indicator LED on D3. [Circuit placeholder: Uno 5V to one side of the push button; other side to D2; 10 kΩ from D2 to GND; D3 through 220 Ω to the LED anode, cathode to GND; Uno GND to the ground rail.]
 
-void setup()
-{
-    Serial.begin(9600);
-    while (!Serial)
-    {
-        /* code */
-    }
-    Serial.println("Serial 9600 baudrate");
-    pinMode(LED_PIN, OUTPUT);
-}
+1. Place the push button on the breadboard so that its two contact pairs straddle the center gap.
 
-// Delay? 
-void loop()
-{
-    Serial.print("Number of Loops: ");
-    Serial.println(counter++);
+2. Wire one side of the button to the 5V pin of the Uno, and the other side to digital pin 2.
 
-    digitalWrite(LED_PIN, HIGH);
-    Serial.println("LED HIGH");
-    delay(1000);
+3. Wire the 10 kΩ resistor from digital pin 2 to the ground rail. This is the pull down resistor.
 
-    digitalWrite(LED_PIN, LOW); 
-    Serial.println("LED LOW");
-    delay(1000); 
+4. Wire the anode (longer leg) of the LED to digital pin 3 through the 220 Ω resistor, and the cathode (shorter leg, flat side of the case) to the ground rail.
 
-    Serial.println("-----------");
-}
-```
+5. Wire the GND pin of the Uno to the ground rail.
 
-### 4.2 How it works
+6. Before uploading, measure digital pin 2 with the multimeter: 0 V with the button released and about 5 V with the button held, following the measurement first approach of Article 1000.
 
-The Arduino framework calls `setup()` once after power up or reset and then calls `loop()` repeatedly for as long as the board is powered. In `setup()`, `Serial.begin()` opens the serial port, the `while (!Serial)` loop waits until the port is ready, and `pinMode()` configures pin 13 as an output.
+Button.h declares the class Button in the csjc namespace. It converts the raw contact of a momentary switch into a clean on and off state. Debouncing addresses contact bounce: for a few milliseconds after a press or release, a mechanical contact chatters between open and closed, and a program that read the pin directly would see several presses. The class ignores a new pin level until it has held steady for the debounce window, 50 ms by default, and only then accepts it. Latching describes how accepted presses become an on and off flag. In the default latching mode, each accepted press toggles the flag, in the manner of a push on, push off power switch. The method isButtonOn() reports this flag, and the indicator LED on the pin given to the constructor follows it. The class also offers a momentary mode, selected with setLatching(false), in which the flag is on only while the button is held.
 
-In `loop()`, the global variable `counter` is printed and then incremented, so the first line reads `Number of Loops: 0`. The LED is turned on with `digitalWrite(LED_PIN, HIGH)`, and `delay(1000)` then holds the processor for 1000 milliseconds. `delay()` is a blocking call: the processor executes nothing else in the sketch until the interval has elapsed. The LED is turned off and a second `delay(1000)` follows. One pass through `loop()` therefore takes about two seconds, and the counter advances by one per pass.
+The constructor Button(buttonPin, ledPin, activeLow, debounceMs) records the pins and the wiring convention. With activeLow true, the default, a pressed button reads LOW and the class selects INPUT_PULLUP; with activeLow false, a pressed button reads HIGH and the class selects INPUT, for an external pull down resistor. The pull down wiring of Circuit-1 therefore needs Button(buttonPin, buttonLED, false), Code-3, line 48). The class configures its pins the first time updateButton() runs, so no begin() call is written in this program, and any pinMode() call written for the button pin in setup() would be replaced by that first call. The method updateButton() samples the pin and must be called on every pass through loop(); called only once per timer interval, it would miss a press shorter than the interval.
 
-### 4.3 Steps
+Each pass through loop() increments counter, calls button.updateButton(), and then reads the two conditions that drive everything else: buttonON, the latched state of the button, and tickON, whether the one second timer has fired on this pass. The outer if selects the on branch when the button is latched on or when a blink cycle is in its second half (!toggle). The second condition guarantees that a blink started while the button was on completes its LOW half even if the button is turned off in the middle of the cycle, so the LED never remains HIGH. The else branch runs while the button is off and no half cycle is pending: it waits for one timer tick, forces the LED LOW, prints Button OFF once, and clears the once flag. In the drive program, the same branch is where the motors are commanded to stop when the operator turns the enable button off.
 
-1. Set the filter for Lab 1 and save `platformio.ini`.
-2. Build and upload.
-3. Open the Serial Monitor.
-4. Watch the onboard LED (marked L, next to pin 13) and the monitor for at least five blinks.
+**Prediction.** Describe the indicator LED, the onboard LED, and the serial output after the first press and after the second press.
 
-### 4.4 Expected output
+**Expected output and verification.** After the upload, both LEDs are off and the monitor shows Button OFF once. Pressing the button lights the indicator LED at once and the onboard LED begins blinking on the next timer tick; each HIGH half prints a loop count for the two second cycle. Pressing again turns the indicator LED off; the onboard LED finishes its current cycle in the LOW state and Button OFF is printed once. Rapid tapping changes the indicator LED exactly once per accepted press.
 
-```
-Serial 9600 baudrate
-Number of Loops: 0
-LED HIGH
-LED LOW
------------
-Number of Loops: 1
-LED HIGH
-LED LOW
------------
-```
+## Lab 4: Switch.h and Contact Bounce
 
-### 4.5 What to observe
+**Objective.** Show why the Button class debounces, and find a fault in the order of statements in the Switch constructor.
 
-The count is exactly one per blink because `loop()` runs only once per two seconds. During each `delay(1000)` the sketch cannot read a sensor, sample a button, or update a motor command. In a robot, a blocking wait of one second means that a joystick released at the start of the wait is not noticed until the wait ends. Lab 2 removes this limitation.
+**Wiring.** Circuit-1, unchanged. The Switch class reads an input that is HIGH when pressed, which is the pull down wiring of Lab 3.
 
----
+**Code.** Experiments/Experiment-1/Code/src/4_Switch/main.cpp, Code-4. The program creates the global object Switch pushSwitch(2, 3), calls updateSwitch() on every pass through loop(), counts every change of isSwitchOn() from false to true, and prints the count once per second when it changes.
 
-## 5. Lab 2: The Timer Class
+**Prediction.** Press and release the button ten times. Predict the count.
 
-**Objective.** Blink the onboard LED on the same schedule as Lab 1 without stopping `loop()`, and count how many times `loop()` runs during each one second interval.
+1. Select Lab 4 in platformio.ini, upload, and press the button ten times. Record the count. Repeat three times.
 
-**Source folder.** `Code/src/2_Timer/main.cpp`, which includes `Code/include/Timer.h`. No additional wiring.
+2. Select Lab 3, upload, and press the button ten times with the same hand motion. Record the number of times the indicator LED toggles.
 
-**Set the filter.** `build_src_filter = +<*> -<1_Delay/> +<2_Timer/> -<3_Button/>`
+3. Return to Lab 4 and observe the indicator LED while the button is held. It lights faintly or not at all.
 
-### 5.1 The code
+4. Read the constructor Switch(int switchPin, int ledPin) in include/Switch.h. It calls m_pins(), which runs pinMode(), before it assigns the two pin numbers. Move the call to m_pins() after the two assignments, upload, and confirm that the LED lights fully.
 
-```cpp
-#include <Arduino.h>
-#include "Timer.h"
+**Expected output and verification.** The Switch count is often greater than ten, because the contact opens and closes several times within a few milliseconds of each press, and loop() runs fast enough to see each closure. Lab 3 toggles exactly ten times, because the Button class accepts a new level only after it has held for 50 ms. In step 3, the LED pin was never set to OUTPUT: a global object is constructed before setup() runs, its members are zero before the constructor assigns them, so m_pins() configured pin 0 instead of pins 2 and 3. A digitalWrite(3, HIGH) on a pin that is still an input only connects the internal pull up resistor, which passes too little current to light the LED. The statements of a constructor run in the order written.
 
-#define LED_PIN 13
-// Carpenter Software Jesse Carpenter
-using namespace csjc;
-// Object
-Timer timer;
-// Global Variables
-unsigned long lastCount = 0;
-unsigned long currentCount = 0;
-unsigned long counter = 0;
-// Assumes LOW to start counter...
-bool toggle = false;
+## What Carries Forward
 
-// the setup function runs once when you press reset or power the board
-void setup()
-{
-    Serial.begin(9600);
-    while (!Serial)
-    {
-        /* code */
-    }
-    Serial.println("Serial 9600 baudrate");
-    // initialize digital pin LED_BUILTIN as an output.
-    pinMode(LED_PIN, OUTPUT);
-    timer.resetTimer();
-}
+In the drive program the button is the enable switch for the motors, the timer paces the joystick reading and the motor update, and updateButton() is called on every pass through loop() exactly as in Lab 3. A student who can explain why Lab 2 counts one hundred thousand passes where Lab 1 counts one, and why Lab 3 completes its LOW half before honoring an off press, has the two ideas that the rest of the series builds on: loop() must never block, and outputs that affect safety are brought to a known state on every path through the code.
 
-// the loop function runs over and over again forever
-void loop()
-{
-    counter++;
 
-    if (toggle && timer.isTimer(1000))
-    {
-        currentCount = counter - lastCount;
-        Serial.print("Number of Loops: ");
-        Serial.println(currentCount);
+## Related Articles
 
-        digitalWrite(LED_PIN, HIGH); // turn the LED on (HIGH is the voltage level)
-        Serial.println("LED HIGH");
+- [1000 Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I)
+- [1001 Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO)
+- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq)
+- [1005 Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr)
+- [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4)
+- [1020 Note, Button.h and Timer.h](https://drive.google.com/file/d/1mLdqeahOOybPuAjdK8CqOVFJma677UWk)
 
-        toggle = false;
-    }
-
-    if (!toggle && timer.isTimer(1000))
-    {
-        digitalWrite(LED_PIN, LOW); // turn the LED off by making the voltage LOW
-        Serial.println("LED LOW");
-
-        toggle = true;
-
-        lastCount = counter;
-        Serial.println("-----------");
-    }
-}
-```
-
-### 5.2 The Timer class
-
-`Timer.h` declares the class `Timer` inside the **namespace** `csjc`. A namespace is a named scope that keeps the class name from colliding with any other `Timer` in the program; the line `using namespace csjc;` lets the sketch write `Timer` instead of `csjc::Timer`.
-
-The class is built on `millis()`, an Arduino function that returns the number of milliseconds since the board was powered up as an `unsigned long`, a 32 bit unsigned integer.
-
-`isTimer(ms)` returns `true` once each time `ms` milliseconds have elapsed since the previous time it returned `true`, and `false` on every other call. It never waits. The first call after construction or after `resetTimer()` **arms** the timer, meaning that it records the current `millis()` value as the starting point, and returns `false`. Elapsed time is computed as now minus the recorded start using unsigned subtraction, so the comparison stays correct when `millis()` rolls over to zero after about 49.7 days.
-
-`Timer.h` also provides `isTimerFixedRate(ms)`, which schedules each interval from the previous deadline rather than from the moment the timer fired, and `deltaTimeSeconds()`, which reports the measured length of the last interval. These serve control loops in later experiments and are not needed here. Use one policy or the other on a given `Timer` object, not both.
-
-### 5.3 How it works
-
-`counter` is incremented on every pass through `loop()`, so it measures how many passes occur. The boolean `toggle` records which half of the blink is due next. It starts `false`, so the second `if` block is the first to act: when `isTimer(1000)` fires, the LED is set LOW, `toggle` becomes `true`, and `lastCount` is set to the current `counter`. One second later the first `if` block fires: it prints `counter - lastCount`, the number of passes completed during the interval, sets the LED HIGH, and clears `toggle`. The two blocks alternate at one second intervals, giving the same two second blink as Lab 1.
-
-Each `if` condition tests `toggle` before calling `isTimer()`. Because `&&` evaluates its right operand only when the left operand is true, `isTimer()` is called from exactly one of the two blocks on any pass, so both blocks share a single timer without either one consuming the other's fire.
-
-### 5.4 Steps
-
-1. Set the filter for Lab 2 and save `platformio.ini`.
-2. Build and upload.
-3. Open the Serial Monitor and watch for at least five blinks.
-4. Compare the `Number of Loops` value with Lab 1.
-
-### 5.5 Expected output
-
-```
-Serial 9600 baudrate
-LED LOW
------------
-Number of Loops: 118563
-LED HIGH
-LED LOW
------------
-Number of Loops: 118571
-LED HIGH
-```
-
-The loop count shown is representative. The exact value depends on the board and on how many characters are printed during the interval; expect a number on the order of one hundred thousand per second.
-
-### 5.6 What to observe
-
-The LED blinks on the same schedule as Lab 1, but `loop()` now runs roughly one hundred thousand times per second instead of once per two seconds. Every one of those passes is an opportunity to read an input or update an output. This is the pattern the JUL firmware uses to sample the joystick and drive the motors while a timer paces the control update.
-
----
-
-## 6. Lab 3: The Button Class with the Timer Class
-
-**Objective.** Use a push button to turn the timed blink of Lab 2 on and off, with an indicator LED that shows the button state, and confirm that both the button and the timer are serviced on every pass through `loop()`.
-
-**Source folder.** `Code/src/3_Button/main.cpp`, which includes `Code/include/Timer.h` and `Code/include/Button.h`.
-
-**Set the filter.** `build_src_filter = +<*> -<1_Delay/> -<2_Timer/> +<3_Button/>`
-
-### 6.1 Wiring, Circuit-1
-
-The button is wired to close to ground. The `Button` class configures pin D2 as `INPUT_PULLUP`, which connects the Uno's internal pull up resistor (about 20 to 50 kilohm) between the pin and 5 V. With the button released the pin is pulled HIGH; pressing the button connects the pin to ground and it reads LOW. No external resistor is required. This is the same wiring the joystick SW pin uses in later experiments.
-
-1. Place the tactile push button on the breadboard so that its two contact pairs straddle the center gap.
-2. Wire one side of the button to Uno digital pin **D2**.
-3. Wire the other side of the button to the breadboard ground rail.
-4. Wire the anode (longer leg) of the LED to Uno digital pin **D3** through the 220 ohm resistor, and the cathode (shorter leg, flat side of the case) to the ground rail.
-5. Wire the Uno **GND** pin to the breadboard ground rail.
-
-**Check before uploading.** With the Uno powered by USB and the Lab 3 sketch not yet uploaded, the pin is not yet configured, so measure after the upload instead: with a multimeter from D2 to GND, expect about 5 V with the button released and 0 V while it is held. If you read the reverse, the button is wired to 5 V rather than to ground.
-
-**Alternative wiring.** If you prefer a button wired to 5 V with an external 10 kilohm pull down resistor from D2 to ground, change the constructor in `setup()` to `Button(buttonPin, buttonLED, false)`. The third argument, `activeLow`, tells the class that a pressed button reads HIGH. Do not mix the two: the default constructor with a pull down resistor reads the idle pin as pressed.
-
-### 6.2 The code
-
-```cpp
-#include <Arduino.h>
-#include "Timer.h"
-#include "Button.h"
-
-#define LED_PIN 13
-
-// Carpenter Software Jesse Carpenter
-using namespace csjc;
-
-// Object
-Timer timer;
-Button button;
-
-// Global Variables
-unsigned long lastCount = 0;
-unsigned long currentCount = 0;
-unsigned long counter = 0;
-unsigned long timerMS = 1000;
-
-// Assumes LOW to start counter...
-bool toggle = true;
-bool once = true;
-
-// the setup function runs once when you press reset or power the board
-void setup()
-{
-    Serial.begin(9600);
-    while (!Serial)
-    {
-        /* code */
-    }
-    Serial.println("Serial 9600 baudrate");
-
-    // initialize digital pin LED_BUILTIN as an output.
-    pinMode(LED_PIN, OUTPUT);
-
-    // Temporary (local) variables
-    int buttonPin = 2; // UNO D2, push button to GND
-    int buttonLED = 3; // UNO D3, indicator LED through 220 ohm to GND
-
-    // Instantiate Button Object
-    // Default wiring (activeLow = true): the button closes to GND and
-    // the class configures the pin as INPUT_PULLUP, so no external
-    // resistor is needed. This is the same wiring the joystick SW pin
-    // uses in Code-JUL. For a button wired to 5V with an external
-    // pull down resistor, use Button(buttonPin, buttonLED, false).
-    button = Button(buttonPin, buttonLED);
-    button.begin();
-
-    timer.resetTimer();
-}
-
-// the loop function runs over and over again forever
-void loop()
-{
-    counter++;
-    // Essential Button Call
-    button.updateButton();
-    // Methods called once to reduce processing time
-    bool buttonON = button.isButtonOn();
-    bool tickON = timer.isTimer(timerMS);
-
-    // Complete the cycle with LOW
-    // by using (OR !toggle) 
-    if (buttonON || !toggle)
-    {
-        if (tickON)
-        {
-            if (toggle)
-            {
-                Serial.println("Button ON...");
-
-                currentCount = counter - lastCount;
-                Serial.print("Number of Loops per 2000 mS: ");
-                Serial.println(currentCount);
-
-                digitalWrite(LED_PIN, HIGH);
-                Serial.println("LED HIGH");
-
-                toggle = false;
-
-                //
-            }
-            else
-            {
-                digitalWrite(LED_PIN, LOW);
-                Serial.println("LED LOW");
-
-                toggle = true;
-                once = true;
-
-                lastCount = counter;
-                Serial.println("-----------");
-            }
-        }
-    } 
-    else // Button OFF (always the first state after power up)
-    if (once && tickON)
-    {
-        // Simulate Motor Shutdown
-        // Safety Comes First
-        digitalWrite(LED_PIN, LOW);
-
-        Serial.println("Button OFF...");
-        Serial.println("-----------");
-        once = false;
-    }
-}
-```
-
-### 6.3 The Button class
-
-`Button.h` declares the class `Button` in the `csjc` namespace. It converts the raw contact of a momentary switch into a clean on and off state. Two ideas are involved.
-
-**Debouncing.** For a few milliseconds after a press or release, a mechanical contact chatters between open and closed, and a sketch that read the pin directly would see several presses. The class ignores a new pin level until it has held steady for the **debounce window**, 50 milliseconds by default, and only then accepts it as the real state.
-
-**Latching.** In the default latching mode, each accepted press toggles an on and off flag: press once for on, press again for off, in the manner of a push on, push off power switch. `isButtonOn()` reports this flag, and the indicator LED on the pin given to the constructor follows it. The class also offers a **momentary** mode, selected with `setLatching(false)`, in which the flag is on only while the button is held; that mode is intended as a dead man control for motors in later experiments and is not used here.
-
-The constructor `Button(buttonPin, ledPin, activeLow, debounceMs)` records the pins and the wiring convention. `begin()` configures the pins and is called once in `setup()`. `updateButton()` samples the pin and must be called on every pass through `loop()`; if it were called only once per timer interval, a press shorter than the interval would be missed and the debounce window would be meaningless.
-
-### 6.4 How it works
-
-Each pass through `loop()` increments `counter`, calls `button.updateButton()`, and then reads the two conditions that drive everything else: `buttonON`, the latched state of the button, and `tickON`, whether the one second timer has fired on this pass. Each method is called once per pass and its result is stored, so the same value is used everywhere in the pass.
-
-The outer `if` selects the on branch when the button is latched on **or** when a blink cycle is in its second half (`!toggle`). The second condition guarantees that a blink started while the button was on completes its LOW half even if the button is turned off in the middle of the cycle; the LED never remains stuck HIGH. Inside the on branch, nothing happens until `tickON` is true. When it is, `toggle` selects the HIGH half or the LOW half of the blink, alternating as in Lab 2, and the HIGH half prints the number of passes completed since the previous LOW half. That span covers two timer intervals, hence the label per 2000 mS.
-
-The `else` branch runs while the button is off and no half cycle is pending. It waits for one timer tick, forces the LED LOW, prints `Button OFF`, and clears the `once` flag so the message is printed a single time rather than on every tick. `once` is set again inside the LOW half of the blink, so the next transition from on to off prints the message again. The comment in the source names the intent: in the full firmware, this branch is where the motors are commanded to stop when the operator turns the enable button off.
-
-### 6.5 Steps
-
-1. Build Circuit-1.
-2. Set the filter for Lab 3 and save `platformio.ini`.
-3. Build and upload. Open the Serial Monitor.
-4. Confirm both LEDs are off and `Button OFF...` is printed once.
-5. Measure D2 to GND with the multimeter: about 5 V released, 0 V held.
-6. Press the button once. The indicator LED on D3 lights at once; the onboard LED starts blinking on the next tick and `Button ON...` with a loop count is printed each cycle.
-7. Press the button again. The indicator LED goes off; the onboard LED finishes its current cycle LOW and `Button OFF...` is printed once.
-8. Tap the button rapidly several times. Each accepted press changes the indicator LED exactly once.
-
-### 6.6 Expected output
-
-```
-Serial 9600 baudrate
-Button OFF...
------------
-                          (press the button once)
-Button ON...
-Number of Loops per 2000 mS: 73412
-LED HIGH
-LED LOW
------------
-Button ON...
-Number of Loops per 2000 mS: 236918
-LED HIGH
-LED LOW
------------
-                          (press the button again)
-Button OFF...
------------
-```
-
-The loop counts are representative. The first count after a press is smaller than the following counts because it spans only the time from the press to the next two ticks rather than a full two second cycle.
-
-### 6.7 What to observe
-
-After the upload, the indicator LED is off, the onboard LED is off, and the monitor shows `Button OFF` once. Pressing the button lights the indicator LED immediately, because the class drives it directly from the latched flag, and the onboard LED begins blinking on the next timer tick. Pressing again turns the indicator LED off; the onboard LED finishes its cycle in the LOW state and `Button OFF` is printed once. Throughout, `loop()` continues to run at full speed, and both the button and the timer are serviced on every pass.
-
----
-
-## 7. Verification
-
-| Lab | Check | Expected result |
-|-----|-------|-----------------|
-| 1 | Serial Monitor at 9600 baud | `Number of Loops` advances by exactly one per blink; two seconds per line group |
-| 1 | Onboard LED | One second on, one second off |
-| 2 | Serial Monitor at 9600 baud | `Number of Loops` is on the order of one hundred thousand per interval |
-| 2 | Onboard LED | Same one second on, one second off schedule as Lab 1 |
-| 3 | Multimeter on D2 after upload | About 5 V released, 0 V pressed |
-| 3 | Power up | Both LEDs off; `Button OFF` printed once |
-| 3 | First press | Indicator LED on; onboard LED blinks; `Button ON` and a loop count printed each cycle |
-| 3 | Second press | Indicator LED off; onboard LED ends LOW; `Button OFF` printed once |
-| 3 | Rapid tapping | Each accepted press changes the indicator LED exactly once; no double toggles from contact bounce |
-
----
-
-## 8. Troubleshooting
-
-| Symptom | Likely cause | Fix |
-|---------|--------------|-----|
-| Build error mentioning multiple definitions of `setup` or `loop` | Two lab folders included in `build_src_filter` | Exactly one `+<N_Name/>` entry |
-| Build error, no source files | `+<*>` missing from the filter | Restore the wildcard |
-| Upload fails with a port error | Port not detected | Set `upload_port` in `platformio.ini` (see 3.3) |
-| Serial Monitor shows nothing or garbage | Baud mismatch | Monitor at 9600; `monitor_speed = 9600` |
-| Lab 3: indicator LED is on at power up, goes off when pressed | Button wired to 5 V with the default constructor | Wire the button to GND, or pass `false` as the third constructor argument |
-| Lab 3: onboard LED never blinks | Button not latched on, or D2 wiring open | Check step 5 of 6.5 |
-| Lab 3: LED toggles twice on one press | Debounce window too short for this button | `button.setDebounce(80)` in `setup()` |
-
----
-
-## 9. What Carries Forward
-
-`Timer.h` and `Button.h` are the same headers used by the full JUL firmware in `Code-JUL`. In that firmware the button is the enable switch for the motors, the timer paces the joystick read and the motor update, and `updateButton()` is called on every pass through `loop()` exactly as in Lab 3. A reader who can explain why Lab 2 counts one hundred thousand passes where Lab 1 counts one, and why Lab 3 completes its LOW half before honoring an off press, has the two ideas the rest of the series builds on: `loop()` must never block, and safety related outputs must be brought to a known state on every path through the code.
-
-Experiment-2 wires the thumb joystick to the Uno and reads it with `Code-JUL/src/Step1_Joystick`.
-
-For each lab, use the [Article 1004 lab notebook template](../../LAB-NOTEBOOK-TEMPLATE.md).
-Record the date, active source/filter, board and wiring, your prediction,
-what the LED/Serial Monitor actually showed, and a conclusion. Keep
-observations factual and chronological, following the lab-notebook practice
-introduced in Article 1000. The GPIO, timing, and button pin choices also
-build familiarity with the Uno described in Article 1002.
-
----
-
-## References
-
-Safety and draft status: this experiment has not been physically tested on
-hardware and remains a work in progress. Review the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
-before use.
-
-1. Carpenter Software. Article 1000, *Introduction Robotics*.
-2. Carpenter Software. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*.
-3. Arduino. delay(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/delay/
-4. Arduino. millis(). Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/time/millis/
-5. Arduino. pinMode() and INPUT_PULLUP. Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/digital-io/pinMode/
-6. MageMCU. Joystick-Uno-L298N repository, `Code-JUL/include/Timer.h` and `Button.h`. https://github.com/MageMCU/Joystick-Uno-L298N
-
-MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.
+Copyright Jesse Carpenter (Carpenter Software). Software: MIT License; see the repository LICENSE and DISCLAIMER.md.

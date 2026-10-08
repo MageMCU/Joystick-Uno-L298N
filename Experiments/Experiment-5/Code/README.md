@@ -1,24 +1,9 @@
-# Joystick-Uno-L298N, Experiment-5 Code
+# Experiment-5 Code
 
-Standalone PlatformIO draft for Article 1009 Procedure 2 (**L298N Setup**):
-joystick-to-driver control, selectable `Bits()` patterns, checklist
-diagnostics, and post-check voltage measurements. Open this folder in VS Code and follow
-[`../Instructions/README.md`](../Instructions/README.md).
+PlatformIO project for Article 1004, Experiment-5. Open this `Code` folder in VS Code, not the repository root.
 
-Build-checked only; the powered checklist, physical movement, and meter
-measurements have not been validated on hardware. Follow the exact module
-instructions and supervised safety procedure.
+- `include/`: copies of the original header files of `Code-JUL/include` (commit f2307a1), unchanged. Labs that ask for a correction change the copy here, never the file in Code-JUL.
+- `src/`: one folder per lab: 1_Vector3 2_Joystick 
+- `platformio.ini`: select one lab with `build_src_filter`; the comments list the line for every lab.
 
-The sketch starts at `bits_0000`; send a hexadecimal digit `0`-`f` to select
-another pattern only while D2 is released. It reports the E/P/L/R flags and,
-while D2 is held, the octant and left/right PWM values every 100 ms. The
-Article 1009 [eight-direction checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) and voltage worksheet are completed
-and recorded by the operator; serial diagnostics alone do not validate motor
-movement.
-
-**Black-box boundary:** stick, enable, pattern, and supply are inputs; motor
-movement and voltage readings are physical outputs, with serial diagnostics
-as intermediate observations. This is a work in progress and has not been
-physically tested. Do not energize motor hardware before supervised review.
-See the [experiment safety notice](../../../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
+Serial monitor: 9600 baud. Steps, predictions, and expected output: [Instructions/README.md](../Instructions/README.md).

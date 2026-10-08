@@ -1,77 +1,32 @@
 # Experiments
 
-## Draft and safety status
+The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5). Each `Instructions/README.md` is the text of its experiment in the article (DRAFT 3, 20261008).
 
-The five Article 1004 experiment projects and their instructions are
-**works in progress**. They have **not been physically tested on hardware**.
-This is an intentional safety boundary: the motor-control activities must
-first receive review against the exact Uno, joystick, L298N breakout,
-motors, power supply, wiring, and supervised lab procedure. Build success
-only confirms compilation; it does not establish that wiring is safe or that
-the physical behavior is correct.
+## Safety
 
-Do not use an unreviewed draft to connect or power a motor driver or motor.
-Before any powered activity, have a qualified instructor verify component
-ratings, module-specific connections and jumpers, common ground, polarity,
-power sequencing, secured wheels, and a safe way to disconnect power. Stop
-if a component heats unexpectedly, wiring is uncertain, or behavior differs
-from expectations. Follow the exact hardware documentation and applicable
-lab safety rules.
+Follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision, in every experiment. A supervising adult operates the bench power supply; the motor supply is applied last and removed first, and the line cord is unplugged before any change of wiring. Build success and simulation confirm the code only; they do not confirm that the wiring is safe or that the motors behave correctly. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
-All experiments remain drafts until the guides, code, and physical procedure
-have been reviewed and the required supervised hardware checks have been
-completed and documented. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
+## Part A: Core Experiments (original header files)
 
-## Article 1004 experiment sequence
+| Experiment | Labs | Code |
+|------------|------|------|
+| [Experiment-1: Timing and Button Input on the Uno](Experiments/Experiment-1/Instructions/README.md) | delay(), Timer.h, Button.h, Switch.h | `Experiments/Experiment-1/Code` |
+| [Experiment-2: Wiring and Reading the Thumb Joystick](Experiments/Experiment-2/Instructions/README.md) | Preprocessor, LinearMap.h, Joystick Setup | `Experiments/Experiment-2/Code`; `Code-JUL` Step1_Joystick |
+| [Experiment-3: L298N Single Motor](Experiments/Experiment-3/Instructions/README.md) | MiscMath.h, duty cycle | `Experiments/Experiment-3/Code` |
+| [Experiment-4: L298N Two Motors and the Bits Table](Experiments/Experiment-4/Instructions/README.md) | Bitwise.h, TypeConv.h, L298N.h on six LEDs, second motor | `Experiments/Experiment-4/Code` |
+| [Experiment-5: Joystick to Motors](Experiments/Experiment-5/Instructions/README.md) | Vector3.h, Joystick.h, Step2_JUL and the Motor Movement Checklist | `Experiments/Experiment-5/Code`; `Code-JUL` Step2_JUL |
 
-| Experiment | Focus | Status |
-|------------|-------|--------|
-| [Experiment 1](Experiments/Experiment-1/Instructions/README.md) | Uno timing, `Timer`, and button behavior | Draft; no physical test claimed |
-| [Experiment 2](Experiments/Experiment-2/Instructions/README.md) | Article 1009 Joystick Setup; measure axes and button | Draft; no physical test claimed |
-| [Experiment 3](Experiments/Experiment-3/Instructions/README.md) | Optional one-motor L298N familiarization | Draft; not to be powered before review |
-| [Experiment 4](Experiments/Experiment-4/Instructions/README.md) | Optional software-only `Bits()` flag familiarization | Draft; no physical test claimed |
-| [Experiment 5](Experiments/Experiment-5/Instructions/README.md) | Article 1009 L298N Setup, movement checklist, and measurements | Draft; not to be powered before review |
+The `include/` folder of each core experiment holds copies of the original header files of `Code-JUL/include` (commit f2307a1), unchanged.
 
-The formal Article 1009 progression is Experiment 2 (Joystick Setup),
-followed by Experiment 5 (L298N Setup). Experiments 3 and 4 are optional
-preparation, not replacements for those procedures.
+## Part B: Advanced Experiments (numerics)
 
-## Black-box inquiry method
+| Experiment | Lessons in `Code-JUL/src/Step3_MathLessons` |
+|------------|------|
+| [Experiment-6: Statistics and the Dead Zone](Experiments/Experiment-6/Instructions/README.md) | 01 to 06, 17_DeadZone |
+| [Experiment-7: Line Fit and Motor Calibration](Experiments/Experiment-7/Instructions/README.md) | 15_LineFit, 18_MotorLineFit |
+| [Experiment-8: Vectors, Matrices, and the Joystick Frame](Experiments/Experiment-8/Instructions/README.md) | 07 to 13, 19_JoystickFrame |
+| [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | 14_Quaternion, 16_Rotation ([Article 1005](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)) |
 
-Each experiment should investigate a system by relating controlled inputs to
-observable outputs before claiming to know its internal behavior:
+## Lab Notebook
 
-1. **Define the box:** state which component or subsystem is under study,
-   its boundary, and what counts as its input and output.
-2. **Predict:** write down the expected response and why before running a
-   trial.
-3. **Control the test:** change one input at a time and keep other conditions
-   fixed where practical.
-4. **Observe and record:** capture actual values, units, commands, setup, and
-   unexpected results in chronological order.
-5. **Infer a model:** explain what internal behavior could account for the
-   observations, while separating evidence from assumptions.
-6. **Test the explanation:** make a new prediction, run a discriminating
-   trial, and record what remains unknown.
-
-Use the [Article 1004 lab notebook template](Experiments/LAB-NOTEBOOK-TEMPLATE.md).
-An explanation is a working model supported by recorded evidence, not proof
-that every internal detail has been exposed.
-
-## Individual experiment documents
-
-Each experiment's guide and code README identify the black box and observable
-inputs/outputs, provide a place to make predictions and record findings, and
-link to the same disclaimer:
-
-- [Experiment 1 instructions](Experiments/Experiment-1/Instructions/README.md) /
-  [code README](Experiments/Experiment-1/Code/README.md)
-- [Experiment 2 instructions](Experiments/Experiment-2/Instructions/README.md) /
-  [project README](Experiments/Experiment-2/README.md) /
-  [code README](Experiments/Experiment-2/Code/README.md)
-- [Experiment 3 instructions](Experiments/Experiment-3/Instructions/README.md) /
-  [code README](Experiments/Experiment-3/Code/README.md)
-- [Experiment 4 instructions](Experiments/Experiment-4/Instructions/README.md) /
-  [code README](Experiments/Experiment-4/Code/README.md)
-- [Experiment 5 instructions](Experiments/Experiment-5/Instructions/README.md) /
-  [code README](Experiments/Experiment-5/Code/README.md)
+Every experiment records the date, the objective, the prediction written before the program is run, the observed output beside the expected output, and the signature of the supervisor where a step asks for it. Template: [Experiments/LAB-NOTEBOOK-TEMPLATE.md](Experiments/LAB-NOTEBOOK-TEMPLATE.md).
