@@ -23,7 +23,7 @@ The algorithm and motor mapping in the code are internally consistent with the c
 3. Forward/backward and left/right movements are correct
 4. Dead zone doesn't cause lag or sensitivity issues
 
-**Related Articles:** See article **1009 - L298N Supplemental** for detailed explanation.
+**Related Article:** [Article 1009 - L298N Supplemental: Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 
 ## Algorithm Overview
 

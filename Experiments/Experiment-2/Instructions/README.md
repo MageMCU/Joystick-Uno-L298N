@@ -164,7 +164,7 @@ Joystick Setup record is complete.
 
 Safety and draft status: this experiment has not been physically tested on
 hardware and remains a work in progress. Review the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.
 
 1. Article 1000, *Introduction Robotics* (observation and lab notebook).
@@ -173,4 +173,4 @@ before use.
 4. Article 1009, “The Two Setup Procedures” and “Joystick Setup.”
 5. `Code-JUL/src/Step1_Joystick/main.cpp` and `Code-JUL/include/Button.h`.
 
-MIT License. Carpenter Software, Jesse Carpenter.
+MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.

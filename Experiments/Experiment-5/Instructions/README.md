@@ -78,6 +78,7 @@ objects clear. Stop if the driver or motor becomes unexpectedly hot.
 
 ## 4. Article 1009 Motor Movement Checklist
 
+Use the [Article 1009 supplemental Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 Have an instructor supervise the powered procedure. Keep motor power
 disconnected until the wiring and voltage/polarity checks are complete.
 
@@ -171,14 +172,14 @@ and 4 are preparation only.
 Safety and draft status: this experiment has not been physically tested on
 hardware and remains a work in progress. Do not power the L298N or motors
 until the exact setup has been reviewed and the activity is supervised.
-Review the [Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+Review the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.
 
 1. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*.
 2. Article 1001, *Joystick Algorithm* (X/Y normalization and octant routing).
 3. Article 1003, *L298N Motor Driver* (H-bridge, PWM, voltage loss, and heat).
 4. Article 1009, *Parent, Teacher, and Student Guide*.
-5. Article 1009 supplemental *Motor Movement Checklist*.
+5. Article 1009 supplemental [*Motor Movement Checklist*](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 6. `Code-JUL/src/Step2_JUL/main.cpp` and `Code-JUL/include/L298N.h`.
 
-MIT License. Carpenter Software, Jesse Carpenter.
+MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.

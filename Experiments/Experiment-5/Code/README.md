@@ -12,7 +12,7 @@ instructions and supervised safety procedure.
 The sketch starts at `bits_0000`; send a hexadecimal digit `0`-`f` to select
 another pattern only while D2 is released. It reports the E/P/L/R flags and,
 while D2 is held, the octant and left/right PWM values every 100 ms. The
-Article 1009 eight-direction checklist and voltage worksheet are completed
+Article 1009 [eight-direction checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) and voltage worksheet are completed
 and recorded by the operator; serial diagnostics alone do not validate motor
 movement.
 
@@ -21,4 +21,4 @@ movement and voltage readings are physical outputs, with serial diagnostics
 as intermediate observations. This is a work in progress and has not been
 physically tested. Do not energize motor hardware before supervised review.
 See the [experiment safety notice](../../../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md).
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).

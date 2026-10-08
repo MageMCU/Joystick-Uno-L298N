@@ -6,7 +6,7 @@ This optional, software-only activity prepares learners to read the
 `BitsL298N` patterns used in Article 1009's formal **L298N Setup**. It uses
 the flag definitions in Article 1003 and the Uno's digital representation
 and serial I/O described in Article 1002. It is not a powered motor test and
-does not replace the Article 1009 Motor Movement Checklist.
+does not replace the [Article 1009 Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 
 > **Draft:** The Uno build has been verified. This exercise uses only the Uno
 > connected by USB; no L298N module or motors are connected.
@@ -96,12 +96,12 @@ or motor mounting.
 Safety and draft status: this experiment has not been physically tested on
 hardware and remains a work in progress. Keep the activity software-only;
 do not connect or energize motor hardware. Review the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.
 
 1. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*.
 2. Article 1003, *L298N Motor Driver*.
-3. Article 1009 and its supplemental Motor Movement Checklist.
+3. Article 1009 and its [supplemental Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 4. `Code-JUL/include/L298N.h` and `Code-JUL/include/Bitwise.h`.
 
-MIT License. Carpenter Software, Jesse Carpenter.
+MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.

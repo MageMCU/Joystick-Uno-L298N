@@ -1,6 +1,6 @@
 # Joystick-Uno-L298N (JUL), Code-JUL Folder
 
-Production firmware. Namespace **csjc** (Carpenter Software, Jesse Carpenter).
+Production firmware. Namespace **csjc** ([Carpenter Software](https://carpentersoftware.com), Jesse Carpenter).
 
 ## Quick Use (PlatformIO)
 

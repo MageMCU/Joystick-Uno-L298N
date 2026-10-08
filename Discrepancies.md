@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, September 5, 2026. Each item lists what was found, where, and what was done about it in this revision. Items marked **Open** need a decision by the author.
+Review of the Joystick-Uno-L298N repository, updated October 7, 2026. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 ## Code
 
@@ -26,7 +26,7 @@ The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the 
 | `MiscMath.h` | `AngleRadian()` divided by `a`, making axis cases fragile; it now uses `atan2()` and normalizes negative angles to `[0, 2π)`. The non-template `Debug(String)` definition is inline. | Verify the four quadrants and both axes, plus a multi-translation-unit include test. |
 | `Joystick.h` | Output getters only read state but were not const-qualified. They are now `const`. | Build succeeded; verify octant outputs and direction getters with representative inputs and the bench checklist. |
 
-**Validation performed:** the production `Step2_JUL` project built successfully for the Uno on 2026-10-07. A temporary debug build ran in simavr and exercised the button-enabled path through joystick processing and an L298N output command. simavr reported missing AVCC and returned zero for both analog reads, so the observed octant/output is not evidence of realistic joystick behavior. The attempted second-press simulation did not yield a usable trace. No physical hardware validation or systematic header unit tests were performed; the cases in the table remain follow-up work.
+**Validation performed:** on 2026-10-07, `pio run` succeeded for the production `Code-JUL` project and all five `Experiments/Experiment-N/Code` projects. The generated Uno firmware sizes are recorded below. A temporary debug build ran in simavr and exercised the button-enabled path through joystick processing and an L298N output command. simavr reported missing AVCC and returned zero for both analog reads, so the observed octant/output is not evidence of realistic joystick behavior. The attempted second-press simulation did not yield a usable trace. No systematic header unit tests or physical hardware validation have been performed; those checks remain open.
 
 ## Documentation
 
@@ -36,28 +36,28 @@ The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the 
 | 8 | "Status: Hardware tested & verified" and "A full hardware build was not executed in this environment" both appeared in the same README. | root `README.md` | **Fixed.** Review note removed; the verified status stands as the author's statement. Build verification details moved to `RELEASES.md`. |
 | 9 | Project structure tree omitted `Experiments/`, `RELEASES.md`, `DISCLAIMER.md`, and `LICENSE`. | root `README.md` | **Fixed.** Tree regenerated. |
 | 10 | The debug flags were documented without the side effect that any flag changes `BUTTON_TIMER_mS` from 100 ms to 3000 ms. | root `README.md` | **Fixed.** Note added in Next Steps. |
-| 11 | Joystick axis assignment differs between documents. The repository (Step1, Step2, README table) reads X on A1 and Y on A0. Article 1000 shows X on A0 and Y on A1. | root `README.md`; Article 1000 | **Open.** README declares the repository authoritative for the code and points to the Step1 serial test. Decide whether Article 1000 is corrected or the code is changed. |
+| 11 | Joystick axis assignment differs between documents. The repository code and README use X on A1 and Y on A0; Article 1000 reportedly shows X on A0 and Y on A1. | root `README.md`; Article 1000 | **Open.** The Experiment-2 procedure tells users to measure the actual joystick and correct the software mapping if needed. The repository cannot establish which mapping the external article or a user's hardware should use; verify the physical setup and resolve the article/code discrepancy with the author. |
 | 12 | Header comments in the Experiment-1 copies of `Timer.h` and `Button.h` said "Folder: Code-JUL". | `Experiments/Experiment-1/Code/include/` | **Fixed.** Folder line now reads `Experiments/Experiment-1/Code/include (copy of Code-JUL/include)`. Files otherwise identical to the Code-JUL originals. |
 | 13 | `Experiments/Experiment-1/Code/README` had no `.md` extension, so GitHub showed raw Markdown. It described the shipped `build_src_filter` as selecting `1_Delay` while `platformio.ini` selected `3_Button`. Typos "hte" and "togehter". A fenced code block was indented under a bullet. | `Experiments/Experiment-1/Code/README` | **Fixed.** Renamed `README.md` and rewritten. `platformio.ini` now ships with Lab 1 selected, matching the reading order. |
 | 14 | `Instructions/README.md` contained only two placeholder lines. | `Experiments/Experiment-1/Instructions/README.md` | **Fixed.** Full reader instructions written (overview, materials, software setup, three labs with code, wiring, expected output, verification, troubleshooting). |
 | 15 | Markdown broken at the end of the root README: `Note:` followed a bullet with no blank line and `---` followed the note with no blank line, so the note and the rule were absorbed into the last bullet. | root `README.md` | **Fixed** by the rewrite. |
 | 16 | `Experiments/Experiment-2/README.md` was empty. | `Experiments/Experiment-2/README.md` | **Fixed.** Stub added naming the subject and the code folder. |
-| 17 | Header comments named the repository `Joystick-UNO-L298N`; the GitHub repository is `Joystick-Uno-L298N`. | all `include/*.h`, `src/*/main.cpp` | **Fixed.** Standardized to `Joystick-Uno-L298N` (comment lines only). |
+| 17 | Header comments used a repository-name spelling that differed from GitHub's `Joystick-Uno-L298N`. | all `include/*.h`, `src/*/main.cpp` | **Fixed.** Comments now use the exact repository spelling `Joystick-Uno-L298N`. |
 | 18 | `RELEASES.md` cited a fix at "line 48" that no longer matched the file, and claimed "All code compiles without warnings or errors", which the BusI2C warnings contradicted. | `RELEASES.md` | **Fixed.** Line reference removed; claim replaced with the compile date. Unreleased v2.1.0 entry added listing this revision. |
-| 19 | The root README, `Code-JUL/README.md`, and `RELEASES.md` repeated the history of the private research repository in several places. | root `README.md`, `Code-JUL/README.md` | **Fixed.** Removed from both READMEs; `RELEASES.md` remains the single place for that history. |
-| 20 | `Motor-Movement-Checklist/ReadMe.md` reported only the inner tolerance and used the file name `ReadMe.md`, which was inconsistent with the repo naming. | `Motor-Movement-Checklist/ReadMe.md`, root `README.md` | **Fixed.** The checklist now states both dead-zone layers and the repo links to the uppercase `README.md` form for consistency. |
+| 19 | The root README, `Code-JUL/README.md`, and `RELEASES.md` repeated the history of the private research repository in several places. | root `README.md`, `Code-JUL/README.md`, `RELEASES.md` | **Fixed.** The root README now has only a brief status summary linking to `RELEASES.md`; detailed history remains in `RELEASES.md`, and the `Code-JUL` README omits the repeated history. |
+| 20 | The checklist did not describe both dead-zone layers, and the root README linked to `Motor-Movement-Checklist/README.md`, which did not match the existing file's `ReadMe.md` casing. | `Motor-Movement-Checklist/ReadMe.md`, root `README.md` | **Fixed.** The checklist now states both dead-zone layers, and the root README link matches the existing filename. |
 
 ## Structure
 
 | # | Finding | Location | Resolution |
 |---|---------|----------|------------|
 | 21 | `Labs - DELETEME/` remained in the tree with the I2C Lab-1 README. | repository root | **Fixed.** Folder removed. The I2C material is preserved in the author's Lab-1 repo seed for a later article. |
-| 22 | `Step1_Joystick` is the code for Experiment-2 but lives in `Code-JUL`, so Experiment-2 is not self contained in the way Experiment-1 is. | `Code-JUL/src/Step1_Joystick/` | **Open.** Options: move it to `Experiments/Experiment-2/Code` with copied headers, or keep it in `Code-JUL` and have the Experiment-2 instructions point there. |
-| 23 | Experiments 3, 4, and 5 named in the Article 1004 outline have no code folders yet. | `Experiments/` | **Open.** Experiments 3 and 4 need small new sketches built on `L298N.h`; Experiment-5 can point at `Step2_JUL`. |
+| 22 | Experiment-2 originally depended on `Step1_Joystick` in `Code-JUL`, so it was not self-contained. | `Experiments/Experiment-2/` | **Fixed.** Experiment-2 now has its own `Code/` PlatformIO project, source, and copied headers; its instructions describe the standalone project. |
+| 23 | Experiments 3, 4, and 5 originally had no code folders. | `Experiments/` | **Fixed.** Each now has its own `Code/` PlatformIO project and instructions. The projects are build-verified, but physical checks remain outstanding as noted above. |
 
 ## Build verification
 
-All five sketches were compiled on 2026-09-05 for `board = uno` (ATmega328P, 16 MHz) with avr-gcc 7.3.0 and the Arduino AVR core, using the same flags PlatformIO applies (`-std=gnu++11`, `-Os`). Results after this revision:
+The following five sketches were compiled on 2026-09-05 for `board = uno` (ATmega328P, 16 MHz) with avr-gcc 7.3.0 and the Arduino AVR core, using the same flags PlatformIO applies (`-std=gnu++11`, `-Os`). These are historical results from that review, not a claim that every current project was rebuilt on that date:
 
 | Sketch | Program (bytes) | Data (bytes) | Warnings |
 |--------|-----------------|--------------|----------|
@@ -67,10 +67,23 @@ All five sketches were compiled on 2026-09-05 for `board = uno` (ATmega328P, 16 
 | Code-JUL `Step1_Joystick` | 3472 | 297 | two `unused variable` warnings for `xDigital` and `yDigital` when `DEBUG_MAIN` is off (they are used only inside the debug block); harmless, pre existing |
 | Code-JUL `Step2_JUL` | 6960 | 329 | none |
 
-The PlatformIO registry was not reachable from the review environment, so the compile used avr-gcc directly rather than `pio run`. Run `pio run` in each project folder on the development machine before flashing hardware that is connected to motors.
+The PlatformIO registry was not reachable in that review environment, so those compiles used avr-gcc directly rather than `pio run`. The four Experiment-2 through Experiment-5 projects and the production Step2_JUL project were subsequently reported as build-verified on 2026-10-07; see `RELEASES.md`. Run `pio run` in each project folder on the development machine before flashing hardware connected to motors. Build verification is not physical hardware validation.
+
+**Current local build verification (2026-10-07):** `pio run` completed successfully for all six projects in this repository on the Arduino Uno target. `avr-size` reported:
+
+| Project | Program (bytes) | Static data (bytes) |
+|---------|-----------------|---------------------|
+| `Code-JUL` | 6262 | 288 |
+| Experiment-1 | 2346 | 258 |
+| Experiment-2 | 3268 | 222 |
+| Experiment-3 | 3962 | 249 |
+| Experiment-4 | 2046 | 190 |
+| Experiment-5 | 7158 | 293 |
+
+These results establish compilation only. There is no automated host-side or PlatformIO unit-test suite in the repository; ADC interpretation, octant outputs, driver pin behavior, button timing, and motor behavior still need the separately listed software-vector and physical checks.
 
 ## Not changed, by design
 
-- `Code-JUL/src/Step1_Joystick/main.cpp` and `Step2_JUL/main.cpp`: logic untouched. Only the repository name in the header comment changed.
-- `Joystick.h`, `L298N.h`, `LinearMap.h`, `Bitwise.h`, `MiscMath.h`, `Switch.h`, `TypeConv.h`, `Vector3.h`: untouched apart from the header comment.
-- `DISCLAIMER.md`, `LICENSE`: untouched.
+- `Code-JUL/src/Step1_Joystick/main.cpp` and `Step2_JUL/main.cpp`: application logic was not changed in the 2026-10-07 header review; repository-name comments were standardized.
+- `Button.h` and `Timer.h`: intentionally left unchanged in the 2026-10-07 header review.
+- The other production headers listed in the Header Review section were changed as described there; do not interpret this section as saying those headers were untouched.

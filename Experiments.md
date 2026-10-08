@@ -20,7 +20,7 @@ lab safety rules.
 
 All experiments remain drafts until the guides, code, and physical procedure
 have been reviewed and the required supervised hardware checks have been
-completed and documented. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md).
+completed and documented. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Article 1004 experiment sequence
 

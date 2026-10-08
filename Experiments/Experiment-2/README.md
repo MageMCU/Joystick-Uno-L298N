@@ -23,5 +23,5 @@ instructions.
 
 This is a work in progress and has not been physically tested on hardware.
 Review the [experiment safety notice](../../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.

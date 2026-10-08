@@ -563,7 +563,7 @@ build familiarity with the Uno described in Article 1002.
 
 Safety and draft status: this experiment has not been physically tested on
 hardware and remains a work in progress. Review the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.
 
 1. Carpenter Software. Article 1000, *Introduction Robotics*.
@@ -573,4 +573,4 @@ before use.
 5. Arduino. pinMode() and INPUT_PULLUP. Arduino Language Reference. https://docs.arduino.cc/language-reference/en/functions/digital-io/pinMode/
 6. MageMCU. Joystick-Uno-L298N repository, `Code-JUL/include/Timer.h` and `Button.h`. https://github.com/MageMCU/Joystick-Uno-L298N
 
-MIT License. Carpenter Software, Jesse Carpenter.
+MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.

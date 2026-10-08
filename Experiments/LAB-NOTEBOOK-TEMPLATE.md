@@ -8,7 +8,7 @@ If an entry needs correction, add a dated note explaining the change.
 **Work in progress:** the experiment instructions and hardware have not been
 physically tested. This template does not authorize a powered test. Review
 the [experiment safety notice](../Experiments.md) and the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md).
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
 

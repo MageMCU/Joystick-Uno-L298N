@@ -2,7 +2,7 @@
 
 **A differential drive motor control system for the Arduino Uno using joystick input and the L298N dual H bridge motor driver.**
 
-This repository is the companion to the Carpenter Software STEM Starter Kit article series. Article 1003, L298N Motor Driver, explains the driver as a component. Article 1004, Joystick Uno L298N, covers the wiring, the firmware in this repository, and the experiments.
+This repository is the companion to the [Carpenter Software STEM Starter Kit article series](https://carpentersoftware.com). Article 1003, L298N Motor Driver, explains the driver as a component. Article 1004, Joystick Uno L298N, covers the wiring, the firmware in this repository, and the experiments.
 
 ---
 
@@ -176,7 +176,7 @@ to cover every teaching activity in the Article 1009 guide.
 | [Article 1001, *Joystick Algorithm*](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO/view) | Interpret the two potentiometer readings as an X/Y vector and follow how normalized inputs are routed into joystick directions. Experiment-2 verifies the actual axes; Experiment-5 uses the algorithm with motors. |
 | [Article 1002, *Arduino Uno: Pins, Ports, and Peripherals*](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE/view) | Relate the Uno pin map and I/O functions to the project's digital button/LED, analog joystick, timing, serial diagnostics, and PWM signals. This grounds the pin choices in Experiments 1-5. |
 | [Article 1003, *L298N Motor Driver*](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq/view) | Understand the dual H-bridge, direction/enable inputs, PWM, `Bits()` software mapping, voltage loss, and heat. Experiments 3-4 prepare; Experiment-5 carries out the supervised movement and voltage checks. |
-| Article 1009, setup guide and supplemental checklist | Defines the two formal procedures: joystick-only setup in Experiment-2, then L298N setup/checklist and measurements in Experiment-5. |
+| Article 1009 setup guide and [supplemental Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) | Defines the two formal procedures: joystick-only setup in Experiment-2, then L298N setup/checklist and measurements in Experiment-5. |
 
 These are the relevant prerequisites for Article 1004's joystick-to-L298N
 experiments, not a mandate to reproduce every peripheral topic in Articles
@@ -311,7 +311,7 @@ Related articles by Carpenter Software: 1000 Introduction Robotics, 1001 Joystic
    ```
    Enabling any debug flag also changes the control tick `BUTTON_TIMER_mS` from 100 ms to 3000 ms so the output is readable. Comment the flag out again for normal motor response.
 
-4. **Motor tuning?** See [Motor-Movement-Checklist/README.md](Motor-Movement-Checklist/README.md).
+4. **Motor tuning?** See [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md).
 
 ---
 
@@ -321,8 +321,17 @@ Related articles by Carpenter Software: 1000 Introduction Robotics, 1001 Joystic
 - **Version history and the relationship to the earlier research repository:** [RELEASES.md](RELEASES.md)
 - **Review findings:** [Discrepancies.md](Discrepancies.md)
 
+## Repository Status & History
+
+This is the public firmware and documentation repository for the Arduino Uno
+and L298N joystick project. It continues work from an earlier experimental
+repository; the releases document that transition and the project's
+milestones. See [RELEASES.md](RELEASES.md) for version history and
+[Experiments.md](Experiments.md) for the current experiment and hardware
+validation status.
+
 ---
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) and [DISCLAIMER.md](DISCLAIMER.md). Carpenter Software, Jesse Carpenter.
+MIT License. See [LICENSE](LICENSE) and [DISCLAIMER.md](DISCLAIMER.md). [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.

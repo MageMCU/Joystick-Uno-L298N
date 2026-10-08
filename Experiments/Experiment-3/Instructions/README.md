@@ -156,20 +156,20 @@ Record which physical motor direction corresponds to each signed command.
 Do not assume that “forward” is universal: motor mounting and wire polarity
 matter. Experiment-4 is an optional `Bits()` familiarization. The formal
 L298N Setup procedure is completed in Experiment-5 with the joystick and the
-Article 1009 Motor Movement Checklist.
+[Article 1009 Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4).
 
 ## References
 
 Safety and draft status: this experiment has not been physically tested on
 hardware and remains a work in progress. Do not connect or power the motor
 until the setup has been reviewed and supervised. Read the
-[Carpenter Software Disclaimer](https://github.com/MageMCU/Carpenter-Software-Disclaimer/blob/main/README.md)
+[Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md)
 before use.
 
 1. Article 1002, *Arduino Uno: Pins, Ports, and Peripherals* (GPIO and PWM pins).
 2. Article 1003, *L298N Motor Driver* (H-bridge, voltage loss, and heating).
-3. Article 1009 supplemental motor-movement checklist and parent/teacher/
+3. Article 1009 [supplemental motor-movement checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) and parent/teacher/
    student guide.
 4. `Code-JUL/include/L298N.h` and `Code-JUL/include/Bitwise.h`.
 
-MIT License. Carpenter Software, Jesse Carpenter.
+MIT License. [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.
