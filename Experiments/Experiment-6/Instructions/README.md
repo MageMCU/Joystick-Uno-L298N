@@ -1,6 +1,6 @@
 # Experiment-6: Statistics and the Dead Zone
 
-*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 6.1 and Equation 6.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -14,19 +14,19 @@ Run lessons 01_Bitwise, 02_TypeConv, 03_LinearMap, and 04_MiscMath. They test th
 
 ## Lab 2: Random Numbers and Statistics
 
-The average (mean) of n readings is their sum divided by n. The standard deviation measures how far the readings spread from the average; the Statistics class computes the sample standard deviation of Equation-6. The median is the middle value after the readings are sorted; it is not moved by a single reading far from the rest. A pseudo random number generator produces a sequence of numbers that appears random but is computed by a formula from a starting value, the seed; RandomNumber.h seeds once from analogRead() of A0 and A1 and from micros().
+The average (mean) of n readings is their sum divided by n. The standard deviation measures how far the readings spread from the average; the Statistics class computes the sample standard deviation of Equation 6.2. The median is the middle value after the readings are sorted; it is not moved by a single reading far from the rest. A pseudo random number generator produces a sequence of numbers that appears random but is computed by a formula from a starting value, the seed; RandomNumber.h seeds once from analogRead() of A0 and A1 and from micros().
 
-**Equation-5.** `x̄ = (x1 + x2 + … + xn) / n`  
+**Equation 6.1.** `x̄ = (x1 + x2 + … + xn) / n`<br>
 The average of n readings.
 
-**Equation-6.** `s = √( Σ (xi − x̄)² / (n − 1) )`  
+**Equation 6.2.** `s = √( Σ (xi − x̄)² / (n − 1) )`<br>
 The sample standard deviation of n readings about their average.
 
 Run lessons 05_RandomNumber and 06_Statistics. Record the average, standard deviation, and median that lesson 06 prints, and confirm one of them by hand from the printed data. Note that the constructor of Statistics sorts the array it is given.
 
 ## Lab 3: The Joystick at Rest
 
-**Code.** Lesson 17_DeadZone, Code-14. Wiring: the joystick of Experiment-2, Lab 3; no motor power. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
+**Code.** Lesson 17_DeadZone (Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp). Wiring: the joystick of Experiment-2, Lab 3; no motor power. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
 
 **Prediction.** From the readings at rest recorded in Experiment-2, estimate the average of each axis in the range −1 to 1.
 

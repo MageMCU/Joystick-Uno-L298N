@@ -1,6 +1,6 @@
 # Experiment-9: Quaternions
 
-*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 9.1 and Equation 9.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -8,9 +8,9 @@ Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTm
 
 **Builds on.** Article 1005; Experiment-8.
 
-A quaternion is a number with four components, q = (w, x, y, z), written w + xi + yj + zk, where w is the real part and (x, y, z) is the vector part. A unit quaternion has a norm of 1, and the unit quaternion (cos(θ/2), sin(θ/2) u) represents a rotation by the angle θ about the unit axis u (Equation-9). Rotating a vector v is the product q v q*, where q* is the conjugate (w, −x, −y, −z). The product of two unit quaternions is the rotation that applies one after the other. Article 1005 builds on the properties given by Dam, Koch, and Lillholm.[7]
+A quaternion is a number with four components, q = (w, x, y, z), written w + xi + yj + zk, where w is the real part and (x, y, z) is the vector part. A unit quaternion has a norm of 1, and the unit quaternion (cos(θ/2), sin(θ/2) u) represents a rotation by the angle θ about the unit axis u (Equation 9.1). Rotating a vector v is the product q v q*, where q* is the conjugate (w, −x, −y, −z). The product of two unit quaternions is the rotation that applies one after the other. Article 1005 builds on the properties given by Dam, Koch, and Lillholm (Quaternions, Interpolation and Animation, Technical Report DIKU-TR-98/5, University of Copenhagen, 1998).
 
-**Equation-9.** `q = cos(θ/2) + sin(θ/2) (ux i + uy j + uz k)`  
+**Equation 9.1.** `q = cos(θ/2) + sin(θ/2) (ux i + uy j + uz k)`<br>
 The unit quaternion of a rotation by θ about the unit axis u.
 
 ## Lab 1: Quaternion Products

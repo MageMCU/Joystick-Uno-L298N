@@ -6,4 +6,4 @@ PlatformIO project for Article 1004, Experiment-1. Open this `Code` folder in VS
 - `src/`: one folder per lab: 1_Delay 2_Timer 3_Button 4_Switch 
 - `platformio.ini`: select one lab with `build_src_filter`; the comments list the line for every lab.
 
-Serial monitor: 9600 baud. Steps, predictions, and expected output: [Instructions/README.md](../Instructions/README.md).
+Serial monitor: 9600 baud. Steps, predictions, and expected output: Article 1004, under the heading of each lab. Files and filter lines at the bench: [Instructions/README.md](../Instructions/README.md).

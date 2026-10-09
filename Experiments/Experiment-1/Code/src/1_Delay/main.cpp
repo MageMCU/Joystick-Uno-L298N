@@ -16,7 +16,9 @@ void setup()
     pinMode(LED_PIN, OUTPUT);
 }
 
-// Delay? 
+// loop() prints and then increments counter, so the first line
+// reads Number of Loops: 0. delay(1000) is a blocking call: nothing
+// else in the program runs for 1000 ms, so one pass takes about 2 s.
 void loop()
 {
     Serial.print("Number of Loops: ");

@@ -30,18 +30,18 @@ namespace csjc
 {
     enum BitsL298N
     {
-        // See the Bits() Method
-        // Bit-Order: 3,2,1,0 (decimal value: 8+4+2+1 = 15)
-        // Change the Direction Right Motor (Bit-0)
+        // See the Bits() method and Article 1009, Table-3
+        // Bit order: 3, 2, 1, 0 (decimal value: 8+4+2+1 = 15)
+        // Right IN pair direction convention (bit 0)
         bitRightIN = 0,
-        // Change the Direction Left Motor (Bit-1)
+        // Left IN pair direction convention (bit 1)
         bitLeftIN,
-        // Reverse L298N Inputs (Bit-2)
+        // 1: left IN pair follows the left command (bit 2)
         bitPWM,
-        // Swap motors
+        // 1: enable pins straight; 0: crossed (bit 3)
         bitEN,
-        // Motors A&B
-        bits_0000, // 4
+        // Enable pins crossed (bit 3 = 0)
+        bits_0000, // enumeration value 4; Bits() subtracts it
         bits_0001,
         bits_0010,
         bits_0011,
@@ -49,7 +49,7 @@ namespace csjc
         bits_0101,
         bits_0110,
         bits_0111,
-        // Motors Swapped  B&A
+        // Enable pins straight (bit 3 = 1)
         bits_1000,
         bits_1001,
         bits_1010,
@@ -72,10 +72,10 @@ namespace csjc
 
         // Used for motors setup() which aligns the
         // correct left and right directions...
-        bool _bitRightIN_Flag; // Right Motor Direction
-        bool _bitLeftIN_Flag;  // Left Motor Direction
-        bool _bitPWM_Flag;     // Switch L298N Inputs
-        bool _bitEN_Flag;      // Swap Motors
+        bool _bitRightIN_Flag; // Bit 0: right IN pair convention
+        bool _bitLeftIN_Flag;  // Bit 1: left IN pair convention
+        bool _bitPWM_Flag;     // Bit 2: false swaps the commands
+        bool _bitEN_Flag;      // Bit 3: false crosses the enable pins
 
         // Used for L298N Pins
         uint8_t _EN_A;
@@ -180,38 +180,39 @@ namespace csjc
     }
 #endif
 
-    // Follow instructions in Supplimental Article...
+    // Article 1009, L298N Setup, finds the value for a bench.
     void L298N::Bits(BitsL298N bitsValue)
     {
         // DO NOT STORE THE _bitsValue VARIABLE IN THE CLASS Bitwise.h.
         // USE IT IN THIS CLASS ONLY...
         _bitsValue = (int)bitsValue - (int)BitsL298N::bits_0000;
 
-        // There are 16 combinations for EN, PWM, LeftIN & RightIN
-        // USE: analogWrite(EN, PWM) & digitalWrite(LeftIN1, LOW)...
-        // The Boolean Order (3, 2, 1, 0)
-        // (3) EN (AB):         (Bit-3)
-        // (2) PWM Inputs (AB): (Bit-2)
-        // (1) LeftIN (1 & 2): ( Bit-1)
-        // (0) Right N (3 & 4): (Bit-0)
-        // EN A & B ---------------------------------------------
-        // Bits-Value:  0     1     2     3     4     5     6     7
+        // 16 patterns, written bit 3, 2, 1, 0 (Article 1009, Table-3)
+        // USE: analogWrite(EN, PWM) and digitalWrite(IN, LOW or HIGH)
+        // Bit 3, EN:      1 = _EN_A with the left IN pair, _EN_B with
+        //                     the right; 0 = enable pins crossed
+        // Bit 2, PWM:     1 = left IN pair follows the left command;
+        //                 0 = left and right commands swapped
+        // Bit 1, LeftIN:  1 = positive command sets IN_A LOW, IN_B HIGH;
+        //                 0 = positive command sets IN_A HIGH, IN_B LOW
+        // Bit 0, RightIN: same as bit 1, for the right IN pair
+        // Enable pins crossed (bit 3 = 0) --------------------------
+        // Bits value:  0     1     2     3     4     5     6     7
         // Bits:       0000  0001  0010  0011  0100  0101  0110  0111
-        // EN B & A ----------------------------------------------
-        // Bits-Value:  8     9     10    11    12    13    14    15
+        // Enable pins straight (bit 3 = 1) -------------------------
+        // Bits value:  8     9     10    11    12    13    14    15
         // Bits:       1000  1001  1010  1011  1100  1101  1110  1111
         // -----------------------------------------------------------
-        // NOTICE: Changing the BITS is much easier than switching
-        // the actual wires around on the L298N module....
-        // For my setup, bits 1010 was used...
+        // Changing the value is easier than moving wires on the L298N.
+        // The author's bench uses bits_1010.
 
-        // Swap motors (Bit-3)
+        // Bit 3: 1 = enable pins straight, 0 = crossed
         _bitEN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitEN, _bitsValue);
-        // Reverse L298N Inputs (Bit-2)
+        // Bit 2: 1 = commands straight, 0 = swapped
         _bitPWM_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitPWM, _bitsValue);
-        // Change the Direction Left Motor (Bit-1)
+        // Bit 1: left IN pair direction convention
         _bitLeftIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitLeftIN, _bitsValue);
-        // Change the Direction Right Motor (Bit-0)
+        // Bit 0: right IN pair direction convention
         _bitRightIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitRightIN, _bitsValue);
 
         // DEBUG
@@ -243,7 +244,7 @@ namespace csjc
 #endif
         }
 
-        // Reverse L298N Inputs (Bit-2 Flag)
+        // Bit 2: 1 = commands straight, 0 = swapped
         if (_bitPWM_Flag)
         {
             _pwmA = outMapLeft;

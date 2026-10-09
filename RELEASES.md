@@ -4,7 +4,31 @@
 
 ---
 
-## Unreleased: v2.3.0 (2026-10-08), Article 1004 experiments
+## Unreleased: follow-up corrections after v2.4.0
+
+- `Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp`: apply the positive mount-angle rotation for a counterclockwise-mounted joystick, matching the frame derivation and Experiment-8 instructions.
+- `Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp`: discard calibration counts entered while the joystick button is OFF; Experiment-7 now explains how to reset between measurement sets and change motor-supply voltage safely.
+
+These corrections are not part of the v2.4.0 tag.
+
+---
+
+## v2.4.0 (2026-10-09), Article 1004 DRAFT 4 and Article 1009 alignment
+
+Tag `v2.4.0` marks the code that Article 1004 DRAFT 4 and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.
+
+- `Code-JUL/src/Step2_JUL/main.cpp`: comments only. The lines named in Article 1009 are back at the numbers the article gives: `ledPin` 42, D12 form 44, `Button` 45, pins 55 to 60, L298N object 55 to 71, `PinsL298N()` 73, `Bits()` 92, `analogRead()` 103 and 104. The Bits comment block now states Table-3 of Article 1009: bit 3 = 1 means the enable pins are straight (values 8 to 15); the old block labeled 0 to 7 as straight
+- `Code-JUL/src/Step1_Joystick/main.cpp`: comments only. D12 form of `ledPin` added on line 50 (line 51, 68, 82 to 85 unchanged); the Analogs print is on line 119 as in Article 1009; example output corrected to `Analogs:  a: 512 b: 509`; references to the Supplemental replaced by Article 1009, Joystick Setup; typos corrected
+- `Code-JUL/include/L298N.h`: comments only. Enumeration, member, and `Bits()` comments rewritten to match Article 1009, Table-3; "Supplimental Article" replaced by Article 1009, L298N Setup
+- `Code-JUL/include/Common.h`: comments only. Em dashes removed; the timer note now says that any debug flag selects 3000 ms. Lines 33 and 43 unchanged
+- `Experiments/Experiment-1/Code/src/1_Delay`, `2_Timer`, `3_Button`: comment blocks above `loop()` that explain the code (moved from the article, which no longer prints the listings); `Button(...)` remains on line 48
+- `Experiments/Experiment-1` to `5/Instructions/README.md`: replaced by lab cards (folders, filter lines, wiring, lines edited at the bench); the steps are in the article
+- `Experiments/Experiment-6` to `9/Instructions/README.md`: now the full source of the advanced steps; local labels (Table 7.1, Equation 6.1, and so on); lesson paths in place of Code-14 to Code-16
+- `Experiments/Circuits/`: schematics Circuit-1 to Circuit-4 (SVG and PNG)
+- The include folders of Experiments 1 to 5 are unchanged: they stay the original headers of commit f2307a1, old comments included
+- Verified: Step1_Joystick and Step2_JUL compile to the same Intel HEX as v2.3.0 (c08735a) with no flag, DEBUG_MAIN, DEBUG_JOYSTICK, and DEBUG_L298N (avr-gcc 7.3.0, Arduino AVR core)
+
+## v2.3.0 (2026-10-08), Article 1004 experiments (commit c08735a)
 
 - Experiments 1 to 5 rebuilt from Article 1004 DRAFT 3: every `include/` folder holds the original header files of commit f2307a1, unchanged; new labs Experiment-1 `4_Switch`; Experiment-2 `1_Preprocessor`, `2_LinearMap`; Experiment-3 `1_MiscMath`, `2_DutyCycle`; Experiment-4 `1_Bitwise`, `2_TypeConv`, `3_BitsLEDs`; Experiment-5 `1_Vector3`, `2_Joystick`. Experiment-2 and Experiment-5 use Step1_Joystick and Step2_JUL for the Article 1009 setup procedures
 - Experiment-1, Lab 3: `Button(buttonPin, buttonLED, false)` for the external pull down resistor (the class replaced the `pinMode(buttonPin, INPUT)` line with `INPUT_PULLUP`)

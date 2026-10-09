@@ -80,8 +80,9 @@ Joystick-Uno-L298N/
 │   └── README.md
 ├── Experiments/
 │   ├── Experiment-1/ to Experiment-5/ Core experiments: Code/ (PlatformIO project with copies
-│   │                                  of the original headers) and Instructions/README.md
+│   │                                  of the original headers) and Instructions/README.md (lab card)
 │   ├── Experiment-6/ to Experiment-9/ Advanced experiments: Instructions/README.md (code in Code-JUL)
+│   ├── Circuits/                      Schematics Circuit-1 to Circuit-4 of Article 1004 (SVG, PNG)
 │   └── LAB-NOTEBOOK-TEMPLATE.md
 ├── Motor-Movement-Checklist/          Bench validation of the eight octants
 ├── Experiments.md                     Experiment overview
@@ -138,7 +139,7 @@ The algorithm itself is the subject of Article 1001, Joystick Algorithm.
 
 ## Experiments
 
-The experiments are written in Article 1004; each `Instructions/README.md` is the text of its experiment in the article. Experiments 1 to 5 use the **original header files**, copied unchanged into each `Experiments/Experiment-N/Code/include/`. Experiments 6 to 9 use `Code-JUL/include/numerics/` and the lessons of `Code-JUL/src/Step3_MathLessons/`. Review the safety conditions in Article 1009 before any motor is powered; build verification is not hardware verification.
+The experiments follow Article 1004. The Instructions files for Experiments 1 to 5 are lab cards with project folders, build filters, and bench wiring; Experiments 6 to 9 contain the full advanced steps summarized in the article. Experiments 1 to 5 use copies of the original header files in each `Experiments/Experiment-N/Code/include/`. Experiments 6 to 9 use `Code-JUL/include/numerics/` and lessons 01 to 19 in `Code-JUL/src/Step3_MathLessons/`. Review the safety conditions in Article 1009 before any motor is powered; build verification is not hardware verification.
 
 | Experiment | Subject | Code | Status |
 |-----------|---------|------|--------|

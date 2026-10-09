@@ -34,15 +34,13 @@ void setup()
 {
 #ifdef DEBUG_SERIAL_ON
     Serial.begin(9600);
-    while (!Serial)
-    {
-    }
+    while (!Serial) {}
 #endif
 
     // Button & Button-LED
     int buttonPin = 2; // UNO D2 (CHIP-PD2)
     int ledPin = 3;    // UNO D3 (CHIP-PD3)
-    // As indicated in article 1009 Guide
+    // Circuit-1 of Article 1009 wires the indicator LED to D12:
     // int ledPin = 12; // UNO D12 (CHIP-PB4)
     buttonDebug = Button(buttonPin, ledPin);
 
@@ -53,15 +51,14 @@ void setup()
     mapInputFromDigital = LinearMap<float>(0, 1023, -1.0, 1.0);
     mapOutFromJoystick = LinearMap<float>(-1.0, 1.0, -255, 255);
 
-    // New Code ----------------------------------L298N Setup
-    // Arduino PINS
+    // L298N Setup: Uno pins D5 to D10 in the class default order
     int8_t ENA = 5;
     int8_t IN1 = 6;
     int8_t IN2 = 7;
     int8_t IN3 = 8;
     int8_t IN4 = 9;
     int8_t ENB = 10;
-    // L298N PINS
+    // Constructor names, not the L298N silkscreen labels (1009, Table-2)
     int8_t LeftEN = ENA;
     int8_t LeftA = IN1;
     int8_t LeftB = IN2;
@@ -75,23 +72,23 @@ void setup()
     // Initiate L298N Pins
     motors.PinsL298N();
 
-    // There are 16 combinations for EN, PWM, LeftIN & RightIN
-    // USE: analogWrite(EN, PWM) & digitalWrite(LeftIN1, LOW)...
-    // The Boolean Order (3, 2, 1, 0)
-    // (3) EN (AB):         (Bit-3)
-    // (2) PWM Inputs (AB): (Bit-2)
-    // (1) LeftIN (1 & 2): ( Bit-1)
-    // (0) Right N (3 & 4): (Bit-0)
-    // EN A & B ---------------------------------------------
-    // Bits-Value:  0     1     2     3     4     5     6     7
-    // Bits:       0000  0001  0010  0011  0100  0101  0110  0111
-    // EN B & A ----------------------------------------------
-    // Bits-Value:  8     9     10    11    12    13    14    15
-    // Bits:       1000  1001  1010  1011  1100  1101  1110  1111
+    // Bits() selects one of 16 patterns, written bit 3, 2, 1, 0
+    // (Article 1009, Table-3). Value 1 and value 0 of each bit:
+    // Bit 3, EN:      1 = _EN_A with the left IN pair, _EN_B with
+    //                     the right; 0 = enable pins crossed
+    // Bit 2, PWM:     1 = left IN pair follows the left command;
+    //                 0 = left and right commands swapped
+    // Bit 1, LeftIN:  1 = positive command sets IN_A LOW, IN_B HIGH;
+    //                 0 = positive command sets IN_A HIGH, IN_B LOW
+    // Bit 0, RightIN: same as bit 1, for the right IN pair
     // -----------------------------------------------------------
-    // NOTICE: Changing the BITS is much easier than switching
-    // the actual wires around on the L298N module....
-    // For my setup, bits 1010 was used...
+    // Enable pins crossed (bit 3 = 0):
+    //   bits_0000 to bits_0111, values 0 to 7
+    // Enable pins straight (bit 3 = 1):
+    //   bits_1000 to bits_1111, values 8 to 15
+    // -----------------------------------------------------------
+    // Change this value, not the wires (Article 1009, L298N Setup,
+    // Motor Movement Checklist). The author's bench uses bits_1010.
     motors.Bits(BitsL298N::bits_1010);
 }
 
@@ -148,10 +145,10 @@ void updateJoystick()
         Debug<int>("L298N Input: ", outMapLeft, outMapRight);
 #endif
 
-        // NEW CODE ------------------------------- FLAG_WATCH
-        // For safety reasons, the UpdateL298N() method has a
-        // Power Motors Flag set to false which de-activates
-        // the motors...
+        // The third argument of UpdateL298N() is the safety flag.
+        // It defaults to false, which keeps the enable pins LOW;
+        // true lets the motors run. Here the push button state
+        // (ON) decides whether this line is reached at all.
         // SAFETY COMES FIRST (WATCH YOUR FINGERS)
         motors.UpdateL298N(outMapLeft, outMapRight, true);
     }
@@ -170,8 +167,8 @@ void loop()
     // Button Class
     buttonDebug.updateButton();
     // Timer Class
-    // Normal update rate is 100 ms (BUTTON_TIMER_mS), which is set in Common.h.
-    // While debugging, the timer is intentionally increased to 3000 ms to reduce output noise.
+    // BUTTON_TIMER_mS (Common.h) is 100 ms; while any debug flag is
+    // defined it is 3000 ms, so the serial output can be read.
     if (timerDebug.isTimer(BUTTON_TIMER_mS))
     {
         // Local Function

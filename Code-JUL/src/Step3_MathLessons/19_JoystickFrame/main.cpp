@@ -19,9 +19,9 @@
 //
 // Article 1009, Joystick Setup, corrects a joystick mounted in any of
 // eight orientations by exchanging or reversing the analogRead() lines.
-// A rotation matrix generalizes the correction: a joystick mounted at an
-// angle theta reads a vector that is rotated by theta, and multiplying it
-// by the rotation matrix of -theta returns it to the robot frame.
+// A counterclockwise mount by theta rotates the joystick's coordinate frame
+// by theta, so its raw readings are rotated by -theta from the robot frame.
+// Multiplying by the rotation matrix of theta returns them to the robot frame.
 //
 // Part 1 (Uno and USB cable only) checks the rotation with test vectors.
 // Part 2 reads the live joystick once per second and prints the raw
@@ -100,7 +100,7 @@ void setup()
     Serial.print(F("Failures: "));
     Serial.println(failures);
 
-    correction = correction.Rotation(-MOUNT_ANGLE_DEG * DEG_TO_RAD);
+    correction = correction.Rotation(MOUNT_ANGLE_DEG * DEG_TO_RAD);
     Serial.println(F("Part 2: live joystick, once per second"));
     timer.resetTimer();
 }

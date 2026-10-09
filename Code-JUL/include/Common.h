@@ -19,16 +19,16 @@
 #define Common_h
 
 // ======================================================
-// ALGORITHM — Joystick.h (Revised Implementation)
+// ALGORITHM: Joystick.h (Revised Implementation)
 // Single unified algorithm for motor control.
 // ======================================================
 
 // ======================================================
 // DEBUG SELECTION
 // Uncomment a module to enable its serial debug output.
-// DEBUG_SERIAL_ON activates automatically — do not set it manually.
-// NOTE: Enabling DEBUG_JOYSTICK also sets BUTTON_TIMER_mS to 3000ms.
-//       Comment it out for normal (100ms) motor control loop speed.
+// DEBUG_SERIAL_ON activates automatically; do not set it manually.
+// NOTE: Any debug flag sets BUTTON_TIMER_mS to 3000 ms. Comment
+//       every flag out for the normal 100 ms motor control loop.
 // ======================================================
 // #define DEBUG_MAIN
 #ifdef DEBUG_MAIN

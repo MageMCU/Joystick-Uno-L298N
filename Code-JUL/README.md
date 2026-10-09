@@ -72,7 +72,7 @@ Class templates generate no code until a program uses them, and Step1 and Step2 
 |---|---|---|---|
 | `Step1_Joystick/` | `main.cpp` | Joystick wiring validation; prints raw X and Y with `DEBUG_MAIN` enabled | Tested |
 | `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control | Tested |
-| `Step3_MathLessons/` | 16 `main.cpp` lessons | Numerics math lessons, one folder per class | Build checked |
+| `Step3_MathLessons/` | 19 `main.cpp` lessons | Numerics math lessons 01 to 16; hardware lessons 17 to 19 | First 16 build and simulation checked; hardware lessons build-checked, bench pending |
 
 ## Debugging
 

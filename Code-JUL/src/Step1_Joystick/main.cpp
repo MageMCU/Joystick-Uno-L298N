@@ -44,22 +44,22 @@ void setup()
     timerDebug = Timer();
 
     // Button & Button-LED
-    int buttonPin = 2; // UNO D2 (CHIP-PD2)
-    // The joystick has a button with pin SW, so wire
-    // the pin SW to UNO pin D2.
-    int ledPin = 3; // UNO D3 (CHIP-PD3)
+    int buttonPin = 2; // UNO D2 (CHIP-PD2), joystick SW
+    int ledPin = 3;    // UNO D3 (CHIP-PD3)
+    // Circuit-1 of Article 1009 wires the indicator LED to D12:
+    // int ledPin = 12; // UNO D12 (CHIP-PB4)
     buttonDebug = Button(buttonPin, ledPin);
 }
 
-// If you're using a breadboard with Atmega328p and a 16MHz Crystal,
-// To check the circuit, install the Blink Sketch. If the LED is 
-// blinking, then your circuit is good. 
-// If not, check your wiring...
-// If your wiring is good, replace the crystal with one that you know
-// that works.
-// If it still does not work with the Blink sketch and if the chip is 
-// new, have you installed a bootloader?
-// Fianlly use a different Atmega328p chip repeat the steps.
+// For an ATmega328P on a breadboard with a 16 MHz crystal, check
+// the circuit first with the Blink sketch. If the LED blinks, the
+// circuit is good. If not, check the wiring; if the wiring is good,
+// replace the crystal with one known to work. If Blink still fails
+// on a new chip, install a bootloader. Finally, try a different
+// ATmega328P and repeat the steps.
+//
+// Joystick Setup, Article 1009: the button state is read on line 68,
+// the axes on lines 82 and 84; lines 83 and 85 are the reversed forms.
 //
 // STEP1: Setup Joystick-UNO
 void determineXY_Output()
@@ -84,9 +84,9 @@ void determineXY_Output()
         int yDigital = analogRead(A0);
         // int yDigital = 1023 - analogRead(A0);
         // -------------------------------------------------
-        // SEE ARTICLES AT GITHUB (especially Joystick Setup - L298N Supplemental)
-        // In order for the Joystick Algorithm to
-        // work properly, the following values has to occur:
+        // Article 1009, Joystick Setup, steps 6 to 8.
+        // For the joystick algorithm to work, the readings
+        // must follow this graph:
         //                 (y-axis)
         //         FORWARD  | 1023
         //                  |
@@ -101,31 +101,32 @@ void determineXY_Output()
         //         BACKWARD | 0
         // -------------------------------------------------
         //
-        // MOVE the joystick as shown on the graph.
-        // Text x-axis values changes
-        // Text y-axis values changes
-        // Next,
-        // Text x-axis from left 0 to right 1023
-        // Text y-axis from backward (down) 0 to forward (up) 1023
-        // If the values are reversed, for example, 1023 to 0,
-        // use the following equation tested for each: 
+        // Move the joystick as shown on the graph.
+        // Step 6: left and right must change the x value (a:)
+        //   only; if y (b:) changes, exchange A0 and A1 in
+        //   lines 82 and 84.
+        // Step 7: x goes from 0 (left) to 1023 (right).
+        // Step 8: y goes from 0 (backward, down) to 1023
+        //   (forward, up).
+        // If an axis is reversed, 1023 to 0, comment out its
+        // line (82 or 84) and use the line below it (83 or 85):
         // xDigital = 1023 - analogRead(A1); // could be A0
         // yDigital = 1023 - analogRead(A0); // could be A1
         //
-        // Debug the output... (See MiscMath.h for Debug() functions)
+        // Step 9: record the pins and reversals in the notebook.
+        // Debug() is defined in numerics/MiscMath.h.
 #ifdef DEBUG_MAIN
         Debug<int>("Analogs: ", xDigital, yDigital); 
 #endif
 
-        // You should the following results:
-        // Button ON␍␊
-        // Analogs:X:509:Y:527␍␊
-        // Depending on the Joystick Potentiometers, the values 
-        // may not accurate. 
-        // Once the values display the correct ouput, then the
-        // wiring between the Joysticj & UNO is good.
-        // Go to Step-2. Remember to setup the PlatformIO.ini file
-        // for the next step.
+        // Expected output at rest, for example:
+        // Button ON
+        // Analogs:  a: 512 b: 509
+        // Readings at rest near 511 are expected; small offsets
+        // from center are normal and are removed by the dead zone.
+        // When every step passes, record the result in the lab
+        // notebook and go to L298N Setup, which selects Step2_JUL
+        // in platformio.ini, line 31.
     }
 }
 

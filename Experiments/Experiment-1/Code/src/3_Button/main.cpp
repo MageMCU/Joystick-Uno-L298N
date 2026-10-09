@@ -51,7 +51,16 @@ void setup()
     timer.resetTimer();
 }
 
-// the loop function runs over and over again forever
+// The loop function runs over and over again forever.
+// updateButton() samples the pin on every pass; called only once per
+// timer interval, it would miss a short press. buttonON is the latched
+// state, and tickON is true on the pass where the timer fires. The
+// outer if takes the ON branch when the button is latched ON or when a
+// blink is in its second half (!toggle), so a blink started while ON
+// always finishes LOW and the LED never stays HIGH. The else branch
+// runs while the button is OFF and no half cycle is pending: on one
+// timer tick it forces the LED LOW, prints Button OFF once, and clears
+// once. In the drive program this branch is where the motors stop.
 void loop()
 {
     counter++;

@@ -90,6 +90,13 @@ void readEntry()
         {
             if (entry.length() == 0)
                 continue;
+            if (!button.isButtonOn())
+            {
+                entry = "";
+                Serial.println(F("Button OFF: count discarded; press button and re-enter"));
+                prompt();
+                continue;
+            }
             float revolutions = entry.toFloat();
             entry = "";
             rpm[step] = revolutions * 6.0; // revolutions in 10 s to RPM

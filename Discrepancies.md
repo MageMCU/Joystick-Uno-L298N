@@ -1,6 +1,15 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated October 7, 2026. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated October 9, 2026. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+
+## Current Repository Consistency Review (2026-10-09)
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 24 | The root README said every experiment's Instructions file was the article text, although Experiments 1 to 5 use lab cards and Experiments 6 to 9 contain the full advanced steps. | `README.md`, `Experiments.md`, `Experiments/Experiment-1` to `9/Instructions/README.md` | **Fixed.** Root README now distinguishes the two formats and agrees with `Experiments.md`. |
+| 25 | `Code-JUL/README.md` reported 16 math lessons, but the project contains 19 lesson folders. | `Code-JUL/README.md`, `Code-JUL/src/Step3_MathLessons/` | **Fixed.** README now lists all 19 and distinguishes the first 16 simulated math lessons from hardware lessons 17 to 19. |
+| 26 | Finding 12 below incorrectly said the Experiment-1 `Button.h` and `Timer.h` copies had corrected folder comments and differed only in that comment. The current snapshots intentionally retain the original `Folder: Code-JUL` comments. | `Discrepancies.md`, `Experiments/Experiment-1/Code/include/Button.h`, `Experiments/Experiment-1/Code/include/Timer.h` | **Corrected.** The copied headers are unchanged source snapshots; their original folder comments are retained intentionally, consistent with the Experiment-1 Code README and release notes. |
+| 27 | Experiment-7 and Experiment-8 instructions used source line numbers that became stale after the post-v2.4.0 code/comment updates. | `Experiments/Experiment-7/Instructions/README.md`, `Experiments/Experiment-8/Instructions/README.md` | **Fixed.** Instructions identify the settings by symbol name rather than line number. |
 
 ## Code
 
@@ -46,7 +55,7 @@ The production headers were reviewed against `Step1_Joystick`, `Step2_JUL`, the 
 | 9 | Project structure tree omitted `Experiments/`, `RELEASES.md`, `DISCLAIMER.md`, and `LICENSE`. | root `README.md` | **Fixed.** Tree regenerated. |
 | 10 | The debug flags were documented without the side effect that any flag changes `BUTTON_TIMER_mS` from 100 ms to 3000 ms. | root `README.md` | **Fixed.** Note added in Next Steps. |
 | 11 | Joystick axis assignment differs between documents. The repository code and README use X on A1 and Y on A0; Article 1000 reportedly shows X on A0 and Y on A1. | root `README.md`; Article 1000 | **Open.** The Experiment-2 procedure tells users to measure the actual joystick and correct the software mapping if needed. The repository cannot establish which mapping the external article or a user's hardware should use; verify the physical setup and resolve the article/code discrepancy with the author. |
-| 12 | Header comments in the Experiment-1 copies of `Timer.h` and `Button.h` said "Folder: Code-JUL". | `Experiments/Experiment-1/Code/include/` | **Fixed.** Folder line now reads `Experiments/Experiment-1/Code/include (copy of Code-JUL/include)`. Files otherwise identical to the Code-JUL originals. |
+| 12 | Header comments in the Experiment-1 copies of `Timer.h` and `Button.h` say "Folder: Code-JUL", reflecting their source location rather than the copy location. | `Experiments/Experiment-1/Code/include/` | **Intentional.** The files are preserved as original source snapshots; their comments are not rewritten in the copies. |
 | 13 | `Experiments/Experiment-1/Code/README` had no `.md` extension, so GitHub showed raw Markdown. It described the shipped `build_src_filter` as selecting `1_Delay` while `platformio.ini` selected `3_Button`. Typos "hte" and "togehter". A fenced code block was indented under a bullet. | `Experiments/Experiment-1/Code/README` | **Fixed.** Renamed `README.md` and rewritten. `platformio.ini` now ships with Lab 1 selected, matching the reading order. |
 | 14 | `Instructions/README.md` contained only two placeholder lines. | `Experiments/Experiment-1/Instructions/README.md` | **Fixed.** Full reader instructions written (overview, materials, software setup, three labs with code, wiring, expected output, verification, troubleshooting). |
 | 15 | Markdown broken at the end of the root README: `Note:` followed a bullet with no blank line and `---` followed the note with no blank line, so the note and the rule were absorbed into the last bullet. | root `README.md` | **Fixed** by the rewrite. |

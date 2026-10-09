@@ -1,6 +1,6 @@
 # Experiment-7: Line Fit and Motor Calibration
 
-*Article 1004, Experiments for Joystick-Uno-L298N, STEM Starter Kit Series, Part 5. This guide is the text of the experiment in the article (DRAFT 3, 20261008). Labels such as Table-n, Code-n, Equation-n, and Circuit-n refer to the article; every Code-n listing is the main.cpp file named beside it in this repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 7.1 and Equation 7.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -10,14 +10,14 @@ Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTm
 
 ## Lab 1: The Least Squares Line
 
-A least squares line is the straight line y = mx + b that makes the sum of the squared vertical distances from the data points to the line as small as possible. Its slope m and intercept b follow from the averages of the data (Equation-7). The root mean square (RMS) error is the square root of the average squared distance; it has the units of y and states how far a typical point lies from the line. The x intercept, −b / m, is the value of x at which the line crosses y = 0.
+A least squares line is the straight line y = mx + b that makes the sum of the squared vertical distances from the data points to the line as small as possible. Its slope m and intercept b follow from the averages of the data (Equation 7.1). The root mean square (RMS) error is the square root of the average squared distance; it has the units of y and states how far a typical point lies from the line. The x intercept, −b / m, is the value of x at which the line crosses y = 0.
 
-**Equation-7.** `m = Σ (xi − x̄)(yi − ȳ) / Σ (xi − x̄)²,   b = ȳ − m x̄`  
+**Equation 7.1.** `m = Σ (xi − x̄)(yi − ȳ) / Σ (xi − x̄)²,   b = ȳ − m x̄`<br>
 Slope and intercept of the least squares line through n points (xi, yi).
 
-**Code.** Lesson 15_LineFit. Uno and USB cable only. Run it and confirm Failures: 0. Test T2 fits the data of Table-10; compute the slope from Equation-7 by hand for the first two columns and compare.
+**Code.** Lesson 15_LineFit. Uno and USB cable only. Run it and confirm Failures: 0. Test T2 fits the data of Table 7.1; compute the slope from Equation 7.1 by hand for the first two columns and compare.
 
-**Table-10.** Test data of lesson 15, T2. The fit gives a slope of 0.63 RPM per PWM step, an intercept of −25.8 RPM, an x intercept of 40.95, and an RMS error of 0.748 RPM.
+**Table 7.1.** Test data of lesson 15, T2. The fit gives a slope of 0.63 RPM per PWM step, an intercept of −25.8 RPM, an x intercept of 40.95, and an RMS error of 0.748 RPM.
 
 | PWM | 60 | 100 | 140 | 180 | 220 |
 |---|---|---|---|---|---|
@@ -25,7 +25,7 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 ## Lab 2: Calibrating the Motor
 
-**Code.** Lesson 18_MotorLineFit, Code-15. Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the Bits() value in line 127 to the value found in Experiment-5, and ledPin in line 120 to the pin of the indicator LED. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
+**Code.** Lesson 18_MotorLineFit (Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp). Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the `Bits()` value to the one found in Experiment-5, and set `ledPin` to the pin of the indicator LED. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
 
 **Prediction.** From the starting duty cycle recorded in Experiment-3, predict the x intercept of the fit.
 
@@ -33,9 +33,9 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 2. Mark one wheel with tape. Press the joystick button (state ON). Count the revolutions of the marked wheel in 10 s, type the count, and press Enter. The program converts the count to RPM (count × 6) and moves to the next PWM value.
 
-3. After the fifth value the motors stop and the program prints the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them and press the joystick button (state OFF).
+3. After the fifth value the motors stop and the program prints the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them. The program stores only one set of five measurements; reset the Uno before starting a new set.
 
-4. Repeat with the other wheel, then with the motor bus raised by 1 V, and compare the slopes.
+4. Reset the Uno and repeat with the other wheel. To repeat with the motor bus raised by 1 V, remove the motor supply first as directed by Article 1009, change the supply, reset the Uno, and collect a new set.
 
 **Expected output and verification.** The five points lie close to a straight line, and the RMS error is a few RPM. The x intercept agrees with the starting duty cycle of Experiment-3 within the resolution of the measurement. Two motors of the same model give slightly different slopes; this difference is one reason a robot drifts to one side with equal commands, and it is the measurement that closed loop speed control, described in Article 1003, corrects automatically.
 

@@ -28,7 +28,16 @@ void setup()
     timer.resetTimer();
 }
 
-// the loop function runs over and over again forever
+// The loop function runs over and over again forever.
+// counter counts every pass through loop(). toggle records which half
+// of the blink is due next. It starts false, so the second block acts
+// first: when isTimer(1000) fires, the LED goes LOW, toggle becomes
+// true, and lastCount saves counter. One second later the first block
+// fires: it prints counter - lastCount, the passes made during the
+// interval, sets the LED HIGH, and clears toggle. Each condition tests
+// toggle before isTimer(); && evaluates its right operand only when
+// the left operand is true, so isTimer() is called from one block per
+// pass, and the two blocks share one timer.
 void loop()
 {
     counter++;
