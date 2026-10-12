@@ -1,6 +1,6 @@
 # Experiment-4: L298N Two Motors and the Bits Table
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -11,13 +11,14 @@ Project folder: open `Experiments/Experiment-4/Code` in Visual Studio Code, neve
 | Lab 1: Bitwise.h, Bits and Masks | `src/1_Bitwise` | `build_src_filter = +<*> +<1_Bitwise/> -<2_TypeConv/> -<3_BitsLEDs/>` | Uno and USB cable |
 | Lab 2: TypeConv.h, Bytes and Words | `src/2_TypeConv` | `build_src_filter = +<*> -<1_Bitwise/> +<2_TypeConv/> -<3_BitsLEDs/>` | Uno and USB cable |
 | Lab 3: L298N.h, Reading the Flags on the Pins | `src/3_BitsLEDs` | `build_src_filter = +<*> -<1_Bitwise/> -<2_TypeConv/> +<3_BitsLEDs/>` | [Circuit-4](../../Circuits/Circuit-4.svg) |
-| Lab 4: Wiring the Second Motor | no program | none | Article 1009, Circuit-1 |
+| Lab 4: Wiring the Second Motor | Experiment-3 `src/2_DutyCycle` | Experiment-3: `build_src_filter = +<*> -<1_MiscMath/> +<2_DutyCycle/>` | Article 1009, Circuit-1 |
 
 ## Notes for the bench
 
 - Lab 1, step 3: change the error case of `b_powerOfTwo()` in `include/Bitwise.h` (the copy in this folder only) to return 0.
 - Lab 2, step 2: remove the comment marks from the three example lines in `loop()`.
 - Lab 3: type one hexadecimal digit, 0 to f, in the serial monitor.
+- Lab 4: before power is applied, upload Experiment-3, Lab 2 (open `Experiments/Experiment-3/Code`) with the bench supply unplugged and leave the push button state OFF. The Uno must not hold the Lab 3 program, which writes 255 to D5 when a digit is typed.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

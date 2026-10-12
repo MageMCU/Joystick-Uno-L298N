@@ -182,7 +182,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | Step1_Joystick and Step2_JUL bench tested (commit f2307a1, unchanged); new labs and lessons built with avr-gcc and run in simulation (simavr), bench tests pending |
+| **Status** | Step1_Joystick and Step2_JUL bench tested at commit f2307a1; later changes to them are comments and include paths only, and they compile to the same Intel HEX. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending |
 
 ---
 
@@ -232,7 +232,7 @@ validation status.
 
 ## Credits
 
-The files `Code-JUL/include/numerics/LineFit2.h` and `Code-JUL/include/numerics/Rotation.h` are adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools ([geometrictools.com](https://www.geometrictools.com), [GitHub](https://github.com/davideberly/GeometricTools)), under the Boost Software License, Version 1.0. Each file keeps his copyright notice and states the changes made. See `Code-JUL/src/Step3_MathLessons/README.md`.
+The files `Code-JUL/include/numerics/LineFit2.h` (lessons 15 and 18) and `Code-JUL/include/numerics/Rotation.h` (lesson 16) are adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools ([geometrictools.com](https://www.geometrictools.com), [GitHub](https://github.com/davideberly/GeometricTools)), under the Boost Software License, Version 1.0. Each file keeps his copyright notice and states the changes made. See `Code-JUL/src/Step3_MathLessons/README.md`.
 
 ## License
 

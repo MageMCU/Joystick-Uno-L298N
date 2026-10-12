@@ -1,6 +1,6 @@
 # Experiment-8: Vectors, Matrices, and the Joystick Frame
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 8.1 and Equation 8.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 8.1 and Equation 8.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -19,15 +19,17 @@ The 2 × 2 matrix that rotates a vector counterclockwise by the angle θ.
 
 A frame is a set of axes in which coordinates are measured. The joystick reads its position in its own frame; the drive needs it in the frame of the robot, x to the right and y forward. A joystick mounted counterclockwise by an angle θ has raw readings rotated by −θ from the robot frame, so multiplying the reading by R(θ) returns it to the robot frame. Article 1009, Joystick Setup, corrects the eight orientations that are multiples of 90 degrees, with or without a reflection, by exchanging and reversing the analogRead() lines; the rotation matrix also corrects any angle between them.
 
-**Code.** Lesson 19_JoystickFrame (Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp). Part 1 checks rotations of 90, −90, and −45 degrees with test vectors and prints Failures: 0. Part 2 reads the live joystick once per second and prints the raw vector, the corrected vector, and the octant from Joystick.h. Part 1 needs only the USB cable; for Part 2, power the joystick by Method 1 or Method 2 of Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Set `MOUNT_ANGLE_DEG` to the angle at which the joystick is mounted, counterclockwise as seen from above.
+**Code.** Lesson 19_JoystickFrame (Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp). Part 1 checks rotations of 90, −90, and −45 degrees with test vectors and prints Failures: 0. Part 2 reads the live joystick once per second and prints the raw vector, the corrected vector, and the octant from Joystick.h. Part 1 needs only the USB cable; for Part 2, power the joystick as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Set `MOUNT_ANGLE_DEG` to the angle at which the joystick is mounted, counterclockwise as seen from above.
 
-1. Make the two analogRead() lines match Experiment-2, upload with MOUNT_ANGLE_DEG = 0, and confirm that the raw and corrected vectors agree and that the octants of the eight checklist positions agree with Article 1004, Table-8.
+1. Make the two analogRead() lines match Experiment-2, upload with MOUNT_ANGLE_DEG = 0, and confirm that the raw and corrected vectors agree and that the octants of the eight checklist positions agree with Article 1004, Table-8. Each diagonal position lies on the boundary between two octants (Article 1004, Experiment-5, Lab 2, step 2), so a real grip reports either neighboring octant there; record which one.
 
 2. Turn the joystick module 45 degrees counterclockwise on the bench and repeat. Record the octants with MOUNT_ANGLE_DEG = 0, then set it to 45, upload, and record them again.
 
 3. Turn the module to 90 degrees and find the correction twice: once by exchanging and reversing the analogRead() lines as in Article 1009, Joystick Setup, and once with MOUNT_ANGLE_DEG = 90 and the original lines. Show on paper that the two corrections are the same matrix.
 
-**Expected output and verification.** Part 1 prints Failures: 0. With the correct mount angle, the eight positions report the octants of Article 1004, Table-8 for any mounting angle. A rotation keeps the magnitude of the vector, so the corner positions still have a magnitude of 1.414.
+**Expected output and verification.** Part 1 prints Failures: 0. With the correct mount angle, the four axis positions report the octants of Article 1004, Table-8 for any mounting angle, and each diagonal reports one of its two neighboring octants. A rotation keeps the magnitude of the vector, so the corner positions still have a magnitude of 1.414.
+
+**Watch for.** A rotated reading can have a component larger than 1: a corner reading of (1, 1) rotated by 45 degrees becomes (0, 1.414). Lesson 19 drives no motor, so it only prints the value. A drive program that applies the rotation must limit each component to the range −1 to 1 before the Joystick class; otherwise the command exceeds 255, and analogWrite() of a value above 255 on a timer pin does not give full speed.
 
 
 ## Related Articles

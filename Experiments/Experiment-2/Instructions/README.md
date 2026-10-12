@@ -1,6 +1,6 @@
 # Experiment-2: Wiring and Reading the Thumb Joystick
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -19,7 +19,7 @@ Project folder: open `Experiments/Experiment-2/Code` in Visual Studio Code, neve
 
   `build_src_filter = +<*> +<Step1_Joystick/> -<Step2_JUL/> -<Step3_MathLessons/>`
 
-  In `Code-JUL/include/Common.h`, remove the comment marks from line 33 (`#define DEBUG_MAIN`). Step1_Joystick: axes on lines 82 and 84, reversed forms on lines 83 and 85, `Button(buttonPin, ledPin)` on line 51 (Article 1009, Joystick Setup).
+  In `Code-JUL/include/Common.h`, remove the comment marks from line 33 (`#define DEBUG_MAIN`). Step1_Joystick: axes on lines 82 and 84, reversed forms on lines 83 and 85, `Button(buttonPin, ledPin)` on line 51 (Article 1009, Joystick Setup). Circuit-2 places the indicator LED on D12: comment out line 48 (`int ledPin = 3;`) and remove the comment marks from line 50 (`int ledPin = 12;`), as in Article 1004, Experiment-2, Lab 3, step 2.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

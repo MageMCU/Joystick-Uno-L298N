@@ -34,7 +34,7 @@ void MiscMath_T6_AbsoluteValue()
 
 void MiscMath_T5_DirectionVector()
 {
-    printTitle("Misc Math T2 Direction Components");
+    printTitle("Misc Math T5 Direction Vector");
 
     float rad;
     Vector3<float> vector;
@@ -55,7 +55,7 @@ void MiscMath_T5_DirectionVector()
 
 void MiscMath_T4_DirectionComponents()
 {
-    printTitle("Misc Math T2 Direction Components");
+    printTitle("Misc Math T4 Direction Components");
 
     float x;
     float y;
@@ -78,6 +78,7 @@ void MiscMath_T4_DirectionComponents()
 
 void MiscMath_T3_Angle2Radian()
 {
+    printTitle("Misc Math T3 Angle2 Radian");
     float x;
     float y;
     float rad;
@@ -98,6 +99,7 @@ void MiscMath_T3_Angle2Radian()
 
 void MiscMath_T2_AngleRadian()
 {
+    printTitle("Misc Math T2 Angle Radian");
     float x;
     float y;
     float rad;

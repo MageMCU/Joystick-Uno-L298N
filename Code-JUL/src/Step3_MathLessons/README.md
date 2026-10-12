@@ -2,7 +2,7 @@
 
 Math lessons, namespace **csjc** ([Carpenter Software](https://carpentersoftware.com), Jesse Carpenter).
 
-This folder holds the test programs of the MageMCU **Numerics** repository (Algebra, last updated 20241202), merged into Joystick-Uno-L298N on 20261008 as lessons 01 to 14, plus lessons 15 and 16, which use code adapted from David Eberly's Geometric Tools Engine (see Credits). The lessons use the math headers in `Code-JUL/include/numerics/` and the print helpers in `Code-JUL/include/Debug.h`.
+This folder holds the test programs of the MageMCU **Numerics** repository (Algebra, last updated 20241202), merged into Joystick-Uno-L298N on 20261008 as lessons 01 to 14, plus lessons 15 and 16, which use code adapted from David Eberly's Geometric Tools Engine (see Credits), and the hardware lessons 17 to 19 of Article 1004, Experiments 6 to 8. The lessons use the math headers in `Code-JUL/include/numerics/` and the print helpers in `Code-JUL/include/Debug.h`.
 
 ## Quick Use (PlatformIO)
 
@@ -36,8 +36,8 @@ Code-JUL/src/Step3_MathLessons/
 ├── 14_Quaternion/main.cpp     9 tests
 ├── 15_LineFit/main.cpp        3 tests, self checking (new)
 ├── 16_Rotation/main.cpp       5 tests, self checking (new)
-├── 17_DeadZone/main.cpp       joystick at rest, Article 1004 Experiment-6 (new, hardware)
-├── 18_MotorLineFit/main.cpp   motor calibration, Article 1004 Experiment-7 (new, hardware)
+├── 17_DeadZone/main.cpp       joystick at rest, Article 1004 Experiment-6 (new, hardware; any key repeats)
+├── 18_MotorLineFit/main.cpp   motor calibration, Article 1004 Experiment-7 (new, hardware; n starts a new set)
 └── 19_JoystickFrame/main.cpp  rotated joystick frame, Article 1004 Experiment-8 (new, 4 checks plus hardware)
 ```
 
@@ -45,14 +45,14 @@ Each lesson's `main.cpp` holds the test functions of one class, moved unchanged 
 
 ## Merge Notes (20261008)
 
-- The contents of the Code-JUL headers used by Step1 and Step2 were not changed. Where a Numerics header already existed in Code-JUL (`Bitwise.h`, `TypeConv.h`, `LinearMap.h`, `MiscMath.h`, `Vector3.h`, `Button.h`, `Timer.h`), the lessons use the Code-JUL version.
+- The program code that Step1 and Step2 compile was not changed: their Intel HEX files are byte for byte identical to commit f2307a1. Where a Numerics header already existed in Code-JUL (`Bitwise.h`, `TypeConv.h`, `LinearMap.h`, `MiscMath.h`, `Vector3.h`, `Button.h`, `Timer.h`), the lessons use the Code-JUL version.
 - Two lessons were adjusted to the Code-JUL headers: `01_Bitwise` defines its own `ReverseBits()` (a member of the Numerics Bitwise class only), and `02_TypeConv` uses the return value of `BytesToWord()` and `BytesToDWord()` in place of `GetWord()` and `GetDWord()`.
 - `Debug.h`: the `Debug()` overloads with one to three values are defined in `numerics/MiscMath.h`; `Debug.h` adds the four and five value overloads and the print helpers.
 - Not merged: `TypeConv::FloatTo5Bytes()` of Numerics, which calls `_floatToBytes()`, a function declared but never defined; the archived `Joystick` and `L298N` text files. The `BusI2C` files are set aside for a later article.
 
 ## Bug Fixes (20261008)
 
-Fixed in the ten Numerics headers that Step1 and Step2 do not use. Each fix is marked `FIXED 20261008` in the header. The files that Step1 and Step2 use (`Bitwise.h`, `LinearMap.h`, `MiscMath.h`, `TypeConv.h`) are unchanged; their remaining edge cases are marked `REVIEW 20261008` and are left as lesson exercises.
+Each fix is marked `FIXED 20261008` in the header. Most are in the ten headers added from Numerics, which Step1 and Step2 do not include. `Vector3.h` is included by Step1 and Step2 (through `Headers.h` and `MiscMath.h`), and two of its functions, `Angle()` and `ProjV()`, were corrected; neither function is called by Step1 or Step2, so their compiled code is unchanged. The code of `Bitwise.h`, `LinearMap.h`, `MiscMath.h`, and `TypeConv.h` is unchanged; their edge cases are marked `REVIEW 20261008` and are left as lesson exercises.
 
 | Header | Fix |
 |---|---|
@@ -63,7 +63,7 @@ Fixed in the ten Numerics headers that Step1 and Step2 do not use. Each fix is m
 | Matrix.h, Matrix3x3.h, Matrix4x4.h, Quaternion.h, Point2.h, Point3.h | Unused inheritance removed. Sizes on the Uno: Quaternion 76 to 16 bytes, Matrix2x2 92 to 16, Matrix3x3 128 to 36, Matrix4x4 192 to 64, Point2 18 to 10, Point3 28 to 14 |
 | Quaternion.h | `GetAxis()` compiles; `NormDeviation()` is two sided again; `Multiply()` and `operator*` renormalize only products that drifted from unit length (within 0.01), so (2)(2) = 4; `GetRadianAngle()` clamps w; `Inverse()` and `UnitQuaternion()` handle zero; `Element()` bounds check; new `Rotate(v)` |
 | Vector2.h, Vector3.h | `Angle()` clamps before `acos()`; `ProjV()` handles a zero vector; `DotPerp()` uses `real` |
-| RandomNumber.h | Seeds once, at the first call; returns real values in [min, max) (bounds were truncated to integers) |
+| RandomNumber.h | Seeds once, at the first call; returns real values in [min, max) (bounds were truncated to integers). FIXED 20261012: the divisor is 2^24, so the fraction can no longer round up to 1 and return max |
 | Statistics.h | Quicksort uses a fixed 64 entry stack (no variable length array); empty and one value sets handled. The constructor still sorts the caller's array in place (documented) |
 | 06_Statistics lesson | `const int size` (the array was a variable length array) |
 
@@ -73,6 +73,7 @@ Fixed in the ten Numerics headers that Step1 and Step2 do not use. Each fix is m
 - AVR build (avr-gcc 7.3.0, `-Wall -Wextra -Wvla`): all 16 lessons compile with no warnings.
 - AVR simulation (simavr, ATmega328P at 16 MHz): every lesson ran to its last test with no reset; lessons 15 and 16 report `Failures: 0`.
 - Step1_Joystick and Step2_JUL: Intel HEX byte for byte identical to commit f2307a1.
+- 20261012: all 19 lessons, Step1_Joystick, Step2_JUL, and every Experiment 1 to 5 lab compiled with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Os`, `-Wall -Wextra`); the only warnings are the two unused variables of Step1_Joystick when `DEBUG_MAIN` is off. Lessons 15, 16, and 19 (Part 1) report `Failures: 0` in simavr. Sizes from PlatformIO may differ slightly with its core version; lessons 17 to 19 have no recorded size.
 
 | Lesson | Program (bytes) | Data (bytes) |
 |---|---|---|
@@ -98,15 +99,14 @@ The Uno has 2048 bytes of RAM. Data is the RAM used before the program runs; in 
 ## Known Items for Review
 
 - Lessons 01 to 14 print values but do not compare them with expected values; lessons 15 and 16 show the self checking form (expected, observed, PASS or FAIL).
-- `04_MiscMath`: T4 and T5 both print the title "T2 Direction Components"; T2 and T3 print no title.
 - Lesson 16 relates to Article 1005, Study of Quaternions (20221207); conventions should be checked against the article.
 
 ## Credits
 
-Lessons 15 and 16 use code adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools (https://www.geometrictools.com, https://github.com/davideberly/GeometricTools), distributed under the Boost Software License, Version 1.0:
+Lessons 15, 16, and 18 use code adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools (https://www.geometrictools.com, https://github.com/davideberly/GeometricTools), distributed under the Boost Software License, Version 1.0:
 
-- `include/numerics/LineFit2.h`, adapted from GTE/Mathematics/ApprHeightLine2.h
-- `include/numerics/Rotation.h`, adapted from GTE/Mathematics/Rotation.h and Slerp.h
+- `include/numerics/LineFit2.h`, adapted from GTE/Mathematics/ApprHeightLine2.h (lessons 15 and 18)
+- `include/numerics/Rotation.h`, adapted from GTE/Mathematics/Rotation.h and Slerp.h (lesson 16)
 
 Each file carries David Eberly's copyright notice, the Boost license reference, and an adaptation clause listing the changes. The matrix inverse and quaternion inverse fixes follow the approach of GTE Matrix2x2.h, Matrix3x3.h, and Quaternion.h, credited in those headers. These adaptations are not endorsed by David Eberly or Geometric Tools.
 

@@ -16,7 +16,10 @@
 //
 // Experiment-5, Lab 1: Vector3.h and the joystick vector.
 //
-// Wiring: the joystick of Experiment-2 (Table-1). No motor power.
+// Wiring: the drive as wired since Experiment-3; power the joystick as in
+// Article 1004, Experiment-3, Powering the Joystick after Experiment-3.
+// setup() holds D5 to D10 LOW. Do not reset the Uno while the bench
+// supply is applied.
 //
 // The two normalized joystick inputs (x, y) are stored as a Vector3 with
 // z = 0. For six test points, and then for the live joystick once per
@@ -59,7 +62,7 @@ void setup()
 {
     // Hold the six L298N inputs LOW before the motor supply is applied
     // (Article 1004, Experiment-3, Powering the Joystick after
-    // Experiment-3, Method 1; Article 1009, Safety and Supervision, item 4)
+    // Experiment-3; Article 1009, Safety and Supervision, item 4)
     for (int pin = 5; pin <= 10; pin++)
     {
         pinMode(pin, OUTPUT);

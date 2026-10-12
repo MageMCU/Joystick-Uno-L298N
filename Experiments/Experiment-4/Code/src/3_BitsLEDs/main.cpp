@@ -37,8 +37,9 @@ const int TEST_LEFT = 255;
 const int TEST_RIGHT = -64;
 
 // The duty cycle on an enable pin, read from the timer registers of the
-// ATmega328P (Article 1002). analogWrite(pin, 255) and analogWrite(pin, 0)
-// write the pin HIGH or LOW without PWM, so the port bit is read instead.
+// ATmega328P (Article 1003, Changing the PWM Frequency of Timer1).
+// analogWrite() of 255 or 0 writes the pin HIGH or LOW without PWM,
+// so the port bit is read instead.
 int dutyD5()
 {
     if (TCCR0A & _BV(COM0B1))

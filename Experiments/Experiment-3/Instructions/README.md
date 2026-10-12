@@ -1,6 +1,6 @@
 # Experiment-3: L298N Single Motor
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -13,7 +13,7 @@ Project folder: open `Experiments/Experiment-3/Code` in Visual Studio Code, neve
 
 ## Notes for the bench
 
-- Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output.
+- Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output. `button = Button(buttonPin, ledPin);` is on line 97 with the default `activeLow = true`; if the push button was measured as a pull down in Experiment-2, Lab 3, step 1, change it to `Button(buttonPin, ledPin, false)` before the upload.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

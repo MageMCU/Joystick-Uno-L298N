@@ -1,6 +1,6 @@
 # Experiment-5: Joystick to Motors
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -8,13 +8,13 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
 
 | Lab | Folder | build_src_filter | Wiring |
 |---|---|---|---|
-| Lab 1: Vector3.h and the Joystick Vector | `src/1_Vector3` | `build_src_filter = +<*> +<1_Vector3/> -<2_Joystick/>` | Joystick as in [Circuit-2](../../Circuits/Circuit-2.svg) |
+| Lab 1: Vector3.h and the Joystick Vector | `src/1_Vector3` | `build_src_filter = +<*> +<1_Vector3/> -<2_Joystick/>` | Drive wiring; joystick powered as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3 |
 | Lab 2: Joystick.h, Test Vectors | `src/2_Joystick` | `build_src_filter = +<*> -<1_Vector3/> +<2_Joystick/>` | Uno and USB cable |
 | Lab 3: Step2_JUL and the Motor Movement Checklist | Code-JUL, Step2_JUL | see the notes below | Article 1009, Circuit-1 |
 
 ## Notes for the bench
 
-- Lab 1: make the two `analogRead()` lines of `loop()` match the lines recorded in Experiment-2.
+- Lab 1: make the two `analogRead()` lines of `loop()` match the lines recorded in Experiment-2. `setup()` first sets D5 to D10 as outputs and LOW; upload and open the serial monitor before the bench supply is applied, and remove the supply before any upload or reset.
 - Lab 3 uses the Code-JUL folder, line 31 of platformio.ini, the shipped setting:
 
   `build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_MathLessons/>`

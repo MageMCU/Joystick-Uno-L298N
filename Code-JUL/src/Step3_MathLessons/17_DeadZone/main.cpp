@@ -17,15 +17,19 @@
 // Lesson 17: statistics of the joystick at rest and the dead zone.
 // Added 20261008 for Article 1004, Experiment-6.
 //
-// Wiring: the joystick of Article 1004, Experiment-2 (no motor power).
-// Leave the grip at rest. The program takes 100 readings of each axis,
-// maps them into the range -1 to 1 exactly as Step2_JUL does, and prints
+// Wiring: the drive as wired since Article 1004, Experiment-3, with the
+// joystick powered as in Experiment-3, Powering the Joystick after
+// Experiment-3 (bench supply applied, D5 to D10 held LOW). Leave the grip
+// at rest. The program takes 100 readings of each axis, maps them into
+// the range -1 to 1 exactly as Step2_JUL does, and prints
 // the average, the standard deviation, and the median of each axis. The
 // suggested offset is |average| + 3 standard deviations: a resting grip
 // then falls inside the dead zone for nearly every reading. Compare it
 // with X_OFFSET (0.05) and Y_OFFSET (0.06) in Step2_JUL.
 //
-// Press the Uno reset button to repeat the measurement.
+// Send any key in the serial monitor to repeat the measurement. Do not
+// press the Uno reset button while the bench supply is applied: D5 to D10
+// float between a reset and the first statement of setup().
 
 #include <Arduino.h>
 #include "numerics/LinearMap.h"
@@ -38,6 +42,8 @@ const int size = 100;
 float xs[size];
 float ys[size];
 LinearMap<float> mapInput(0, 1023, -1.0, 1.0);
+
+void measure();
 
 void report(const char *axis, float *data, float stepOffset)
 {
@@ -68,7 +74,7 @@ void setup()
 {
     // Hold the six L298N inputs LOW before the motor supply is applied
     // (Article 1004, Experiment-3, Powering the Joystick after
-    // Experiment-3, Method 1; Article 1009, Safety and Supervision, item 4)
+    // Experiment-3; Article 1009, Safety and Supervision, item 4)
     for (int pin = 5; pin <= 10; pin++)
     {
         pinMode(pin, OUTPUT);
@@ -79,7 +85,24 @@ void setup()
     {
     }
     Serial.println(F("Lesson 17: joystick at rest, 100 readings per axis"));
+    measure();
+}
 
+// FIXED 20261012: a key typed in the serial monitor repeats the
+// measurement, so the Uno is not reset with the bench supply applied.
+void loop()
+{
+    if (Serial.available() > 0)
+    {
+        delay(20); // let a line ending arrive, then discard the input
+        while (Serial.available() > 0)
+            Serial.read();
+        measure();
+    }
+}
+
+void measure()
+{
     for (int i = 0; i < size; i++)
     {
         // Use the two analogRead() lines recorded in Experiment-2
@@ -92,8 +115,5 @@ void setup()
 
     report("x", xs, 0.05);
     report("y", ys, 0.06);
-}
-
-void loop()
-{
+    Serial.println(F("Send any key to repeat"));
 }

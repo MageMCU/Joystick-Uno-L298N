@@ -1,6 +1,6 @@
 # Experiment-7: Line Fit and Motor Calibration
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 7.1 and Equation 7.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 7.1 and Equation 7.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -25,7 +25,7 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 ## Lab 2: Calibrating the Motor
 
-**Code.** Lesson 18_MotorLineFit (Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp). Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the `Bits()` value to the one found in Experiment-5, and set `ledPin` to the pin of the indicator LED. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
+**Code.** Lesson 18_MotorLineFit (Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp). Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the `Bits()` value to the one found in Experiment-5, and set `ledPin` to the pin of the indicator LED. The `Button` object on line 157 uses the default `activeLow = true`; if the push button was measured as a pull down in Experiment-2, Lab 3, step 1, change the line to `button = Button(buttonPin, ledPin, false);`. Before the motor supply is applied, press the button twice and confirm that the indicator LED turns on and then off. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
 
 **Prediction.** From the starting duty cycle recorded in Experiment-3, predict the x intercept of the fit.
 
@@ -33,9 +33,9 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 2. Mark one wheel with tape. Press the joystick button (state ON). Count the revolutions of the marked wheel in 10 s, type the count, and press Enter. The program converts the count to RPM (count × 6) and moves to the next PWM value.
 
-3. After the fifth value the motors stop and the program prints the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them. The program stores only one set of five measurements; reset the Uno before starting a new set.
+3. After the fifth value the motors stop and the program prints the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them. The program stores one set of five measurements; send n to start a new set. The motors stop and the button state returns to OFF, so the new set starts only after the button is pressed again.
 
-4. Reset the Uno and repeat with the other wheel. To repeat with the motor bus raised by 1 V, remove the motor supply first as directed by Article 1009, change the supply, reset the Uno, and collect a new set.
+4. Send n and repeat with the other wheel. To repeat with the motor bus raised by 1 V, remove the motor supply first as directed by Article 1009, change the supply, apply it again, send n, and collect a new set. Do not press the reset button of the Uno while the motor supply is applied: D5 to D10 float between a reset and `PinsL298N()`.
 
 **Expected output and verification.** The five points lie close to a straight line, and the RMS error is a few RPM. The x intercept agrees with the starting duty cycle of Experiment-3 within the resolution of the measurement. Two motors of the same model give slightly different slopes; this difference is one reason a robot drifts to one side with equal commands, and it is the measurement that closed loop speed control, described in Article 1003, corrects automatically.
 

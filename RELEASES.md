@@ -4,9 +4,9 @@
 
 ---
 
-## v2.4.0 (2026-10-12), Article 1004 Update and Article 1009 alignment
+## v2.4.0 (2026-10-12), Article 1004 Update Rev 2 and Article 1009 alignment
 
-Tag `v2.4.0` marks the code that Article 1004 Update (20261012) and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.
+Tag `v2.4.0` marks the code that Article 1004 Update 20261012 Rev 2 and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.
 
 - `Code-JUL/src/Step2_JUL/main.cpp`: comments only. The lines named in Article 1009 are back at the numbers the article gives: `ledPin` 42, D12 form 44, `Button` 45, pins 55 to 60, L298N object 55 to 71, `PinsL298N()` 73, `Bits()` 92, `analogRead()` 103 and 104. The Bits comment block now states Table-3 of Article 1009: bit 3 = 1 means the enable pins are straight (values 8 to 15); the old block labeled 0 to 7 as straight
 - `Code-JUL/src/Step1_Joystick/main.cpp`: comments only. D12 form of `ledPin` added on line 50 (line 51, 68, 82 to 85 unchanged); the Analogs print is on line 119 as in Article 1009; example output corrected to `Analogs:  a: 512 b: 509`; references to the Supplemental replaced by Article 1009, Joystick Setup; typos corrected
@@ -22,7 +22,24 @@ Tag `v2.4.0` marks the code that Article 1004 Update (20261012) and Article 1009
   - `Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp`: apply the positive mount angle rotation for a joystick mounted counterclockwise, matching the frame derivation and the Experiment-8 instructions.
   - `Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp`: discard calibration counts entered while the joystick button is OFF; Experiment-7 explains how to reset between measurement sets and change the motor supply voltage safely.
 - `Experiments/Experiment-1/Code/src/3_Button/main.cpp`: print label corrected to `Number of Loops/1000mS` (the count covers the 1000 ms LOW half); comment added above `loop()`
-- `Experiments/Experiment-5/Code/src/1_Vector3`, `Code-JUL/src/Step3_MathLessons/17_DeadZone`, `19_JoystickFrame`: `setup()` first sets D5 to D10 as outputs and LOW, so the bench supply can be applied while these programs read the joystick (Article 1004, Experiment-3, Powering the Joystick after Experiment-3, Method 1); Experiment-6 and Experiment-8 instructions refer to the two methods
+- `Experiments/Experiment-5/Code/src/1_Vector3`, `Code-JUL/src/Step3_MathLessons/17_DeadZone`, `19_JoystickFrame`: `setup()` first sets D5 to D10 as outputs and LOW, so the bench supply can be applied while these programs read the joystick (Article 1004, Experiment-3, Powering the Joystick after Experiment-3); the Experiment-5, Experiment-6, and Experiment-8 instructions refer to that section. The article defines one procedure; the earlier Method 1 and Method 2 wording is removed
+- `Experiments/Experiment-2/Instructions/README.md`: Lab 3 note to select the D12 form of `ledPin` in Step1_Joystick (lines 48 and 50), as Circuit-2 wires the indicator LED to D12
+- `Experiments/Experiment-7/Instructions/README.md`: Lab 2 directs the student to set `activeLow` on line 157 of 18_MotorLineFit to match the push button measured in Experiment-2, and to test both button states before the motor supply is applied
+- `Experiments/Experiment-4/Code/src/3_BitsLEDs/main.cpp`: comment cites Article 1003, Changing the PWM Frequency of Timer1, as the article does (it cited Article 1002)
+- `Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp`: any key typed in the serial monitor repeats the measurement (it required a reset of the Uno); wiring comment matches the drive wiring with the bench supply applied
+- `Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp`: n starts a new set of five measurements, stops the motors, and returns the button state to OFF (it required a reset of the Uno); `button = Button(buttonPin, ledPin);` is now on line 157
+- `Experiments/Experiment-6` and `7/Instructions/README.md`: no reset of the Uno while the bench or motor supply is applied; the key and n commands replace it
+- `Experiments/Experiment-8/Instructions/README.md`: the diagonal positions may report either neighboring octant; a Watch for note on limiting a rotated input to the range −1 to 1 before it drives the motors
+- `Experiments/Experiment-3` and `4/Instructions/README.md`: Experiment-3 lab card gives `activeLow` on line 97; Experiment-4, Lab 4, names the program uploaded before power is applied (Experiment-3, Lab 2)
+- `Experiments/Experiment-5/Code/src/1_Vector3/main.cpp`: wiring comment matches the drive wiring with the bench supply applied
+- `Code-JUL/src/Step3_MathLessons/04_MiscMath/main.cpp`: test titles T2 to T5 corrected
+- `Code-JUL/include/numerics/RandomNumber.h`: divisor 2^24, so the result stays below max (code); `Quaternion.h`: note that `GetEulerAngle()` returns the rotation angle in degrees (comment only)
+- `Motor-Movement-Checklist/ReadMe.md`: octant list corrected to the regions of Joystick.h; code snippet matches Step2_JUL and Table-1
+- `Experiments/LAB-NOTEBOOK-TEMPLATE.md`: experiment records rewritten for the current labs (Experiment-1, Lab 4; Experiment-2 voltages; Experiment-3 keys 0 to 4, f, r; Experiment-4 LEDs and second motor; Experiment-5 positions of Table-8)
+- `README.md`, `Code-JUL/README.md`, `Code-JUL/src/Step3_MathLessons/README.md`: header status, Vector3.h corrections, Eberly credits for lessons 15, 16, and 18, and the 20261012 build record
+- Verified 20261012: Step1_Joystick, Step2_JUL, lessons 01 to 19, and every Experiment 1 to 5 lab compile with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6; Table-4, Table-8, and the outputs of Experiment-3, Lab 1, Experiment-4, Labs 1 and 2, and lessons 15, 16, and 19 (Part 1) agree with the article in simavr
+- Lab cards, `Experiments.md`, and Experiment-6 to 9 instructions cite Article 1004 Update 20261012 Rev 2
+- `CLAUDE.md` removed (review note, completed)
 
 ## v2.3.0 (2026-10-08), Article 1004 experiments (commit c08735a)
 

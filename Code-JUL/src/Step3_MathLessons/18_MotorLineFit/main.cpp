@@ -29,7 +29,11 @@
 // and press Enter; the program moves to the next PWM value. After the
 // last value it fits RPM = slope * PWM + intercept and prints the slope,
 // the intercept, the PWM at which the fitted speed is zero (the dead
-// band of the motor), and the RMS error.
+// band of the motor), and the RMS error. Send n to start a new set of
+// five measurements: the motors stop and the button state returns to OFF,
+// so a new set starts only after a deliberate press. Do not press the Uno
+// reset button while the motor supply is applied; D5 to D10 float between
+// a reset and PinsL298N().
 //
 // SAFETY COMES FIRST (WATCH YOUR FINGERS)
 
@@ -79,17 +83,42 @@ void finish()
     Serial.println(fit.Evaluate(255), 1);
     Serial.print(F("RMS error (RPM): "));
     Serial.println(fit.RmsError(pwm, rpm, points), 2);
+    Serial.println(F("Send n to start a new set"));
+}
+
+// FIXED 20261012: n starts a new set without a reset of the Uno, so the
+// motor supply can stay applied (Article 1004, Experiment-3, Powering the
+// Joystick after Experiment-3). The button state returns to OFF.
+void newSet()
+{
+    motors.PowerDownL298N();
+    button.resetButton();
+    step = 0;
+    entry = "";
+    Serial.println(F("New set: press the joystick button to start the motors"));
+    prompt();
 }
 
 void readEntry()
 {
-    while (Serial.available() > 0 && step < points)
+    while (Serial.available() > 0)
     {
         char c = Serial.read();
+        if (c == 'n' || c == 'N')
+        {
+            newSet();
+            continue;
+        }
         if (c == '\n' || c == '\r')
         {
             if (entry.length() == 0)
                 continue;
+            if (step >= points)
+            {
+                entry = "";
+                Serial.println(F("Set complete: send n to start a new set"));
+                continue;
+            }
             if (!button.isButtonOn())
             {
                 entry = "";

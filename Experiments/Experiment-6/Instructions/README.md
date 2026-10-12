@@ -1,6 +1,6 @@
 # Experiment-6: Statistics and the Dead Zone
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 6.1 and Equation 6.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 6.1 and Equation 6.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -26,13 +26,13 @@ Run lessons 05_RandomNumber and 06_Statistics. Record the average, standard devi
 
 ## Lab 3: The Joystick at Rest
 
-**Code.** Lesson 17_DeadZone (Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp). Wiring: the drive as wired since Experiment-3; power the joystick by Method 1 or Method 2 of Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
+**Code.** Lesson 17_DeadZone (Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp). Wiring: the drive as wired since Experiment-3; power the joystick as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
 
 **Prediction.** From the readings at rest recorded in Experiment-2, estimate the average of each axis in the range −1 to 1.
 
-1. Leave the grip at rest, upload, and record both lines. Press the reset button of the Uno and repeat four times.
+1. Upload and open the serial monitor with the bench supply unplugged, then apply the supply as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Leave the grip at rest and record both lines. Send any key in the serial monitor to repeat the measurement, four more times. Do not press the reset button of the Uno while the bench supply is applied.
 
-2. Release the grip from a full deflection, let it return to center, and press reset. Repeat from four directions and record the averages. The spread of the averages shows how well the spring of the joystick returns it to center.
+2. Release the grip from a full deflection, let it return to center, and send a key. Repeat from four directions and record the averages. The spread of the averages shows how well the spring of the joystick returns it to center.
 
 3. Choose X_OFFSET and Y_OFFSET as the largest suggested offset of each axis over all trials, set them in Step2_JUL, and confirm with Experiment-5, Lab 3, step 4, that a resting grip produces commands of zero.
 

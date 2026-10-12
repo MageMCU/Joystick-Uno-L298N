@@ -42,11 +42,11 @@ To run the joystick wiring test instead, swap the signs on the first two folders
 
 The math headers are in the `numerics` subfolder and are included with an explicit path, for example `#include "numerics/MiscMath.h"`. Headers inside `numerics` include each other by file name alone, because a quoted `#include` searches the folder of the including file first.
 
-These five headers moved from `include/` on 20261008 with their contents unchanged; `L298N.h`, `Joystick.h`, and `Headers.h` now include them with the `numerics/` path:
+These five headers moved from `include/` on 20261008. Their code is unchanged except for two corrections in `Vector3.h` (`Angle()` and `ProjV()`, marked FIXED 20261008), which Step1 and Step2 do not call; all five gained REVIEW 20261008 notes. `L298N.h`, `Joystick.h`, and `Headers.h` now include them with the `numerics/` path:
 
 | File | Purpose | Used by |
 |---|---|---|
-| `Bitwise.h` | Bit manipulation used by `L298N.h` | Step2 |
+| `Bitwise.h` | Bit manipulation used by `L298N.h` | Step1 (through the L298N object), Step2 |
 | `LinearMap.h` | Linear range mapping | Step2 |
 | `MiscMath.h` | `absT()` and the `Debug()` serial helpers | Step1, Step2 |
 | `TypeConv.h` | Type conversion helpers | not used by the current sketches |
@@ -80,6 +80,6 @@ In `include/Common.h` uncomment one flag: `DEBUG_MAIN` (Step1 output), `DEBUG_JO
 
 ## Notes
 
-- Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` are identical apart from the folder line in the header comment.
+- Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` to `Experiment-5/Code/include/` are byte for byte identical to these files.
 - The I2C helper (`BusI2C.h` and `src/DEP/BusI2C.cpp`) was removed in September 2026. Nothing in this folder uses I2C. The class lives on in the MageMCU Serial-Communication repository.
 - Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). On 2026-10-08, after the Numerics merge, Step1_Joystick and Step2_JUL were rebuilt with avr-gcc 7.3.0 and produced Intel HEX files byte for byte identical to the 2026-10-01 commit (f2307a1). Run `pio run` locally before flashing hardware connected to motors.

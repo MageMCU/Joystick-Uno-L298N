@@ -285,6 +285,9 @@ namespace csjc
         return radianAngle;
     }
 
+    // NOTE 20261012: returns the rotation angle of the unit quaternion in
+    // degrees, 0 to 360 (GetRadianAngle() converted). It is not a set of
+    // Euler angles; the name is kept so that existing programs compile.
     template <typename real>
     real Quaternion<real>::GetEulerAngle()
     {

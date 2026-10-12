@@ -81,7 +81,10 @@ namespace csjc
         }
         // random(n) returns a long in [0, n). Dividing by n gives a uniform
         // fraction u in [0, 1); the result is min + (max - min) * u.
-        const long n = 2147483647L;
+        // FIXED 20261012: n is 2^24. A float holds every integer below 2^24
+        // exactly, so u is always below 1. With n = 2^31 - 1 the division
+        // could round up to exactly 1 and return max.
+        const long n = 16777216L;
         real u = (real)random(n) / (real)n;
         return m_Min + (m_Max - m_Min) * u;
     }

@@ -5,9 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Work in progress:** the experiment instructions and hardware have not been
-physically tested. This template does not authorize a powered test. Review
-the [experiment safety notice](../Experiments.md) and the
+**Bench status:** Step2_JUL and the Motor Movement Checklist are bench tested by the author; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -88,78 +86,100 @@ Identify what remains uncertain or untested.
 
 Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
+The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 
-### Experiment 1: Timing and button input
+### Experiment-1: Timing and button input
 
-| Lab | Test | Observation / count / timing | Explanation |
-|-----|------|------------------------------|-------------|
-| 1: `delay()` | Loop count and LED state across several cycles | | |
-| 2: `Timer` | Loop count during each timed interval | | |
-| 3: `Button` | Press/release, LED, debounce, and motor-safe state behavior | | |
+| Lab | Test | Observation, count, or timing | Explanation |
+|-----|------|-------------------------------|-------------|
+| 1: `delay()` | First three values of Number of Loops and the time between them | | |
+| 2: `Timer` | Number of Loops per one second interval | | |
+| 3: `Button` | Indicator LED, onboard LED, and serial output after the first and second press | | |
+| 4: `Switch` | Switch closures counted for ten presses, three trials; Lab 3 toggles for ten presses; LED after the constructor correction | | |
 
-### Experiment 2: Joystick setup
+### Experiment-2: Joystick setup
 
-| Stick position | Trial 1 X (ADC) | Trial 1 Y (ADC) | Trial 2 X (ADC) | Trial 2 Y (ADC) | Notes |
-|----------------|-----------------|-----------------|-----------------|-----------------|-------|
-| Center | | | | | |
-| Left | | | | | |
-| Right | | | | | |
-| Forward | | | | | |
-| Backward | | | | | |
+| Lab | Test | Observation | Explanation |
+|-----|------|-------------|-------------|
+| 1: Preprocessor | Five printed lines with no flag and with `DEBUG_JOYSTICK`; Flash and RAM figures; first three linker errors of `second.cpp` | | |
+| 2: LinearMap | Table-4, three columns beside the prediction; the three Reverse lines | | |
 
-Record whether axes were exchanged or inverted in software, the final
-convention, and button press/release behavior. Keep readings before and after
-any code change as separate dated trials. For the optional Article 1002 ADC
-extension, add a row recording joystick output voltage (VRx/VRy to GND),
-meter range, ADC count, and stick position.
+Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (pull up or pull down), and the `activeLow` value used.
 
-### Experiment 3: One-motor familiarization
+| Grip position | VRx to GND (V) | VRy to GND (V) | x reading | y reading | Expected N (Equation-2) | Notes |
+|---------------|----------------|----------------|-----------|-----------|-------------------------|-------|
+| At rest | | | | | | |
+| Left | | | | | | |
+| Right | | | | | | |
+| Forward | | | | | | |
+| Backward | | | | | | |
 
-| Command | Enable held? | Requested direction / PWM | Observed motion | Start / stop result | Notes, supply, temperature |
-|---------|--------------|---------------------------|-----------------|---------------------|----------------------------|
-| `w` | | | | | |
-| `x` | | | | | |
-| `s` | | | | | |
-| Release D2 | | | | | |
+Record the pin of each axis, whether each axis is reversed in software (the `analogRead()` lines used), and the two readings at rest, three times. Supervisor signature.
 
-Record the driver/motor identifiers and supply settings; do not infer safety
-or suitability from a successful short test.
+### Experiment-3: One motor and the duty cycle
 
-### Experiment 4: Bits table familiarization
+Lab 1: every printed `absT()`, `Map()`, and `Debug()` line beside the prediction, and the compiler error of step 3.
 
-| Input | `bits_XXXX` reported | E/P/L/R reported | Explanation of changed flags |
-|-------|----------------------|------------------|------------------------------|
-| `0` through `f` | | | |
+Lab 2 (Table-5), one copy for f and one for r. Motor bus VS: ____ V; datasheet drop 1.8 V; meter model: ________
 
-This is a software decoding exercise only. Do not connect or energize motor
-hardware for this record.
+| Key | analogWrite() | D | Vavg predicted | Vavg measured | Shaft turns |
+|-----|---------------|---|----------------|---------------|-------------|
+| 0 | 0 | 0.00 | | | |
+| 1 | 64 | 0.25 | | | |
+| 2 | 128 | 0.50 | | | |
+| 3 | 191 | 0.75 | | | |
+| 4 | 255 | 1.00 | | | |
 
-### Experiment 5: L298N setup
+At key 4: VS to GND under load ____ V; L298N drop (loaded bus minus motor voltage) ____ V. Lowest duty cycle at which the motor starts: ____
 
-Create one copy of this table for **each** configuration tested. A candidate
-pattern passes only when the complete eight-position checklist passes.
+### Experiment-4: The Bits table
 
-**Configuration:** `bits_____`  **E/P/L/R:** ____ / ____ / ____ / ____
+Lab 1: binary pattern and value after each call, and the value after the `b_powerOfTwo()` correction. Lab 2: high and low bytes of 1023, the mismatch count, and the values printed by the local object.
 
-| Stick position | Expected motion | Observed motion | Pass / fail | Notes |
-|----------------|-----------------|-----------------|-------------|-------|
-| Forward | | | | |
-| Forward-right | | | | |
-| Right | | | | |
-| Reverse-right | | | | |
-| Reverse | | | | |
-| Reverse-left | | | | |
-| Left | | | | |
-| Forward-left | | | | |
+Lab 3 (Table-7), test command left 255, right −64:
 
-**First configuration passing all eight positions:** `bits_____`
+| Digit (bits) | D5 | D6 | D7 | D8 | D9 | D10 | LEDs as observed |
+|--------------|----|----|----|----|----|-----|------------------|
+| 0 (0000) | | | | | | | |
+| 2 (0010) | | | | | | | |
+| a (1010) | | | | | | | |
+| f (1111) | | | | | | | |
 
-| Voltage check | Meter points / load state | Reading | Units | Supply / motor / conditions |
-|---------------|---------------------------|---------|-------|-----------------------------|
-| Unloaded supply bus | | | | |
-| Loaded supply bus | | | | |
+Lab 4: unloaded motor bus voltage ____ V; no motor turns while the button state is OFF (yes or no).
+
+### Experiment-5: Joystick to motors
+
+Lab 1: magnitude, AngleRadian(), Angle2Radian(), and the octant from the angle for the six test points; where the angle octant changes on the live joystick. Lab 2: the Observed column of Table-8 and the Failures line.
+
+Lab 3: one copy of this table for **each** `Bits()` value tried. A value passes only when all eight positions pass; keep the failed rows.
+
+**Configuration:** `bits_____`
+
+| Position (Table-8) | Expected [left, right] | Observed motion | Pass or fail | Notes |
+|--------------------|------------------------|-----------------|--------------|-------|
+| Right Turn | [1, −1] | | | |
+| North-East | [1, 0] | | | |
+| Forward | [1, 1] | | | |
+| North-West | [0, 1] | | | |
+| Left Turn | [−1, 1] | | | |
+| South-West | [−1, 0] | | | |
+| Backward | [−1, −1] | | | |
+| South-East | [0, −1] | | | |
+
+**First value passing all eight positions:** `bits_____`
+
+| Voltage check | Meter points and load state | Reading | Units | Supply, motor, conditions |
+|---------------|-----------------------------|---------|-------|---------------------------|
+| Unloaded motor bus | | | | |
+| Loaded motor bus | | | | |
 | Motor terminals | | | | |
-| Calculated driver drop (loaded bus - motor terminals) | | | | |
+| L298N drop (loaded bus minus motor terminals) | | | | |
+
+Final dead zone: X_OFFSET ____ , Y_OFFSET ____ ; inputs printed at rest. Supervisor signature after step 5.
+
+### Experiments 6 to 9
+
+Use the common entry fields and the record named in each step of `Experiments/Experiment-n/Instructions/README.md`: the suggested offsets of lesson 17 (Experiment-6), the five counts and the fit of lesson 18 (Experiment-7), the octants at each mounting angle of lesson 19 (Experiment-8), and the T8 plot and T5 values (Experiment-9).
 
 Record who supervised powered testing and any supply or motor changes
 requiring repeated measurements.
