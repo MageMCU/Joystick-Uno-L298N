@@ -61,6 +61,8 @@ void setup()
 // runs while the button is OFF and no half cycle is pending: on one
 // timer tick it forces the LED LOW, prints Button OFF once, and clears
 // once. In the drive program this branch is where the motors stop.
+// Number of Loops counts the passes made during the LOW half before
+// it, 1000 ms; the first count after a press includes the OFF time.
 void loop()
 {
     counter++;
@@ -81,7 +83,7 @@ void loop()
                 Serial.println("Button ON...");
 
                 currentCount = counter - lastCount;
-                Serial.print("Number of Loops/2000mS: ");
+                Serial.print("Number of Loops/1000mS: ");
                 Serial.println(currentCount);
 
                 digitalWrite(LED_PIN, HIGH);

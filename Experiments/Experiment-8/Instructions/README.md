@@ -1,6 +1,6 @@
 # Experiment-8: Vectors, Matrices, and the Joystick Frame
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 8.1 and Equation 8.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 8.1 and Equation 8.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -19,7 +19,7 @@ The 2 × 2 matrix that rotates a vector counterclockwise by the angle θ.
 
 A frame is a set of axes in which coordinates are measured. The joystick reads its position in its own frame; the drive needs it in the frame of the robot, x to the right and y forward. A joystick mounted counterclockwise by an angle θ has raw readings rotated by −θ from the robot frame, so multiplying the reading by R(θ) returns it to the robot frame. Article 1009, Joystick Setup, corrects the eight orientations that are multiples of 90 degrees, with or without a reflection, by exchanging and reversing the analogRead() lines; the rotation matrix also corrects any angle between them.
 
-**Code.** Lesson 19_JoystickFrame (Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp). Part 1 checks rotations of 90, −90, and −45 degrees with test vectors and prints Failures: 0. Part 2 reads the live joystick once per second and prints the raw vector, the corrected vector, and the octant from Joystick.h. Set `MOUNT_ANGLE_DEG` to the angle at which the joystick is mounted, counterclockwise as seen from above.
+**Code.** Lesson 19_JoystickFrame (Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp). Part 1 checks rotations of 90, −90, and −45 degrees with test vectors and prints Failures: 0. Part 2 reads the live joystick once per second and prints the raw vector, the corrected vector, and the octant from Joystick.h. Part 1 needs only the USB cable; for Part 2, power the joystick by Method 1 or Method 2 of Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Set `MOUNT_ANGLE_DEG` to the angle at which the joystick is mounted, counterclockwise as seen from above.
 
 1. Make the two analogRead() lines match Experiment-2, upload with MOUNT_ANGLE_DEG = 0, and confirm that the raw and corrected vectors agree and that the octants of the eight checklist positions agree with Article 1004, Table-8.
 

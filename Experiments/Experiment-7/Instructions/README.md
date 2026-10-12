@@ -1,6 +1,6 @@
 # Experiment-7: Line Fit and Motor Calibration
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 7.1 and Equation 7.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 7.1 and Equation 7.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 

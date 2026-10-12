@@ -4,18 +4,9 @@
 
 ---
 
-## Unreleased: follow-up corrections after v2.4.0
+## v2.4.0 (2026-10-12), Article 1004 Update and Article 1009 alignment
 
-- `Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp`: apply the positive mount-angle rotation for a counterclockwise-mounted joystick, matching the frame derivation and Experiment-8 instructions.
-- `Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp`: discard calibration counts entered while the joystick button is OFF; Experiment-7 now explains how to reset between measurement sets and change motor-supply voltage safely.
-
-These corrections are not part of the v2.4.0 tag.
-
----
-
-## v2.4.0 (2026-10-09), Article 1004 DRAFT 4 and Article 1009 alignment
-
-Tag `v2.4.0` marks the code that Article 1004 DRAFT 4 and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.
+Tag `v2.4.0` marks the code that Article 1004 Update (20261012) and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.
 
 - `Code-JUL/src/Step2_JUL/main.cpp`: comments only. The lines named in Article 1009 are back at the numbers the article gives: `ledPin` 42, D12 form 44, `Button` 45, pins 55 to 60, L298N object 55 to 71, `PinsL298N()` 73, `Bits()` 92, `analogRead()` 103 and 104. The Bits comment block now states Table-3 of Article 1009: bit 3 = 1 means the enable pins are straight (values 8 to 15); the old block labeled 0 to 7 as straight
 - `Code-JUL/src/Step1_Joystick/main.cpp`: comments only. D12 form of `ledPin` added on line 50 (line 51, 68, 82 to 85 unchanged); the Analogs print is on line 119 as in Article 1009; example output corrected to `Analogs:  a: 512 b: 509`; references to the Supplemental replaced by Article 1009, Joystick Setup; typos corrected
@@ -27,6 +18,11 @@ Tag `v2.4.0` marks the code that Article 1004 DRAFT 4 and Article 1009 (20261007
 - `Experiments/Circuits/`: schematics Circuit-1 to Circuit-4 (SVG and PNG)
 - The include folders of Experiments 1 to 5 are unchanged: they stay the original headers of commit f2307a1, old comments included
 - Verified: Step1_Joystick and Step2_JUL compile to the same Intel HEX as v2.3.0 (c08735a) with no flag, DEBUG_MAIN, DEBUG_JOYSTICK, and DEBUG_L298N (avr-gcc 7.3.0, Arduino AVR core)
+- Also in this release (Part B lessons only):
+  - `Code-JUL/src/Step3_MathLessons/19_JoystickFrame/main.cpp`: apply the positive mount angle rotation for a joystick mounted counterclockwise, matching the frame derivation and the Experiment-8 instructions.
+  - `Code-JUL/src/Step3_MathLessons/18_MotorLineFit/main.cpp`: discard calibration counts entered while the joystick button is OFF; Experiment-7 explains how to reset between measurement sets and change the motor supply voltage safely.
+- `Experiments/Experiment-1/Code/src/3_Button/main.cpp`: print label corrected to `Number of Loops/1000mS` (the count covers the 1000 ms LOW half); comment added above `loop()`
+- `Experiments/Experiment-5/Code/src/1_Vector3`, `Code-JUL/src/Step3_MathLessons/17_DeadZone`, `19_JoystickFrame`: `setup()` first sets D5 to D10 as outputs and LOW, so the bench supply can be applied while these programs read the joystick (Article 1004, Experiment-3, Powering the Joystick after Experiment-3, Method 1); Experiment-6 and Experiment-8 instructions refer to the two methods
 
 ## v2.3.0 (2026-10-08), Article 1004 experiments (commit c08735a)
 

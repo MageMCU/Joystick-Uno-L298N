@@ -66,6 +66,14 @@ void report(const char *axis, float *data, float stepOffset)
 
 void setup()
 {
+    // Hold the six L298N inputs LOW before the motor supply is applied
+    // (Article 1004, Experiment-3, Powering the Joystick after
+    // Experiment-3, Method 1; Article 1009, Safety and Supervision, item 4)
+    for (int pin = 5; pin <= 10; pin++)
+    {
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LOW);
+    }
     Serial.begin(9600);
     while (!Serial)
     {

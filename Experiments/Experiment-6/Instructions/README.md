@@ -1,6 +1,6 @@
 # Experiment-6: Statistics and the Dead Zone
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), DRAFT 4. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 6.1 and Equation 6.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 6.1 and Equation 6.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v2.4.0 of the repository.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -26,7 +26,7 @@ Run lessons 05_RandomNumber and 06_Statistics. Record the average, standard devi
 
 ## Lab 3: The Joystick at Rest
 
-**Code.** Lesson 17_DeadZone (Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp). Wiring: the joystick of Experiment-2, Lab 3; no motor power. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
+**Code.** Lesson 17_DeadZone (Code-JUL/src/Step3_MathLessons/17_DeadZone/main.cpp). Wiring: the drive as wired since Experiment-3; power the joystick by Method 1 or Method 2 of Article 1004, Experiment-3, Powering the Joystick after Experiment-3. Make the two analogRead() lines match the lines recorded in Experiment-2. The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
 
 **Prediction.** From the readings at rest recorded in Experiment-2, estimate the average of each axis in the range −1 to 1.
 
