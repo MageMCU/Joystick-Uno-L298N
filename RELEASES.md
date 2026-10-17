@@ -4,6 +4,40 @@
 
 ---
 
+## Unreleased (2026-10-17), Code-1 and Code-2 comments match Article 1009; Steps 4 and 5 and include/claude
+
+Code-1 and Code-2 comments:
+
+- `Code-JUL/src/Step1_Joystick/main.cpp`: comments only. Lines 86 to 117 restored to the comment block printed in Article 1009, Code-1; the expected output block after the `Analogs` print removed, so the closing braces are on lines 121 and 122 as in Code-1
+- `Code-JUL/src/Step2_JUL/main.cpp`: comments only. Lines 43, 54, 61, and 75 to 91 restored to the comments printed in Article 1009, Code-2, including the binary Bits table; the two group labels corrected to agree with Table-3 and `L298N.h`: line 82 `EN B & A` (bit 3 = 0, enable pins crossed, values 0 to 7), line 85 `EN A & B` (bit 3 = 1, enable pins straight, values 8 to 15)
+- Line numbers cited in Article 1009 are unchanged; the program code of both files is unchanged
+- The include folders of Experiments 1 to 5 keep the original `L298N.h` of commit f2307a1, whose Bits comment still carries the reversed labels
+
+Steps 4 and 5, written with Claude (Anthropic), an AI assistant:
+
+- `Code-JUL/src/Step4_Generator/main.cpp` (new): with the Uno and USB cable only, asks four questions in the serial monitor (1: x pin, A1 or A0; 2: x equation; 3: y equation; 4: `Bits()` value, decimal or binary, with the table of the 16 values), shows a summary, and prints the Step5 program. Choices a or b; Backspace corrects a typing error; r starts over. It writes nothing to D5 to D10
+- `Code-JUL/src/Step5_Generated/main.cpp` (new): the program printed by Step4_Generator for the author's bench (x A1, y A0, bits_1010), unedited. It includes `claude/ace.h` only and creates one `Ace` object with the answers as template parameters
+- `Code-JUL/include/claude/` (new folder): files written with Claude, kept apart from the original headers, which are unchanged
+  - `L298NPins.h`: class `L298NPins` and struct `MotorPins`; resolves one `Bits()` value into the enable pin and the two direction pins of each command, with the rules of `L298N::Bits()` and `L298N::UpdateL298N()`
+  - `ace.h`: class template `Ace`, the complete drive program in one file for speed and size. It incorporates `Joystick.h`, `LinearMap.h`, `absT()` of `MiscMath.h`, `Button.h`, `Timer.h`, `BUTTON_TIMER_mS` of `Common.h`, and `UpdateL298N()` and `PowerDownL298N()` of `L298N.h`, with register access in place of `analogRead()`, `digitalWrite()`, and `analogWrite()`, and integer math in place of float
+  - `README.md`: the classes incorporated, performance, tests, and the reason for the folder
+- `Code-JUL/platformio.ini`: new environments `env:step4` (flag `STEP4_GENERATOR`, monitor filter `log2file`) and `env:step5` (flag `STEP5_GENERATED`) and `default_envs = uno`, all appended after the notes; line 31 and every documented `build_src_filter` line are unchanged, and in `env:uno` the Step4 and Step5 folders compile to nothing
+- `.gitignore`: monitor log files of `log2file`
+- `README.md` and `Code-JUL/README.md`: Steps 4 and 5, `include/claude`, and the performance tables
+
+Performance (simavr, 16 MHz, 1024 simulated joystick positions, bits_1010), Step2_JUL against Step5_Generated with `ace.h`: joystick math 322.5 µs against 16.4 µs per tick; motor output 40.3 µs against 3.7 µs; full control tick with the two ADC readings 574.8 µs against 232.0 µs (2.5 times faster; the ADC conversions are 91 percent of the faster tick); flash 6344 against 1420 bytes; RAM 316 against 23 bytes.
+
+Verified 20261017 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, core linked as an archive as PlatformIO does):
+
+- Step1_Joystick and Step2_JUL compile to the same Intel HEX as the last commit, with no flag, with the Step4 and Step5 folders present
+- `Ace::compute()` gives the same commands as the float chain of Step2_JUL for all 1024 x 1024 pairs of readings (host test with the original headers); one float rounding case (x = 341, octant 4: 84.99998 truncated to 84) is reproduced on purpose
+- In simavr, the port, timer, and compare registers after each motor update match the original code for 12519 pairs, and the float results on the Uno match the host test (same checksum)
+- `L298NPins` with the printed motor code sets the same pin levels and duty cycles as `L298N::UpdateL298N()` for all 16 `Bits()` values and seven command pairs
+- Step4_Generator run in simavr with typed answers (invalid entries, A and B, Backspace, decimal and binary, answer again); the printed program builds unedited in `env:step5`
+- Bench tests of Step4_Generator and Step5_Generated are pending
+
+---
+
 ## v2.4.0 (2026-10-12), Article 1004 Update Rev 2 and Article 1009 alignment
 
 Tag `v2.4.0` marks the code that Article 1004 Update 20261012 Rev 2 and Article 1009 (20261007b) describe; compare a later release with this tag before revising either article.

@@ -84,9 +84,11 @@ void determineXY_Output()
         int yDigital = analogRead(A0);
         // int yDigital = 1023 - analogRead(A0);
         // -------------------------------------------------
-        // Article 1009, Joystick Setup, steps 6 to 8.
-        // For the joystick algorithm to work, the readings
-        // must follow this graph:
+        // See articles at Carpenter Software (carpentersoftware.com)
+        // especially, 1009 Parent, Teacher, and Student Guide, in the
+        // section Joystick Setup.
+        // In order for the Joystick Algorithm to
+        // work properly, the following values has to occur:
         //                 (y-axis)
         //         FORWARD  | 1023
         //                  |
@@ -101,32 +103,21 @@ void determineXY_Output()
         //         BACKWARD | 0
         // -------------------------------------------------
         //
-        // Move the joystick as shown on the graph.
-        // Step 6: left and right must change the x value (a:)
-        //   only; if y (b:) changes, exchange A0 and A1 in
-        //   lines 82 and 84.
-        // Step 7: x goes from 0 (left) to 1023 (right).
-        // Step 8: y goes from 0 (backward, down) to 1023
-        //   (forward, up).
-        // If an axis is reversed, 1023 to 0, comment out its
-        // line (82 or 84) and use the line below it (83 or 85):
+        // MOVE the joystick as shown on the graph.
+        // Test x-axis values changes
+        // Test y-axis values changes
+        // Next,
+        // Test x-axis from left 0 to right 1023
+        // Test y-axis from backward (down) 0 to forward (up) 1023
+        // If the values are reversed, for example, 1023 to 0,
+        // use the following equation tested for each:
         // xDigital = 1023 - analogRead(A1); // could be A0
         // yDigital = 1023 - analogRead(A0); // could be A1
         //
-        // Step 9: record the pins and reversals in the notebook.
-        // Debug() is defined in numerics/MiscMath.h.
+        // Debug the output... (See MiscMath.h for Debug() functions)
 #ifdef DEBUG_MAIN
         Debug<int>("Analogs: ", xDigital, yDigital); 
 #endif
-
-        // Expected output at rest, for example:
-        // Button ON
-        // Analogs:  a: 512 b: 509
-        // Readings at rest near 511 are expected; small offsets
-        // from center are normal and are removed by the dead zone.
-        // When every step passes, record the result in the lab
-        // notebook and go to L298N Setup, which selects Step2_JUL
-        // in platformio.ini, line 31.
     }
 }
 

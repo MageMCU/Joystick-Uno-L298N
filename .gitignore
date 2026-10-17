@@ -5,3 +5,6 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# PlatformIO monitor log files (log2file, env:step4)
+platformio-device-monitor-*.log

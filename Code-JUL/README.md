@@ -25,6 +25,8 @@ build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_MathLessons/>
 
 To run the joystick wiring test instead, swap the signs on the first two folders. To run a math lesson, see `src/Step3_MathLessons/README.md` and the examples in `platformio.ini`.
 
+Step4_Generator is built in its own PlatformIO environment, `env:step4`, so the filter lines above are unchanged. Select `env:step4` in the PlatformIO status bar, or run `pio run -e step4 -t upload -t monitor`. The PlatformIO monitor of `env:step4` also saves its output in a log file in this folder (`log2file`), so the printed program can be copied from the file. Step5_Generated holds the program that Step4_Generator prints and is built the same way, in `env:step5` (`pio run -e step5 -t upload`). In `env:uno` the Step4 and Step5 folders compile to nothing.
+
 ## `include/`, Header Files
 
 | File | Purpose | Used by |
@@ -37,6 +39,24 @@ To run the joystick wiring test instead, swap the signs on the first two folders
 | `L298N.h` | L298N motor driver interface, `Bits()` configuration | Step2 |
 | `Switch.h` | Simple switch handler | not used by the current sketches |
 | `Debug.h` | Print helpers for vectors, points, matrices, quaternions (added from Numerics, 20261008) | Step3 |
+
+## `include/claude/`, Files Written with Claude
+
+Added 2026-10-17. These files were written with Claude (Anthropic), an AI assistant, and are kept apart from the original headers, which they do not change. See [include/claude/README.md](include/claude/README.md) for the original classes incorporated, the performance, and the tests.
+
+| File | Purpose | Used by |
+|---|---|---|
+| `claude/L298NPins.h` | Resolves one `Bits()` value into constant enable and direction pins, with the same rules as `L298N.h` | Step4 |
+| `claude/ace.h` | The complete drive program in one file, for speed and size: joystick algorithm, mapping, dead zone, button, timer, L298N pins; includes `Arduino.h` only | Step5 |
+
+Performance on the simulated Uno (16 MHz, bits_1010), Step2_JUL against Step5_Generated with `ace.h`:
+
+| | Step2_JUL | Step5_Generated |
+|---|---|---|
+| Joystick math per tick | 322.5 µs | 16.4 µs |
+| Motor output per tick | 40.3 µs | 3.7 µs |
+| Full control tick with the two ADC readings | 574.8 µs | 232.0 µs |
+| Flash / RAM | 6344 / 316 bytes | 1420 / 23 bytes |
 
 ## `include/numerics/`, Math Headers
 
@@ -72,6 +92,8 @@ Class templates generate no code until a program uses them, and Step1 and Step2 
 |---|---|---|---|
 | `Step1_Joystick/` | `main.cpp` | Joystick wiring validation; prints raw X and Y with `DEBUG_MAIN` enabled | Tested |
 | `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control | Tested |
+| `Step4_Generator/` | `main.cpp` | Asks four questions in the serial monitor (x pin, x equation, y equation, `Bits()` value) and prints the Step5 program; Uno and USB cable only | Build and simulation checked (20261017); bench pending |
+| `Step5_Generated/` | `main.cpp` | The program printed by Step4_Generator for the author's bench (x A1, y A0, bits_1010), using `include/claude/ace.h` only; replace it with the program printed for another bench | Build checked; motor pin states match Step2_JUL in simulation (20261017); bench pending |
 | `Step3_MathLessons/` | 19 `main.cpp` lessons | Numerics math lessons 01 to 16; hardware lessons 17 to 19 | First 16 build and simulation checked; hardware lessons build-checked, bench pending |
 
 ## Debugging
@@ -82,4 +104,4 @@ In `include/Common.h` uncomment one flag: `DEBUG_MAIN` (Step1 output), `DEBUG_JO
 
 - Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` to `Experiment-5/Code/include/` are byte for byte identical to these files.
 - The I2C helper (`BusI2C.h` and `src/DEP/BusI2C.cpp`) was removed in September 2026. Nothing in this folder uses I2C. The class lives on in the MageMCU Serial-Communication repository.
-- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). On 2026-10-08, after the Numerics merge, Step1_Joystick and Step2_JUL were rebuilt with avr-gcc 7.3.0 and produced Intel HEX files byte for byte identical to the 2026-10-01 commit (f2307a1). Run `pio run` locally before flashing hardware connected to motors.
+- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). On 2026-10-08, after the Numerics merge, Step1_Joystick and Step2_JUL were rebuilt with avr-gcc 7.3.0 and produced Intel HEX files byte for byte identical to the 2026-10-01 commit (f2307a1). On 2026-10-17, with Step4_Generator and Step5_Generated added, Step1_Joystick and Step2_JUL again produced Intel HEX files identical to the last commit. Run `pio run` locally before flashing hardware connected to motors.

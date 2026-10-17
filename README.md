@@ -69,13 +69,17 @@ Joystick-Uno-L298N/
 │   │   ├── Button.h, Timer.h, Switch.h
 │   │   ├── Joystick.h, L298N.h
 │   │   ├── Common.h, Headers.h, Debug.h
-│   │   └── numerics/                  Math headers: Bitwise, LinearMap, MiscMath, TypeConv, Vector3,
-│   │                                  Vector2, Point2, Point3, Matrix, Matrix2x2/3x3/4x4,
-│   │                                  Quaternion, Statistics, RandomNumber, LineFit2, Rotation
+│   │   ├── numerics/                  Math headers: Bitwise, LinearMap, MiscMath, TypeConv, Vector3,
+│   │   │                              Vector2, Point2, Point3, Matrix, Matrix2x2/3x3/4x4,
+│   │   │                              Quaternion, Statistics, RandomNumber, LineFit2, Rotation
+│   │   └── claude/                    Files written with Claude (AI assistant): L298NPins.h (Step4),
+│   │                                  ace.h (Step5), README.md
 │   ├── src/
 │   │   ├── Step1_Joystick/            Joystick Setup program (Article 1009, Code-1)
 │   │   ├── Step2_JUL/                 Joystick to motors program (Article 1009, Code-2)
-│   │   └── Step3_MathLessons/         Math lessons 01 to 19 (Article 1004, Experiments 6 to 9)
+│   │   ├── Step3_MathLessons/         Math lessons 01 to 19 (Article 1004, Experiments 6 to 9)
+│   │   ├── Step4_Generator/           Four questions about the Step1 and Step2 results; prints Step5 (env:step4)
+│   │   └── Step5_Generated/           The printed drive program, one header: claude/ace.h (env:step5)
 │   ├── platformio.ini
 │   └── README.md
 ├── Experiments/
@@ -122,6 +126,27 @@ Article 1009, L298N Setup, removes the ENA, ENB, and 5 V regulator jumpers of th
 - Center offsets applied in `Step2_JUL/main.cpp` (X 0.05, Y 0.06) so a resting stick reads zero
 - `Joystick.h` produces left and right motor outputs in the range −1 to 1
 - Outputs mapped to −255 to 255; the sign sets the IN pair, the magnitude is the PWM on the enable pin
+
+---
+
+## Steps 4 and 5: Generated Drive Program
+
+Added 2026-10-17, written with Claude (an AI assistant); build and simulation checked, bench test pending. Step2_JUL remains the drive program of Article 1009.
+
+1. **Step4_Generator** (`env:step4`): with the Uno and USB cable only, the student answers four questions in the serial monitor: the x pin, the x equation, and the y equation found with Step1_Joystick, and the `Bits()` value found with Step2_JUL (decimal or binary, with the table of the 16 values). The program prints a complete `main.cpp`.
+2. **Step5_Generated** (`env:step5`): the printed program. It includes one header, `Code-JUL/include/claude/ace.h`, which holds the joystick algorithm, the mapping and dead zone, the push button, the timer, and the L298N pins in one file. A new run of Step 4 changes only `main.cpp`; `ace.h` is never edited.
+
+For every pair of joystick readings, Step5_Generated sets the same motor pins as Step2_JUL (all 1024 x 1024 pairs on the host; 12519 pairs at the register level in simavr). Performance on the simulated Uno at 16 MHz, bits_1010:
+
+| | Step2_JUL | Step5_Generated (ace.h) |
+|---|---|---|
+| Joystick math per tick | 322.5 µs | 16.4 µs (19.6 times faster) |
+| Motor output per tick | 40.3 µs | 3.7 µs (10.9 times faster) |
+| Full control tick, with the two ADC readings | 574.8 µs | 232.0 µs (2.5 times faster) |
+| Flash | 6344 bytes | 1420 bytes |
+| RAM | 316 bytes | 23 bytes |
+
+The two ADC conversions (about 106 µs each, ADC clock 125 kHz for full accuracy) are 91 percent of the faster tick. Details, the original classes incorporated into `ace.h`, and the tests: [Code-JUL/include/claude/README.md](Code-JUL/include/claude/README.md).
 
 ---
 
@@ -182,7 +207,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | Step1_Joystick and Step2_JUL bench tested at commit f2307a1; later changes to them are comments and include paths only, and they compile to the same Intel HEX. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending |
+| **Status** | Step1_Joystick and Step2_JUL bench tested at commit f2307a1; later changes to them are comments and include paths only, and they compile to the same Intel HEX. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step4_Generator and Step5_Generated (2026-10-17): build and simulation checked; bench pending |
 
 ---
 
