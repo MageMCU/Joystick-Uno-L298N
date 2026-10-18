@@ -96,9 +96,10 @@ void loop()
 {
     if (timer.isTimer(1000))
     {
-        // Use the two analogRead() lines recorded in Experiment-2
-        int xDigital = analogRead(A1);
-        int yDigital = analogRead(A0);
+        // The two analogRead() lines of Step1_JUL since v3.1.0
+        // (x A0, y A1; changed here 20261018, v3.2.0)
+        int xDigital = analogRead(A0);
+        int yDigital = analogRead(A1);
         printVector(mapInput.Map((float)xDigital), mapInput.Map((float)yDigital));
     }
 }

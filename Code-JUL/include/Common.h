@@ -25,22 +25,36 @@
 
 // ======================================================
 // DEBUG SELECTION
-// Uncomment a module to enable its serial debug output.
+// Revised 20261018 (v3.2.0): Step1_JUL ships with every debug flag
+// on. It is the diagnostic program of the series: with the push
+// button and the joystick it prints the values of the whole signal
+// chain and the L298N pin states for the Joystick and Button Check
+// and the Motor Movement Checklist (Article 1009, L298N Setup).
+// Step3_Generated (include/claude/ace.h) is the drive program; it
+// does not include this file.
 // DEBUG_SERIAL_ON activates automatically; do not set it manually.
-// NOTE: Any debug flag sets BUTTON_TIMER_mS to 3000 ms. Comment
-//       every flag out for the normal 100 ms motor control loop.
+// NOTE: Any debug flag sets BUTTON_TIMER_mS to 3000 ms, so the
+//       motors of Step1_JUL respond once every 3 s. To drive with
+//       Step1_JUL at the 100 ms tick, comment out all three flags.
+// DEBUG_ALL_OFF: a program that defines it before its first
+//       include of this file gets no debug flag (lessons 18 and 19
+//       of Step4_MathLessons, which keep the 100 ms tick and print
+//       only their own output).
 // ======================================================
-// #define DEBUG_MAIN
+#ifndef DEBUG_ALL_OFF
+#define DEBUG_MAIN
+#define DEBUG_JOYSTICK
+#define DEBUG_L298N
+#endif
+// ------------------------------------------------------
 #ifdef DEBUG_MAIN
 #define DEBUG_SERIAL_ON
 #endif
 // ------------------------------------------------------
-// #define DEBUG_JOYSTICK
 #ifdef DEBUG_JOYSTICK
 #define DEBUG_SERIAL_ON
 #endif
 // ------------------------------------------------------
-// #define DEBUG_L298N
 #ifdef DEBUG_L298N
 #define DEBUG_SERIAL_ON
 #endif

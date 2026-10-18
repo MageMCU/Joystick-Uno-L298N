@@ -4,6 +4,89 @@
 
 ---
 
+## v3.2.0 (2026-10-18), Bench findings: pull up, upload port, debug flags, 50 ms tick
+
+Tag: v3.2.0. Requested by the author after a bench test (Discrepancies.md, 74 to 82). Articles 1004 and 1009 do not yet describe these changes (entry 82).
+
+- **Push button:** the thumb joystick module has no resistor on SW, so the external 10 kOhm pull up from D2 to 5 V (Article 1004, Circuit-2) is required. `Code-JUL/src/Step1_JUL/main.cpp`: the comment block The Push Button records the bench result (comments only; line 45 stays as written). Experiment-3 Lab 2 (`2_DutyCycle`, lines 103 and 104) and lesson 18_MotorLineFit (lines 168 and 169) turn the internal pull up of D2 off after `button.begin()`, as Step1_JUL does (entries 74 and 75). Closes entry 71
+- **Upload port:** `Code-JUL/platformio.ini` and the five Experiment `platformio.ini` files state that the `upload_port` line is required and add a commented `monitor_port` line; the READMEs and lab cards add the step before the first upload (entry 76)
+- **Debug flags:** `Code-JUL/include/Common.h` defines `DEBUG_MAIN`, `DEBUG_JOYSTICK`, and `DEBUG_L298N` (lines 45 to 47) unless a program defines `DEBUG_ALL_OFF` before its first include. Step1_JUL is the diagnostic program (3000 ms tick); lessons 18 and 19 and Step2_Generator define `DEBUG_ALL_OFF`. New section Two Ways to Drive in `README.md` and `Code-JUL/README.md`, and in the Experiment-5 lab card: Step1_JUL with the three flags commented out (100 ms), or Step3_Generated (50 ms) (entry 77)
+- **Control tick of ace.h:** `Code-JUL/include/claude/ace.h`, `TICK_MS` default 50 ms (100 ms before). `src/Step2_Generator/main.cpp` prints the 50 ms tick and the required pull up into the program; `src/Step3_Generated/main.cpp` printed again for bits_0000 with the debug data, unedited (entry 78)
+- **Joystick lines:** Experiment-5 Lab 1 (`1_Vector3`, lines 101 and 102) and lessons 17_DeadZone (110 and 111) and 19_JoystickFrame (127 and 128) read x on A0 and y on A1, as Step1_JUL since v3.1.0 (entries 68 and 80)
+- **Documents:** `README.md` (Quick Start, wiring table A0, A1, D2, and D12, Two Ways to Drive, Steps 2 and 3, Testing Platform, Next Steps), `Code-JUL/README.md`, `include/claude/README.md`, `Step4_MathLessons/README.md`, `Experiments.md` (Changes in Release v3.2.0), the lab cards of Experiments 1 to 8, `Code/README.md` of Experiments 1 to 5, `LAB-NOTEBOOK-TEMPLATE.md`, `Motor-Movement-Checklist/ReadMe.md` (entries 79 to 81)
+
+Verified 20261018 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`, without link time optimization): all 35 programs build with no warnings: Step1_JUL, Step2_Generator, Step3_Generated, the 19 lessons, and the 13 labs of Experiments 1 to 5. Lessons 01 to 16 and the 11 unchanged labs build to the same Intel HEX as in v3.1.2. Step1_JUL with the three flags commented out builds to the same Intel HEX as in v3.1.2; with the flags on, as shipped, 10546 bytes of flash and 710 bytes of RAM, and in simavr it prints its debug output. Lessons 18 and 19 and Step2_Generator build to the same Intel HEX as with the flags commented out. Step2_Generator, run in simavr with the answers y, y, 0000, y, p, prints the shipped Step3_Generated (3654 bytes of flash, 200 bytes of RAM, as in v3.1.2). Bench test pending.
+
+## v3.1.2 (2026-10-18), Documentation: Step1_Joystick and bench status
+
+Tag: v3.1.2. Documentation only; no program code changed, and every program builds to the same Intel HEX as in v3.1.1 (Discrepancies.md, 72 and 73).
+
+- `README.md`, Setup: One Program, One Bits() Value: a paragraph states what Step1_Joystick did (Article 1009, Joystick Setup: choosing each `analogRead()` equation, plain or reversed, before the `Bits()` value was found) and why it was removed
+- `README.md`, Testing Platform, Status; `Code-JUL/README.md`, `src/` programs table, Step1_JUL row; `Experiments/LAB-NOTEBOOK-TEMPLATE.md`, Bench status: Step1_JUL was bench tested at commit f2307a1 and has changed since (lines 46, 47, 103, 104), so its bench retest is pending
+- `Discrepancies.md`: entries 72 and 73
+
+## v3.1.1 (2026-10-18), Push button without the internal pull up
+
+Tag: v3.1.1. Requested by the author: the push button is the joystick switch, SW, whose module circuit is unknown and may include its own pull up or pull down resistor, so the internal pull up of the ATmega328P is not used (Discrepancies.md, 70).
+
+- `Code-JUL/src/Step1_JUL/main.cpp`: line 46 `buttonDebug.begin();` and line 47 `pinMode(buttonPin, INPUT);`, which turns the internal pull up of D2 off after `begin()` configured it as `INPUT_PULLUP`. They take the place of a blank line and the comment `// Joystick Algorithm`, so lines 41, 42, 45, 48, 55 to 60, 92, 103, and 104 keep their numbers. A comment block after `loop()`, The Push Button, gives the black box test and the three outcomes: module pull up (line 45 as written), module pull down (`Button(buttonPin, ledPin, false)`), or no resistor (add an external 10 kOhm resistor). `Button.h` is unchanged
+- `Code-JUL/include/claude/ace.h`: the button pin is configured as an input with the internal pull up off (`AcePin::input()` in place of `inputPullup()`), as in Step1_JUL; the button is still read active LOW
+- `README.md` (wiring table, D2; Testing Platform), `include/claude/README.md`: the same
+- `Discrepancies.md`: entries 70 and 71
+
+Verified 20261018 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Wall -Wextra`): Step1_JUL, Step2_Generator, and Step3_Generated build with no warnings. In simavr, after `setup()` of Step1_JUL and after the first `update()` of Step3_Generated, D2 is an input with its PORTD bit LOW (no pull up) and D3 is an output. Step2_Generator prints the same Step3_Generated as in v3.1.0. The host test of `ace.h` against Step1_JUL and `L298N.h` is unchanged: 0 differences. Bench test pending.
+
+## v3.1.0 (2026-10-18), Steps reordered; generator checks the pins; joystick on A0 and A1
+
+Tag: v3.1.0. Requested by the author after a bench test: with lines 103 and 104 of Step1_JUL exchanged, Step3_Generator (now Step2_Generator) printed a program with the joystick fixed on x A1 and y A0, so the joystick lines had to be changed in both programs (Discrepancies.md, 63). Article 1009 cites the line 31 filter and the joystick lines, which change in this release (Discrepancies.md, 69).
+
+- Renamed in the order of use: `Step3_Generator` to `Step2_Generator`, `Step4_Generated` to `Step3_Generated`, `Step2_MathLessons` to `Step4_MathLessons` (Discrepancies.md, 67). Line 31 of `Code-JUL/platformio.ini` is `build_src_filter = +<*> +<Step1_JUL/> -<Step2_Generator/> -<Step3_Generated/> -<Step4_MathLessons/>`; the notes list the line for each program and one lesson
+- `Code-JUL/src/Step1_JUL/main.cpp`: lines 103 and 104 read `xDigital = analogRead(A0)` and `yDigital = analogRead(A1)`, and stay as written; comments on lines 89 to 91 and 105 and 106 and in the connection rules after `loop()`. No other program code changed; line numbers 41, 42, 55 to 60, 92, 103, and 104 are kept. A bench calibrated with v3.0.1 reads its two axes exchanged and needs the value of the swap column of the checklist table (bits_1100 becomes bits_1101)
+- `Code-JUL/src/Step2_Generator/main.cpp` (written with Claude): Check 1 shows ENA, IN1 to IN4, ENB, the push button, and the LED as Uno pins and ATmega328P port pins, for example `D5 (PD5)`; Check 2 shows the joystick lines, x on A0 (PC0) and y on A1 (PC1); Question 3 takes the four binary digits of the `Bits()` value; Question 4 asks whether the printed program carries the debug data. A summary of all four precedes the program (Discrepancies.md, 64 and 65)
+- `Code-JUL/src/Step3_Generated/main.cpp`: printed again by Step2_Generator for bits_0000 with the debug data, unedited. `#define DEBUG_GENERATED` makes `setup()` print the data checked in Step2_Generator once at 9600 baud; comment it out to turn the output off. Answered n, Question 4 prints the program without the debug data, as before
+- `Code-JUL/include/claude/ace.h`: template parameters `X_REVERSED` and `Y_REVERSED` and the two reversal lines of `tick()` removed (Discrepancies.md, 66)
+- `Motor-Movement-Checklist/BitsProof.py` and `ReadMe.md`: the shipped lines are x on A0 and y on A1; the table is unchanged, its columns counted from the shipped lines
+- `README.md`, `Code-JUL/README.md`, `include/claude/README.md`, `Step4_MathLessons/README.md`, the Experiment lab cards, `Experiments.md`, and every lesson header: the new folder names
+- `Discrepancies.md`: entries 63 to 69
+
+Verified 20261018 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Wall -Wextra`): Step1_JUL, Step2_Generator, Step3_Generated with and without `DEBUG_GENERATED`, and all 19 lessons build with no warnings. Step2_Generator runs in simavr with typed answers, including answers n, wrong entries, and r; answered y, 0000, y, it prints the shipped Step3_Generated, which prints the checked data in simavr. On the host, `Ace::compute()` matches the float chain of Step1_JUL for all 1024 x 1024 pairs of readings, and for all 16 `Bits()` values the pin levels and duty cycles set by `ace.h` with the pins of `L298NPins` match `L298N::UpdateL298N()` over 13818 pairs of readings each. `BitsProof.py`: 128 benches, exactly one value each. Bench test pending.
+
+## v3.0.1 (2026-10-17), Step3_Generator binary only; build flags removed
+
+Tag: v3.0.1. Step1_JUL is unchanged and builds to the same Intel HEX as v3.0.0. Article 1009 cites the line 31 filter, which now also excludes Step3_Generator and Step4_Generated (Discrepancies.md, 61).
+
+- `Code-JUL/src/Step3_Generator/main.cpp` (written with Claude): the question reads the four binary digits of line 92 only; the decimal entry, the table of the 16 values, and the decimal line of the result were removed (Discrepancies.md, 60). `#ifdef STEP3_GENERATOR` and `#endif` removed; the printed program has no `#ifdef` line and names its `build_src_filter` line
+- `Code-JUL/src/Step4_Generated/main.cpp`: printed again by Step3_Generator for bits_0000, unedited
+- `Code-JUL/platformio.ini`: `env:step3`, `env:step4`, the flags `STEP3_GENERATOR` and `STEP4_GENERATED`, and `default_envs` removed. Line 31 is `build_src_filter = +<*> +<Step1_JUL/> -<Step2_MathLessons/> -<Step3_Generator/> -<Step4_Generated/>`; the notes list the line for Step3_Generator, Step4_Generated, and one lesson. `monitor_filters = default, log2file` in `env:uno`. Commented `upload_port` lines for macOS, Linux, and Windows (Discrepancies.md, 61 and 62)
+- `README.md`, `Code-JUL/README.md`, `include/claude/README.md`, `Step2_MathLessons/README.md`, lab cards of Experiments 2 and 5, `.gitignore`: the new filter lines; no environments or flags
+- `Code-JUL/platformio.ini`: comments only, Notes on the C++ standard: how to select C++17 (`build_unflags = -std=gnu++11`, `build_flags = -std=gnu++17`), what avr-gcc 7.3.0 supports, and the 20261017 check; the shipped setting stays `-std=gnu++11`
+- `Code-JUL/platformio.ini`: comments only, Raspberry Pi 5 and Raspberry Pi OS, the author's development computer: the Uno's port (`/dev/ttyACM0`, or `/dev/ttyUSB0` for a CH340 clone), the commands that find it, and the dialout group; a commented `upload_port` line for the Raspberry Pi. The Ubuntu notes remain
+- `Discrepancies.md`: entries 60 to 62
+
+Verified 20261017 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6): Step1_JUL and Step4_Generated build to the same Intel HEX as in v3.0.0; Step3_Generator builds with no warnings (`-Wall -Wextra`) and runs in simavr with typed answers, and its printed program is the shipped Step4_Generated; each `build_src_filter` line in `platformio.ini` selects exactly one program folder; lesson 07_Vector2 builds with its line.
+
+## v3.0.0 (2026-10-17), Step1_Joystick removed; Steps renumbered
+
+Tag: v3.0.0, because folder names, environments, and build flags change. Article 1009 (revision 20261017) cites this release; Article 1004 DRAFT 4 still cites v2.4.0 and keeps the old names until it is revised.
+
+Finding (Discrepancies.md, 53): whatever the analog pins, the two `analogRead()` equations, and the L298N connections, one four digit `Bits()` value corrects the motor movement of a working bench. The author's bench gave bits_1011 with the y equation reversed and bits_1100 with no change; a simulation of all 128 benches (8 joystick orientations times 16 L298N wirings) finds exactly one passing value for each.
+
+- `Code-JUL/src/Step1_Joystick/` removed
+- Renamed: `Step2_JUL` to `Step1_JUL`, `Step3_MathLessons` to `Step2_MathLessons`, `Step4_Generator` to `Step3_Generator`, `Step5_Generated` to `Step4_Generated`; `env:step4` to `env:step3`, `env:step5` to `env:step4`; `STEP4_GENERATOR` to `STEP3_GENERATOR`, `STEP5_GENERATED` to `STEP4_GENERATED`
+- `Code-JUL/src/Step1_JUL/main.cpp`: comments only. Lines 89 to 91 state that one four digit value corrects any bench; two comment lines after line 104 state that the joystick lines need no change. Lines 42, 44, 45, 55 to 60, 92, 103, and 104 keep their numbers
+- `Code-JUL/src/Step1_JUL/main.cpp`: a comment block after `loop()` lists the L298N and joystick connection rules that one `Bits()` value corrects (16 of the 720 ways to connect D5 to D10)
+- `Code-JUL/src/Step1_JUL/main.cpp`, line 92, and `Step2_MathLessons/18_MotorLineFit/main.cpp`, line 163: ship with `bits_0000`, the first row of the Motor Movement Checklist, in place of the author's value; the student replaces it with the value found
+- `Code-JUL/src/Step3_Generator/main.cpp`: `readLine()` accepts LF, CR, and CR LF line endings (an empty line with LF alone was skipped, so "Press Enter to begin" did not respond with the Arduino IDE ending Newline); `loop()` reads a whole line for r
+- `README.md`, Wiring Checklist, D2: the joystick SW circuit is unknown and is tested as a black box
+- `Code-JUL/platformio.ini`: line 31 is `build_src_filter = +<*> +<Step1_JUL/> -<Step2_MathLessons/>`; examples and environments renamed
+- `Code-JUL/src/Step3_Generator/main.cpp` (written with Claude): one question, the `Bits()` value; the joystick lines are fixed as in Step1_JUL. `Step4_Generated/main.cpp` printed again by it for bits_0000
+- `Code-JUL/include/claude/ace.h`, `include/numerics/MiscMath.h`, `LinearMap.h`, lessons 01 and 19: comments only
+- `Motor-Movement-Checklist/BitsProof.py` (new, written with Claude) and a ReadMe section with the 128 bench table
+- `README.md`, `Code-JUL/README.md`, `include/claude/README.md`, `Step2_MathLessons/README.md`, `Experiments.md`, lab cards of Experiments 2, 5, and 8: new names; Experiment-2, Lab 3, is the Joystick and Button Check with `DEBUG_JOYSTICK`
+- `Experiments/Experiment-5/Code/src/1_Vector3/main.cpp`: comment on line 99 only
+
+Verified 20261017 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6): Step1_JUL builds to the same Intel HEX as Step2_JUL of the last commit with line 92 set to `bits_0000`, the only change that is not a comment; it also builds with `DEBUG_JOYSTICK` and `DEBUG_L298N`; all 19 lessons build; Step3_Generator runs in simavr with typed answers (invalid entries, binary entry, answer again) with LF, CR, and CR LF endings; its printed program for bits_0000 is in Step4_Generated, unedited, and builds; every Experiment 1 to 5 lab builds; Markdown links resolve.
+
 ## Unreleased (2026-10-17), Code-1 and Code-2 comments match Article 1009; Steps 4 and 5 and include/claude
 
 Code-1 and Code-2 comments:
@@ -247,7 +330,7 @@ If you were using algorithm variants (ALGO_STUDY_*):
 - Created `RELEASES.md` for version tracking
 
 **Code Quality Fixes**
-- Fixed type mismatch in [Code-JUL/src/Step2_JUL/main.cpp](Code-JUL/src/Step2_JUL/main.cpp): `ActiveAlgorithm<float>()` → `Joystick<float>()`
+- Fixed type mismatch in [Code-JUL/src/Step2_JUL/main.cpp](Code-JUL/src/Step1_JUL/main.cpp) (now Step1_JUL): `ActiveAlgorithm<float>()` → `Joystick<float>()`
 - Removed outdated algorithm selection logic from main.cpp
 - Removed conditional compilation blocks for algorithm selection
 - Verified all includes and dependencies resolve correctly

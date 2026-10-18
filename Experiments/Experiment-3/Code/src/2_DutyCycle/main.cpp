@@ -95,6 +95,13 @@ void setup()
     int buttonPin = 2; // UNO D2 (CHIP-PD2), joystick SW
     int ledPin = 12;   // UNO D12 (CHIP-PB4), indicator LED
     button = Button(buttonPin, ledPin);
+    // FIXED 20261018 (v3.2.0): internal pull up off, as in Step1_JUL.
+    // begin() configures D2 as INPUT_PULLUP; pinMode(INPUT) after it
+    // turns the internal pull up off. The joystick module has no
+    // resistor on SW, so the external 10 kOhm pull up from D2 to 5 V
+    // (Circuit-2) is required.
+    button.begin();
+    pinMode(buttonPin, INPUT);
 
     // L298N: Uno pins D5 to D10 in the order of the class defaults
     motors = L298N(5, 6, 7, 8, 9, 10);

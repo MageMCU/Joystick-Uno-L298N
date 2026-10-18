@@ -2,7 +2,7 @@
 
 **A differential drive motor control system for the Arduino Uno using joystick input and the L298N dual H bridge motor driver.**
 
-This repository is the companion to the [Carpenter Software STEM Starter Kit article series](https://carpentersoftware.com/pages/projects/robotics/robotics.html). Article 1003, L298N Motor Driver, explains the driver as a component. Article 1004, Experiments for Joystick-Uno-L298N, covers the experiments and the software in this repository, and Article 1009, the Parent, Teacher, and Student Guide, holds the safety rules, the bench, and the two setup procedures. See [Articles](#articles).
+This repository is the companion to the [Carpenter Software STEM Starter Kit article series](https://carpentersoftware.com/pages/projects/robotics/robotics.html). Article 1003, L298N Motor Driver, explains the driver as a component. Article 1004, Experiments for Joystick-Uno-L298N, covers the experiments and the software in this repository, and Article 1009, the Parent, Teacher, and Student Guide, holds the safety rules, the bench, and the setup procedure. See [Articles](#articles).
 
 ---
 
@@ -39,9 +39,11 @@ This repository is the companion to the [Carpenter Software STEM Starter Kit art
    - **Important:** open the project folder itself, never the repository root
    - Wait for PlatformIO to index the project
 
-5. **Connect the Arduino Uno** by USB. PlatformIO detects the port automatically.
+5. **Connect the Arduino Uno** by USB.
 
-6. **Upload the program** with the Upload button in the PlatformIO toolbar and wait for SUCCESS.
+6. **Set the serial port in `platformio.ini` (required).** The upload does not work with the port left to automatic detection. In the `platformio.ini` of the project folder, remove the comment mark from the `upload_port` line and the `monitor_port` line and change both to the port of your computer, for example `/dev/ttyACM0` (Raspberry Pi OS and Linux; `/dev/ttyUSB0` for a CH340 clone), `/dev/cu.usbmodem14101` (macOS), or `COM3` (Windows). `pio device list` prints the ports. Every project folder needs this once: `Code-JUL/` and each `Experiments/Experiment-N/Code/`.
+
+7. **Upload the program** with the Upload button in the PlatformIO toolbar and wait for SUCCESS.
 
 ### Important Folder Selection Rule
 
@@ -72,14 +74,13 @@ Joystick-Uno-L298N/
 │   │   ├── numerics/                  Math headers: Bitwise, LinearMap, MiscMath, TypeConv, Vector3,
 │   │   │                              Vector2, Point2, Point3, Matrix, Matrix2x2/3x3/4x4,
 │   │   │                              Quaternion, Statistics, RandomNumber, LineFit2, Rotation
-│   │   └── claude/                    Files written with Claude (AI assistant): L298NPins.h (Step4),
-│   │                                  ace.h (Step5), README.md
+│   │   └── claude/                    Files written with Claude (AI assistant): L298NPins.h (Step2),
+│   │                                  ace.h (Step3), README.md
 │   ├── src/
-│   │   ├── Step1_Joystick/            Joystick Setup program (Article 1009, Code-1)
-│   │   ├── Step2_JUL/                 Joystick to motors program (Article 1009, Code-2)
-│   │   ├── Step3_MathLessons/         Math lessons 01 to 19 (Article 1004, Experiments 6 to 9)
-│   │   ├── Step4_Generator/           Four questions about the Step1 and Step2 results; prints Step5 (env:step4)
-│   │   └── Step5_Generated/           The printed drive program, one header: claude/ace.h (env:step5)
+│   │   ├── Step1_JUL/                 Joystick to motors program (Article 1009, Code-1)
+│   │   ├── Step2_Generator/           Checks the pins, asks for the Bits() value; prints Step3
+│   │   ├── Step3_Generated/           The printed drive program, one header: claude/ace.h
+│   │   └── Step4_MathLessons/         Math lessons 01 to 19 (Article 1004, Experiments 6 to 9)
 │   ├── platformio.ini
 │   └── README.md
 ├── Experiments/
@@ -88,7 +89,7 @@ Joystick-Uno-L298N/
 │   ├── Experiment-6/ to Experiment-9/ Advanced experiments: Instructions/README.md (code in Code-JUL)
 │   ├── Circuits/                      Schematics Circuit-1 to Circuit-4 of Article 1004 (SVG, PNG)
 │   └── LAB-NOTEBOOK-TEMPLATE.md
-├── Motor-Movement-Checklist/          Bench validation of the eight octants
+├── Motor-Movement-Checklist/          Bench validation of the eight octants; BitsProof.py (128 benches)
 ├── Experiments.md                     Experiment overview
 ├── Discrepancies.md                   Review findings and their resolution
 ├── RELEASES.md                        Version history
@@ -103,42 +104,75 @@ Joystick-Uno-L298N/
 
 ### Wiring Checklist
 
-From Article 1009, Table-2, and Article 1004, Table-1. The joystick axes and the motor directions are matched to the wiring in software (Article 1009, Joystick Setup and L298N Setup), never by moving wires.
+From Article 1009, Table-2, and Article 1004, Table-1. The joystick orientation and the motor directions are matched to the wiring in software with one `Bits()` value (Article 1009, L298N Setup), never by moving wires.
 
 | Uno pin | Connection (Article 1009, Circuit-1) | Software name |
 |---------|--------------------------------------|---------------|
-| A0 | Joystick VRx | yDigital, analogRead(A0) |
-| A1 | Joystick VRy | xDigital, analogRead(A1) |
-| D2 | Joystick SW, external 10 kΩ resistor | buttonPin |
+| A0 | Joystick VRx | xDigital, analogRead(A0) (since v3.1.0) |
+| A1 | Joystick VRy | yDigital, analogRead(A1) (since v3.1.0) |
+| D2 | Joystick SW, with an **external 10 kOhm pull up resistor from D2 to 5 V (required)**, as in Article 1004, Circuit-2. Step1_JUL turns the internal pull up of D2 off (lines 46 and 47, since v3.1.1). The author's bench test (v3.2.0) showed that the thumb joystick module has no resistor on SW: without the external pull up the input floats when the switch is released, and a floating input can turn the motors on. Test the switch as a black box before the motors are connected (Article 1009, Joystick and Button Check, step 4; see the end of `Step1_JUL/main.cpp`) | buttonPin |
 | D5 | L298N ENB | _EN_A (LeftEN) |
 | D6 | L298N IN4 | _LeftIN_A (LeftA) |
 | D7 | L298N IN3 | _LeftIN_B (LeftB) |
 | D8 | L298N IN2 | _RightIN_A (RightA) |
 | D9 | L298N IN1 | _RightIN_B (RightB) |
 | D10 | L298N ENA | _EN_B (RightEN) |
-| D12 | Indicator LED through 220 Ω to GND (D3 in the advanced wiring of Article 1003, Table-4) | ledPin |
+| D12 | Indicator LED through 220 Ω to GND, as in Article 1009, Circuit-1 (Step1_JUL ships with D3 on line 42, the advanced wiring of Article 1003, Table-4; the D12 form is on line 44) | ledPin |
 
 Article 1009, L298N Setup, removes the ENA, ENB, and 5 V regulator jumpers of the L298N. Never connect the motor supply to the Uno 5V pin, never change jumpers while powered, and connect the Uno, the driver logic, and the motor supply negative to a common ground.
 
 **Signal chain**
 
 - Joystick X and Y, ADC (0 to 1023), mapped to the range −1 to 1
-- Center offsets applied in `Step2_JUL/main.cpp` (X 0.05, Y 0.06) so a resting stick reads zero
+- Center offsets applied in `Step1_JUL/main.cpp` (X 0.05, Y 0.06) so a resting stick reads zero
 - `Joystick.h` produces left and right motor outputs in the range −1 to 1
 - Outputs mapped to −255 to 255; the sign sets the IN pair, the magnitude is the PWM on the enable pin
 
 ---
 
-## Steps 4 and 5: Generated Drive Program
+## Setup: One Program, One Bits() Value
 
-Added 2026-10-17, written with Claude (an AI assistant); build and simulation checked, bench test pending. Step2_JUL remains the drive program of Article 1009.
+Updated 2026-10-17. Step1_Joystick, the joystick setup program, was removed, and the programs were renumbered: Step2_JUL became Step1_JUL, Step3_MathLessons became Step2_MathLessons, Step4_Generator became Step3_Generator, and Step5_Generated became Step4_Generated. Renumbered again 2026-10-18 (v3.1.0), in the order of use: Step3_Generator is now Step2_Generator, Step4_Generated is Step3_Generated, and Step2_MathLessons is Step4_MathLessons.
 
-1. **Step4_Generator** (`env:step4`): with the Uno and USB cable only, the student answers four questions in the serial monitor: the x pin, the x equation, and the y equation found with Step1_Joystick, and the `Bits()` value found with Step2_JUL (decimal or binary, with the table of the 16 values). The program prints a complete `main.cpp`.
-2. **Step5_Generated** (`env:step5`): the printed program. It includes one header, `Code-JUL/include/claude/ace.h`, which holds the joystick algorithm, the mapping and dead zone, the push button, the timer, and the L298N pins in one file. A new run of Step 4 changes only `main.cpp`; `ace.h` is never edited.
+Step1_Joystick served Article 1009, Joystick Setup: with the push button ON, it read the two joystick axes so that the student could choose each `analogRead()` equation, plain or reversed (`1023 - analogRead()`), until the stick matched the robot, before the `Bits()` value was found in Step2_JUL. The author's bench test showed that the `Bits()` value alone corrects any joystick orientation, so the joystick setup step and its program were removed.
 
-For every pair of joystick readings, Step5_Generated sets the same motor pins as Step2_JUL (all 1024 x 1024 pairs on the host; 12519 pairs at the register level in simavr). Performance on the simulated Uno at 16 MHz, bits_1010:
+The author's bench test showed that changing the joystick equations is not necessary. With the lines of Step1_JUL left as written, the Motor Movement Checklist finds one `Bits()` value that corrects both the joystick orientation and the L298N wiring. Since v3.1.0 the lines read `xDigital = analogRead(A0)` and `yDigital = analogRead(A1)` (up to v3.0.1, x on A1 and y on A0), and they are not changed: Step2_Generator uses the same two pins. Step1_JUL ships with `bits_0000` on line 92, the first row of the checklist; the student replaces it with the value found:
 
-| | Step2_JUL | Step5_Generated (ace.h) |
+- Test 1, y equation reversed: bits_1011. Test 2, no equation changed: bits_1100. 1100 XOR 0111 = 1011. (Both with the lines of v3.0.1; with the lines of v3.1.0 the same bench reads its axes exchanged, and Test 2 gives bits_1101.)
+- Reason: the joystick algorithm satisfies F(-x, y) = (R, L), F(x, -y) = (-R, -L), and F(y, x) = (L, -R). Exchanging or reversing a joystick axis swaps or negates the two motor commands. Bit 2 swaps the commands, and bits 1 and 0 negate the left and right IN pairs, so `Bits()` can undo each change. Bit 3 corrects crossed enable pins only.
+- Proof: 8 joystick orientations (A0 and A1 exchanged, x reversed, y reversed) times 16 L298N wirings (enable pins crossed, motors exchanged between channels, left leads reversed, right leads reversed) give 2^7 = 128 benches. A simulation of Step1_JUL with the default lines finds exactly one passing `Bits()` value for each of the 128; each of the 16 values serves 8 benches. The table and the script are in [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md) and `Motor-Movement-Checklist/BitsProof.py`.
+- Connection rules: D5 and D10 go to ENA and ENB, either way; D6 and D7 go together to one IN pair and D8 and D9 to the other, each pair in either order; each motor's two leads go to one output pair, either motor on either output, either polarity; ENA and ENB jumpers removed; joystick VRx and VRy on A0 and A1, either way. Of the 720 ways to connect D5 to D10 to the six L298N inputs, only the 16 that keep these rules can be corrected. Details at the end of `Code-JUL/src/Step1_JUL/main.cpp`.
+- Limits: a dead axis, a dead L298N channel, or a wire on a wrong Uno pin leaves no passing value. Article 1009, L298N Setup, opens with a Joystick and Button Check in Step1_JUL (`DEBUG_JOYSTICK`, no motors) that finds the joystick and push button faults before the motors are connected. The octant numbers printed by `DEBUG_JOYSTICK` follow the joystick's own frame, so on a rotated joystick they differ from Article 1004, Table-8, while the motors still move correctly.
+
+---
+
+## Two Ways to Drive (v3.2.0)
+
+Step1_JUL ships with every debug flag of `Code-JUL/include/Common.h` on, so the Joystick and Button Check and the Motor Movement Checklist (Article 1009, L298N Setup) can read the whole signal chain in the Serial Monitor; its motors respond once every 3 s. Once the `Bits()` value is found, there are two ways to drive:
+
+| Path | What to do | Control tick |
+|---|---|---|
+| A. Stay with Step1_JUL | In `Common.h`, comment out `DEBUG_MAIN`, `DEBUG_JOYSTICK`, and `DEBUG_L298N`, then upload Step1_JUL again | 100 ms |
+| B. Continue to Step 3 | Run Step2_Generator with the `Bits()` value, copy the printed program into `Step3_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`) | 50 ms |
+
+Both paths set the same motor pins for the same joystick readings. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
+
+---
+
+## Steps 2 and 3: Generated Drive Program
+
+Added 2026-10-17, written with Claude (an AI assistant); build and simulation checked, bench test pending. Step1_JUL remains the program of Article 1009. Revised 2026-10-18 (v3.1.0 and v3.2.0).
+
+Since v3.2.0 the two programs divide the work: **Step1_JUL is the diagnostic program**, shipped with every debug flag of `Common.h` on, which prints the signal chain and the L298N pin states for the Joystick and Button Check and the Motor Movement Checklist (control tick 3000 ms); **Step3_Generated is the drive program** (control tick 50 ms).
+
+1. **Step2_Generator**: with the Uno and USB cable only, the student works through four items in the serial monitor. Check 1 shows the L298N pins, the push button, and the LED, each as an Uno pin and an ATmega328P port pin, for example `D5 (PD5)`; Check 2 shows the joystick lines, x on A0 (PC0) and y on A1 (PC1). The student types y when they match Step1_JUL. Question 3 takes the four binary digits of the `Bits()` value found with Step1_JUL (line 92). Question 4 decides whether the printed program shows the checked data in the serial monitor when it starts. A summary of all four follows, and the program prints a complete `main.cpp`.
+2. **Step3_Generated**: the printed program. It includes one header, `Code-JUL/include/claude/ace.h`, which holds the joystick algorithm, the mapping and dead zone, the push button, the timer, and the L298N pins in one file. With the debug data (Question 4, y), the line `#define DEBUG_GENERATED` makes `setup()` print the data checked in Step2_Generator once at 9600 baud; commenting the line out turns the output off. Without it (n), the program is printed without the debug data. A new run of Step 2 changes only `main.cpp`; `ace.h` is never edited. `DEBUG_GENERATED` does not read the serial monitor and does not change the control tick, so it may stay on while the robot drives. The push button is read active LOW and requires the external 10 kOhm pull up of D2 (the form of line 45 of Step1_JUL as written). Since v3.2.0 the control tick of `ace.h` is 50 ms (`TICK_MS`; Step1_JUL keeps 100 ms without debug flags).
+
+Each program is selected with `build_src_filter` in `Code-JUL/platformio.ini`, which lists the line for each (since v3.0.1; the environments `env:step3` and `env:step4` and their build flags were removed).
+
+For every pair of joystick readings, Step3_Generated sets the same motor pins as Step1_JUL (all 1024 x 1024 pairs on the host; 12519 pairs at the register level in simavr). Performance on the simulated Uno at 16 MHz, bits_1010:
+
+| | Step1_JUL | Step3_Generated (ace.h) |
 |---|---|---|
 | Joystick math per tick | 322.5 µs | 16.4 µs (19.6 times faster) |
 | Motor output per tick | 40.3 µs | 3.7 µs (10.9 times faster) |
@@ -146,7 +180,7 @@ For every pair of joystick readings, Step5_Generated sets the same motor pins as
 | Flash | 6344 bytes | 1420 bytes |
 | RAM | 316 bytes | 23 bytes |
 
-The two ADC conversions (about 106 µs each, ADC clock 125 kHz for full accuracy) are 91 percent of the faster tick. Details, the original classes incorporated into `ace.h`, and the tests: [Code-JUL/include/claude/README.md](Code-JUL/include/claude/README.md).
+The two ADC conversions (about 106 µs each, ADC clock 125 kHz for full accuracy) are 91 percent of the faster tick. The control tick repeats every 50 ms in Step3_Generated (v3.2.0) and every 100 ms in Step1_JUL without debug flags. Details, the original classes incorporated into `ace.h`, and the tests: [Code-JUL/include/claude/README.md](Code-JUL/include/claude/README.md).
 
 ---
 
@@ -164,15 +198,15 @@ The algorithm itself is the subject of Article 1001, Joystick Algorithm.
 
 ## Experiments
 
-The experiments follow Article 1004. The Instructions files for Experiments 1 to 5 are lab cards with project folders, build filters, and bench wiring; Experiments 6 to 9 contain the full advanced steps summarized in the article. Experiments 1 to 5 use copies of the original header files in each `Experiments/Experiment-N/Code/include/`. Experiments 6 to 9 use `Code-JUL/include/numerics/` and lessons 01 to 19 in `Code-JUL/src/Step3_MathLessons/`. Review the safety conditions in Article 1009 before any motor is powered; build verification is not hardware verification.
+The experiments follow Article 1004. The Instructions files for Experiments 1 to 5 are lab cards with project folders, build filters, and bench wiring; Experiments 6 to 9 contain the full advanced steps summarized in the article. Experiments 1 to 5 use copies of the original header files in each `Experiments/Experiment-N/Code/include/`. Experiments 6 to 9 use `Code-JUL/include/numerics/` and lessons 01 to 19 in `Code-JUL/src/Step4_MathLessons/`. Review the safety conditions in Article 1009 before any motor is powered; build verification is not hardware verification.
 
 | Experiment | Subject | Code | Status |
 |-----------|---------|------|--------|
 | [Experiment-1](Experiments/Experiment-1/Instructions/README.md) | Timing and Button Input on the Uno: delay(), Timer.h, Button.h, Switch.h | `Experiments/Experiment-1/Code` | Labs 1 to 3 by the author (Lab 3 corrected 20261008); Lab 4 new, simulated |
-| [Experiment-2](Experiments/Experiment-2/Instructions/README.md) | Wiring and Reading the Thumb Joystick: preprocessor, LinearMap.h, Joystick Setup | `Experiments/Experiment-2/Code`, `Code-JUL` (Step1_Joystick) | Labs simulated; bench pending |
+| [Experiment-2](Experiments/Experiment-2/Instructions/README.md) | Wiring and Reading the Thumb Joystick: preprocessor, LinearMap.h, Joystick and Button Check | `Experiments/Experiment-2/Code`, `Code-JUL` (Step1_JUL, `DEBUG_JOYSTICK`) | Labs simulated; bench pending |
 | [Experiment-3](Experiments/Experiment-3/Instructions/README.md) | L298N Single Motor: MiscMath.h, duty cycle | `Experiments/Experiment-3/Code` | Labs simulated; bench pending |
 | [Experiment-4](Experiments/Experiment-4/Instructions/README.md) | L298N Two Motors and the Bits Table: Bitwise.h, TypeConv.h, L298N.h | `Experiments/Experiment-4/Code` | Labs simulated; bench pending |
-| [Experiment-5](Experiments/Experiment-5/Instructions/README.md) | Joystick to Motors: Vector3.h, Joystick.h, Motor Movement Checklist | `Experiments/Experiment-5/Code`, `Code-JUL` (Step2_JUL) | Step2_JUL bench tested (bits_1010) |
+| [Experiment-5](Experiments/Experiment-5/Instructions/README.md) | Joystick to Motors: Vector3.h, Joystick.h, Motor Movement Checklist | `Experiments/Experiment-5/Code`, `Code-JUL` (Step1_JUL) | Step1_JUL bench tested; ships with bits_0000, the first row of the checklist |
 | [Experiment-6](Experiments/Experiment-6/Instructions/README.md) | Statistics and the Dead Zone | Lessons 01 to 06, 17 | Simulated; bench pending |
 | [Experiment-7](Experiments/Experiment-7/Instructions/README.md) | Line Fit and Motor Calibration | Lessons 15, 18 | Simulated; bench pending |
 | [Experiment-8](Experiments/Experiment-8/Instructions/README.md) | Vectors, Matrices, and the Joystick Frame | Lessons 07 to 13, 19 | Simulated; bench pending |
@@ -207,7 +241,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | Step1_Joystick and Step2_JUL bench tested at commit f2307a1; later changes to them are comments and include paths only, and they compile to the same Intel HEX. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step4_Generator and Step5_Generated (2026-10-17): build and simulation checked; bench pending |
+| **Status** | Step1_JUL (formerly Step2_JUL) bench tested at commit f2307a1. Since v3.0.0 it ships with `bits_0000`, the first row of the Motor Movement Checklist; its other changes are comments, include paths, and the folder name, and it compiles to the same Intel HEX as Step2_JUL of v2.4.0 with line 92 set to `bits_0000`. Since v3.1.0, lines 103 and 104 read x on A0 and y on A1; since v3.1.1, lines 46 and 47 turn the internal pull up of the push button pin off. These are the only changes to its program code; the bench test is to be repeated with them. Since v3.2.0, `Common.h` ships with every debug flag on, so Step1_JUL builds with its debug output and the 3000 ms control tick. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step2_Generator and Step3_Generated (2026-10-17): build and simulation checked; bench pending |
 
 ---
 
@@ -226,13 +260,13 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
    | `IsRightForward()` | bool | True if the right motor output is forward |
    | `Octant()` | int | Current octant (0 = stop, 1 to 8 = directions) |
 
-3. **Debugging?** In `Code-JUL/include/Common.h` uncomment one of the debug flags and open the Serial Monitor at 9600 baud:
+3. **Debugging.** Since v3.2.0, `Code-JUL/include/Common.h` ships with **every debug flag on**. Step1_JUL is the diagnostic program: open the Serial Monitor at 9600 baud to read the joystick values through the signal chain and the L298N pin states.
    ```cpp
-   // #define DEBUG_MAIN        // Step1_Joystick output
-   // #define DEBUG_JOYSTICK    // joystick values through the signal chain
-   // #define DEBUG_L298N       // motor driver pin states
+   #define DEBUG_MAIN        // not used by Step1_JUL (it served Step1_Joystick, removed)
+   #define DEBUG_JOYSTICK    // joystick values through the signal chain
+   #define DEBUG_L298N       // motor driver pin states
    ```
-   Enabling any debug flag also changes the control tick `BUTTON_TIMER_mS` from 100 ms to 3000 ms so the output is readable. Comment the flag out again for normal motor response.
+   Any debug flag changes the control tick `BUTTON_TIMER_mS` from 100 ms to 3000 ms so the output is readable, so the motors of Step1_JUL respond once every 3 s. Drive with Step3_Generated, which does not use `Common.h` (50 ms tick). To drive with Step1_JUL at 100 ms instead, comment out all three flags. Lessons 18 and 19 and Step2_Generator define `DEBUG_ALL_OFF` before their includes and build without the flags.
 
 4. **Motor tuning?** See [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md).
 
@@ -257,7 +291,7 @@ validation status.
 
 ## Credits
 
-The files `Code-JUL/include/numerics/LineFit2.h` (lessons 15 and 18) and `Code-JUL/include/numerics/Rotation.h` (lesson 16) are adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools ([geometrictools.com](https://www.geometrictools.com), [GitHub](https://github.com/davideberly/GeometricTools)), under the Boost Software License, Version 1.0. Each file keeps his copyright notice and states the changes made. See `Code-JUL/src/Step3_MathLessons/README.md`.
+The files `Code-JUL/include/numerics/LineFit2.h` (lessons 15 and 18) and `Code-JUL/include/numerics/Rotation.h` (lesson 16) are adapted from the Geometric Tools Engine by **David Eberly**, Geometric Tools ([geometrictools.com](https://www.geometrictools.com), [GitHub](https://github.com/davideberly/GeometricTools)), under the Boost Software License, Version 1.0. Each file keeps his copyright notice and states the changes made. See `Code-JUL/src/Step4_MathLessons/README.md`.
 
 ## License
 

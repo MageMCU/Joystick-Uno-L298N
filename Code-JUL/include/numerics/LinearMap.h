@@ -17,7 +17,7 @@
 //
 
 // LinearMap<T>: straight line mapping of x in [x1, x2] onto y in [y1, y2].
-// Step2_JUL uses LinearMap<float> for ADC to unit range and unit range to PWM.
+// Step1_JUL uses LinearMap<float> for ADC to unit range and unit range to PWM.
 
 #ifndef Numerics_Linear_Map_h
 #define Numerics_Linear_Map_h

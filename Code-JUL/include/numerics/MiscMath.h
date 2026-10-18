@@ -18,7 +18,7 @@
 
 // MiscMath.h: function templates (Square, angle functions, direction vectors,
 // Map, absT) and the Debug() serial print helpers.
-// Step1_Joystick and Step2_JUL use absT() and Debug().
+// Step1_JUL uses absT() and Debug().
 
 #ifndef Numerics_MiscMath_h
 #define Numerics_MiscMath_h

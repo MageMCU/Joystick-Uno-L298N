@@ -5,7 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Bench status:** Step2_JUL and the Motor Movement Checklist are bench tested by the author; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
+**Bench status:** Step1_JUL and the Motor Movement Checklist were bench tested by the author at commit f2307a1; Step1_JUL has changed since (v3.1.0, joystick lines 103 and 104; v3.1.1, push button lines 46 and 47), and its bench retest is pending. Since v3.2.0, `Code-JUL/include/Common.h` ships with every debug flag on (Step1_JUL control tick 3000 ms), Step3_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`; record the release tag of the code used in each entry; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -104,7 +104,7 @@ The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 | 1: Preprocessor | Five printed lines with no flag and with `DEBUG_JOYSTICK`; Flash and RAM figures; first three linker errors of `second.cpp` | | |
 | 2: LinearMap | Table-4, three columns beside the prediction; the three Reverse lines | | |
 
-Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (pull up or pull down), and the `activeLow` value used.
+Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (the external 10 kOhm pull up from D2 to 5 V of Circuit-2, required since v3.2.0 for a module with no resistor on SW, as on the author's bench; or a pull down), and the `activeLow` value used.
 
 | Grip position | VRx to GND (V) | VRy to GND (V) | x reading | y reading | Expected N (Equation-2) | Notes |
 |---------------|----------------|----------------|-----------|-----------|-------------------------|-------|

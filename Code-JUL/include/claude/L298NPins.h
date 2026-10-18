@@ -14,7 +14,7 @@
 //
 // MIT LICENSE
 //
-// Added 20261017 for Step4_Generator.
+// Added 20261017 for Step2_Generator.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
