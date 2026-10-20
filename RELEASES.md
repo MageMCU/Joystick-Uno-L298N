@@ -4,6 +4,19 @@
 
 ---
 
+## v3.2.2 (2026-10-20), Valid article links; MMC proof table in the README
+
+Tag: v3.2.2, to be set by the author on the commit that holds these changes. Documentation and `.gitignore` only; no program code and no `platformio.ini` changed, and every program builds to the same Intel HEX as in v3.2.1 (Discrepancies.md, 102 to 110).
+
+- **Links:** every Google Drive link now comes from the author's list of valid links of 20261020. Removed: 1020 Note, Button.h and Timer.h; the 1005 Drive link (the title stays in Experiment-9, the Articles table, and `Experiments.md`, linked to the Robotics page of carpentersoftware.com); the MMC Reference of `Motor-Movement-Checklist/ReadMe.md`. Added: 1009 MMC Results for JUL and 1009 MMC Results for nRF24L01+ in the Articles table of `README.md` and in the ReadMe section MMC Results; MMC Results for JUL in the Experiment-5 lab card (entries 102 and 103)
+- `README.md`: new subsection MMC Proof Table under Setup: One Program, One Bits() Value, from `python3 BitsProof.py` run 20261020 (entry 104); the legend names the **standard** row, also in the ReadMe (entry 105); Testing Platform, Status: v3.2.2
+- `README.md`: new section Contact, hello@carpentersoftware.com (entry 110)
+- `.gitignore`: `.DS_Store` (entry 106)
+- `RELEASES.md` and `Discrepancies.md`: em dashes and "firmware" replaced in the older notes (entry 108); `Discrepancies.md`: new section with entries 102 to 109. **Open:** the GitHub repository has no release tags (entry 107)
+- `Experiments.md`: Changes in Release v3.2.2
+
+Verified 20261020 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`): all 35 programs build with no warnings and to the same Intel HEX as e006f32; every relative Markdown link and anchor resolves; every Google Drive link in the repository is on the list of valid links. Bench test pending, as for v3.2.0.
+
 ## v3.2.1 (2026-10-19), Review with Article 1009 revision 20261019; Step3_Generated sets the L298N pins first
 
 Tag: v3.2.1, to be set by the author on the commit that holds these changes. Documentation, comments, and one program change at the author's request: the program printed by Step2_Generator calls `robot.begin()` first in `setup()` (entry 85). No `platformio.ini` file changed. Article 1009, revision 20261019, describes this release and cites it in its Bibliography [1] (Discrepancies.md, 82 to 101).
@@ -271,11 +284,11 @@ Tag `v2.4.0` marks the code that Article 1004 Update 20261012 Rev 2 and Article 
 ## What's New in v2.0.0?
 
 ### 🎯 Big Picture
-- ✅ **Single production algorithm** — Revised octant-based approach locked in
-- ✅ **Simplified to deploy** — No compile-time algorithm selection needed
-- ✅ **New getter methods** — Check motor direction and current octant
-- ✅ **User-focused docs** — Quick-start guides and wiring checklists
-- ✅ **Ready to use** — Firmware tested and verified on hardware
+- ✅ **Single production algorithm:** revised octant-based approach locked in
+- ✅ **Simplified to deploy:** no compile-time algorithm selection needed
+- ✅ **New getter methods:** check motor direction and current octant
+- ✅ **User-focused docs:** quick-start guides and wiring checklists
+- ✅ **Ready to use:** software tested and verified on hardware
 
 ### 🆕 API Enhancements
 ```cpp
@@ -309,7 +322,7 @@ The joystick algorithm continues to be researched and refined. Expected improvem
 
 ## Upgrading from v1.0 to v2.0
 
-**⚠️ No Breaking Changes** — API remains compatible
+**⚠️ No Breaking Changes:** API remains compatible
 
 If you were using algorithm variants (ALGO_STUDY_*):
 - Remove `#define ALGO_STUDY_REVISED` or `ALGO_STUDY_COMPACT` from Common.h
@@ -320,7 +333,7 @@ If you were using algorithm variants (ALGO_STUDY_*):
 
 ## Version History (Details)
 
-### [2.0.0] — 2026-07-14
+### [2.0.0], 2026-07-14
 
 **Major Changes**
 - Replaced original `Joystick.h` with revised octant-based algorithm
@@ -329,9 +342,9 @@ If you were using algorithm variants (ALGO_STUDY_*):
 - Cleaned up `Common.h` and `platformio.ini` build configuration
 
 **New Features**
-- Added `IsLeftForward()` getter — check if left motor is moving forward
-- Added `IsRightForward()` getter — check if right motor is moving forward
-- Added `Octant()` getter — retrieve current directional octant (0–8)
+- Added `IsLeftForward()` getter: checks whether the left motor is moving forward
+- Added `IsRightForward()` getter: checks whether the right motor is moving forward
+- Added `Octant()` getter: returns the current directional octant (0 to 8)
 - Improved dead zone handling with tolerance-based approach (0.001 offset)
 
 **Documentation**
@@ -361,12 +374,12 @@ If you were using algorithm variants (ALGO_STUDY_*):
 
 ---
 
-### [1.0.0] — Original Release
+### [1.0.0], Original Release
 
 **Status:** Archived (see PRIVATE repo for experimental variants)
 
 **Contents:**
-- Initial firmware for Arduino Uno + L298N differential drive motor control
+- Initial software for Arduino Uno + L298N differential drive motor control
 - Original joystick algorithm (quadrant-based routing)
 - Algorithm selection system with study variants
 - Motor movement checklist for hardware validation
@@ -375,7 +388,7 @@ If you were using algorithm variants (ALGO_STUDY_*):
 
 ## Technical Notes
 
-- Namespace: **csjc** — Carpenter Software - Jesse Carpenter
+- Namespace: **csjc** (Carpenter Software, Jesse Carpenter)
 - Hardware: **Arduino Uno (Atmega328P)** + **L298N Motor Driver**
 - IDE: **PlatformIO** (VS Code)
 - Language: **C++** (GNU++11)

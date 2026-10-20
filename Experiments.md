@@ -2,6 +2,10 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v3.2.2 (20261020)
+
+- **Article links.** The Related Articles of every lab card follow the author's list of valid links: 1020 is removed, and 1005 is named in Experiment-9 only, linked to the Robotics page of carpentersoftware.com, where it is published. The Experiment-5 lab card links the 1009 MMC Results for JUL. No lab, program, or setting changed.
+
 ## Changes in Release v3.2.1 (20261019)
 
 - **Pull up supply.** The 10 kOhm pull up of D2 may use the Uno 5V pin or the 5 V bus of the breadboard; the Uno 5V pin is preferred, because the 5 V bus is off whenever the motor supply is off and D2 then reads LOW, the pressed level (Article 1009, Wiring).
@@ -42,7 +46,7 @@ The `include/` folder of each core experiment holds copies of the original heade
 | [Experiment-6: Statistics and the Dead Zone](Experiments/Experiment-6/Instructions/README.md) | 01 to 06, 17_DeadZone |
 | [Experiment-7: Line Fit and Motor Calibration](Experiments/Experiment-7/Instructions/README.md) | 15_LineFit, 18_MotorLineFit |
 | [Experiment-8: Vectors, Matrices, and the Joystick Frame](Experiments/Experiment-8/Instructions/README.md) | 07 to 13, 19_JoystickFrame |
-| [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | 14_Quaternion, 16_Rotation ([Article 1005](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr)) |
+| [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | 14_Quaternion, 16_Rotation (Article 1005, on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html)) |
 
 ## Lab Notebook
 

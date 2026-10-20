@@ -4,12 +4,12 @@
 
 - Previously updated for clarity, 20240814
 - **Current status:** verified with the revised joystick algorithm (octant based control, with both a center offset dead zone and an in algorithm tolerance)
-- [MMC Reference](https://drive.google.com/file/d/1Cs-94KHmOfRT9C4QJFMCgcuQ93iygg6h)
-- **Related article:** [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4); the procedure is Article 1009, L298N Setup, and Article 1004, Experiment-5, Lab 3
+- **Related article:** [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4), which holds both the Expected Motor Movements and the Motor Movement Checklist (MMC); the procedure is Article 1009, L298N Setup, and Article 1004, Experiment-5, Lab 3
 
-## MMC Results for JUL
+## MMC Results
 
-- [Hardware Test Results](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ)
+- [1009 MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ): hardware test results for this repository
+- [1009 MMC Results for nRF24L01+](https://drive.google.com/file/d/11rTdUBuKK-MIu4N-AC_g-3Bj84E3aSp4)
 
 ## How to Use
 
@@ -32,7 +32,7 @@ The author's bench test confirms it: with the y equation reversed the checklist 
 
 `BitsProof.py` (written with Claude, 20261017) models Step1_JUL with the shipped lines and searches from `bits_0000` for each of 2^7 = 128 benches: 8 joystick orientations times 16 L298N wirings. Each of the 128 has exactly one passing value, and each of the 16 values serves 8 benches. Run `python3 BitsProof.py` for the table and `python3 BitsProof.py example` for one random bench, step by step.
 
-Columns are counted from the shipped lines: **normal** = VRx on A0 and VRy on A1, **swap** = VRx and VRy exchanged, **xR** = x reversed, **yR** = y reversed. Rows: **E** = enable pins crossed, **M** = motors exchanged between the channels, **L** and **R** = left and right motor leads reversed.
+Columns are counted from the shipped lines: **normal** = VRx on A0 and VRy on A1, **swap** = VRx and VRy exchanged, **xR** = x reversed, **yR** = y reversed. Rows: **standard** = none of the four changes, the pin order of Step1_JUL (lines 55 to 60); **E** = enable pins crossed, **M** = motors exchanged between the channels, **L** and **R** = left and right motor leads reversed.
 
 | Wiring | normal | yR | xR | xR yR | swap | swap yR | swap xR | swap xR yR |
 |---|---|---|---|---|---|---|---|---|

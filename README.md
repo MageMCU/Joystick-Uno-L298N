@@ -140,9 +140,36 @@ The author's bench test showed that changing the joystick equations is not neces
 
 - Test 1, y equation reversed: bits_1011. Test 2, no equation changed: bits_1100. 1100 XOR 0111 = 1011. (Both with the lines of v3.0.1; with the lines of v3.1.0 the same bench reads its axes exchanged, and Test 2 gives bits_1101.)
 - Reason: the joystick algorithm satisfies F(-x, y) = (R, L), F(x, -y) = (-R, -L), and F(y, x) = (L, -R). Exchanging or reversing a joystick axis swaps or negates the two motor commands. Bit 2 swaps the commands, and bits 1 and 0 negate the left and right IN pairs, so `Bits()` can undo each change. Bit 3 corrects crossed enable pins only.
-- Proof: 8 joystick orientations (A0 and A1 exchanged, x reversed, y reversed) times 16 L298N wirings (enable pins crossed, motors exchanged between channels, left leads reversed, right leads reversed) give 2^7 = 128 benches. A simulation of Step1_JUL with the default lines finds exactly one passing `Bits()` value for each of the 128; each of the 16 values serves 8 benches. The table and the script are in [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md) and `Motor-Movement-Checklist/BitsProof.py`.
+- Proof: 8 joystick orientations (A0 and A1 exchanged, x reversed, y reversed) times 16 L298N wirings (enable pins crossed, motors exchanged between channels, left leads reversed, right leads reversed) give 2^7 = 128 benches. A simulation of Step1_JUL with the default lines finds exactly one passing `Bits()` value for each of the 128; each of the 16 values serves 8 benches. The table is below (MMC Proof Table); the script is `Motor-Movement-Checklist/BitsProof.py`, explained in [Motor-Movement-Checklist/ReadMe.md](Motor-Movement-Checklist/ReadMe.md).
 - Connection rules: D5 and D10 go to ENA and ENB, either way; D6 and D7 go together to one IN pair and D8 and D9 to the other, each pair in either order; each motor's two leads go to one output pair, either motor on either output, either polarity; ENA and ENB jumpers removed; joystick VRx and VRy on A0 and A1, either way. Of the 720 ways to connect D5 to D10 to the six L298N inputs, only the 16 that keep these rules can be corrected. Details at the end of `Code-JUL/src/Step1_JUL/main.cpp`.
 - Limits: a dead axis, a dead L298N channel, or a wire on a wrong Uno pin leaves no passing value. Article 1009, L298N Setup, opens with a Joystick and Button Check in Step1_JUL (`DEBUG_JOYSTICK`, no motors) that finds the joystick and push button faults before the motors are connected. The octant numbers printed by `DEBUG_JOYSTICK` follow the joystick's own frame, so on a rotated joystick they differ from Article 1004, Table-8, while the motors still move correctly.
+
+### MMC Proof Table
+
+The passing `Bits()` value of each of the 128 benches, as printed by `python3 BitsProof.py` (run 20261020, release v3.2.2; the same table as `Motor-Movement-Checklist/ReadMe.md`). Find the bench by its wiring (row) and its joystick orientation (column); the cell is the four binary digits of `bits_nnnn`. The student does not need the table: the checklist finds the value by searching from `bits_0000`. The table shows that the search always ends at exactly one value.
+
+Columns are counted from the shipped lines of Step1_JUL: **normal** = VRx on A0 and VRy on A1, **swap** = VRx and VRy exchanged, **xR** = x reversed, **yR** = y reversed. Rows: **standard** = none of the four changes, the pin order of Step1_JUL (lines 55 to 60); **E** = enable pins crossed, **M** = motors exchanged between the channels, **L** and **R** = left and right motor leads reversed.
+
+| Wiring | normal | yR | xR | xR yR | swap | swap yR | swap xR | swap xR yR |
+|---|---|---|---|---|---|---|---|---|
+| standard | 1100 | 1011 | 1000 | 1111 | 1101 | 1010 | 1001 | 1110 |
+| R | 1101 | 1010 | 1001 | 1110 | 1100 | 1011 | 1000 | 1111 |
+| L | 1110 | 1001 | 1010 | 1101 | 1111 | 1000 | 1011 | 1100 |
+| L,R | 1111 | 1000 | 1011 | 1100 | 1110 | 1001 | 1010 | 1101 |
+| M | 1000 | 1111 | 1100 | 1011 | 1010 | 1101 | 1110 | 1001 |
+| M,R | 1010 | 1101 | 1110 | 1001 | 1000 | 1111 | 1100 | 1011 |
+| M,L | 1001 | 1110 | 1101 | 1010 | 1011 | 1100 | 1111 | 1000 |
+| M,L,R | 1011 | 1100 | 1111 | 1000 | 1001 | 1110 | 1101 | 1010 |
+| E | 0100 | 0011 | 0000 | 0111 | 0101 | 0010 | 0001 | 0110 |
+| E,R | 0101 | 0010 | 0001 | 0110 | 0100 | 0011 | 0000 | 0111 |
+| E,L | 0110 | 0001 | 0010 | 0101 | 0111 | 0000 | 0011 | 0100 |
+| E,L,R | 0111 | 0000 | 0011 | 0100 | 0110 | 0001 | 0010 | 0101 |
+| E,M | 0000 | 0111 | 0100 | 0011 | 0010 | 0101 | 0110 | 0001 |
+| E,M,R | 0010 | 0101 | 0110 | 0001 | 0000 | 0111 | 0100 | 0011 |
+| E,M,L | 0001 | 0110 | 0101 | 0010 | 0011 | 0100 | 0111 | 0000 |
+| E,M,L,R | 0011 | 0100 | 0111 | 0000 | 0001 | 0110 | 0101 | 0010 |
+
+Script summary: benches 128, exactly one passing value 128, none 0, more than one 0. Each of the 16 values appears 8 times. The author's bench results are in Article 1009, [MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ).
 
 ---
 
@@ -225,10 +252,11 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | 1002 | [Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE) |
 | 1003 | [L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq) |
 | 1004 | Experiments for Joystick-Uno-L298N (in progress) |
-| 1005 | [Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr) |
+| 1005 | Study of Quaternions, published on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html) |
 | 1009 | [Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr) |
-| 1009 | [Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) |
-| 1020 | [Note, Button.h and Timer.h](https://drive.google.com/file/d/1mLdqeahOOybPuAjdK8CqOVFJma677UWk) |
+| 1009 | [Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) (Expected Motor Movements and the Motor Movement Checklist, MMC) |
+| 1009 | [MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ) |
+| 1009 | [MMC Results for nRF24L01+](https://drive.google.com/file/d/11rTdUBuKK-MIu4N-AC_g-3Bj84E3aSp4) |
 | | [Joystick Algorithm Simulation](https://carpentersoftware.com/pages/projects/ytube/joystickAlgoSim.html) |
 
 ---
@@ -241,7 +269,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | Step1_JUL (formerly Step2_JUL) bench tested at commit f2307a1. Since v3.0.0 it ships with `bits_0000`, the first row of the Motor Movement Checklist; its other changes are comments, include paths, and the folder name, and it compiles to the same Intel HEX as Step2_JUL of v2.4.0 with line 92 set to `bits_0000`. Since v3.1.0, lines 103 and 104 read x on A0 and y on A1; since v3.1.1, lines 46 and 47 turn the internal pull up of the push button pin off. These are the only changes to its program code; the bench test is to be repeated with them. Since v3.2.0, `Common.h` ships with every debug flag on, so Step1_JUL builds with its debug output and the 3000 ms control tick. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step2_Generator and Step3_Generated (2026-10-17): build and simulation checked; bench pending. v3.2.1 (2026-10-19): documentation, and Step3_Generated sets D5 to D10 LOW before its debug output (printed again by Step2_Generator); all 35 programs build with no warnings, and simulation retest passed (Discrepancies.md, 90); bench retest pending |
+| **Status** | Step1_JUL (formerly Step2_JUL) bench tested at commit f2307a1. Since v3.0.0 it ships with `bits_0000`, the first row of the Motor Movement Checklist; its other changes are comments, include paths, and the folder name, and it compiles to the same Intel HEX as Step2_JUL of v2.4.0 with line 92 set to `bits_0000`. Since v3.1.0, lines 103 and 104 read x on A0 and y on A1; since v3.1.1, lines 46 and 47 turn the internal pull up of the push button pin off. These are the only changes to its program code; the bench test is to be repeated with them. Since v3.2.0, `Common.h` ships with every debug flag on, so Step1_JUL builds with its debug output and the 3000 ms control tick. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step2_Generator and Step3_Generated (2026-10-17): build and simulation checked; bench pending. v3.2.1 (2026-10-19): documentation, and Step3_Generated sets D5 to D10 LOW before its debug output (printed again by Step2_Generator); all 35 programs build with no warnings, and simulation retest passed (Discrepancies.md, 90); bench retest pending. v3.2.2 (2026-10-20): documentation only (article links, MMC Proof Table, Contact) |
 
 ---
 
@@ -296,3 +324,7 @@ The files `Code-JUL/include/numerics/LineFit2.h` (lessons 15 and 18) and `Code-J
 ## License
 
 MIT License. See [LICENSE](LICENSE) and [DISCLAIMER.md](DISCLAIMER.md). [Carpenter Software](https://carpentersoftware.com), Jesse Carpenter.
+
+## Contact
+
+Jesse Carpenter, [Carpenter Software](https://carpentersoftware.com): [hello@carpentersoftware.com](mailto:hello@carpentersoftware.com), or the [Contact page](https://carpentersoftware.com/pages/legals/contact/contact.html) of the website.
