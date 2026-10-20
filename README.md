@@ -77,7 +77,7 @@ Joystick-Uno-L298N/
 │   │   └── claude/                    Files written with Claude (AI assistant): L298NPins.h (Step2),
 │   │                                  ace.h (Step3), README.md
 │   ├── src/
-│   │   ├── Step1_JUL/                 Joystick to motors program (Article 1009, Code-1)
+│   │   ├── Step1_JUL/                 Joystick to motors program (Article 1009, Code-1 and Code-2)
 │   │   ├── Step2_Generator/           Checks the pins, asks for the Bits() value; prints Step3
 │   │   ├── Step3_Generated/           The printed drive program, one header: claude/ace.h
 │   │   └── Step4_MathLessons/         Math lessons 01 to 19 (Article 1004, Experiments 6 to 9)
@@ -110,7 +110,7 @@ From Article 1009, Table-2, and Article 1004, Table-1. The joystick orientation 
 |---------|--------------------------------------|---------------|
 | A0 | Joystick VRx | xDigital, analogRead(A0) (since v3.1.0) |
 | A1 | Joystick VRy | yDigital, analogRead(A1) (since v3.1.0) |
-| D2 | Joystick SW, with an **external 10 kOhm pull up resistor from D2 to 5 V (required)**, as in Article 1004, Circuit-2. Step1_JUL turns the internal pull up of D2 off (lines 46 and 47, since v3.1.1). The author's bench test (v3.2.0) showed that the thumb joystick module has no resistor on SW: without the external pull up the input floats when the switch is released, and a floating input can turn the motors on. Test the switch as a black box before the motors are connected (Article 1009, Joystick and Button Check, step 4; see the end of `Step1_JUL/main.cpp`) | buttonPin |
+| D2 | Joystick SW, with an **external 10 kOhm pull up resistor from D2 to 5 V (required)**, as in Article 1004, Circuit-2. Either 5 V may be used, the Uno 5V pin or the 5 V bus of the breadboard; the Uno 5V pin is preferred, because the 5 V bus (7805) is off whenever the motor supply is off, and D2 then reads LOW, the pressed level (Article 1009, Wiring). Step1_JUL turns the internal pull up of D2 off (lines 46 and 47, since v3.1.1). The author's bench test (v3.2.0) showed that the thumb joystick module has no resistor on SW: without the external pull up the input floats when the switch is released, and a floating input can turn the motors on. Test the switch as a black box before the motors are connected (Article 1009, Joystick and Button Check, step 4; see the end of `Step1_JUL/main.cpp`) | buttonPin |
 | D5 | L298N ENB | _EN_A (LeftEN) |
 | D6 | L298N IN4 | _LeftIN_A (LeftA) |
 | D7 | L298N IN3 | _LeftIN_B (LeftB) |
@@ -153,32 +153,32 @@ Step1_JUL ships with every debug flag of `Code-JUL/include/Common.h` on, so the 
 | Path | What to do | Control tick |
 |---|---|---|
 | A. Stay with Step1_JUL | In `Common.h`, comment out `DEBUG_MAIN`, `DEBUG_JOYSTICK`, and `DEBUG_L298N`, then upload Step1_JUL again | 100 ms |
-| B. Continue to Step 3 | Run Step2_Generator with the `Bits()` value, copy the printed program into `Step3_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`) | 50 ms |
+| B. Continue to Step 3 | With the motor supply off, run Step2_Generator with the `Bits()` value, copy the printed program into `Step3_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`); apply the motor supply after the upload | 50 ms |
 
-Both paths set the same motor pins for the same joystick readings. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
+Both paths set the same motor pins for the same joystick readings with the center offsets as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06, lines 121 and 122 of Step1_JUL; `ace.h` keeps these two values and is never edited, so offsets changed in Experiment-6 apply to Path A only). Article 1009 (revision 20261019), Two Ways to Drive, gives the Path B procedure step by step. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
 
 ---
 
 ## Steps 2 and 3: Generated Drive Program
 
-Added 2026-10-17, written with Claude (an AI assistant); build and simulation checked, bench test pending. Step1_JUL remains the program of Article 1009. Revised 2026-10-18 (v3.1.0 and v3.2.0).
+Added 2026-10-17, written with Claude (an AI assistant); build and simulation checked, bench test pending. Revised 2026-10-18 (v3.1.0 and v3.2.0). Article 1009 (revision 20261019) uses Step1_JUL for the setup procedure and gives Steps 2 and 3 in Two Ways to Drive, Path B.
 
 Since v3.2.0 the two programs divide the work: **Step1_JUL is the diagnostic program**, shipped with every debug flag of `Common.h` on, which prints the signal chain and the L298N pin states for the Joystick and Button Check and the Motor Movement Checklist (control tick 3000 ms); **Step3_Generated is the drive program** (control tick 50 ms).
 
-1. **Step2_Generator**: with the Uno and USB cable only, the student works through four items in the serial monitor. Check 1 shows the L298N pins, the push button, and the LED, each as an Uno pin and an ATmega328P port pin, for example `D5 (PD5)`; Check 2 shows the joystick lines, x on A0 (PC0) and y on A1 (PC1). The student types y when they match Step1_JUL. Question 3 takes the four binary digits of the `Bits()` value found with Step1_JUL (line 92). Question 4 decides whether the printed program shows the checked data in the serial monitor when it starts. A summary of all four follows, and the program prints a complete `main.cpp`.
+1. **Step2_Generator**: with the Uno and USB cable only and the motor supply off, the student works through four items in the serial monitor. Check 1 shows the L298N pins, the push button, and the LED, each as an Uno pin and an ATmega328P port pin, for example `D5 (PD5)`; Check 2 shows the joystick lines, x on A0 (PC0) and y on A1 (PC1). The student types y when they match Step1_JUL. Question 3 takes the four binary digits of the `Bits()` value found with Step1_JUL (line 92). Question 4 decides whether the printed program shows the checked data in the serial monitor when it starts. A summary of all four follows, and the program prints a complete `main.cpp`.
 2. **Step3_Generated**: the printed program. It includes one header, `Code-JUL/include/claude/ace.h`, which holds the joystick algorithm, the mapping and dead zone, the push button, the timer, and the L298N pins in one file. With the debug data (Question 4, y), the line `#define DEBUG_GENERATED` makes `setup()` print the data checked in Step2_Generator once at 9600 baud; commenting the line out turns the output off. Without it (n), the program is printed without the debug data. A new run of Step 2 changes only `main.cpp`; `ace.h` is never edited. `DEBUG_GENERATED` does not read the serial monitor and does not change the control tick, so it may stay on while the robot drives. The push button is read active LOW and requires the external 10 kOhm pull up of D2 (the form of line 45 of Step1_JUL as written). Since v3.2.0 the control tick of `ace.h` is 50 ms (`TICK_MS`; Step1_JUL keeps 100 ms without debug flags).
 
 Each program is selected with `build_src_filter` in `Code-JUL/platformio.ini`, which lists the line for each (since v3.0.1; the environments `env:step3` and `env:step4` and their build flags were removed).
 
-For every pair of joystick readings, Step3_Generated sets the same motor pins as Step1_JUL (all 1024 x 1024 pairs on the host; 12519 pairs at the register level in simavr). Performance on the simulated Uno at 16 MHz, bits_1010:
+For every pair of joystick readings, Step3_Generated sets the same motor pins as Step1_JUL (all 1024 x 1024 pairs on the host; 12519 pairs at the register level in simavr; 13 positions with the button in simavr, 20261019). Performance on the simulated Uno at 16 MHz, bits_1010, measured 20261017; sizes measured 20261019 (v3.2.1) without debug output, Step1_JUL with the three flags commented out and Step3_Generated printed without `DEBUG_GENERATED`:
 
 | | Step1_JUL | Step3_Generated (ace.h) |
 |---|---|---|
 | Joystick math per tick | 322.5 µs | 16.4 µs (19.6 times faster) |
 | Motor output per tick | 40.3 µs | 3.7 µs (10.9 times faster) |
 | Full control tick, with the two ADC readings | 574.8 µs | 232.0 µs (2.5 times faster) |
-| Flash | 6344 bytes | 1420 bytes |
-| RAM | 316 bytes | 23 bytes |
+| Flash | 6498 bytes | 1548 bytes |
+| RAM | 318 bytes | 23 bytes |
 
 The two ADC conversions (about 106 µs each, ADC clock 125 kHz for full accuracy) are 91 percent of the faster tick. The control tick repeats every 50 ms in Step3_Generated (v3.2.0) and every 100 ms in Step1_JUL without debug flags. Details, the original classes incorporated into `ace.h`, and the tests: [Code-JUL/include/claude/README.md](Code-JUL/include/claude/README.md).
 
@@ -206,7 +206,7 @@ The experiments follow Article 1004. The Instructions files for Experiments 1 to
 | [Experiment-2](Experiments/Experiment-2/Instructions/README.md) | Wiring and Reading the Thumb Joystick: preprocessor, LinearMap.h, Joystick and Button Check | `Experiments/Experiment-2/Code`, `Code-JUL` (Step1_JUL, `DEBUG_JOYSTICK`) | Labs simulated; bench pending |
 | [Experiment-3](Experiments/Experiment-3/Instructions/README.md) | L298N Single Motor: MiscMath.h, duty cycle | `Experiments/Experiment-3/Code` | Labs simulated; bench pending |
 | [Experiment-4](Experiments/Experiment-4/Instructions/README.md) | L298N Two Motors and the Bits Table: Bitwise.h, TypeConv.h, L298N.h | `Experiments/Experiment-4/Code` | Labs simulated; bench pending |
-| [Experiment-5](Experiments/Experiment-5/Instructions/README.md) | Joystick to Motors: Vector3.h, Joystick.h, Motor Movement Checklist | `Experiments/Experiment-5/Code`, `Code-JUL` (Step1_JUL) | Step1_JUL bench tested; ships with bits_0000, the first row of the checklist |
+| [Experiment-5](Experiments/Experiment-5/Instructions/README.md) | Joystick to Motors: Vector3.h, Joystick.h, Motor Movement Checklist | `Experiments/Experiment-5/Code`, `Code-JUL` (Step1_JUL) | Step1_JUL bench tested at commit f2307a1, retest pending (simulation retest passed, v3.2.1); ships with bits_0000, the first row of the checklist |
 | [Experiment-6](Experiments/Experiment-6/Instructions/README.md) | Statistics and the Dead Zone | Lessons 01 to 06, 17 | Simulated; bench pending |
 | [Experiment-7](Experiments/Experiment-7/Instructions/README.md) | Line Fit and Motor Calibration | Lessons 15, 18 | Simulated; bench pending |
 | [Experiment-8](Experiments/Experiment-8/Instructions/README.md) | Vectors, Matrices, and the Joystick Frame | Lessons 07 to 13, 19 | Simulated; bench pending |
@@ -241,7 +241,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | Step1_JUL (formerly Step2_JUL) bench tested at commit f2307a1. Since v3.0.0 it ships with `bits_0000`, the first row of the Motor Movement Checklist; its other changes are comments, include paths, and the folder name, and it compiles to the same Intel HEX as Step2_JUL of v2.4.0 with line 92 set to `bits_0000`. Since v3.1.0, lines 103 and 104 read x on A0 and y on A1; since v3.1.1, lines 46 and 47 turn the internal pull up of the push button pin off. These are the only changes to its program code; the bench test is to be repeated with them. Since v3.2.0, `Common.h` ships with every debug flag on, so Step1_JUL builds with its debug output and the 3000 ms control tick. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step2_Generator and Step3_Generated (2026-10-17): build and simulation checked; bench pending |
+| **Status** | Step1_JUL (formerly Step2_JUL) bench tested at commit f2307a1. Since v3.0.0 it ships with `bits_0000`, the first row of the Motor Movement Checklist; its other changes are comments, include paths, and the folder name, and it compiles to the same Intel HEX as Step2_JUL of v2.4.0 with line 92 set to `bits_0000`. Since v3.1.0, lines 103 and 104 read x on A0 and y on A1; since v3.1.1, lines 46 and 47 turn the internal pull up of the push button pin off. These are the only changes to its program code; the bench test is to be repeated with them. Since v3.2.0, `Common.h` ships with every debug flag on, so Step1_JUL builds with its debug output and the 3000 ms control tick. New labs and lessons built with avr-gcc and run in simulation (simavr); bench tests pending. Step2_Generator and Step3_Generated (2026-10-17): build and simulation checked; bench pending. v3.2.1 (2026-10-19): documentation, and Step3_Generated sets D5 to D10 LOW before its debug output (printed again by Step2_Generator); all 35 programs build with no warnings, and simulation retest passed (Discrepancies.md, 90); bench retest pending |
 
 ---
 

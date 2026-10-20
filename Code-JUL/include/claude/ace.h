@@ -44,8 +44,9 @@
 // ace.h is one file that holds everything the Step3_Generated drive
 // program needs. It includes Arduino.h only. It is written for speed
 // and size, not for reading; the original headers remain the
-// reference for how the drive works, and Step1_JUL remains the
-// program of Article 1009.
+// reference for how the drive works. Article 1009 (revision
+// 20261019) uses Step1_JUL for the setup procedure and gives
+// Step2_Generator and Step3_Generated in Two Ways to Drive, Path B.
 //
 // ORIGINAL CODE INCORPORATED (rewritten, same behavior)
 //   Joystick.h             class Joystick<float>: the octant algorithm,

@@ -61,7 +61,7 @@ Columns are counted from the shipped lines: **normal** = VRx on A0 and VRy on A1
 4. The ENA and ENB jumpers are removed; power, the 5 V logic supply, and the common ground are wired as in Article 1009, Circuit-1. No value corrects a power or ground fault.
 5. The joystick: VRx and VRy on A0 and A1, either way; SW on D2.
 
-`python3 BitsProof.py connections` tries all 720 ways of connecting D5 to D10 to the six L298N inputs: the 16 that keep rules 1 and 2 are corrected for all 8 joystick orientations, and none of the other 704 is corrected for any orientation. To use other Uno pins, change lines 55 to 60 of Step1_JUL (and 103 and 104 for the joystick), not the wires; the enable pins must be PWM pins (D3, D5, D6, D9, D10, D11), clear of D0 and D1 (serial), D2 (button), and the LED pin.
+`python3 BitsProof.py connections` tries all 720 ways of connecting D5 to D10 to the six L298N inputs: the 16 that keep rules 1 and 2 are corrected for all 8 joystick orientations, and none of the other 704 is corrected for any orientation. To use other Uno pins for the L298N, change lines 55 to 60 of Step1_JUL and the same six pins at the top of Step2_Generator, not the wires (the joystick stays on A0 and A1, lines 103 and 104 as written, because Step2_Generator holds the same two pins); the enable pins must be PWM pins (D3, D5, D6, D9, D10, D11), clear of D0 and D1 (serial), D2 (button), and the LED pin.
 
 The value cannot correct a fault outside this table: a dead joystick axis, a dead L298N channel, an open motor lead, or a wire on a wrong Uno pin. If no row of the checklist passes, find the fault with the Joystick and Button Check of Article 1009, L298N Setup, and Circuit-1. The octant numbers printed with `DEBUG_JOYSTICK` follow the joystick's own frame, so on a rotated joystick they differ from the octant list below while the motors move correctly.
 
@@ -91,7 +91,7 @@ With **center offsets applied before the algorithm** (`X_OFFSET = 0.05`, `Y_OFFS
 
 ## Code Snippet
 
-From `Code-JUL/src/Step1_JUL/main.cpp`, `setup()`. The names are the constructor names of the L298N class, not the silkscreen labels of the module: D5 is wired to L298N ENB and D10 to ENA (Article 1004, Table-1; Article 1009, Table-2).
+Condensed from `Code-JUL/src/Step1_JUL/main.cpp`, `setup()` (lines 51 to 92; the program assigns the pins through the variables ENA to ENB on lines 55 to 60). The names are the constructor names of the L298N class, not the silkscreen labels of the module: D5 is wired to L298N ENB and D10 to ENA (Article 1004, Table-1; Article 1009, Table-2).
 
 ```cpp
 // Constructor setup the x-range and the y-range

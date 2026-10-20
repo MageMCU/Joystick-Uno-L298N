@@ -3,7 +3,7 @@
 // Website: Carpenter Software
 //         (carpentersoftware.com)
 // File: main.cpp
-// Folder: src/Step4_MathLessons/17_DeadZone
+// Folder: Code-JUL/src/Step4_MathLessons/17_DeadZone
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //

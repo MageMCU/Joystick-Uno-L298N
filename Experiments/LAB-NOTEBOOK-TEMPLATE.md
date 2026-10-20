@@ -5,7 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Bench status:** Step1_JUL and the Motor Movement Checklist were bench tested by the author at commit f2307a1; Step1_JUL has changed since (v3.1.0, joystick lines 103 and 104; v3.1.1, push button lines 46 and 47), and its bench retest is pending. Since v3.2.0, `Code-JUL/include/Common.h` ships with every debug flag on (Step1_JUL control tick 3000 ms), Step3_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`; record the release tag of the code used in each entry; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
+**Bench status:** Step1_JUL and the Motor Movement Checklist were bench tested by the author at commit f2307a1; Step1_JUL has changed since (v3.1.0, joystick lines 103 and 104; v3.1.1, push button lines 46 and 47), and its bench retest is pending. Since v3.2.0, `Code-JUL/include/Common.h` ships with every debug flag on (Step1_JUL control tick 3000 ms), Step3_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. Since v3.2.1, Step3_Generated sets D5 to D10 LOW before its debug output, and Step1_JUL and Step3_Generated passed a simulation retest (Discrepancies.md, 90), which is not a bench test; record the release tag of the code used in each entry; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -97,7 +97,7 @@ The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 | 3: `Button` | Indicator LED, onboard LED, and serial output after the first and second press | | |
 | 4: `Switch` | Switch closures counted for ten presses, three trials; Lab 3 toggles for ten presses; LED after the constructor correction | | |
 
-### Experiment-2: Joystick setup
+### Experiment-2: Wiring and reading the thumb joystick
 
 | Lab | Test | Observation | Explanation |
 |-----|------|-------------|-------------|
@@ -114,7 +114,7 @@ Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pre
 | Forward | | | | | | |
 | Backward | | | | | | |
 
-Record the pin of each axis, whether each axis is reversed in software (the `analogRead()` lines used), and the two readings at rest, three times. Supervisor signature.
+Record which reading follows which axis and whether it approaches 0 or 1023 in each position (the `analogRead()` lines stay as shipped, x on A0 and y on A1; the `Bits()` value corrects the orientation), and the two readings at rest, three times. Supervisor signature.
 
 ### Experiment-3: One motor and the duty cycle
 
@@ -167,6 +167,8 @@ Lab 3: one copy of this table for **each** `Bits()` value tried. A value passes 
 | South-East | [0, −1] | | | |
 
 **First value passing all eight positions:** `bits_____`
+
+**Drive path after the checklist (Article 1009, Two Ways to Drive):** A, Step1_JUL with the three debug flags commented out, or B, Step3_Generated printed by Step2_Generator (answers to Checks 1 and 2 and Questions 3 and 4: ______). Supervisor signature.
 
 | Voltage check | Meter points and load state | Reading | Units | Supply, motor, conditions |
 |---------------|-----------------------------|---------|-------|---------------------------|

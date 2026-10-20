@@ -18,7 +18,7 @@ Drive software. Namespace **csjc** (Carpenter Software, Jesse Carpenter).
 
 ## Selecting a Program
 
-`platformio.ini` compiles one `src/` folder at a time through `build_src_filter`. A leading `+` includes a folder and a leading `-` excludes it. The shipped setting, line 31, selects the drive program, Step1_JUL:
+`platformio.ini` compiles one `src/` folder at a time through `build_src_filter`. A leading `+` includes a folder and a leading `-` excludes it. The shipped setting, line 31, selects Step1_JUL, the diagnostic program that also drives (Two Ways to Drive):
 
 ```
 build_src_filter = +<*> +<Step1_JUL/> -<Step2_Generator/> -<Step3_Generated/> -<Step4_MathLessons/>
@@ -46,22 +46,22 @@ Step1_JUL ships with every debug flag of `include/Common.h` on, so the Joystick 
 | Path | What to do | Control tick |
 |---|---|---|
 | A. Stay with Step1_JUL | In `Common.h`, comment out `DEBUG_MAIN`, `DEBUG_JOYSTICK`, and `DEBUG_L298N`, then upload Step1_JUL again | 100 ms |
-| B. Continue to Step 3 | Run Step2_Generator with the `Bits()` value, copy the printed program into `Step3_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`) | 50 ms |
+| B. Continue to Step 3 | With the motor supply off, run Step2_Generator with the `Bits()` value, copy the printed program into `Step3_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`); apply the motor supply after the upload | 50 ms |
 
-Both paths set the same motor pins for the same joystick readings. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
+Both paths set the same motor pins for the same joystick readings with the center offsets as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06, lines 121 and 122 of Step1_JUL; `ace.h` keeps these two values and is never edited, so offsets changed in Experiment-6 apply to Path A only). Article 1009 (revision 20261019), Two Ways to Drive, gives the Path B procedure step by step. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
 
 ## `include/`, Header Files
 
 | File | Purpose | Used by |
 |---|---|---|
-| `Common.h` | Debug flags, all on since v3.2.0 (`DEBUG_ALL_OFF` turns them off), and the control tick `BUTTON_TIMER_mS` | Step1, lessons 18 and 19 (with `DEBUG_ALL_OFF`) |
+| `Common.h` | Debug flags, all on since v3.2.0 (`DEBUG_ALL_OFF` turns them off), and the control tick `BUTTON_TIMER_mS` | Step1; through `Joystick.h` and `L298N.h`, Step2_Generator and lessons 18 and 19, which define `DEBUG_ALL_OFF` |
 | `Headers.h` | Aggregated include | Step1 |
-| `Timer.h` | Nonblocking millisecond timer, drifting and fixed rate policies | Step1 |
-| `Button.h` | Debounced button, latching or momentary mode, optional indicator LED | Step1 |
-| `Joystick.h` | Revised joystick algorithm (class `Joystick`) | Step1 |
-| `L298N.h` | L298N motor driver interface, `Bits()` configuration | Step1 |
-| `Switch.h` | Simple switch handler | not used by the current sketches |
-| `Debug.h` | Print helpers for vectors, points, matrices, quaternions (added from Numerics, 20261008) | Step4 |
+| `Timer.h` | Nonblocking millisecond timer, drifting and fixed rate policies | Step1, lessons 01, 18, and 19 |
+| `Button.h` | Debounced button, latching or momentary mode, optional indicator LED | Step1, lesson 18 |
+| `Joystick.h` | Revised joystick algorithm (class `Joystick`) | Step1, lesson 19 |
+| `L298N.h` | L298N motor driver interface, `Bits()` configuration | Step1, Step2_Generator, lesson 18 |
+| `Switch.h` | Simple switch handler | included by `Headers.h`; not called by the current programs (Experiment-1, Lab 4, uses its copy) |
+| `Debug.h` | Print helpers for vectors, points, matrices, quaternions (added from Numerics, 20261008) | lessons 01 to 16 |
 
 ## `include/claude/`, Files Written with Claude
 
@@ -72,14 +72,14 @@ Added 2026-10-17. These files were written with Claude (Anthropic), an AI assist
 | `claude/L298NPins.h` | Resolves one `Bits()` value into constant enable and direction pins, with the same rules as `L298N.h` | Step2 |
 | `claude/ace.h` | The complete drive program in one file, for speed and size: joystick algorithm, mapping, dead zone, button (active LOW, external 10 kOhm pull up), timer (50 ms tick since v3.2.0), L298N pins; includes `Arduino.h` only | Step3 |
 
-Performance on the simulated Uno (16 MHz, bits_1010), Step1_JUL against Step3_Generated with `ace.h`:
+Performance on the simulated Uno (16 MHz, bits_1010, measured 20261017), Step1_JUL against Step3_Generated with `ace.h`; sizes measured 20261019 (v3.2.1) without debug output:
 
 | | Step1_JUL | Step3_Generated |
 |---|---|---|
 | Joystick math per tick | 322.5 µs | 16.4 µs |
 | Motor output per tick | 40.3 µs | 3.7 µs |
 | Full control tick with the two ADC readings | 574.8 µs | 232.0 µs |
-| Flash / RAM | 6344 / 316 bytes | 1420 / 23 bytes |
+| Flash / RAM | 6498 / 318 bytes | 1548 / 23 bytes |
 
 ## `include/numerics/`, Math Headers
 
@@ -89,11 +89,11 @@ These five headers moved from `include/` on 20261008. Their code is unchanged ex
 
 | File | Purpose | Used by |
 |---|---|---|
-| `Bitwise.h` | Bit manipulation used by `L298N.h` | Step1 |
-| `LinearMap.h` | Linear range mapping | Step1 |
-| `MiscMath.h` | `absT()` and the `Debug()` serial helpers | Step1 |
-| `TypeConv.h` | Type conversion helpers | not used by the current sketches |
-| `Vector3.h` | 3 component vector | not used by the current sketches |
+| `Bitwise.h` | Bit manipulation used by `L298N.h` | Step1, Step2_Generator, lessons 01 and 18 |
+| `LinearMap.h` | Linear range mapping | Step1, lessons 03, 17, and 19 |
+| `MiscMath.h` | `absT()` and the `Debug()` serial helpers | Step1, Step2_Generator, the lessons |
+| `TypeConv.h` | Type conversion helpers | lesson 02; included by `Headers.h`, not called by Step1 |
+| `Vector3.h` | 3 component vector | lesson 09; included by `Headers.h`, not called by Step1 |
 
 These were added on 20261008, ten from the MageMCU Numerics repository (Algebra/include, 20241202) and two adapted from David Eberly's Geometric Tools Engine; they are used only by the Step4 math lessons. Bugs fixed on 20261008 are listed in `src/Step4_MathLessons/README.md`.
 
@@ -114,8 +114,8 @@ Class templates generate no code until a program uses them, and Step1_JUL does n
 | Folder | File | Purpose | Status |
 |---|---|---|---|
 | `Step1_JUL/` | `main.cpp` | Full joystick to L298N motor control and, since v3.2.0, the diagnostic program (every debug flag of `Common.h` on, 3000 ms tick); one `Bits()` value (line 92) corrects any joystick orientation and L298N wiring | Bench tested as Step2_JUL at commit f2307a1; changed since (lines 46, 47, 103, 104; v3.1.0 and v3.1.1), bench retest pending |
-| `Step2_Generator/` | `main.cpp` | Shows the L298N, button, and LED pins as Uno and ATmega328P pins, for example `D5 (PD5)`, and the joystick lines for the student to check against Step1_JUL; asks for the four binary digits of the `Bits()` value and whether to include the debug data; prints the Step3 program; Uno and USB cable only | Build and simulation checked (20261018); bench pending |
-| `Step3_Generated/` | `main.cpp` | The drive program, printed by Step2_Generator for bits_0000, the first value of the checklist, with the debug data (`DEBUG_GENERATED`), using `include/claude/ace.h` only (50 ms tick); replace it with the program printed for the value found on the bench | Build checked; motor pin states match Step1_JUL on the host (20261018); bench pending |
+| `Step2_Generator/` | `main.cpp` | Shows the L298N, button, and LED pins as Uno and ATmega328P pins, for example `D5 (PD5)`, and the joystick lines for the student to check against Step1_JUL; asks for the four binary digits of the `Bits()` value and whether to include the debug data; prints the Step3 program, whose `setup()` calls `robot.begin()` first (v3.2.1); Uno and USB cable only, motor supply off | Build and simulation checked (20261019); bench pending |
+| `Step3_Generated/` | `main.cpp` | The drive program, printed by Step2_Generator for bits_0000, the first value of the checklist, with the debug data (`DEBUG_GENERATED`), using `include/claude/ace.h` only (50 ms tick); replace it with the program printed for the value found on the bench | Build checked; motor pin states match Step1_JUL on the host (20261018) and in simavr (20261019, Discrepancies.md, 90); bench pending |
 | `Step4_MathLessons/` | 19 `main.cpp` lessons | Numerics math lessons 01 to 16; hardware lessons 17 to 19 | First 16 build and simulation checked; hardware lessons build-checked, bench pending |
 
 ## Debugging
@@ -132,4 +132,4 @@ Step3_Generated has its own flag, `DEBUG_GENERATED`, defined at the top of its `
 
 - Timer.h and Button.h were revised in September 2026 (two timer policies; latching and momentary button modes). The copies in `Experiments/Experiment-1/Code/include/` to `Experiment-5/Code/include/` are byte for byte identical to these files.
 - The I2C helper (`BusI2C.h` and `src/DEP/BusI2C.cpp`) was removed in September 2026. Nothing in this folder uses I2C. The class lives on in the MageMCU Serial-Communication repository.
-- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). On 2026-10-08, after the Numerics merge, Step1_Joystick and Step2_JUL were rebuilt with avr-gcc 7.3.0 and produced Intel HEX files byte for byte identical to the 2026-10-01 commit (f2307a1). On 2026-10-17, with Step4_Generator and Step5_Generated added, Step1_Joystick and Step2_JUL again produced Intel HEX files identical to the last commit. Later on 2026-10-17, after the renumbering, Step1_JUL produced the same Intel HEX as Step2_JUL (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6). For v3.0.1 (2026-10-17), with the build flags removed, Step1_JUL and Step3_Generated produced the same Intel HEX as in v3.0.0. For v3.1.0 (2026-10-18), with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Wall -Wextra`): Step1_JUL, Step2_Generator, Step3_Generated (with and without `DEBUG_GENERATED`), and all 19 lessons build with no warnings; Step2_Generator runs in simavr with typed answers and prints the shipped Step3_Generated; on the host, `Ace::compute()` matches the float chain of Step1_JUL for all 1024 x 1024 pairs of readings, and for all 16 `Bits()` values the pins set by `ace.h` match `L298N::UpdateL298N()`. For v3.2.0 (2026-10-18), with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Wall -Wextra`): see `RELEASES.md`. Run `pio run` locally before flashing hardware connected to motors.
+- Build verification: all sketches compiled for `board = uno` with avr-gcc on 2026-09-05 (see `RELEASES.md`). On 2026-10-08, after the Numerics merge, Step1_Joystick and Step2_JUL were rebuilt with avr-gcc 7.3.0 and produced Intel HEX files byte for byte identical to the 2026-10-01 commit (f2307a1). On 2026-10-17, with Step4_Generator and Step5_Generated added, Step1_Joystick and Step2_JUL again produced Intel HEX files identical to the last commit. Later on 2026-10-17, after the renumbering, Step1_JUL produced the same Intel HEX as Step2_JUL (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6). For v3.0.1 (2026-10-17), with the build flags removed, Step1_JUL and Step3_Generated produced the same Intel HEX as in v3.0.0. For v3.1.0 (2026-10-18), with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Wall -Wextra`): Step1_JUL, Step2_Generator, Step3_Generated (with and without `DEBUG_GENERATED`), and all 19 lessons build with no warnings; Step2_Generator runs in simavr with typed answers and prints the shipped Step3_Generated; on the host, `Ace::compute()` matches the float chain of Step1_JUL for all 1024 x 1024 pairs of readings, and for all 16 `Bits()` values the pins set by `ace.h` match `L298N::UpdateL298N()`. For v3.2.0 (2026-10-18) and v3.2.1 (2026-10-19), with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Wall -Wextra`): see `RELEASES.md`. Run `pio run` locally before flashing hardware connected to motors.

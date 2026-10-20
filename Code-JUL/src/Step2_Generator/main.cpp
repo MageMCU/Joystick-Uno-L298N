@@ -28,6 +28,9 @@
 // Revised 20261018 (v3.2.0): the printed program names the 50 ms
 // control tick of include/claude/ace.h (TICK_MS, 100 ms before) and
 // the external 10 kOhm pull up that the push button requires.
+// Revised 20261019 (v3.2.1): the printed setup() calls robot.begin()
+// first, so the L298N pins are outputs and LOW before the debug data
+// is printed (Discrepancies.md, entry 85).
 //
 // STEPS 1 TO 4
 //   Step1_JUL:         the drive program. The Motor Movement Checklist
@@ -570,6 +573,8 @@ void printProgram()
     Serial.println();
     Serial.println(F("void setup()"));
     Serial.println(F("{"));
+    Serial.println(F("    // D5 to D10 as outputs and LOW before anything else (SAFETY)"));
+    Serial.println(F("    robot.begin();"));
     if (withDebug)
     {
         Serial.println(F("#ifdef DEBUG_GENERATED"));
@@ -583,7 +588,6 @@ void printProgram()
         bitsLines(CODE);
         Serial.println(F("#endif"));
     }
-    Serial.println(F("    robot.begin();"));
     Serial.println(F("}"));
     Serial.println();
     Serial.println(F("void loop()"));

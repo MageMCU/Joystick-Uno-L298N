@@ -105,6 +105,8 @@ Ace<X_PIN, Y_PIN,
 
 void setup()
 {
+    // D5 to D10 as outputs and LOW before anything else (SAFETY)
+    robot.begin();
 #ifdef DEBUG_GENERATED
     Serial.begin(9600);
     while (!Serial)
@@ -129,7 +131,6 @@ void setup()
     Serial.println(F("  Left command:  EN D5, D8 HIGH for +, D9 HIGH for -"));
     Serial.println(F("  Right command: EN D10, D6 HIGH for +, D7 HIGH for -"));
 #endif
-    robot.begin();
 }
 
 void loop()

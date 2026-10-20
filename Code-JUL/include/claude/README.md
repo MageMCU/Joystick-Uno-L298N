@@ -19,6 +19,8 @@ Revised for v3.1.1 (2026-10-18): the push button pin is configured as an input w
 
 Revised for v3.2.0 (2026-10-18), requested by the author after a bench test: the default control tick of `ace.h`, `TICK_MS`, is 50 ms in place of 100 ms, for a faster response to the joystick; Step1_JUL keeps `BUTTON_TIMER_mS` of `Common.h` (100 ms without debug flags). The bench test also showed that the thumb joystick module has no resistor on SW, so the external 10 kOhm pull up from D2 to 5 V (Article 1004, Circuit-2) is required; it matches the active LOW reading of `ace.h`, so Step2_Generator needs no question about the button polarity. Step2_Generator prints both facts into the header of the program, and the shipped Step3_Generated was printed again (bits_0000, with the debug data, unedited). Step3_Generated is the drive program of the repository; Step1_JUL ships with every debug flag of `Common.h` on and serves the checks.
 
+Revised for v3.2.1 (2026-10-19), requested by the author: the program printed by Step2_Generator calls `robot.begin()` as the first line of `setup()`, ahead of the debug output, so D5 to D10 are outputs and LOW at once after a reset (Discrepancies.md, 85). The shipped Step3_Generated was printed again (bits_0000, with the debug data). `ace.h` changed in one comment only.
+
 ## Original code incorporated into ace.h
 
 | Original | What ace.h keeps |
@@ -28,7 +30,7 @@ Revised for v3.2.0 (2026-10-18), requested by the author after a bench test: the
 | `numerics/MiscMath.h` | Function template `absT()` |
 | `Button.h`, class `Button` | Active LOW, latching, 50 ms debounce, indicator LED; internal pull up off, as in Step1_JUL since v3.1.1 |
 | `Timer.h`, class `Timer` | `isTimer()`, armed on the first call |
-| `Common.h` | `BUTTON_TIMER_mS`, the control tick: 100 ms in Step1_JUL, 50 ms in `ace.h` (`TICK_MS`, since v3.2.0) |
+| `Common.h` | `BUTTON_TIMER_mS`, the control tick: 100 ms in Step1_JUL with the debug flags commented out (3000 ms as shipped, since v3.2.0), 50 ms in `ace.h` (`TICK_MS`, since v3.2.0) |
 | `L298N.h`, class `L298N` | `UpdateL298N()` and `PowerDownL298N()`, with the `Bits()` decision made by Step2_Generator |
 | Arduino core | `analogRead()`, `digitalWrite()`, `analogWrite()`, `pinMode()`, replaced by register access |
 
@@ -42,7 +44,7 @@ Not incorporated: the `Debug()` serial output of `MiscMath.h` and the debug flag
 
 ## Performance
 
-avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, simavr at 16 MHz, 1024 simulated joystick positions, bits_1010:
+avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, simavr at 16 MHz, 1024 simulated joystick positions, bits_1010, measured 20261017:
 
 | Stage, microseconds per tick | Step1_JUL | ace.h | Times faster |
 |---|---|---|---|
@@ -52,12 +54,12 @@ avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, simavr at 16 MHz, 1024 simulated joystick 
 | Two ADC readings | 212.3 | 211.9 | 1.0 |
 | Full control tick | 574.8 | 232.0 | 2.5 |
 
-| Size | Step1_JUL | Step3_Generated with ace.h |
+| Size, v3.2.1 (20261019) | Step1_JUL, flags commented out | Step3_Generated with ace.h |
 |---|---|---|
-| Flash | 6344 bytes | 1420 bytes |
-| RAM | 316 bytes | 23 bytes |
+| Flash | 6498 bytes | 1548 bytes |
+| RAM | 318 bytes | 23 bytes |
 
-Step3_Generated as measured without `DEBUG_GENERATED`. With it, the Serial code of the startup printout adds about 2.1 KB of flash and 177 bytes of RAM (avr-gcc 7.3.0 without link time optimization, 20261018: 1548 to 3654 bytes of flash, 23 to 200 bytes of RAM); the control tick is unchanged.
+Step3_Generated as measured without `DEBUG_GENERATED` (20261017, before v3.1.1: 6344 and 316 bytes for Step1_JUL, 1420 and 23 bytes for Step3_Generated). With it, the Serial code of the startup printout adds about 2.1 KB of flash and 177 bytes of RAM (avr-gcc 7.3.0 without link time optimization, 20261018: 1548 to 3654 bytes of flash, 23 to 200 bytes of RAM); the control tick is unchanged.
 
 The two ADC conversions are 91 percent of the ace.h tick; they are set by the ADC clock, kept at 125 kHz for full accuracy. At one tick every 100 ms, Step1_JUL uses about 0.57 percent of the processor time. ace.h ticks every 50 ms since v3.2.0 and uses about 0.46 percent (0.23 percent at 100 ms).
 
@@ -67,6 +69,7 @@ The two ADC conversions are 91 percent of the ace.h tick; they are set by the AD
 - On the simulated Uno, the port, timer, and compare registers after each motor update match the original code for 12519 pairs of readings, and the float results on the Uno match the host test.
 - `L298NPins` with the printed motor code sets the same pin levels and duty cycles as `L298N::UpdateL298N()` for all 16 `Bits()` values and seven command pairs.
 - Not yet tested: the push button and the timer of ace.h on the bench, and Step3_Generated with motors.
+- 2026-10-19 (v3.2.1): in simavr, D5 and D10 of Step3_Generated are outputs and LOW 0.0001 s after reset (0.626 s in v3.2.0); with the same button press and 13 joystick positions, Step3_Generated and Step1_JUL with its debug flags commented out set the same IN pins, enable duty cycles, and LED (Discrepancies.md, 90).
 - 2026-10-18 (v3.2.0): with `TICK_MS` 50, Step3_Generated builds with no warnings (`-Wall -Wextra`), 3654 bytes of flash and 200 bytes of RAM with `DEBUG_GENERATED`, as before; the tick changes only the time between ticks, not the pin states set for a pair of readings. Step2_Generator, run in simavr with the answers y, y, 0000, y, p, prints the shipped Step3_Generated.
 
 ## Keep in step

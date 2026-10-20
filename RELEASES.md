@@ -4,6 +4,22 @@
 
 ---
 
+## v3.2.1 (2026-10-19), Review with Article 1009 revision 20261019; Step3_Generated sets the L298N pins first
+
+Tag: v3.2.1, to be set by the author on the commit that holds these changes. Documentation, comments, and one program change at the author's request: the program printed by Step2_Generator calls `robot.begin()` first in `setup()` (entry 85). No `platformio.ini` file changed. Article 1009, revision 20261019, describes this release and cites it in its Bibliography [1] (Discrepancies.md, 82 to 101).
+
+- `Motor-Movement-Checklist/ReadMe.md`: other Uno pins are for the L298N only (lines 55 to 60 of Step1_JUL and the same six pins of Step2_Generator); the joystick stays on A0 and A1 (entry 83)
+- `README.md`, wiring table, D2: the 10 kOhm pull up may use the Uno 5V pin or the 5 V bus of the breadboard; the Uno 5V pin is preferred, because the 5 V bus is off whenever the motor supply is off (entry 86)
+- `README.md`, `Code-JUL/README.md`, and the Experiment-5 lab card, Two Ways to Drive: Path B runs Step2_Generator with the motor supply off and applies it after the upload, as Article 1009 does; Article 1009 gives the Path B procedure. `README.md`, Steps 2 and 3: the sentence "Step1_JUL remains the program of Article 1009" replaced (entry 88); `README.md`, Testing Platform, Status: v3.2.1 is documentation only
+- `Discrepancies.md`: new section with entries 83 to 101; entries 61 and 69 closed; entry 82 closed for Article 1009 and open for Article 1004. Entry 85 closed by the program change below
+- `Code-JUL/include/claude/ace.h`, lines 47 to 49: comment only; the sentence "Step1_JUL remains the program of Article 1009" replaced by the use of each program in Article 1009 (entry 88). `include/claude/README.md`: the control tick of Step1_JUL, 100 ms with the debug flags commented out and 3000 ms as shipped (entry 89)
+- `Code-JUL/src/Step2_Generator/main.cpp`: `printProgram()` prints `robot.begin();` as the first line of `setup()`, with a SAFETY comment, ahead of the `#ifdef DEBUG_GENERATED` block, so D5 to D10 are outputs and LOW before the debug data is printed (entry 85); header comment Revised 20261019 (v3.2.1). `Code-JUL/src/Step3_Generated/main.cpp`: printed again by Step2_Generator for bits_0000 with the debug data, unedited
+- `Experiments.md`: Changes in Release v3.2.1. `Experiments/LAB-NOTEBOOK-TEMPLATE.md`, Bench status: v3.2.1. `Code-JUL/README.md`, `src/` table: Step2_Generator and Step3_Generated rows
+- Full repository review (entries 91 to 101): sizes of v3.2.1 in the performance tables of `README.md`, `Code-JUL/README.md`, and `include/claude/README.md`; Experiment-5 status in `README.md`; Used by columns and the line 31 description in `Code-JUL/README.md`; the shipped center offsets named wherever both drive paths are said to set the same pins (`README.md`, `Code-JUL/README.md`, lab cards of Experiments 5 and 6); `LAB-NOTEBOOK-TEMPLATE.md`, Experiment-2 heading and record, and a drive path line; the v3.0.0 folder name in the lab cards of Experiments 3, 6, 7, and 8; lesson sizes in `Step4_MathLessons/README.md`; the Code Snippet label of `Motor-Movement-Checklist/ReadMe.md`; comments only in `Code-JUL/platformio.ini` (C++ standard note) and the headers of lessons 15 to 19
+- `RELEASES.md`: this entry
+
+Verified 20261019 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`): all 35 programs build with no warnings; every program other than Step2_Generator has the flash and RAM sizes recorded for v3.2.0 (Step1_JUL 10546 and 710 bytes). Step2_Generator 13328 bytes of flash and 359 of RAM (13250 in v3.2.0, for the added comment line it prints); Step3_Generated 3654 and 200, the same size as before with `robot.begin()` moved. In simavr, D5 and D10 of Step3_Generated are outputs and LOW 0.0001 s after reset (0.626 s in v3.2.0), and Step3_Generated and Step1_JUL with the debug flags commented out set the same motor pins and duty cycles for the same button press and 13 joystick positions (entry 90). After the full review, Step1_JUL and all 19 lessons build to the same Intel HEX as the last commit (ad0c4e7), and every Markdown link resolves. The Code-1 and Code-2 listings of Article 1009 match `Code-JUL/src/Step1_JUL/main.cpp` line for line. Bench test pending, as for v3.2.0.
+
 ## v3.2.0 (2026-10-18), Bench findings: pull up, upload port, debug flags, 50 ms tick
 
 Tag: v3.2.0. Requested by the author after a bench test (Discrepancies.md, 74 to 82). Articles 1004 and 1009 do not yet describe these changes (entry 82).

@@ -2,6 +2,13 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v3.2.1 (20261019)
+
+- **Pull up supply.** The 10 kOhm pull up of D2 may use the Uno 5V pin or the 5 V bus of the breadboard; the Uno 5V pin is preferred, because the 5 V bus is off whenever the motor supply is off and D2 then reads LOW, the pressed level (Article 1009, Wiring).
+- **Path B order of power.** Step2_Generator runs with the motor supply off, and the motor supply is applied after Step3_Generated is uploaded (Experiment-5 lab card; Article 1009, Two Ways to Drive).
+- **Step3_Generated sets the L298N pins first.** Its `setup()` calls `robot.begin()` before the debug output, so D5 to D10 are outputs and LOW at once after a reset (Discrepancies.md, 85).
+- **Simulation retest.** Step1_JUL and Step3_Generated set the same motor pins for the same joystick positions in simavr (Discrepancies.md, 90); the bench retest is pending.
+
 ## Changes in Release v3.2.0 (20261018)
 
 Article 1004 still cites v2.4.0; the lab cards give the current names, lines, and settings.

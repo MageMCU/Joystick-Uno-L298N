@@ -75,26 +75,31 @@ Each fix is marked `FIXED 20261008` in the header. Most are in the ten headers a
 - AVR build (avr-gcc 7.3.0, `-Wall -Wextra -Wvla`): all 16 lessons compile with no warnings.
 - AVR simulation (simavr, ATmega328P at 16 MHz): every lesson ran to its last test with no reset; lessons 15 and 16 report `Failures: 0`.
 - Step1_Joystick and Step2_JUL: Intel HEX byte for byte identical to commit f2307a1.
-- 20261012: all 19 lessons, Step1_Joystick, Step2_JUL, and every Experiment 1 to 5 lab compiled with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Os`, `-Wall -Wextra`); the only warnings are the two unused variables of Step1_Joystick when `DEBUG_MAIN` is off. Lessons 15, 16, and 19 (Part 1) report `Failures: 0` in simavr. Sizes from PlatformIO may differ slightly with its core version; lessons 17 to 19 have no recorded size.
+- 20261012: all 19 lessons, Step1_Joystick, Step2_JUL, and every Experiment 1 to 5 lab compiled with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (`-Os`, `-Wall -Wextra`); the only warnings are the two unused variables of Step1_Joystick when `DEBUG_MAIN` is off. Lessons 15, 16, and 19 (Part 1) report `Failures: 0` in simavr. Sizes from PlatformIO may differ slightly with its core version; the table below gives the sizes of 20261019, lessons 17 to 19 included.
+
+Sizes measured 20261019 (v3.2.1), avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6, `-Os`, core linked as an archive, without link time optimization; Program is flash (code and initialized data), Data is RAM before the program runs. The sizes recorded on 20261012 were smaller for most lessons; PlatformIO may report slightly different sizes with its own core version.
 
 | Lesson | Program (bytes) | Data (bytes) |
 |---|---|---|
-| 01_Bitwise | 5288 | 592 |
-| 02_TypeConv | 3894 | 442 |
-| 03_LinearMap | 6178 | 366 |
-| 04_MiscMath | 8828 | 612 |
-| 05_RandomNumber | 5946 | 254 |
-| 06_Statistics | 10638 | 578 |
-| 07_Vector2 | 11576 | 1490 |
-| 08_Point2 | 6178 | 570 |
-| 09_Vector3 | 14612 | 1444 |
-| 10_Point3 | 6314 | 582 |
-| 11_Matrix2x2 | 14184 | 1114 |
-| 12_Matrix3x3 | 17864 | 1234 |
-| 13_Matrix4x4 | 5880 | 386 |
-| 14_Quaternion | 13862 | 822 |
-| 15_LineFit | 7412 | 440 |
-| 16_Rotation | 14824 | 492 |
+| 01_Bitwise | 6140 | 592 |
+| 02_TypeConv | 4750 | 442 |
+| 03_LinearMap | 6886 | 366 |
+| 04_MiscMath | 10198 | 696 |
+| 05_RandomNumber | 6502 | 256 |
+| 06_Statistics | 11754 | 578 |
+| 07_Vector2 | 13614 | 1490 |
+| 08_Point2 | 6942 | 570 |
+| 09_Vector3 | 17024 | 1444 |
+| 10_Point3 | 7220 | 582 |
+| 11_Matrix2x2 | 14962 | 1114 |
+| 12_Matrix3x3 | 19266 | 1236 |
+| 13_Matrix4x4 | 6716 | 386 |
+| 14_Quaternion | 15224 | 822 |
+| 15_LineFit | 8252 | 440 |
+| 16_Rotation | 15596 | 492 |
+| 17_DeadZone | 6956 | 1114 |
+| 18_MotorLineFit | 10730 | 338 |
+| 19_JoystickFrame | 7860 | 261 |
 
 - 20261018 (v3.2.0): `Common.h` ships with every debug flag on for Step1_JUL. Lessons 18 and 19 define `DEBUG_ALL_OFF` before their includes, so they build without the flags, with the 100 ms tick of lesson 18, and print only their own output (Intel HEX identical to a build with the flags commented out). Lessons 17 and 19 read the joystick as Step1_JUL does since v3.1.0, `xDigital = analogRead(A0)` and `yDigital = analogRead(A1)` (Discrepancies.md, 68). Lesson 18 turns the internal pull up of D2 off after `button.begin()`, as Step1_JUL does; the joystick switch requires the external 10 kOhm pull up from D2 to 5 V.
 
