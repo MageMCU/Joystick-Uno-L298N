@@ -29,6 +29,29 @@
 
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // A matrix is a rectangular table of numbers in rows and columns; a
+    // 2 x 2 matrix has 2 rows and 2 columns:
+    //   A = | e00  e01 |     element eRC: row R, column C, counted from 0
+    //       | e10  e11 |
+    // The four elements are stored in one array, row by row (row major
+    // order): index = row * 2 + column, so e10 is m_tuples[2].
+    // A matrix acts on a vector: A v gives a new vector (operator*), which
+    // lets one matrix describe a rotation, a scaling, or a system of linear
+    // equations. Terms used below:
+    //   identity I        1 on the diagonal, 0 elsewhere; I v = v
+    //   determinant       det A = e00 e11 - e01 e10, the factor by which A
+    //                     scales areas; det A = 0 means A flattens the plane
+    //                     onto a line and cannot be undone
+    //   invertible        det A is not 0, so the inverse exists
+    //   inverse A^-1      the matrix that undoes A: A^-1 A = I
+    //   transpose A^T     rows and columns exchanged
+    //   adjoint           | e11 -e01 |, and A^-1 = adjoint / det A
+    //                     |-e10  e00 |
+    // Example: A = | 2 1 |  has det A = 2 (3) - 1 (1) = 5 and
+    //              | 1 3 |
+    // A^-1 = (1/5) |  3 -1 | = | 0.6 -0.2 |.
+    //              | -1  2 |   |-0.2  0.4 |
     template <typename real>
     class Matrix2x2 : Matrix<real>
     {
@@ -41,6 +64,7 @@ namespace csjc
         bool m_limits(int index);
 
     public:
+        // The default constructor makes the identity matrix.
         Matrix2x2();
         Matrix2x2(real e00, real e01, real e10, real e11);
         Matrix2x2(const real tuples[]);
@@ -169,6 +193,8 @@ namespace csjc
 
     // METHODS
 
+    // det A = e00 e11 - e01 e10 (the product of the main diagonal minus the
+    // product of the other diagonal).
     template <typename real>
     real Matrix2x2<real>::Determinant()
     {
@@ -177,6 +203,8 @@ namespace csjc
 
     // NOTE 20261008: compares |det| with FLT_EPSILON, an absolute threshold. For
     // matrices with very small elements a valid inverse can be rejected.
+    // A float is rarely exactly 0 after a computation, so the determinant is
+    // compared with FLT_EPSILON (about 1.2e-7) instead of 0.
     template <typename real>
     bool Matrix2x2<real>::Invertible()
     {
@@ -188,6 +216,7 @@ namespace csjc
         return false;
     }
 
+    // A^T: e01 and e10 exchange places; the diagonal stays.
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::Transpose()
     {
@@ -195,6 +224,8 @@ namespace csjc
         return matrix2x2;
     }
 
+    // Adjoint of a 2 x 2 matrix: exchange the diagonal elements and negate
+    // the other two.
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::Adjoint()
     {
@@ -215,6 +246,7 @@ namespace csjc
     //   bool ok;
     //   Matrix2x2<float> inv = A.Inverse(&ok);
     // Invertible() still applies its FLT_EPSILON threshold.
+    // A^-1 = adjoint / det A. Check: A^-1 A = I (lesson 11).
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::Inverse(bool *invertible)
     {
@@ -234,6 +266,10 @@ namespace csjc
         return zero;
     }
 
+    // Solve(y): find x with A x = y, a system of two linear equations in two
+    // unknowns, as x = A^-1 y. Example: 2 a + b = 5 and a + 3 b = 10 is
+    // A = | 2 1 |, y = (5, 10), and x = A^-1 y = (1, 3): a = 1, b = 3.
+    //     | 1 3 |
     template <typename real>
     Vector2<real> Matrix2x2<real>::Solve(Vector2<real> y)
     {
@@ -245,7 +281,13 @@ namespace csjc
 
     // NOTE 20261008: returns the counterclockwise rotation matrix; it does not
     // use or change the object it is called on (R = R.Rotation(a) is the
-    // usual call).
+    // usual call once R exists). In a declaration, call it on a finished
+    // object (v6.3.1): Matrix2x2<float> I; Matrix2x2<float> R = I.Rotation(a);
+    // The rotation matrix R(a) = | cos a  -sin a | turns a vector by the
+    //                            | sin a   cos a |
+    // angle a counterclockwise and keeps its length; det R = 1.
+    // Example: R(90 degrees) (1, 0) = (0, 1). Lesson 19 turns the joystick
+    // frame with it.
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::Rotation(real angleRadian)
     {
@@ -262,6 +304,7 @@ namespace csjc
 
     // OPERATORS
 
+    // -A: every element negated (the unary minus).
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::operator-()
     {
@@ -273,6 +316,7 @@ namespace csjc
         return matrix2x2;
     }
 
+    // A s: every element times the scalar s.
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::operator*(real s)
     {
@@ -284,6 +328,8 @@ namespace csjc
         return matrix2x2;
     }
 
+    // A v: each component of the result is the dot product of one row of A
+    // with v.
     template <typename real>
     Vector2<real> Matrix2x2<real>::operator*(Vector2<real> v)
     {
@@ -295,6 +341,9 @@ namespace csjc
         return vector;
     }
 
+    // A M: element (row R, column C) is the dot product of row R of A with
+    // column C of M. Applying A M to a vector applies M first, then A; in
+    // general A M is not M A (the order matters).
     template <typename real>
     Matrix2x2<real> Matrix2x2<real>::operator*(Matrix2x2<real> M)
     {

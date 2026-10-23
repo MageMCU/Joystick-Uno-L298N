@@ -19,7 +19,7 @@ Project folder: open `Experiments/Experiment-4/Code` in Visual Studio Code, neve
 
 - Lab 1, step 3: change the error case of `b_powerOfTwo()` in `include/Bitwise.h` (the copy in this folder only) to return 0.
 - Lab 2, step 2: remove the comment marks from the three example lines in `loop()`.
-- Lab 3: type one hexadecimal digit, 0 to f, in the serial monitor.
+- Lab 3: type one hexadecimal digit, 0 to f, in the serial monitor. In `UpdateL298N()` of `include/L298N.h` (lines 226 to 277), `enPinA` and `enPinB` hold the enable pins of the class channels A and B, the pins that receive `_pwmA` and `_pwmB` after bit 3; they are not the module terminals ENA and ENB (D5, `_EN_A`, is wired to L298N ENB in Circuit-4). Up to v6.2.1 the two variables were named `ENA` and `ENB`.
 - Lab 4: before power is applied, upload Experiment-3, Lab 2 (open `Experiments/Experiment-3/Code`) with the bench supply unplugged and leave the push button state OFF. The Uno must not hold the Lab 3 program, which writes 255 to D5 when a digit is typed.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).

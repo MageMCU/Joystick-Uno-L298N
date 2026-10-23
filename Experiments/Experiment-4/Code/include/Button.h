@@ -56,12 +56,22 @@ namespace csjc
     // wasPressed() reports a single press event and then clears it, and
     // heldForMs() reports how long the button has been held down.
     //
-    // Wiring (default, activeLow = true): the joystick SW pin closes to GND
-    // when pressed. The button pin is configured INPUT_PULLUP, so it reads
-    // LOW while pressed and HIGH when released. No external resistor is
-    // required. For a button wired to 5V with an external pulldown resistor,
-    // construct with activeLow = false; the pin is then configured INPUT and
-    // HIGH means pressed.
+    // Wiring (activeLow = true, the default): the joystick SW pin closes
+    // to GND when pressed, so the pin reads LOW while pressed and HIGH
+    // when released. The pin needs a pull up resistor, one of two
+    // (Article 1009, The Thumb Joystick, The Push Button):
+    //   Internal pull up: begin() configures the pin INPUT_PULLUP, which
+    //     connects the resistor of about 20 to 50 kOhm inside the
+    //     ATmega328P. No part is added.
+    //   External pull up: a 10 kOhm resistor from the pin to 5 V
+    //     (Article 1009, Circuit-1a). After begin(), the sketch calls
+    //     pinMode(pin, INPUT) to turn the internal pull up off, as
+    //     Step1_Joystick and Step2_JUL do.
+    // Without a pull up the pin floats when the switch is released and
+    // reads HIGH or LOW at random.
+    // activeLow = false is for a button wired to 5 V with an external
+    // pull down resistor; the pin is then configured INPUT and HIGH means
+    // pressed. Article 1009 does not use this form.
     //
     // Lifecycle: construct at global scope, call begin() once in setup(),
     // and call updateButton() once per pass through loop(). pinMode() is
@@ -74,7 +84,7 @@ namespace csjc
     //
     // Standalone usage (no other header required):
     //
-    //   Button button(2, 3);   // SW on D2, indicator LED on D3
+    //   Button button(2, 12);  // SW on D2, indicator LED on D12
     //
     //   void setup()
     //   {
@@ -94,7 +104,7 @@ namespace csjc
     // Usage with Timer (see Timer.h). The timer paces the work so that it
     // runs at a fixed interval instead of on every pass:
     //
-    //   Button button(2, 3);   // SW on D2, indicator LED on D3
+    //   Button button(2, 12);  // SW on D2, indicator LED on D12
     //   Timer  timer;
     //
     //   void setup()

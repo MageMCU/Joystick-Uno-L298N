@@ -14,22 +14,28 @@
 //
 // MIT LICENSE
 //
-// Added 20261017 for Step3_Generated (named Step4_Generated until
+// Added 20261017 for Step4_Generated (named Step4_Generated until
 // v3.1.0). Revised 20261018 (v3.1.0): the template parameters
 // X_REVERSED and Y_REVERSED and the two reversal lines of tick() were
 // removed; one Bits() value corrects any joystick orientation.
 // Revised 20261018 (v3.1.1): the push button pin is an input with the
-// internal pull up off, as in Step1_JUL; the joystick switch module
+// internal pull up off, as in Step2_JUL; the joystick switch module
 // supplies its own resistor, or an external 10 kOhm resistor is added.
 // The button is read active LOW (pressed reads LOW), the form of line
-// 45 of Step1_JUL as written.
+// 45 of Step2_JUL as written.
 // Revised 20261018 (v3.2.0): requested by the author after a bench
 // test. The default control tick TICK_MS is 50 ms in place of the
-// 100 ms of Step1_JUL (BUTTON_TIMER_mS of Common.h), for a faster
+// 100 ms of Step2_JUL (BUTTON_TIMER_mS of Common.h), for a faster
 // response to the joystick. The bench test also showed that the
 // joystick switch module has no resistor of its own, so the external
 // 10 kOhm pull up from D2 to 5 V (Circuit-2 of Article 1004) is
 // required; it matches the active LOW reading of this file.
+// Revised 20261021 (v5.0.0): requested by the author. The default of
+// LED_PIN is 12, the indicator LED of Article 1009, Circuit-1, in
+// place of 3. Step4_Generated passes LED_PIN = 12 itself, so its
+// compiled program is unchanged. The author's bench test of 20261021
+// (release v4.0.1) passed: Step4_Generated drives the robot, and the
+// LED on D12 follows the push button.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
@@ -37,16 +43,16 @@
 // They are kept apart from the original header files of include/ and
 // include/numerics/, which they do not change, so that a reader can
 // tell at once which code is original and which was generated. Each
-// file was tested against the original code as stated below; the
-// bench test on hardware is pending.
+// file was tested against the original code as stated below, and on
+// the bench by the author on 20261021.
 //
 // PURPOSE
-// ace.h is one file that holds everything the Step3_Generated drive
+// ace.h is one file that holds everything the Step4_Generated drive
 // program needs. It includes Arduino.h only. It is written for speed
 // and size, not for reading; the original headers remain the
 // reference for how the drive works. Article 1009 (revision
-// 20261019) uses Step1_JUL for the setup procedure and gives
-// Step2_Generator and Step3_Generated in Two Ways to Drive, Path B.
+// 20261021d) uses Step2_JUL for L298N Setup and gives Step3_Generator
+// and Step4_Generated in Two Ways to Drive, Path B.
 //
 // ORIGINAL CODE INCORPORATED (rewritten, same behavior)
 //   Joystick.h             class Joystick<float>: the octant algorithm,
@@ -56,32 +62,32 @@
 //   numerics/MiscMath.h    function template absT()
 //   Button.h               class Button: active LOW, latching, 50 ms
 //                          debounce, LED; the internal pull up is off,
-//                          as in Step1_JUL (lines 45 to 47)
+//                          as in Step2_JUL (lines 51 to 58)
 //   Timer.h                class Timer: isTimer(), armed on first call
 //   Common.h               BUTTON_TIMER_mS, the control tick: 100 ms
-//                          in Step1_JUL, 50 ms here (TICK_MS, v3.2.0)
+//                          in Step2_JUL, 50 ms here (TICK_MS, v3.2.0)
 //   L298N.h                UpdateL298N() and PowerDownL298N(), with the
-//                          Bits() decision already made by Step2
+//                          Bits() decision already made by Step3
 //   Arduino core           analogRead(), digitalWrite(), analogWrite(),
 //                          pinMode(), replaced by register access
 // Not incorporated: the Debug() serial output of MiscMath.h, the
-// DEBUG flags of Common.h, and the classes Step1_JUL does not use.
+// DEBUG flags of Common.h, and the classes Step2_JUL does not use.
 //
-// STEPS 2 AND 3
-//   Step1_JUL finds the Bits() value of the L298N wiring with the
+// STEPS 2 TO 4
+//   Step2_JUL finds the Bits() value of the L298N wiring with the
 //   Motor Movement Checklist; its joystick lines, x on A0 and y on
 //   A1, stay as written, because that value also corrects the
-//   joystick orientation. Step2_Generator checks the pins and the
+//   joystick orientation. Step3_Generator checks the pins and the
 //   joystick lines, asks for the Bits() value in the serial monitor,
-//   and prints a main.cpp for Step3_Generated, which creates one Ace
+//   and prints a main.cpp for Step4_Generated, which creates one Ace
 //   object with the answers as template parameters. A new run of
-//   Step2 changes only that main.cpp; this file is never edited.
+//   Step3 changes only that main.cpp; this file is never edited.
 //
 // HOW IT IS FASTER
 //   1. ADC: the analog inputs are read through the ADC registers with
 //      the prescaler set by the Arduino core (125 kHz ADC clock), so
 //      the readings and their accuracy are those of analogRead().
-//   2. Integer math: the float chain of Step1_JUL is computed in
+//   2. Integer math: the float chain of Step2_JUL is computed in
 //      integers scaled by 1023 (see Scaled values below).
 //   3. Pins: every pin is a template parameter, so each write is one
 //      instruction on a port register or a timer compare register,
@@ -89,7 +95,7 @@
 //
 // PERFORMANCE (20261017, avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, simavr
 // at 16 MHz, 1024 simulated joystick positions, bits_1010)
-//   Stage, microseconds per tick       Step1_JUL   ace.h   times
+//   Stage, microseconds per tick       Step2_JUL   ace.h   times
 //   Joystick math                          322.5     16.4    19.6
 //   Motor output                            40.3      3.7    10.9
 //   Math and output                        362.9     20.1    18.0
@@ -100,16 +106,17 @@
 //   The two ADC conversions are 91 percent of the ace.h tick; they
 //   are set by the ADC clock, kept at 125 kHz for full accuracy.
 //   At one tick every 50 ms (TICK_MS since v3.2.0) ace.h uses about
-//   0.46 percent of the processor time; Step1_JUL, at 100 ms, about
+//   0.46 percent of the processor time; Step2_JUL, at 100 ms, about
 //   0.57 percent.
 //
 // VERIFIED (20261017)
 //   * compute() gives the same left and right commands as the float
-//     chain of Step1_JUL for all 1024 x 1024 pairs of readings.
+//     chain of Step2_JUL for all 1024 x 1024 pairs of readings.
 //   * On the simulated Uno, the port, timer, and compare registers
-//     after each motor update match Step1_JUL's driveMotor() code
+//     after each motor update match Step2_JUL's driveMotor() code
 //     for 12519 pairs, and the float results match the host test.
-//   * Not yet tested: the push button and the timer on the bench.
+//   * Bench test 20261021 by the author (release v4.0.1): passed,
+//     with the push button, the LED on D12, and the timer.
 //   * 20261018 (v3.2.0): TICK_MS 50 changes only the time between
 //     ticks; each tick sets the same pin states for the same
 //     readings.
@@ -123,9 +130,9 @@
 //
 // Scaled values: an ADC reading a (0 to 1023) gives N = 2a - 1023,
 // so N / 1023 is the value LinearMap gives (-1 to 1). The dead zones
-// 0.05 and 0.06 of Step1_JUL become |N| <= 51 and |N| <= 61. The
+// 0.05 and 0.06 of Step2_JUL become |N| <= 51 and |N| <= 61. The
 // output map gives 255 * N / 1023, truncated toward zero as the
-// (int) cast of Step1_JUL does.
+// (int) cast of Step2_JUL does.
 
 #ifndef ace_h
 #define ace_h
@@ -269,7 +276,7 @@ namespace csjc
     template <uint8_t X_PIN, uint8_t Y_PIN,
               uint8_t LEFT_EN, uint8_t LEFT_FWD, uint8_t LEFT_REV,
               uint8_t RIGHT_EN, uint8_t RIGHT_FWD, uint8_t RIGHT_REV,
-              uint8_t BUTTON_PIN = 2, uint8_t LED_PIN = 3,
+              uint8_t BUTTON_PIN = 2, uint8_t LED_PIN = 12,
               uint16_t TICK_MS = 50, uint16_t DEBOUNCE_MS = 50>
     class Ace
     {
@@ -385,7 +392,7 @@ namespace csjc
         }
 
     public:
-        // The joystick chain of Step1_JUL from two readings (0 to
+        // The joystick chain of Step2_JUL from two readings (0 to
         // 1023) to the two commands (-255 to 255).
         static void compute(uint16_t xDigital, uint16_t yDigital,
                             int16_t &left, int16_t &right)
@@ -419,7 +426,7 @@ namespace csjc
                 {
                     l = -d; // octant 4
                     r = -x;
-                    // Step1_JUL computes this case in float as
+                    // Step2_JUL computes this case in float as
                     // 84.99998 and truncates it to 84, not 85. At
                     // y = 341 its float test |x| >= |y| is false,
                     // octant 3 gives right = y, and the result is 85.

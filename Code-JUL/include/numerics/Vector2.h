@@ -27,6 +27,24 @@
 
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // A vector has a size and a direction; in the plane it is written with
+    // two components, v = (x, y), the steps along the x axis and the y axis.
+    // A scalar is a single number (a size without a direction). A joystick
+    // reading, mapped to -1 to 1 on each axis, is a 2D vector (lesson 19).
+    // Terms used below, for u = (x1, y1) and v = (x2, y2):
+    //   magnitude |v|     the length, sqrt(x^2 + y^2) (Pythagoras)
+    //   unit vector       a vector of length 1, v / |v|, the direction only
+    //   dot product u.v   x1 x2 + y1 y2 = |u| |v| cos(angle); 0 when the
+    //                     vectors are perpendicular (at 90 degrees)
+    //   perpendicular     v turned 90 degrees counterclockwise: (-y, x)
+    //   perp dot product  x1 y2 - y1 x2 = |u| |v| sin(angle); its sign
+    //                     tells on which side of u the vector v lies
+    //   projection        the part of u that points along v
+    // Operators are functions written with symbols: u + v, u - v, v * s
+    // (scale by the scalar s), -v (opposite direction), and u * v (the dot
+    // product, a scalar).
+    // Example: u = (3, 4) has |u| = 5 and unit vector (0.6, 0.8).
     template <typename real>
     class Vector2
     {
@@ -54,6 +72,8 @@ namespace csjc
         real Element(int index);
 
         // METHODS
+        // GetVector() returns a copy; Distance() and Normalize() are other
+        // names for Magnitude() and UnitVector().
         Vector2<real> GetVector();
         real Magnitude();
         Vector2<real> UnitVector();
@@ -132,6 +152,7 @@ namespace csjc
         return vector;
     }
 
+    // |v| = sqrt(x^2 + y^2). Example: (3, 4) gives sqrt(9 + 16) = 5.
     template <typename real>
     real Vector2<real>::Magnitude()
     {
@@ -141,6 +162,10 @@ namespace csjc
         return (real)sqrt(sum);
     }
 
+    // v / |v|: each component divided by the length. __FLT_EPSILON__ is the
+    // smallest step of a float near 1 (about 1.2e-7); a shorter vector is
+    // treated as the zero vector, which has no direction, and (0, 0) is
+    // returned instead of dividing by zero.
     template <typename real>
     Vector2<real> Vector2<real>::UnitVector()
     {
@@ -168,6 +193,8 @@ namespace csjc
         return UnitVector();
     }
 
+    // u.v = x1 x2 + y1 y2. Example: (3, 4).(4, -3) = 12 - 12 = 0, so the
+    // two vectors are perpendicular.
     template <typename real>
     real Vector2<real>::Dot(Vector2<real> v)
     {
@@ -184,6 +211,9 @@ namespace csjc
     // -1 to 1 before acos(); rounding could push it slightly outside and
     // acos() then returned NaN. A zero vector gives pi/2.
     // ref: [ELA] by Shields, 1980. p.213.
+    // From u.v = |u| |v| cos(angle): the angle is acos of the dot product
+    // of the two unit vectors, 0 to pi radians (0 to 180 degrees). acos()
+    // accepts -1 to 1 only, hence the clamp.
     template <typename real>
     real Vector2<real>::Angle(Vector2<real> v)
     {
@@ -196,6 +226,8 @@ namespace csjc
         return (real)acos(c);
     }
 
+    // Perp(): (x, y) turned 90 degrees counterclockwise is (-y, x).
+    // Example: (1, 0) gives (0, 1).
     template <typename real>
     Vector2<real> Vector2<real>::Perp()
     {
@@ -230,6 +262,8 @@ namespace csjc
     }
 
     // DotPerp() and ZComp() return the same value.
+    // DotPerp(v) = Perp(u).v = x1 y2 - y1 x2: positive when v lies
+    // counterclockwise from u, negative when clockwise, 0 when parallel.
     template <typename real>
     real Vector2<real>::DotPerp(Vector2<real> v)
     {
@@ -257,6 +291,8 @@ namespace csjc
         return value;
     }
 
+    // ZComp(v): the z component of the cross product of (x1, y1, 0) and
+    // (x2, y2, 0) (see Vector3.h), the same number as DotPerp(v).
     template <typename real>
     real Vector2<real>::ZComp(Vector2<real> v)
     {
@@ -285,6 +321,8 @@ namespace csjc
     //      (2) [Mf3DG&CG] 2nd Ed. by Lengyel, 2004. p19.
     // FIXED 20261008: a zero vector v returns the zero vector (it divided
     // by zero).
+    // Example: u = (2, 3) onto v = (1, 0): (u.v) / (v.v) = 2 / 1, and the
+    // projection is 2 v = (2, 0), the x part of u.
     template <typename real>
     Vector2<real> Vector2<real>::ProjV(Vector2<real> v)
     {
@@ -301,6 +339,7 @@ namespace csjc
     }
 
     // OPERATORS
+    // -v = (-x, -y): the same length, the opposite direction.
     template <typename real>
     Vector2<real> Vector2<real>::operator-()
     {
@@ -312,6 +351,8 @@ namespace csjc
         return vector;
     }
 
+    // v * s = (s x, s y): the length times |s|; a negative s also reverses
+    // the direction.
     template <typename real>
     Vector2<real> Vector2<real>::operator*(real s)
     {
@@ -323,6 +364,7 @@ namespace csjc
         return vector;
     }
 
+    // u + v adds the components: the tip of v placed at the tip of u.
     template <typename real>
     Vector2<real> Vector2<real>::operator+(Vector2<real> v)
     {
@@ -334,6 +376,8 @@ namespace csjc
         return vector;
     }
 
+    // u - v subtracts the components: the vector from the tip of v to the
+    // tip of u.
     template <typename real>
     Vector2<real> Vector2<real>::operator-(Vector2<real> v)
     {
@@ -345,6 +389,7 @@ namespace csjc
         return vector;
     }
 
+    // u * v with a vector on the right is the dot product (see Dot()).
     template <typename real>
     real Vector2<real>::operator*(Vector2<real> v)
     {

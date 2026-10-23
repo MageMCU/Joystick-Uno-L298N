@@ -59,6 +59,20 @@
 #include <Arduino.h>
 #include "Matrix3x3.h"
 
+// TEACHING NOTES (v6.1.1)
+// A rotation can be held as a 3 x 3 rotation matrix (Matrix3x3.h) or as
+// a unit quaternion (Quaternion.h); this file converts between the two.
+//   orthonormal    the rows (and columns) of a rotation matrix are unit
+//                  vectors at right angles to each other, so R^T R = I and
+//                  the inverse is simply the transpose; det R = 1
+//   interpolation  computing values between two known values; t runs
+//                  from 0 (the first) to 1 (the second)
+//   slerp          spherical linear interpolation: the in between turn
+//                  from q0 to q1 at a constant angular rate. Ordinary
+//                  linear interpolation of the four components would
+//                  speed up in the middle and leave the unit length.
+// Example: halfway (t = 0.5) between no turn and 90 degrees about z is
+// 45 degrees about z (lesson 16, Slerp).
 namespace csjc
 {
     // Unit quaternion q = (w, x, y, z) to rotation matrix:
@@ -164,6 +178,8 @@ namespace csjc
 
     // Four dimensional dot product of two quaternions (the cosine of the
     // angle between them when both have unit length).
+    // Example: two unit quaternions of turns about the same axis by angles
+    // a and b have the dot product cos((a - b) / 2).
     template <typename real>
     real QuaternionDot(Quaternion<real> a, Quaternion<real> b)
     {

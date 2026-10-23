@@ -33,6 +33,28 @@ namespace csjc
     // FIXED 20261008: Matrix3x3 inherits from the empty Matrix class, not
     // from Matrix2x2 (whose four elements it never used). Matrix3x3<float>
     // is now 36 bytes on the Uno instead of 128.
+    // TEACHING NOTES (v6.1.1)
+    // A 3 x 3 matrix acts on 3D vectors (Vector3.h). The terms (element,
+    // identity, determinant, inverse, transpose, adjoint, product) are
+    // explained in Matrix2x2.h; the elements are stored row by row,
+    // index = row * 3 + column:
+    //   | 0 1 2 |
+    //   | 3 4 5 |
+    //   | 6 7 8 |
+    // New for 3 x 3:
+    //   minor        the determinant of the 2 x 2 matrix left when one row
+    //                and one column are removed (m_det())
+    //   cofactor     the minor with the sign + or - of a checkerboard,
+    //                starting with + at row 0, column 0
+    //   determinant  by cofactor expansion along row 0:
+    //                det A = e00 C00 + e01 C01 + e02 C02
+    //   adjoint      the transpose of the matrix of cofactors, and
+    //                A^-1 = adjoint / det A, as for 2 x 2
+    //   Cramer's rule  solves A x = b one unknown at a time:
+    //                x_k = det(A with column k replaced by b) / det A
+    // Example: A = | 1 2 3 |, det A = 1 (0 - 24) - 2 (0 - 20) + 3 (0 - 5) = 1,
+    //              | 0 1 4 |  and A x = (1, 2, 3) has the solution
+    //              | 5 6 0 |  x = (27, -22, 6).
     class Matrix3x3 : Matrix<real>
     {
     private:
@@ -52,6 +74,8 @@ namespace csjc
     public:
         Matrix3x3();
         Matrix3x3(const real tuples[]);
+        // This constructor fills the nine elements with random values; lesson
+        // 12 uses it to find an invertible matrix for the tests.
         Matrix3x3(real minRandom, real maxRandom);
         ~Matrix3x3() = default;
 
@@ -145,6 +169,9 @@ namespace csjc
 
     // Methods
 
+    // Cofactor expansion along row 0: i0, i1, and i2 are the minors of
+    // elements 0, 1, and 2; the middle term is subtracted (the checkerboard
+    // sign).
     template <typename real>
     real Matrix3x3<real>::Determinant()
     {
@@ -171,6 +198,7 @@ namespace csjc
         return false;
     }
 
+    // A^T: element (r, c) takes the value of element (c, r).
     template <typename real>
     Matrix3x3<real> Matrix3x3<real>::Transpose()
     {
@@ -191,6 +219,8 @@ namespace csjc
         return matrix;
     }
 
+    // Each entry is the cofactor of the transposed position: a minor, negated
+    // on the odd positions of the checkerboard (1, 3, 5, 7).
     template <typename real>
     Matrix3x3<real> Matrix3x3<real>::Adjoint()
     {
@@ -226,6 +256,7 @@ namespace csjc
     // the inverse is computed when the determinant is not exactly zero. A
     // singular matrix returns the ZERO matrix (it returned the identity).
     // Pass a bool pointer to learn which case occurred.
+    // A^-1 = adjoint / det A (Matrix2x2.h). Check: A^-1 A = I (lesson 12).
     template <typename real>
     Matrix3x3<real> Matrix3x3<real>::Inverse(bool *invertible)
     {
@@ -247,6 +278,8 @@ namespace csjc
 
     // Cramer's rule. FIXED 20261008: a zero determinant returns the zero
     // vector instead of dividing by zero.
+    // Cramer's rule: three determinants with b in column 0, 1, and 2, each
+    // divided by det A. It gives the same x as Solve().
     template <typename real>
     Vector3<real> Matrix3x3<real>::Cramer(Vector3<real> b)
     {
@@ -271,6 +304,7 @@ namespace csjc
     // as Inverse() * b (as Matrix2x2::Solve() does). It returned the product
     // A * b. A singular matrix gives the zero vector.
     // Example: A = [1 2 3; 0 1 4; 5 6 0], b = (1, 2, 3) gives (27, -22, 6).
+    // Solve(b): x = A^-1 b, the solution of A x = b.
     template <typename real>
     Vector3<real> Matrix3x3<real>::Solve(Vector3<real> b)
     {
@@ -283,6 +317,12 @@ namespace csjc
     // about x acts first, then y, then z, all about the fixed axes. The
     // rotation about z was verified (z = 90 degrees maps (1, 0, 0) to
     // (0, 1, 0)).
+    // A rotation about one axis keeps that axis fixed and turns the plane of
+    // the other two, as the 2 x 2 rotation of Matrix2x2.h does. The three
+    // matrices below turn about x, y, and z; their product combines the
+    // three turns, and the order of the product decides the result. These
+    // angles about fixed axes are called Euler angles; Quaternion.h gives
+    // another way to describe a rotation.
     template <typename real>
     Matrix3x3<real> Matrix3x3<real>::Rotation(real xAngleRadian,
                                               real yAngleRadian,
@@ -366,6 +406,7 @@ namespace csjc
         return matrix;
     }
 
+    // A v: component r is the dot product of row r with v.
     template <typename real>
     Vector3<real> Matrix3x3<real>::operator*(Vector3<real> v)
     {
@@ -385,6 +426,8 @@ namespace csjc
         return vertex;
     }
 
+    // A M: element (r, c) is the sum over k of A(r, k) M(k, c), the dot
+    // product of row r of A with column c of M.
     template <typename real>
     Matrix3x3<real> Matrix3x3<real>::operator*(Matrix3x3<real> M)
     {
@@ -430,6 +473,7 @@ namespace csjc
         }
     }
 
+    // The determinant of a 2 x 2 matrix: a11 a22 - a12 a21.
     template <typename real>
     real Matrix3x3<real>::m_det(real a11, real a12, real a21, real a22)
     {

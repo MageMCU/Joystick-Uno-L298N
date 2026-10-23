@@ -5,7 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Bench status:** Step1_JUL and the Motor Movement Checklist were bench tested by the author at commit f2307a1; Step1_JUL has changed since (v3.1.0, joystick lines 103 and 104; v3.1.1, push button lines 46 and 47), and its bench retest is pending. Since v3.2.0, `Code-JUL/include/Common.h` ships with every debug flag on (Step1_JUL control tick 3000 ms), Step3_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. Since v3.2.1, Step3_Generated sets D5 to D10 LOW before its debug output, and Step1_JUL and Step3_Generated passed a simulation retest (Discrepancies.md, 90), which is not a bench test; record the release tag of the code used in each entry; the other labs and lessons are build checked and simulated, and their bench tests are pending. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
+**Bench status:** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1), with the indicator LED on D12; all passed. Since v6.0.0 Step1_Joystick is a self test that reports PASS or FAIL, since v6.2.0 each test waits for Enter, and since v6.3.0 the program asks for Enter before Test 1 (bench test pending); Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, lines 21 and 22, 3000 ms control tick), Step4_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. The other labs and the math lessons are build checked and simulated, and their bench tests are pending. Since v5.0.0 a math lesson is selected with `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp`. Record the release tag of the code used in each entry. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -88,6 +88,21 @@ Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
 The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 
+### Joystick Setup: the Step1_Joystick self test (Article 1009)
+
+Motor supply off. Press Enter at the start question, then copy the report from the serial monitor (v6.2.1: each test waits for Enter; any press during Tests 3 to 5 fails the self test; v6.3.0: the start question repeats every 3 s until Enter, and the report prints in aligned columns).
+
+| Test | Reading at Enter | Pass or fail | Notes |
+|------|------------------|--------------|-------|
+| 1 Button pressed and held | SW: | | LED on? |
+| 2 Button released | SW: | | LED off? |
+| 3 Grip at rest (center) | A0: ____ A1: ____ | | |
+| 4 To every edge (low, high) | A0: ____ ____ A1: ____ ____ | | |
+| 5 Released (rest) | A0: ____ A1: ____ | | |
+| Presses during Tests 3 to 5 | ____ (0 expected) | | |
+
+The four `map()` lines of a PASS report, or the wire checked after a FAIL: ________
+
 ### Experiment-1: Timing and button input
 
 | Lab | Test | Observation, count, or timing | Explanation |
@@ -153,7 +168,7 @@ Lab 1: magnitude, AngleRadian(), Angle2Radian(), and the octant from the angle f
 
 Lab 3: one copy of this table for **each** `Bits()` value tried. A value passes only when all eight positions pass; keep the failed rows.
 
-**Configuration:** `bits_____`
+**Configuration:** `bits_____`  **Wiring:** Circuit-1 (D5 to ENB, D6 to IN4, D7 to IN3, D8 to IN2, D9 to IN1, D10 to ENA) or other: ________
 
 | Position (Table-8) | Expected [left, right] | Observed motion | Pass or fail | Notes |
 |--------------------|------------------------|-----------------|--------------|-------|
@@ -168,7 +183,7 @@ Lab 3: one copy of this table for **each** `Bits()` value tried. A value passes 
 
 **First value passing all eight positions:** `bits_____`
 
-**Drive path after the checklist (Article 1009, Two Ways to Drive):** A, Step1_JUL with the three debug flags commented out, or B, Step3_Generated printed by Step2_Generator (answers to Checks 1 and 2 and Questions 3 and 4: ______). Supervisor signature.
+**Drive path after the checklist (Article 1009, Two Ways to Drive):** A, Step2_JUL with both debug switches commented out, or B, Step4_Generated printed by Step3_Generator (answers to Checks 1 and 2 and Questions 3 and 4: ______). Supervisor signature.
 
 | Voltage check | Meter points and load state | Reading | Units | Supply, motor, conditions |
 |---------------|-----------------------------|---------|-------|---------------------------|

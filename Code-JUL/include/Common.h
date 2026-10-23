@@ -24,44 +24,39 @@
 // ======================================================
 
 // ======================================================
-// DEBUG SELECTION
-// Revised 20261018 (v3.2.0): Step1_JUL ships with every debug flag
-// on. It is the diagnostic program of the series: with the push
-// button and the joystick it prints the values of the whole signal
-// chain and the L298N pin states for the Joystick and Button Check
-// and the Motor Movement Checklist (Article 1009, L298N Setup).
-// Step3_Generated (include/claude/ace.h) is the drive program; it
-// does not include this file.
-// DEBUG_SERIAL_ON activates automatically; do not set it manually.
-// NOTE: Any debug flag sets BUTTON_TIMER_mS to 3000 ms, so the
-//       motors of Step1_JUL respond once every 3 s. To drive with
-//       Step1_JUL at the 100 ms tick, comment out all three flags.
-// DEBUG_ALL_OFF: a program that defines it before its first
-//       include of this file gets no debug flag (lessons 18 and 19
-//       of Step4_MathLessons, which keep the 100 ms tick and print
-//       only their own output).
+// DEBUG SELECTION (revised 20261022, v6.0.0)
+// The debug switches are defined in the program that uses them,
+// above its first #include, not in this file. Only Step2_JUL has
+// them (src/Step2_JUL/main.cpp):
+//   DEBUG_STEP2_JOYSTICK  prints the joystick signal chain
+//   DEBUG_STEP2_L298N     prints the L298N pin states
+// A program that defines no switch gets no debug output, so the
+// other programs that include this file (Step3_Generator and
+// lessons 18 and 19 of Step5_MathLessons) need no line for it.
+// This file turns each switch into the flag that Joystick.h and
+// L298N.h test, and sets DEBUG_SERIAL_ON; do not set those three
+// flags manually.
+// Step1_Joystick (no switch) and Step4_Generated (DEBUG_GENERATED)
+// do not include this file; the switch of Step4_Generated is in
+// its own main.cpp.
+// Up to v5.1.0 this file defined DEBUG_MAIN, DEBUG_JOYSTICK, and
+// DEBUG_L298N itself, and DEBUG_ALL_OFF turned them off.
 // ======================================================
-#ifndef DEBUG_ALL_OFF
-#define DEBUG_MAIN
+#ifdef DEBUG_STEP2_JOYSTICK
 #define DEBUG_JOYSTICK
+#define DEBUG_SERIAL_ON
+#endif
+// ------------------------------------------------------
+#ifdef DEBUG_STEP2_L298N
 #define DEBUG_L298N
-#endif
-// ------------------------------------------------------
-#ifdef DEBUG_MAIN
-#define DEBUG_SERIAL_ON
-#endif
-// ------------------------------------------------------
-#ifdef DEBUG_JOYSTICK
-#define DEBUG_SERIAL_ON
-#endif
-// ------------------------------------------------------
-#ifdef DEBUG_L298N
 #define DEBUG_SERIAL_ON
 #endif
 
 // ======================================================
 // TIMER
-// Automatically set based on debug state.
+// Automatically set based on debug state: 3000 ms while a debug
+// switch is defined, so the serial output can be read; 100 ms
+// without one.
 // ======================================================
 #ifdef DEBUG_SERIAL_ON
 #define BUTTON_TIMER_mS 3000

@@ -32,6 +32,19 @@ namespace csjc
     // FIXED 20261008: Matrix4x4 inherits from the empty Matrix class, not
     // from Matrix3x3. Matrix4x4<float> is now 64 bytes on the Uno instead
     // of 192.
+    // TEACHING NOTES (v6.1.1)
+    // A 3 x 3 matrix can rotate a 3D point but cannot move (translate) it:
+    // A times the zero vector is always zero. Homogeneous coordinates add a
+    // fourth component w = 1 to a point, (x, y, z, 1), and a 4 x 4 matrix
+    // can then hold both a rotation (the upper left 3 x 3 block) and a
+    // translation (the last column):
+    //   | r r r tx |  | x |   | rotated x + tx |
+    //   | r r r ty |  | y | = | rotated y + ty |
+    //   | r r r tz |  | z |   | rotated z + tz |
+    //   | 0 0 0 1  |  | 1 |   | 1              |
+    // Rotations and moves then combine by matrix multiplication alone, the
+    // way computer graphics and robot arms chain their joints. The other
+    // matrix terms are explained in Matrix2x2.h; index = row * 4 + column.
     class Matrix4x4 : Matrix<real>
     {
     private:
@@ -47,6 +60,8 @@ namespace csjc
         Matrix4x4();
         Matrix4x4(const real tuples[]);
         Matrix4x4(real minRandom, real maxRandom);
+        // These constructors place a 2 x 2 or 3 x 3 matrix in the upper left
+        // corner of the identity.
         Matrix4x4(Matrix2x2<real> m2);
         Matrix4x4(Matrix3x3<real> m3);
         ~Matrix4x4() = default;
@@ -65,7 +80,10 @@ namespace csjc
         // (they were declared here but defined as free functions, so
         // M.Translation(v) failed to link). Like Matrix2x2::Rotation(), they
         // return a new matrix and do not use the object they are called on:
-        //   Matrix4x4<float> T = T.Translation(v);
+        //   Matrix4x4<float> I;
+        //   Matrix4x4<float> T = I.Translation(v);
+        // (v6.3.1: call it on a finished object, not on T in its own
+        // declaration.)
         // The free functions Translation<real>(v) and Rotation<real>(axis,
         // angle) remain for existing code and call these members.
         Matrix4x4<real> Translation(Vector3<real> v);
@@ -178,6 +196,9 @@ namespace csjc
     //  0 1 0 vy
     //  0 0 1 vz
     //  0 0 0 1
+    // Translation(v): the identity with v in the last column, so
+    // T (x, y, z, 1) = (x + vx, y + vy, z + vz, 1). Example: v = (1, 2, 3)
+    // moves the point (0, 0, 0) to (1, 2, 3).
     template <typename real>
     Matrix4x4<real> Matrix4x4<real>::Translation(Vector3<real> v)
     {
@@ -203,6 +224,11 @@ namespace csjc
 
     // Rotation by angleRadian about axis (any length), built from the unit
     // quaternion q(axis, angle). Verified on a desktop 20261008.
+    // Rotation(axis, angle): a turn by the angle about a line through the
+    // origin along the axis. The upper left block is the rotation matrix of
+    // the unit quaternion q = (w, x, y, z) of the same turn (Quaternion.h);
+    // each element is a sum of products of two quaternion components.
+    // Example: axis (0, 0, 1) and 90 degrees maps (1, 0, 0) to (0, 1, 0).
     template <typename real>
     Matrix4x4<real> Matrix4x4<real>::Rotation(Vector3<real> axis, real angleRadian)
     {

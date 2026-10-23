@@ -33,6 +33,14 @@ namespace csjc
     // none of its members). Matrix2x2<float> is now 16 bytes on the Uno
     // instead of 92. Quaternion.h is still included because the matrix
     // classes use Vector2, Vector3, and RandomNumber through it.
+    // TEACHING NOTES (v6.1.1)
+    // Matrix is a base class: Matrix2x2, Matrix3x3, and Matrix4x4 are
+    // derived from it (class Matrix2x2 : Matrix<real>), so the three share
+    // one family name. It holds no data and no methods; the matrix terms
+    // (element, identity, determinant, inverse, transpose, product) are
+    // explained in Matrix2x2.h.
+    // The two blocks below, between /* and */, are commented out: general
+    // matrix products for any number of rows and columns, kept as notes.
     class Matrix
     {
     private:

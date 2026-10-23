@@ -14,7 +14,7 @@
 //
 // MIT LICENSE
 //
-// Added 20261017 for Step2_Generator.
+// Added 20261017 for Step3_Generator.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
@@ -22,8 +22,8 @@
 // They are kept apart from the original header files of include/ and
 // include/numerics/, which they do not change, so that a reader can
 // tell at once which code is original and which was generated. Each
-// file was tested against the original code as stated below; the
-// bench test on hardware is pending.
+// file was tested against the original code as stated below, and on
+// the bench by the author on 20261021 (release v4.0.1).
 //
 // L298NPins resolves one Bits() value of L298N.h into fixed pin
 // assignments. L298N.h decides at run time, on every call of

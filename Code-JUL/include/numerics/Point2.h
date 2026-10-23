@@ -30,6 +30,16 @@ namespace csjc
     template <typename real>
     // FIXED 20261008: Point2 no longer inherits from Vector2 (it used none of
     // its members and stored a second set of coordinates).
+    // TEACHING NOTES (v6.1.1)
+    // A point is a position; a vector is a displacement, a step with a size
+    // and a direction (Vector2.h). Both are written (x, y), but they follow
+    // different rules, the rules of affine geometry:
+    //   point - point   = vector  (the step from one position to another)
+    //   point + vector  = point   (a position moved by a step)
+    //   point + point   has no meaning, so this class does not define it.
+    // Keeping the two types apart lets the compiler catch such mistakes.
+    // Example: from P = (1, 2) to Q = (4, 6) the step is Q - P = (3, 4),
+    // of length 5, and P + (3, 4) = Q.
     class Point2
     {
     private:
@@ -124,6 +134,7 @@ namespace csjc
         return p;
     }
 
+    // Q - P: the vector that leads from P to Q.
     template <typename real>
     Vector2<real> Point2<real>::operator-(Point2<real> p)
     {
@@ -136,6 +147,7 @@ namespace csjc
         return vector;
     }
 
+    // P + v: the point reached from P by the step v.
     template <typename real>
     Point2<real> Point2<real>::operator+(Vector2<real> v)
     {

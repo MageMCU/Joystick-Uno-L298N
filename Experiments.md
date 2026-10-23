@@ -2,6 +2,77 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v6.3.1 (20261022)
+
+- **Lessons 3, 11, and 13.** Lesson 3, topic 3, prints its table in aligned columns; lesson 11, topic 13, and lesson 13, topic 2, call `Rotation()` and `Translation()` on a finished identity matrix. Experiment-6 runs lesson 3 and Experiment-8 runs lessons 11 and 13 (Part A); their output is the same except the column layout of lesson 3, topic 3, and the label `T = I.Translation(v):` of lesson 13, topic 2. No line cited by a lab card moves.
+- **Review.** The 13 lab programs of Experiments 1 to 5 build with no warnings with `-std=gnu++11` and with `-std=gnu++17`.
+
+## Changes in Release v6.3.0 (20261022)
+
+- **Step1_Joystick.** The self test asks for Enter before Test 1 and repeats the question every 3 s, so Test 1 is no longer skipped when the serial monitor connects; the report and the live values print in aligned columns.
+- **Lessons.** Every topic function carries a teaching block (hint, purpose, what is learnt, expected output). In lessons 17 to 19 the blocks are at the end of the file: no line cited by a lab card moves (lesson 17, lines 116 and 117; lesson 18, lines 168, 174, and 175; lesson 19, lines 123 and 124). Lessons 17 to 20 build to the same Intel HEX as in v6.2.3.
+
+## Changes in Release v6.2.3 (20261022)
+
+- **Step2_JUL stops at once.** Pressing the push button OFF stops the motors at once, not at the next control tick (3000 ms with the debug switches on, as shipped for Experiment-2 Lab 3 and Experiment-5 Lab 3). No line cited by a lab card moves.
+- **Step4_Generated prints Ready.** With `DEBUG_GENERATED`, the last startup line, Ready, tells when the push button is read.
+
+## Changes in Release v6.2.2 (20261022)
+
+- **L298N.h.** In `UpdateL298N()` the two local enable pin variables `ENA` and `ENB` are `enPinA` and `enPinB` (Code-JUL and the copies of Experiments 1 to 5): they hold the enable pin of the class channels A and B (`_pwmA`, `_pwmB`), not the module terminals ENA and ENB. Every lab builds to the same Intel HEX; no line moves. Experiment-4, Lab 3, reads the function.
+
+## Changes in Release v6.2.1 (20261022)
+
+- **Pin names.** Step2_JUL, Step3_Generator, and Step4_Generated name the Uno pins after the L298N inputs of Circuit-1 (`ENB = 5`, `IN4 = 6`, `IN3 = 7`, `IN2 = 8`, `IN1 = 9`, `ENA = 10`); the pin numbers and the programs are unchanged. The Experiment-5 card tells the reader what to do with a bench wired by the old names.
+- **Step1_Joystick.** A press during Tests 3 to 5 fails the self test.
+
+## Changes in Release v6.2.0 (20261022)
+
+- **Joystick self test with questions.** Step1_Joystick tests the push button first, then the axes, and waits for Enter after each instruction, so every result can be read before the next test; after the report it asks r (run again) or v (the live values for 20 seconds). `DEBUG_STEP1_LIVE` is removed. No lab card changes; Experiment-2 Lab 3 and Experiment-5 Lab 3 still select Step2_JUL.
+
+## Changes in Release v6.1.3 (20261022)
+
+- **Common.h copies.** The em dashes in `Code/include/Common.h` of Experiments 1 to 5 are colons (comments only; the lab programs build as before).
+
+## Changes in Release v6.1.1 (20261022)
+
+- **Teaching notes.** The numerics headers and the lessons used by Experiments 6 to 9 define their terms and work examples by hand (`TEACHING NOTES (v6.1.1)`). Comments only; the line numbers cited by the lab cards of Experiments 7 and 8 do not change.
+
+## Changes in Release v6.1.0 (20261022)
+
+- **Dotted lines.** Step1_Joystick to Step4_Generated start each new output in the serial monitor with a blank line and a dotted line; in Experiment-2 Lab 3 and Experiment-5 Lab 3 each 3000 ms tick of Step2_JUL starts with them.
+- **Two segment map.** Lesson 3 has a third topic, the two segment map around a measured center, and lesson 20 compares it with the full range map on the live joystick. No lab card changes; the lessons follow the Step1_Joystick self test (Article 1009, Joystick Setup).
+
+## Changes in Release v6.0.0 (20261022)
+
+- **Joystick self test.** Step1_Joystick asks the student, in the serial monitor, to leave the grip at rest, move it to every edge, release it, and press and release the push button, then reports PASS or FAIL for each test with the measured readings of A0 and A1 and the `map()` calls that fit the joystick (Article 1009, Joystick Setup).
+- **Debug switches.** Step2_JUL defines its debug switches itself, `DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N` on lines 21 and 22; `Common.h` no longer defines flags, and `DEBUG_ALL_OFF` is removed. Experiment-2 Lab 3 and Experiment-5 Lab 3 need no change (both switches on as shipped); Path A comments out lines 21 and 22.
+- **Lab cards 2, 5, and 7.** New Step2_JUL line numbers (the lines move down by 6 from line 18 and by 11 from line 46) and `setLatching(true)` on line 56; lessons 18 and 19 keep their line numbers.
+
+## Changes in Release v5.1.0 (20261021)
+
+- **One topic at a time.** Each math lesson is divided into topics, one function per topic. `#define TOPIC` in `Code-JUL/src/Step5_MathLessons/main.cpp`, the line below `#define LESSON`, runs one topic; TOPIC 0 runs every topic, as before. Lesson 7 printed 17 tests in one run; a reader now studies one topic per run.
+- **Topic names.** Every topic function is named LessonName_Tnn_Operation, for example `Vector3_T16_Copy()`, with a two digit topic number used once per lesson, and it prints the same name as its title. The duplicate numbers of lessons 7 and 9, the unnumbered topic of lesson 12, and the spelling of the titles are corrected (RELEASES.md, v5.1.0).
+- **Lab cards 6 to 9.** Running a lesson gives the TOPIC line; Experiment-7 and Experiment-9 name the topics they use; Experiment-8 names the two topics of lesson 19 and its joystick lines, now 123 and 124.
+
+## Changes in Release v5.0.0 (20261021)
+
+- **Math lessons as headers.** Each of the 19 lessons is one header file in `Code-JUL/src/Step5_MathLessons/lessons/`, from `L01_Bitwise.h` to `L19_JoystickFrame.h`, with its own namespace of the same name. One `main.cpp` in `Step5_MathLessons` compiles ONE lesson, chosen with `#define LESSON` (1 to 19); its comments give the instructions and the flash and RAM of each lesson. Step5_MathLessons is selected in `platformio.ini` like the other four programs. Each lesson builds to the same code as in v4.0.1. The lab cards of Experiments 6 to 9 give the new file names and line numbers.
+- **Bench test.** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1) with the indicator LED on D12: all passed.
+- **ace.h.** The default of `LED_PIN` is 12, as in Article 1009, Circuit-1; Step4_Generated passes 12 itself, so no program changed.
+
+## Changes in Release v4.0.1 (20261021)
+
+- **Button.h comments.** The wiring comment of `Button.h` gives the internal or the external 10 kOhm pull up (Article 1009, Circuit-1a), and the usage examples give the LED on D12. The copies in Experiments 1 to 5 are updated and stay identical; no program changed.
+
+## Changes in Release v4.0.0 (20261021)
+
+- **Programs renumbered.** `Code-JUL/src` holds five programs in the order of use: Step1_Joystick (new), Step2_JUL (formerly Step1_JUL), Step3_Generator, Step4_Generated, and Step5_MathLessons. `platformio.ini` ships with Step1_Joystick on line 31; Experiment-2 Lab 3 and Experiment-5 Lab 3 copy the Step2_JUL line over it.
+- **Step1_Joystick.** Checks the joystick connections, x on A0, y on A1, and the push button on D2 with the LED on D12, with the motor supply off and D5 to D10 held LOW (Article 1009, Joystick Setup). It finds the faults that no `Bits()` value corrects before the motors get power.
+- **Wire once.** The whole bench of Article 1009, Circuit-1, is wired before Step 1, and Steps 1 to 4 use that wiring unchanged.
+- **Indicator LED on D12.** Step2_JUL (line 50) and Step3_Generator ship with the LED on D12, as wired in Circuit-1; Step4_Generated is printed again.
+- **Pull up choice.** The push button uses the external 10 kOhm pull up (Circuit-1a of Article 1009) or the internal pull up; Step4_Generated supports the external pull up only.
+
 ## Changes in Release v3.2.2 (20261020)
 
 - **Article links.** The Related Articles of every lab card follow the author's list of valid links: 1020 is removed, and 1005 is named in Experiment-9 only, linked to the Robotics page of carpentersoftware.com, where it is published. The Experiment-5 lab card links the 1009 MMC Results for JUL. No lab, program, or setting changed.
@@ -32,21 +103,21 @@ Follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XG
 | Experiment | Labs | Code |
 |------------|------|------|
 | [Experiment-1: Timing and Button Input on the Uno](Experiments/Experiment-1/Instructions/README.md) | delay(), Timer.h, Button.h, Switch.h | `Experiments/Experiment-1/Code` |
-| [Experiment-2: Wiring and Reading the Thumb Joystick](Experiments/Experiment-2/Instructions/README.md) | Preprocessor, LinearMap.h, Joystick and Button Check | `Experiments/Experiment-2/Code`; `Code-JUL` Step1_JUL with `DEBUG_JOYSTICK` |
+| [Experiment-2: Wiring and Reading the Thumb Joystick](Experiments/Experiment-2/Instructions/README.md) | Preprocessor, LinearMap.h, reading the joystick in Step2_JUL | `Experiments/Experiment-2/Code`; `Code-JUL` Step2_JUL with `DEBUG_STEP2_JOYSTICK` (the Step1_Joystick self test checks the connections first) |
 | [Experiment-3: L298N Single Motor](Experiments/Experiment-3/Instructions/README.md) | MiscMath.h, duty cycle | `Experiments/Experiment-3/Code` |
 | [Experiment-4: L298N Two Motors and the Bits Table](Experiments/Experiment-4/Instructions/README.md) | Bitwise.h, TypeConv.h, L298N.h on six LEDs, second motor | `Experiments/Experiment-4/Code` |
-| [Experiment-5: Joystick to Motors](Experiments/Experiment-5/Instructions/README.md) | Vector3.h, Joystick.h, Step1_JUL and the Motor Movement Checklist | `Experiments/Experiment-5/Code`; `Code-JUL` Step1_JUL |
+| [Experiment-5: Joystick to Motors](Experiments/Experiment-5/Instructions/README.md) | Vector3.h, Joystick.h, Step2_JUL and the Motor Movement Checklist | `Experiments/Experiment-5/Code`; `Code-JUL` Step2_JUL |
 
-The `include/` folder of each core experiment holds copies of the original header files of `Code-JUL/include` (commit f2307a1), unchanged.
+The `include/` folder of each core experiment holds copies of the original header files of `Code-JUL/include` (commit f2307a1). Their compiled code is unchanged; since then comments changed in `Timer.h` (folder line), `Button.h` (v4.0.1), and `Common.h` (v6.1.3), and two local variables of `L298N.h` were renamed (v6.2.2). `Button.h`, `Timer.h`, and `Switch.h` are identical to the files in `Code-JUL/include`; the others keep the code of that commit.
 
 ## Part B: Advanced Experiments (numerics)
 
-| Experiment | Lessons in `Code-JUL/src/Step4_MathLessons` |
+| Experiment | Lessons in `Code-JUL/src/Step5_MathLessons/lessons` (select with `#define LESSON` and `#define TOPIC` in `main.cpp`) |
 |------------|------|
-| [Experiment-6: Statistics and the Dead Zone](Experiments/Experiment-6/Instructions/README.md) | 01 to 06, 17_DeadZone |
-| [Experiment-7: Line Fit and Motor Calibration](Experiments/Experiment-7/Instructions/README.md) | 15_LineFit, 18_MotorLineFit |
-| [Experiment-8: Vectors, Matrices, and the Joystick Frame](Experiments/Experiment-8/Instructions/README.md) | 07 to 13, 19_JoystickFrame |
-| [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | 14_Quaternion, 16_Rotation (Article 1005, on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html)) |
+| [Experiment-6: Statistics and the Dead Zone](Experiments/Experiment-6/Instructions/README.md) | L01 to L06, L17_DeadZone |
+| [Experiment-7: Line Fit and Motor Calibration](Experiments/Experiment-7/Instructions/README.md) | L15_LineFit, L18_MotorLineFit |
+| [Experiment-8: Vectors, Matrices, and the Joystick Frame](Experiments/Experiment-8/Instructions/README.md) | L07 to L13, L19_JoystickFrame |
+| [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | L14_Quaternion, L16_Rotation (Article 1005, on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html)) |
 
 ## Lab Notebook
 

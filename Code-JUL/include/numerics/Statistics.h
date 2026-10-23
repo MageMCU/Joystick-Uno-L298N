@@ -26,6 +26,21 @@
 
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // Descriptive statistics summarize a set of n measurements x1 to xn
+    // (here an array; the class stores a pointer, real *, to the caller's
+    // array instead of a copy, which saves RAM).
+    //   mean (average)      the sum divided by n
+    //   variance            the average squared distance from the mean
+    //   standard deviation  the square root of the variance, in the units
+    //                       of the data; most values lie within one
+    //                       standard deviation of the mean
+    //   median              the middle value of the sorted set; one wild
+    //                       value moves the mean but hardly the median
+    // Example: 2, 4, 4, 4, 5, 5, 7, 9 has mean 5, sample variance
+    // 32 / 7 = 4.57, standard deviation 2.14, and median (4 + 5) / 2 = 4.5.
+    // Lesson 17 (the dead zone) uses the mean and standard deviation of the
+    // joystick readings at rest.
     template <typename real>
     class Statistics
     {
@@ -130,7 +145,7 @@ namespace csjc
     void Statistics<real>::Queue(real value, int index)
     {
         // experimental
-        // purpose... See Statistics_T5_Queue()
+        // purpose... See Statistics_T05_QueueReset() (lesson 6, topic 5)
         m_ptrTuplesX[index] = value;
 
         // Envelope
@@ -169,6 +184,7 @@ namespace csjc
     // PRIVATE METHODS
 
     // FIXED 20261008: an empty set gives NaN instead of 0 / 0.
+    // Mean = (x1 + x2 + ... + xn) / n.
     template <typename real>
     void Statistics<real>::m_Mean()
     {
@@ -188,6 +204,10 @@ namespace csjc
     // Sample variance, divided by (n - 1).
     // FIXED 20261008: a set of one value has variance 0, and an empty set
     // gives NaN (both divided by zero).
+    // The sample variance divides the sum of squared distances by n - 1, not
+    // n: the mean was computed from the same data, which leaves n - 1
+    // independent distances (Bessel's correction). For many values the two
+    // results are nearly the same.
     template <typename real>
     void Statistics<real>::m_Variance()
     {
@@ -211,12 +231,18 @@ namespace csjc
         m_variance = sum / ((real)m_tuplesSize - (real)1);
     }
 
+    // Standard deviation = square root of the variance.
     template <typename real>
     void Statistics<real>::m_StandardDeviation()
     {
         m_standardDeviation = sqrt((real)m_variance);
     }
 
+    // Sorting puts the values in increasing order, which the median needs.
+    // Bubble sort compares each neighbor pair and swaps it when it is out of
+    // order; after pass i the largest i values are in place. It takes about
+    // n^2 / 2 comparisons, fine for the small sets (fewer than 21 values)
+    // it is used for.
     template <typename real>
     void Statistics<real>::m_Bubblesort()
     {
@@ -230,6 +256,9 @@ namespace csjc
         }
     }
 
+    // Partition: the last value is the pivot. Every value not larger than
+    // the pivot moves to the left part; the pivot is then placed between
+    // the two parts, at its final sorted position, which is returned.
     template <typename real>
     int Statistics<real>::m_Partition(int lo, int hi)
     {
@@ -252,6 +281,11 @@ namespace csjc
     // Uno). The smaller partition is sorted first and the larger one is
     // pushed, so the stack holds at most 2 * log2(n) entries: 32 for
     // n = 65535.
+    // Quicksort partitions the set, then sorts each part the same way, about
+    // n log2(n) comparisons on average. A stack, a list where the last item
+    // added is the first taken out, holds the parts still to be sorted, so
+    // the function needs no recursion (a function calling itself), which
+    // would use the small RAM of the Uno.
     template <typename real>
     void Statistics<real>::m_Quicksort()
     {
@@ -290,6 +324,9 @@ namespace csjc
         m_ptrTuplesX[idx2] = temp;
     }
 
+    // Median: for an odd n the middle element; for an even n the average of
+    // the two middle elements. Arrays count from index 0, so the middle of
+    // 5 values is index 2 and the middle pair of 6 values is 2 and 3.
     template <typename real>
     void Statistics<real>::m_Median()
     {

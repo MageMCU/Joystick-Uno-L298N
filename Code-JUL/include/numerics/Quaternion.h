@@ -35,6 +35,28 @@ namespace csjc
     // FIXED 20261008: Quaternion no longer inherits from Point2, Point3, and
     // RandomNumber (it used none of them), and the unused m_size member was
     // removed. Quaternion<float> is now 16 bytes on the Uno instead of 76.
+    // TEACHING NOTES (v6.1.1)
+    // A quaternion q = w + x i + y j + z k has a scalar part w and a vector
+    // part (x, y, z). It extends the complex numbers with three imaginary
+    // units that obey i^2 = j^2 = k^2 = ijk = -1, so ij = k but ji = -k:
+    // the product depends on the order (it is not commutative).
+    // A unit quaternion (norm 1) describes a rotation in 3D: for a turn by
+    // the angle a about the unit axis n,
+    //   q = (cos(a/2), n sin(a/2))
+    // and a vector v is turned by v' = q v q*, where v is written as the
+    // pure quaternion (0, v) (scalar part 0). Terms used below:
+    //   norm |q|       sqrt(w^2 + x^2 + y^2 + z^2), the length of the four
+    //                  components
+    //   conjugate q*   (w, -x, -y, -z); for a unit quaternion it is also the
+    //                  inverse, the turn back
+    //   inverse q^-1   q* / |q|^2, so q q^-1 = 1
+    //   product q p    the turn p followed by the turn q, in one quaternion
+    // Compared with three angles about x, y, and z (Matrix3x3.h, Rotation()),
+    // a quaternion has no order of axes to choose, uses four numbers instead
+    // of nine, and two turns combine with one product.
+    // Example: a = 90 degrees about z, n = (0, 0, 1):
+    // q = (cos 45, 0, 0, sin 45) = (0.7071, 0, 0, 0.7071), and q (1, 0, 0) q*
+    // = (0, 1, 0).
     class Quaternion
     {
     private:
@@ -47,8 +69,12 @@ namespace csjc
         // CONSTRUCTORS
         Quaternion();
         Quaternion(real w, real x, real y, real z);
+        // Quaternion(x, y, z) and Quaternion(vector) make the pure quaternion
+        // (0, x, y, z) that carries a vector into the product q v q*.
         Quaternion(real x, real y, real z);
         Quaternion(Vector3<real> vector);
+        // Quaternion(axis, angle): the unit quaternion of a turn by the angle
+        // about the axis (the formula above).
         Quaternion(Vector3<real> axis, real angleRadian);
 
         // DESTRUCTOR
@@ -191,6 +217,8 @@ namespace csjc
     // FLT_EPSILON, in either direction.
     // FIXED 20261008: restored the two sided test abs(test - 1). The one
     // sided form reported only values above 1.
+    // NormDeviation(): true when a norm is not 1 within FLT_EPSILON, that
+    // is, when a quaternion is no longer a unit quaternion.
     template <typename real>
     bool Quaternion<real>::NormDeviation(real testUnitLength)
     {
@@ -202,6 +230,8 @@ namespace csjc
         return false;
     }
 
+    // |q|^2 = w^2 + x^2 + y^2 + z^2; it avoids the square root when only a
+    // comparison with 1 is needed.
     template <typename real>
     real Quaternion<real>::NormSquared()
     {
@@ -232,6 +262,7 @@ namespace csjc
         return quat;
     }
 
+    // q / |q|: the same direction in four dimensions, scaled to norm 1.
     template <typename real>
     Quaternion<real> Quaternion<real>::UnitQuaternion()
     {
@@ -244,6 +275,7 @@ namespace csjc
         return Scale((real)1.0 / Norm());
     }
 
+    // q* = (w, -x, -y, -z): the vector part reversed, the turn undone.
     template <typename real>
     Quaternion<real> Quaternion<real>::Conjugate()
     {
@@ -272,6 +304,7 @@ namespace csjc
     // Rotation angle 2 acos(w), 0 to 2 pi radians, of a unit quaternion.
     // FIXED 20261008: w is clamped to -1 to 1 before acos(); rounding could
     // make it slightly greater than 1 and acos() then returned NaN.
+    // From w = cos(a/2): a = 2 acos(w).
     template <typename real>
     real Quaternion<real>::GetRadianAngle()
     {
@@ -300,6 +333,8 @@ namespace csjc
     // -1) the axis is undefined and the zero vector is returned.
     // FIXED 20261008: uses the Vector3 setters; vector.x() = ... assigned to
     // the value returned by a getter and did not compile when called.
+    // From (x, y, z) = n sin(a/2) and sin(a/2) = sqrt(1 - w^2): the axis
+    // n = (x, y, z) / sqrt(1 - w^2).
     template <typename real>
     Vector3<real> Quaternion<real>::GetAxis()
     {
@@ -317,6 +352,8 @@ namespace csjc
     // Rotate v by this unit quaternion q: the vector part of q v q*, where v
     // is the pure quaternion (0, v). Added 20261008. For a unit quaternion
     // q* (the conjugate) is the inverse.
+    // v' = q v q*: the product of three quaternions; its vector part is the
+    // turned vector and its scalar part is 0.
     template <typename real>
     Vector3<real> Quaternion<real>::Rotate(Vector3<real> v)
     {
@@ -328,6 +365,8 @@ namespace csjc
 
     /*
     // Although different, the result is the same...
+    // The product q c written out component by component, from the rules
+    // for i, j, and k above.
     template <typename real>
     Quaternion<real> Quaternion<real>::Multiply(Quaternion<real> c)
     {
@@ -360,6 +399,10 @@ namespace csjc
 
     // OPERATORS
 
+    // The same product written with vectors: for q = (w1, v1), c = (w2, v2),
+    //   q c = (w1 w2 - v1.v2, w1 v2 + w2 v1 + v1 x v2)
+    // with the dot product (.) and the cross product (x) of Vector3.h. The
+    // cross product is why q c differs from c q.
     template <typename real>
     Quaternion<real> Quaternion<real>::operator*(Quaternion<real> c)
     {
@@ -387,6 +430,9 @@ namespace csjc
     // one sided test also rescaled products of non unit quaternions:
     // (2)(2) returned 1. Products far from unit length are now returned
     // unchanged: (2)(2) = 4 and (0.5)(0.5) = 0.25.
+    // Rounding drift: every float operation rounds, so after many products a
+    // unit quaternion slowly loses its norm of 1. Dividing by the norm again
+    // (renormalizing) restores it.
     template <typename real>
     Quaternion<real> Quaternion<real>::m_driftCorrect(Quaternion<real> quat)
     {

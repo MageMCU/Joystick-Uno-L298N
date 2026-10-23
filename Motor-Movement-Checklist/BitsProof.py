@@ -10,14 +10,14 @@
 # MIT LICENSE
 #
 # Added 20261017. Written with Claude (Anthropic), an AI assistant.
-# Revised 20261018 (v3.1.0): Step1_JUL reads x on A0 and y on A1; the
+# Revised 20261018 (v3.1.0): Step2_JUL reads x on A0 and y on A1; the
 # model and the table are unchanged, because the orientations are
 # counted from the shipped lines, whichever pins they name.
 #
 # PURPOSE
 #   Checks that one Bits() value corrects every bench, whatever the
 #   analog pins, the analogRead() equations, and the L298N connections.
-#   The program models Step1_JUL with its shipped lines,
+#   The program models Step2_JUL with its shipped lines,
 #       xDigital = analogRead(A0);  yDigital = analogRead(A1);
 #   and runs the Motor Movement Checklist search, bits_0000 upward,
 #   for each of 128 benches:
@@ -32,7 +32,7 @@
 #
 # MODEL (the same rules as the code)
 #   Joystick.h  octant algorithm, tolerance 0.001
-#   Step1_JUL   map 0..1023 to -1..1, center offsets X 0.05 and Y 0.06,
+#   Step2_JUL   map 0..1023 to -1..1, center offsets X 0.05 and Y 0.06,
 #               map -1..1 to -255..255 with an (int) cast
 #   L298N.h     Bits(): bit 3 EN, bit 2 PWM, bit 1 LeftIN, bit 0 RightIN
 #
@@ -44,7 +44,7 @@
 # RESULT (20261017): every one of the 128 benches has exactly one
 # passing value, and each of the 16 values serves 8 benches. Of the
 # 720 ways to connect D5 to D10 to the six L298N inputs, the 16 that
-# keep the rules of Step1_JUL (end of main.cpp) are corrected for all
+# keep the rules of Step2_JUL (end of main.cpp) are corrected for all
 # 8 joystick orientations; none of the other 704 is.
 
 import itertools
@@ -100,8 +100,8 @@ def l298n(left, right, bits):
 
 
 def wheels(pins, wiring):
-    # The module: channel 1 = EN from D5 (D10 if crossed), IN1 and IN2
-    # from D6 and D7; channel 2 = EN from D10 (D5), IN3 and IN4 from D8, D9
+    # The module: channel 1 = EN from D5 (D10 if crossed), IN4 and IN3
+    # from D6, D7; channel 2 = EN from D10 (D5), IN2 and IN1 from D8, D9
     e, m, lrev, rrev = wiring
     ch1 = pins[10 if e else 5] * (1 if pins[6] else -1)
     ch2 = pins[5 if e else 10] * (1 if pins[8] else -1)

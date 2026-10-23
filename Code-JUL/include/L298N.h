@@ -224,21 +224,21 @@ namespace csjc
     // Used with a timer within loop()
     void L298N::UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag = false)
     {
-        uint8_t ENA;
-        uint8_t ENB;
+        uint8_t enPinA; // enable pin of _pwmA (class channel A, not L298N ENA)
+        uint8_t enPinB; // enable pin of _pwmB (class channel B, not L298N ENB)
 
         if (_bitEN_Flag)
         {
-            ENA = _EN_A;
-            ENB = _EN_B;
+            enPinA = _EN_A;
+            enPinB = _EN_B;
 #ifdef DEBUG_L298N
             Serial.println("(A) Bit-EN");
 #endif
         }
         else
         {
-            ENA = _EN_B;
-            ENB = _EN_A;
+            enPinA = _EN_B;
+            enPinB = _EN_A;
 #ifdef DEBUG_L298N
             Serial.println("(B) Bit-EN");
 #endif
@@ -269,13 +269,13 @@ namespace csjc
         // SafetyMotorFlag = TRUE: MOTORS ACTIVE
         if (SafetyMotorFlag)
         {
-            analogWrite(ENA, absT<int>(_pwmA));
-            analogWrite(ENB, absT<int>(_pwmB));
+            analogWrite(enPinA, absT<int>(_pwmA));
+            analogWrite(enPinB, absT<int>(_pwmB));
         }
         else
         {
-            analogWrite(ENA, LOW);
-            analogWrite(ENB, LOW);
+            analogWrite(enPinA, LOW);
+            analogWrite(enPinB, LOW);
         }
 
         // DEBUG

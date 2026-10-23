@@ -37,6 +37,16 @@ namespace csjc
     //     truncated to long, so (-1.9, 2.3) returned values in [-1, 2).
     // (3) The default constructor gives the range [0, 1); m_lastRandom
     //     (unused) was removed.
+    // TEACHING NOTES (v6.1.1)
+    // A computer makes pseudorandom numbers: a fixed formula produces a
+    // sequence that looks random, and the seed, the number the sequence
+    // starts from, decides which sequence. The same seed always gives the
+    // same sequence. randomSeed() sets the seed; random(n) returns the next
+    // whole number from 0 to n - 1.
+    // Interval notation: [min, max) includes min and excludes max.
+    // A uniform distribution gives every value in the interval the same
+    // chance; lesson 6 (Statistics) measures the average and the standard
+    // deviation of such values.
     template <typename real>
     class RandomNumber
     {
@@ -71,6 +81,9 @@ namespace csjc
     {
     }
 
+    // Scaling: u is a fraction from 0 up to (not including) 1, and
+    // min + (max - min) u moves it into [min, max). Example: min = -100,
+    // max = 1000, u = 0.5 gives -100 + 1100 (0.5) = 450.
     template <typename real>
     real RandomNumber<real>::Random()
     {
@@ -91,6 +104,9 @@ namespace csjc
 
     // Private Methods
 
+    // The seed mixes two analog readings (they change a little with noise)
+    // and micros(), the microseconds since reset, so each run starts a
+    // different sequence.
     template <typename real>
     void RandomNumber<real>::m_seed()
     {

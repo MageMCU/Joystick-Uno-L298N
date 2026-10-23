@@ -28,6 +28,19 @@
 // Carpenter Software - Jesse Carpenter
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // A byte is 8 bits (0 to 255). A word here is 16 bits (uint16_t, 0 to
+    // 65535) and a double word 32 bits (uint32_t). The fixed width types
+    // uint8_t, uint16_t, and uint32_t come from <stdint.h>; u means unsigned
+    // (no sign, never negative) and the number is the width in bits.
+    // The high byte of a word holds bits 15 to 8, the low byte bits 7 to 0.
+    // Hexadecimal (base 16, written 0x...) shows 4 bits per digit, so
+    // 0x03FF = binary 0000 0011 1111 1111 = 1023, the largest ADC reading:
+    // high byte 0x03 = 3, low byte 0xFF = 255, and 3 * 256 + 255 = 1023.
+    // Two operations split and join the bytes:
+    //   x >> n   shift right: moves every bit n places toward bit 0
+    //   x << n   shift left:  moves every bit n places up
+    //   x & 0xff mask: keeps the low 8 bits only
     class TypeConv
     {
     private:
@@ -73,6 +86,8 @@ namespace csjc
         ~TypeConv() = default;
 
         // Public Methods
+        // Split: a word into two bytes, a double word into four. Join: the
+        // BytesTo...() methods glue the bytes back into the original value.
         void WordTo2Bytes(uint16_t word);
         void DWordTo4Bytes(uint32_t dWord);
         uint8_t GetHiByte();
@@ -171,11 +186,14 @@ namespace csjc
         b_setByte0();
     }
 
+    // Shift right by 8 moves bits 15 to 8 down to 7 to 0; the mask keeps them.
+    // Example: 1023 >> 8 = 3.
     void TypeConv::b_setHiByte()
     {
         b_byteHi = (uint8_t)((b_wordIN >> 8) & 0xff);
     }
 
+    // The mask keeps bits 7 to 0. Example: 1023 & 0xff = 255.
     void TypeConv::b_setLoByte()
     {
         b_byteLo = (uint8_t)(b_wordIN & 0xff);
@@ -186,6 +204,8 @@ namespace csjc
         b_wordOUT = b_fGlue2Bytes(b_byteHi, b_byteLo);
     }
 
+    // Byte 3 holds bits 31 to 24, byte 0 bits 7 to 0; each shift is 8 times
+    // the byte number.
     void TypeConv::b_setByte3()
     {
         b_byte3 = (uint8_t)((b_dWordIN >> 24) & 0xff);
@@ -211,11 +231,16 @@ namespace csjc
         b_dWordOUT = b_fGlue4Bytes(b_byte3, b_byte2, b_byte1, b_byte0);
     }
 
+    // Join: the cast to uint16_t widens the byte first, so the shift by 8
+    // does not lose bits; OR places the low byte in bits 7 to 0.
+    // Example: (3 << 8) | 255 = 768 + 255 = 1023.
     uint16_t TypeConv::b_fGlue2Bytes(uint8_t hi, uint8_t lo)
     {
         return ((((uint16_t)hi << 8) & (uint16_t)0xff00) | (uint16_t)lo);
     }
 
+    // The same for four bytes: each byte is widened, shifted to its place
+    // (24, 16, 8, 0), and joined with OR.
     uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2, uint8_t b1, uint8_t b0)
     {
         return ((((uint32_t)b3 << 24) & (uint32_t)0xff000000) |

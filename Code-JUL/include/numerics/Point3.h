@@ -30,6 +30,12 @@ namespace csjc
     template <typename real>
     // FIXED 20261008: Point3 no longer inherits from Vector3 (it used none of
     // its members and stored a second set of coordinates).
+    // TEACHING NOTES (v6.1.1)
+    // Point3 is the 3D form of Point2: a position (x, y, z). The rules of
+    // points and vectors are explained in Point2.h:
+    // point - point = vector, and point + vector = point.
+    // Example: from P = (1, 2, 3) to Q = (3, 5, 9) the step is
+    // Q - P = (2, 3, 6), of length 7.
     class Point3
     {
     private:
@@ -139,6 +145,7 @@ namespace csjc
         return p;
     }
 
+    // Q - P: the vector that leads from P to Q.
     template <typename real>
     Vector3<real> Point3<real>::operator-(Point3<real> p)
     {
@@ -152,6 +159,7 @@ namespace csjc
         return vector;
     }
 
+    // P + v: the point reached from P by the step v.
     template <typename real>
     Point3<real> Point3<real>::operator+(Vector3<real> v)
     {

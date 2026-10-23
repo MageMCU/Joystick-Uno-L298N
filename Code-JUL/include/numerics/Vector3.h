@@ -28,6 +28,19 @@
 // Carpenter Software - Jesse Carpenter
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // A 3D vector v = (x, y, z) adds a third axis, z, to the plane of
+    // Vector2.h; magnitude, unit vector, dot product, angle, projection,
+    // and the operators work the same way with one more component (the
+    // terms are defined in Vector2.h).
+    // New in 3D is the cross product u x v (written u ^ v here):
+    //   u x v = (y1 z2 - z1 y2, z1 x2 - x1 z2, x1 y2 - y1 x2)
+    // It is a vector perpendicular to both u and v, of length
+    // |u| |v| sin(angle), and its direction follows the right hand rule:
+    // curl the fingers of the right hand from u to v, and the thumb points
+    // along u x v. Example: x axis x y axis = z axis,
+    // (1, 0, 0) x (0, 1, 0) = (0, 0, 1). Swapping the order reverses it:
+    // v x u = -(u x v).
     template <typename real>
     class Vector3
     {
@@ -146,6 +159,7 @@ namespace csjc
     }
 
     // METHODS
+    // |v| = sqrt(x^2 + y^2 + z^2). Example: (2, 3, 6) gives sqrt(49) = 7.
     template <typename real>
     real Vector3<real>::Magnitude()
     {
@@ -185,6 +199,7 @@ namespace csjc
         return UnitVector();
     }
 
+    // u.v = x1 x2 + y1 y2 + z1 z2, a scalar (Vector2.h, Dot()).
     template <typename real>
     real Vector3<real>::Dot(Vector3<real> v)
     {
@@ -197,6 +212,8 @@ namespace csjc
         return sum;
     }
 
+    // Each component of u x v uses the other two axes: x from y and z,
+    // y from z and x, z from x and y (the cyclic order x, y, z, x, y).
     template <typename real>
     Vector3<real> Vector3<real>::Cross(Vector3<real> v)
     {
@@ -216,6 +233,8 @@ namespace csjc
         return vector;
     }
 
+    // UnitCross(v): the unit vector perpendicular to u and v, for example
+    // the normal (perpendicular) of the plane they lie in.
     template <typename real>
     Vector3<real> Vector3<real>::UnitCross(Vector3<real> v)
     {
@@ -322,6 +341,9 @@ namespace csjc
         return sum;
     }
 
+    // u ^ v is the cross product written as an operator (see Cross()). In
+    // C++ the ^ symbol is otherwise the bitwise exclusive OR; this class
+    // gives it a new meaning (operator overloading).
     template <typename real>
     Vector3<real> Vector3<real>::operator^(Vector3<real> v)
     {

@@ -66,6 +66,26 @@
 
 namespace csjc
 {
+    // TEACHING NOTES (v6.1.1)
+    // Measured points seldom lie exactly on a line, because every
+    // measurement has a small error. A fit finds the one line that comes
+    // closest to all of them.
+    //   residual        the vertical distance between a point and the line
+    //   least squares   the line that makes the sum of the squared residuals
+    //                   as small as possible; squaring counts errors above
+    //                   and below the line alike and weighs large errors
+    //                   more
+    //   covariance      the average of dx dy, where dx and dy are the
+    //                   distances of each point from the mean; it is positive
+    //                   when y rises with x
+    // The best slope is the covariance of x and y divided by the variance
+    // of x (both sums appear in Fit()), and the line passes through the
+    // mean point (xAvr, yAvr). Lesson 6 (Statistics.h) defines the mean
+    // and the variance.
+    // Example: the points (1, 2), (2, 4), (3, 5) have the mean (2, 3.667);
+    // dx = -1, 0, 1 and dy = -1.667, 0.333, 1.333 give
+    // slope = (1.667 + 0 + 1.333) / (1 + 0 + 1) = 1.5, and the line is
+    // y = 3.667 + 1.5 (x - 2) = 1.5 x + 0.667.
     template <typename real>
     class LineFit2
     {
@@ -133,6 +153,9 @@ namespace csjc
         real Slope() const { return m_slope; }
 
         // y at x = 0: b in y = a * x + b.
+        // Intercept: where the line crosses the y axis. XIntercept: where it
+        // crosses the x axis; for a motor, the PWM below which the wheel does
+        // not turn (lesson 18).
         real Intercept() const { return m_yAvr - m_slope * m_xAvr; }
 
         // x at y = 0. Returns NaN for a horizontal line (slope 0).
@@ -155,6 +178,8 @@ namespace csjc
 
         // Root mean square vertical error of n points: the typical distance,
         // in y units, between the data and the line.
+        // RMS (root mean square): the square root of the mean of the squared
+        // residuals, one number for the size of the scatter around the line.
         real RmsError(const real x[], const real y[], int n) const
         {
             if (n < 1)
