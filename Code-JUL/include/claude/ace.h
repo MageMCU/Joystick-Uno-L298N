@@ -44,6 +44,10 @@
 // the center 511 (author decision). With the defaults the compiled program is
 // unchanged, so a Step4_Generated printed before v6.4.0 still builds
 // and drives as before.
+// Revised 20261025 (v6.5.0): the allowed center is 461 to 561, the
+// Test 3 limit of Step1_Joystick (50 counts from 511); Path B is
+// now called Fast Drive (Article 1009). The compiled program is
+// unchanged.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
@@ -60,7 +64,7 @@
 // and size, not for reading; the original headers remain the
 // reference for how the drive works. Article 1009 (revision
 // 20261021d) uses Step2_JUL for L298N Setup and gives Step3_Generator
-// and Step4_Generated in Two Ways to Drive, Path B.
+// and Step4_Generated as Fast Drive.
 //
 // ORIGINAL CODE INCORPORATED (rewritten, same behavior)
 //   Joystick.h             class Joystick<float>: the octant algorithm,
@@ -289,9 +293,9 @@ namespace csjc
               uint16_t X_CENTER = 511, uint16_t Y_CENTER = 511>
     class Ace
     {
-        static_assert(X_CENTER >= 411 && X_CENTER <= 611 &&
-                          Y_CENTER >= 411 && Y_CENTER <= 611,
-                      "each joystick center must be 411 to 611");
+        static_assert(X_CENTER >= 461 && X_CENTER <= 561 &&
+                          Y_CENTER >= 461 && Y_CENTER <= 561,
+                      "each joystick center must be 461 to 561");
         static_assert(X_PIN >= A0 && X_PIN <= A5 && Y_PIN >= A0 && Y_PIN <= A5,
                       "joystick pins must be A0 to A5");
         static_assert(acePwmPin(LEFT_EN) && acePwmPin(RIGHT_EN),

@@ -183,7 +183,7 @@ Lab 3: one copy of this table for **each** `Bits()` value tried. A value passes 
 
 **First value passing all eight positions:** `bits_____`
 
-**Drive path after the checklist (Article 1009, Two Ways to Drive):** A, Step2_JUL with both debug switches commented out, or B, Step4_Generated printed by Step3_Generator (answers to Checks 1 and 2 and Questions 3 and 4: ______). Supervisor signature.
+**Drive after the checklist (Article 1009, Simple Drive and Fast Drive):** Simple Drive, Step2_JUL with both debug switches commented out, or Fast Drive, Step4_Generated printed by Step3_Generator (answers to Checks 1 to 3 and Questions 4 and 5: ______). Supervisor signature.
 
 | Voltage check | Meter points and load state | Reading | Units | Supply, motor, conditions |
 |---------------|-----------------------------|---------|-------|---------------------------|

@@ -6,6 +6,21 @@
 
 ---
 
+## v6.5.0 (2026-10-25), Step1 center warning; Simple Drive and Fast Drive
+
+Tag: v6.5.0, to be set by the author. Requested by the author after his review of v6.4.1.a with Article 1009 (Discrepancies.md, 210 to 215). A new feature (the Test 3 warning) that keeps the existing program names, so the second number (MINOR) counts it; the author pushes MINOR releases.
+
+- **Step1_Joystick, Test 3 (212).** A center more than 50 counts from 511 fails (100 in v6.4.0 and v6.4.1): the joystick is exchanged. A center more than 25 counts from 511 passes with a warning that a new joystick is recommended, printed under Test 3 and after `Result: PASS` (author decision). 25 counts is about the dead zone of Step2_JUL (X_OFFSET 0.05), and Step2_JUL keeps the center 511, so beyond it its motors may turn slowly with the grip released; Step4_Generated corrects the center. New constant `CENTER_WARNING` and function `centerWarning()`. The report label reads `Center (511, within 50)`.
+- **Allowed center (212).** 461 to 561 (411 to 611 in v6.4.0 and v6.4.1): the `#error` of Step3_Generator, the `static_assert` of `ace.h`, and `JoystickCenter.h`.
+- **JoystickCenter.h (210).** The comments explain why the file was added, where it is used (Step1_Joystick, Step3_Generator, Step4_Generated through `ace.h`, lessons 17 and 20; not Step2_JUL), and how to update it. Step1_Joystick prints the same comments in the file it prints, so a replaced file keeps them. Added to the repository tree of `README.md`.
+- **Comments corrected (211).** Step1_Joystick said that Step2_JUL moves each reading by the center and reads the file through `Common.h`; it does neither. `platformio.ini` said the filter is lines 32 to 37; it is lines 31 to 37.
+- **Simple Drive and Fast Drive (213).** Path A and Path B are named Simple Drive (Step2_JUL with its debug switches commented out; recommended, and its code is the teaching guide) and Fast Drive (Step3_Generator and Step4_Generated; optional, advanced), as in Article 1009. "Fast" refers to the 50 ms control tick, not to the speed of the robot. `README.md`, `Code-JUL/README.md`, `Experiments.md`, the Experiment-5 and Experiment-6 cards, `LAB-NOTEBOOK-TEMPLATE.md`, `Motor-Movement-Checklist/ReadMe.md`, and the comments of `ace.h`. Earlier entries of this file and of `Discrepancies.md` keep the old names.
+- **Article 1009 (215).** Revised to cite this release. Its bench captures, Code-1 to Code-6, are to be taken from v6.5.0.
+
+Verified 20261025 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`, link time optimization): Step1_Joystick to Step4_Generated build with no warnings under `-std=gnu++11` and `-std=gnu++17`, the same sizes under both; Step1_Joystick 11584 bytes of flash (8966 in v6.4.1; the printed file now carries its comments). Step2_JUL, Step3_Generator, Step4_Generated, and lessons 17 and 20 build to the same Intel HEX as v6.4.1. In simavr, with scripted readings and answers: centers 511 and 511, 536 and 511, and 511 and 486 pass without a warning; 537 and 511, 511 and 485, and 561 and 470 pass with the warning; 562 and 511, and 511 and 460, fail Test 3 and print no file. The printed `JoystickCenter.h` equals the shipped file except the two values, and builds with Step1_Joystick and Step3_Generator; a center of 562 stops Step3_Generator with the `#error` message and Step4_Generated with the `static_assert` message. Bench test by the author pending.
+
+---
+
 ## v6.4.1 (2026-10-25), Every lesson input printed; program titles
 
 Tag: v6.4.1, to be set by the author on the commit that holds these changes (and v6.4.0, not yet committed). Requested by the author after his bench test of v6.4.0.a (passed): the lesson outputs did not give all the information (lesson 7, topic 13, did not print the scalar 3), and the serial monitor did not name the program, so a forgotten `platformio.ini` change went unnoticed (Discrepancies.md, 203 to 209). Corrections of output, so the third number (FIXES) counts them.

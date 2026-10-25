@@ -58,6 +58,19 @@ Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (b
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
 
+## Review of v6.4.1.a with Article 1009 (2026-10-25, v6.5.0)
+
+Requested by the author: check that `JoystickCenter.h` is documented, and bring the repository and Article 1009 into agreement.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 210 | `JoystickCenter.h` did not say why it was added or where it is used, and the repository tree of `README.md` did not list it. The file printed by Step1_Joystick had shorter comments than the shipped file, so a replaced file lost them. | `include/JoystickCenter.h`; Step1_Joystick; `README.md` | **Fixed 2026-10-25 (v6.5.0).** New comment block (why, where used, how to update); Step1_Joystick prints the same comments; tree updated. |
+| 211 | Step1_Joystick comments said Step2_JUL moves each reading by the center and reads the file through `Common.h` (author decision v6.4.0: Step2_JUL keeps 511). `platformio.ini` said the filter is lines 32 to 37. | Step1_Joystick; `platformio.ini` | **Fixed 2026-10-25 (v6.5.0).** Comments only. |
+| 212 | Test 3 accepted a center up to 100 counts from 511, but the dead zone of Step2_JUL is about 25 counts, so a passing joystick could leave the Step2_JUL motors turning with the grip released, and Article 1009, L298N Setup Procedure, step 6, then sent the student back to Step1. | Step1_Joystick; Step3_Generator; `ace.h` | **Fixed 2026-10-25 (v6.5.0).** Author decision: Test 3 fails above 50 counts and warns above 25 counts that a new joystick is recommended; allowed center 461 to 561. |
+| 213 | Path A and Path B carry no meaning for the reader. | READMEs, lab cards, template, checklist ReadMe, `ace.h` | **Fixed 2026-10-25 (v6.5.0).** Named Simple Drive and Fast Drive, as in Article 1009. |
+| 214 | Version number: the author pushes MINOR releases only. | `RELEASES.md` | **Decided 2026-10-25.** This release is v6.5.0 (a new feature, the Test 3 warning), not v6.4.2. |
+| 215 | Article 1009 described v6.3.1 (entry 202). | Article 1009 | **Fixed 2026-10-25 (Article 1009, 20261025a).** Revised to v6.5.0; bench captures to be taken from v6.5.0. Closes 202. |
+
 ## Review of v6.4.0.a: Lesson Outputs and Program Titles (2026-10-25, v6.4.1)
 
 Requested by the author after his bench test of v6.4.0.a (passed): review the whole repository for correctness and discrepancies, make the lessons print all their information, and print a title at the start of every step. Every lesson was run in simavr with TOPIC 0, and each topic was compared with the values it uses.

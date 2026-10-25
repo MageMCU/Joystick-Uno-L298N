@@ -54,11 +54,15 @@
 // report and the live values print in columns of spaces, not tabs.
 // Revised 20261025 (v6.4.0): the joystick center. Test 3 passes a
 // center within 100 counts of 511 (25 up to v6.3.1), because
-// Step2_JUL and Step4_Generated now move each reading by the measured
-// center. After a pass the report prints include/JoystickCenter.h
-// for Step2_JUL and Step3_Generator, in place of the map() calls of
-// v6.0.0 to v6.3.1; the live values show each reading's offset from
-// the measured center in place of the mapped value.
+// Step4_Generated now moves each reading by the measured center
+// (Step2_JUL keeps 511). After a pass the report prints
+// include/JoystickCenter.h for Step3_Generator, in place of the map()
+// calls of v6.0.0 to v6.3.1; the live values show each reading's
+// offset from the measured center in place of the mapped value.
+// Revised 20261025 (v6.5.0): Test 3 fails a center more than 50
+// counts from 511 (100 in v6.4.0 and v6.4.1), and a center more than
+// 25 counts from 511 passes with a warning that a new joystick is
+// recommended (author decision).
 // ---------------------------------------------------------------
 #include <Arduino.h>
 #include "Button.h"
@@ -74,16 +78,23 @@ using namespace csjc;
 // exactly 511 or reaches 0 and 1023 at its ends, so the self test
 // measures both instead of assuming them.
 //   ADC_MIDDLE               511, the middle of 0 to 1023.
-//   CENTER_TOLERANCE         The rest reading must lie within this
-//                            many counts of ADC_MIDDLE (v6.4.0, 25 up
-//                            to v6.3.1). Step2_JUL and Step4_Generated
-//                            move each reading by the measured center
-//                            (include/JoystickCenter.h), so a resting
-//                            grip maps to 0. A center farther than 100
-//                            counts from 511 leaves one side of the
-//                            axis less than 412 counts of travel (80
-//                            percent of full speed), and a center near
+//   CENTER_TOLERANCE         Test 3 fails a rest reading farther
+//                            than this many counts from ADC_MIDDLE
+//                            (50 since v6.5.0; 100 in v6.4.0 and
+//                            v6.4.1; 25 up to v6.3.1). A center near
 //                            0 or 1023 is a wiring fault.
+//   CENTER_WARNING           Test 3 passes a rest reading farther
+//                            than this many counts from ADC_MIDDLE
+//                            with a warning: a new joystick is
+//                            recommended (v6.5.0). The dead zone of
+//                            Step2_JUL, X_OFFSET 0.05 of 511 counts,
+//                            is about 25 counts, and Step2_JUL keeps
+//                            the center 511, so beyond 25 counts its
+//                            motors may turn slowly with the grip
+//                            released. Step4_Generated moves each
+//                            reading by the measured center
+//                            (include/JoystickCenter.h), so a resting
+//                            grip maps to 0 there.
 //   MIN_TRAVEL               Each direction must reach this many
 //                            counts from the center.
 //   RETURN_TOLERANCE         The released grip must come back within
@@ -94,7 +105,8 @@ using namespace csjc;
 //                            with the grip released.
 // ---------------------------------------------------------------
 const int ADC_MIDDLE = 511;
-const int CENTER_TOLERANCE = 100;
+const int CENTER_TOLERANCE = 50; // Test 3 FAIL above this (v6.5.0)
+const int CENTER_WARNING = 25;   // Test 3 PASS with a warning above this (v6.5.0)
 const int MIN_TRAVEL = 200;
 const int RETURN_TOLERANCE = 25;
 
@@ -370,15 +382,26 @@ void printCenterLine(const __FlashStringHelper *name, int center)
     Serial.println(F(")"));
 }
 
+// v6.5.0: true when a measured center lies more than CENTER_WARNING
+// counts from 511 (Test 3 PASS with a warning)
+bool centerWarning()
+{
+    // abs() of Arduino is a macro, so the offsets are stored first
+    int offsetA0 = axisA0.center - ADC_MIDDLE;
+    int offsetA1 = axisA1.center - ADC_MIDDLE;
+    return abs(offsetA0) > CENTER_WARNING || abs(offsetA1) > CENTER_WARNING;
+}
+
 // ---------------------------------------------------------------
 // The joystick center file (v6.4.0)
-// After a pass, the report prints a complete include/JoystickCenter.h
+// After a pass, the report prints a complete include/JoystickCenter.h,
+// with the same comments as the shipped file (v6.5.0),
 // between two marker lines. Copy every line between the markers and
 // replace the whole file with them; the PlatformIO monitor also saves
 // the output in a log file (monitor_filters = log2file), so the lines
-// can be copied from that file. Step2_JUL reads the file through
-// Common.h, and Step3_Generator writes its values into
-// Step4_Generated. Run this self test again after the joystick is
+// can be copied from that file. Step3_Generator writes its values into
+// Step4_Generated. Step2_JUL does not use the file; it keeps the
+// center 511. Run this self test again after the joystick is
 // exchanged, and copy the new file.
 // ---------------------------------------------------------------
 void printCenterFile()
@@ -395,11 +418,46 @@ void printCenterFile()
     Serial.println(F("//"));
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
-    Serial.println(F("// The joystick center, printed by Step1_Joystick (v6.4.0) after a"));
-    Serial.println(F("// passing self test: the rest reading of each axis (Test 3)."));
-    Serial.println(F("// Step3_Generator checks these two values and writes them into"));
-    Serial.println(F("// Step4_Generated; Step2_JUL does not use them."));
-    Serial.println(F("// Allowed range: 411 to 611 (Step1_Joystick, Test 3)."));
+    Serial.println(F("// The joystick center (added 20261025, v6.4.0)"));
+    Serial.println(F("//"));
+    Serial.println(F("// WHY THIS FILE WAS ADDED"));
+    Serial.println(F("// A thumb joystick seldom rests at exactly 511, the middle of the"));
+    Serial.println(F("// ADC range 0 to 1023. The rest reading of an axis is called its"));
+    Serial.println(F("// center. When the center differs from 511, a released grip reads"));
+    Serial.println(F("// as a small push in one direction, and the dead zone must be made"));
+    Serial.println(F("// wider to hide it. The bench test of v6.3.1.a showed this: an old"));
+    Serial.println(F("// joystick failed Step1_Joystick Test 3 with its x center more than"));
+    Serial.println(F("// 25 counts from 511. This file keeps the measured center of each"));
+    Serial.println(F("// axis in one place, so each program reads the same two values and"));
+    Serial.println(F("// a resting grip maps to 0."));
+    Serial.println(F("//"));
+    Serial.println(F("// WHERE IT IS USED"));
+    Serial.println(F("//   Step1_Joystick     Includes it to show the center now in the"));
+    Serial.println(F("//                      project. Test 3 measures the center; after a"));
+    Serial.println(F("//                      passing self test the report prints a new copy"));
+    Serial.println(F("//                      of this file."));
+    Serial.println(F("//   Step3_Generator    Check 1 shows these two values for the student"));
+    Serial.println(F("//                      to confirm, rejects a value outside 461 to 561"));
+    Serial.println(F("//                      at compile time (#error), and writes them into"));
+    Serial.println(F("//                      Step4_Generated as X_CENTER and Y_CENTER."));
+    Serial.println(F("//   Step4_Generated    Does not include this file. It holds the copied"));
+    Serial.println(F("//                      values, which claude/ace.h uses to move each"));
+    Serial.println(F("//                      reading by its offset from 511."));
+    Serial.println(F("//   Lesson 17          DeadZone: prints the centers and suggests the"));
+    Serial.println(F("//                      dead zone offset about each center (v6.4.1)."));
+    Serial.println(F("//   Lesson 20          JoystickMap: the center of each two segment map"));
+    Serial.println(F("//                      (v6.4.1)."));
+    Serial.println(F("//   Step2_JUL          Does not use it; it keeps the center 511"));
+    Serial.println(F("//                      (author decision, v6.4.0)."));
+    Serial.println(F("//"));
+    Serial.println(F("// HOW TO UPDATE IT"));
+    Serial.println(F("// Shipped with 511 and 511, which leave every reading unchanged."));
+    Serial.println(F("// After a passing self test, replace the whole file with the lines"));
+    Serial.println(F("// Step1_Joystick prints between its two marker lines. Then run"));
+    Serial.println(F("// Step3_Generator again so Step4_Generated receives the new values."));
+    Serial.println(F("// Allowed range: 461 to 561 (Step1_Joystick, Test 3 fails a center"));
+    Serial.println(F("// more than 50 counts from 511 and warns above 25 counts: a new"));
+    Serial.println(F("// joystick is recommended; v6.5.0)."));
     Serial.println(F("//"));
     Serial.println();
     Serial.println(F("#ifndef JoystickCenter_h"));
@@ -432,8 +490,10 @@ void printAxisReadings(int valueA0, int valueA1)
 //   Test 2  No release seen: check the pull up resistor on D2.
 //   Test 3  A center near 0 or 1023: check the VRx (A0) or VRy (A1)
 //           wire, then the 5V and GND wires of the module. A center
-//           between those, but more than 100 counts from 511: the
-//           module rests too far off center; try another module.
+//           between those, but more than 50 counts from 511: the
+//           module rests too far off center; exchange the joystick.
+//           A PASS with a center more than 25 counts from 511 prints
+//           a warning: a new joystick is recommended (v6.5.0).
 //   Test 4  One direction short of MIN_TRAVEL: check that wire, and
 //           move the grip all the way to the edge.
 //   Test 5  The grip does not come back to center: try another
@@ -454,7 +514,7 @@ void printReport()
     printAxisRow(axisA1);
     printResult(1, F("Button press                 "));
     printResult(2, F("Button release               "));
-    printResult(3, F("Center (511, within 100)     "));
+    printResult(3, F("Center (511, within 50)      "));
     printResult(4, F("Ends (200 counts each way)   "));
     printResult(5, F("Return (within 25 of center) "));
     Serial.print(F("Presses during Tests 3 to 5: "));
@@ -469,6 +529,14 @@ void printReport()
     if (all)
     {
         Serial.println(F("Result: PASS. The joystick is ready for L298N Setup."));
+        // v6.5.0: a center more than 25 counts from 511 passes with a warning
+        if (centerWarning())
+        {
+            Serial.println(F("WARNING: a center lies more than 25 counts from 511."));
+            Serial.println(F("A new joystick is recommended. Step4_Generated corrects"));
+            Serial.println(F("the center; Step2_JUL does not, so its motors may turn"));
+            Serial.println(F("slowly with the grip released (push button OFF stops them)."));
+        }
         Serial.println(F("Joystick center measured by Test 3:"));
         printCenterLine(F("A0"), axisA0.center);
         printCenterLine(F("A1"), axisA1.center);
@@ -545,6 +613,9 @@ void testCenter()
                 abs(offsetA1) <= CENTER_TOLERANCE;
     printAxisReadings(axisA0.center, axisA1.center);
     printPass(passed[2]);
+    // v6.5.0: a center more than 25 counts from 511 passes with a warning
+    if (passed[2] && centerWarning())
+        Serial.println(F("  WARNING: more than 25 counts from 511; a new joystick is recommended."));
 }
 
 // Test 4: the ends are recorded until Enter is pressed

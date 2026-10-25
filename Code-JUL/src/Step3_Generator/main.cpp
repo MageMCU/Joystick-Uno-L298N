@@ -38,6 +38,8 @@
 // center of include/JoystickCenter.h, printed by Step1_Joystick; the
 // printed program passes it to ace.h as X_CENTER and Y_CENTER. The
 // checks and questions are numbered 1 to 5.
+// Revised 20261025 (v6.5.0): the allowed center is 461 to 561, the
+// Test 3 limit of Step1_Joystick (50 counts from 511).
 //
 // STEPS 1 TO 5
 //   Step1_Joystick:    checks the joystick connections first and
@@ -144,9 +146,9 @@ const uint8_t Y_PIN = A1;
 // Joystick center, from include/JoystickCenter.h (v6.4.0)
 const uint16_t X_CENTER = JOYSTICK_A0_CENTER;
 const uint16_t Y_CENTER = JOYSTICK_A1_CENTER;
-#if JOYSTICK_A0_CENTER < 411 || JOYSTICK_A0_CENTER > 611 || \
-    JOYSTICK_A1_CENTER < 411 || JOYSTICK_A1_CENTER > 611
-#error "JoystickCenter.h: each center must be 411 to 611 (Step1_Joystick, Test 3)"
+#if JOYSTICK_A0_CENTER < 461 || JOYSTICK_A0_CENTER > 561 || \
+    JOYSTICK_A1_CENTER < 461 || JOYSTICK_A1_CENTER > 561
+#error "JoystickCenter.h: each center must be 461 to 561 (Step1_Joystick, Test 3)"
 #endif
 
 // Filled by the answers

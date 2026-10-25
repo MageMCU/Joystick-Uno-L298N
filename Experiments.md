@@ -52,7 +52,7 @@ The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Star
 ## Changes in Release v6.0.0 (20261022)
 
 - **Joystick self test.** Step1_Joystick asks the student, in the serial monitor, to leave the grip at rest, move it to every edge, release it, and press and release the push button, then reports PASS or FAIL for each test with the measured readings of A0 and A1 and the `map()` calls that fit the joystick (Article 1009, Joystick Setup).
-- **Debug switches.** Step2_JUL defines its debug switches itself, `DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N` on lines 21 and 22; `Common.h` no longer defines flags, and `DEBUG_ALL_OFF` is removed. Experiment-2 Lab 3 and Experiment-5 Lab 3 need no change (both switches on as shipped); Path A comments out lines 21 and 22.
+- **Debug switches.** Step2_JUL defines its debug switches itself, `DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N` on lines 21 and 22; `Common.h` no longer defines flags, and `DEBUG_ALL_OFF` is removed. Experiment-2 Lab 3 and Experiment-5 Lab 3 need no change (both switches on as shipped); Simple Drive comments out lines 21 and 22.
 - **Lab cards 2, 5, and 7.** New Step2_JUL line numbers (the lines move down by 6 from line 18 and by 11 from line 46) and `setLatching(true)` on line 56; lessons 18 and 19 keep their line numbers.
 
 ## Changes in Release v5.1.0 (20261021)
@@ -86,7 +86,7 @@ The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Star
 ## Changes in Release v3.2.1 (20261019)
 
 - **Pull up supply.** The 10 kOhm pull up of D2 may use the Uno 5V pin or the 5 V bus of the breadboard; the Uno 5V pin is preferred, because the 5 V bus is off whenever the motor supply is off and D2 then reads LOW, the pressed level (Article 1009, Wiring).
-- **Path B order of power.** Step2_Generator runs with the motor supply off, and the motor supply is applied after Step3_Generated is uploaded (Experiment-5 lab card; Article 1009, Two Ways to Drive).
+- **Fast Drive order of power.** Step2_Generator runs with the motor supply off, and the motor supply is applied after Step3_Generated is uploaded (Experiment-5 lab card; Article 1009, Step3 and Step4).
 - **Step3_Generated sets the L298N pins first.** Its `setup()` calls `robot.begin()` before the debug output, so D5 to D10 are outputs and LOW at once after a reset (Discrepancies.md, 85).
 - **Simulation retest.** Step1_JUL and Step3_Generated set the same motor pins for the same joystick positions in simavr (Discrepancies.md, 90); the bench retest is pending.
 
