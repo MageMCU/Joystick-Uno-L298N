@@ -20,15 +20,18 @@
 // one function per topic, and this file also selects ONE topic, or all.
 //
 // INSTRUCTIONS
-//   1. In platformio.ini, select Step5_MathLessons on line 31:
-//        build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/>
-//          -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>
-//      (one line in platformio.ini; it is shown here on two lines).
+//   1. In platformio.ini, select Step5_MathLessons in
+//        build_src_filter, lines 31 to 37 (one folder per line since
+//        v6.4.0): +<Step5_MathLessons/>, and - before the other four
+//        folders.
 //   2. Below, set LESSON to the number of ONE lesson, 1 to 20.
 //   3. Below, set TOPIC to the number of ONE topic of that lesson, or
 //      to 0 for every topic of the lesson, in order. The number of
 //      topics is LESSON_TOPICS in each lesson file.
-//   4. Build, upload, and open the Serial Monitor at 9600 baud.
+//   4. Build, upload, and open the Serial Monitor at 9600 baud. The
+//      first lines name the program, the lesson, and the topic (v6.4.1);
+//      another program name there means platformio.ini still selects
+//      that program.
 //      Lessons 1 to 16 run the selected topics once. Lessons 17 to 19
 //      use the bench of Article 1004, Experiments 6 to 8; lesson 20
 //      reads the joystick of Article 1009, Circuit-1, motor supply off.
@@ -82,33 +85,36 @@
 //   every function that is never called. A single topic therefore uses
 //   less flash and RAM than the whole lesson.
 //
-// MEMORY OF EACH LESSON (avr-gcc 7.3.0, -Os, built 20261022, v6.1.3;
-//   lessons 7 to 10, 12, 13, and 14 rebuilt for v6.3.0; lessons 3, 4,
-//   11, and 13 for v6.3.1)
+// MEMORY OF EACH LESSON (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, -Os, link
+//   time optimization; all lessons rebuilt 20261025 for v6.4.1, with the
+//   program title of setup() below and the new output lines of v6.4.1).
+//   Built in the review environment, where the v6.4.0 code measured 20
+//   bytes of flash less than in the earlier tables; pio run may show
+//   about 20 bytes more. RAM matched.
 //   TOPIC 0 is the whole lesson; the last two columns are the largest
 //   single topic of the lesson. Flash is of 32256 bytes, RAM of 2048.
 //                    Topics   TOPIC 0              One topic, largest
 //   Lesson                  Flash      RAM         Flash   RAM
-//   L01_Bitwise         6   5460  16%   446  21%    4050   370
-//   L02_TypeConv        2   4116  12%   392  19%    3702   326
-//   L03_LinearMap       3   9106  28%   328  16%    6552   286
-//   L04_MiscMath        6   9184  28%   542  26%    5784   412
-//   L05_RandomNumber    1   5956  18%   224  10%    5956   224
-//   L06_Statistics      6  10810  33%   436  21%    8064   390
-//   L07_Vector2        17  12152  38%  1058  51%    6902   488
-//   L08_Point2          4   6770  21%   452  22%    5848   340
-//   L09_Vector3        16  15436  48%  1086  53%    7536   488
-//   L10_Point3          4   6960  22%   464  22%    5918   324
-//   L11_Matrix2x2      13  14428  45%   786  38%    7234   348
-//   L12_Matrix3x3      15  18098  56%   810  40%    9562   376
-//   L13_Matrix4x4       2   7592  24%   378  18%    6780   336
-//   L14_Quaternion      9  14936  46%   584  29%    8968   332
-//   L15_LineFit         3   7446  23%   338  16%    6158   274
-//   L16_Rotation        5  15026  46%   238  11%    8024   238
-//   L17_DeadZone        1   5842  18%  1112  54%    5842  1112
-//   L18_MotorLineFit    1   9798  30%   338  16%    9798   338
-//   L19_JoystickFrame   2   7122  22%   261  12%    5522   259
-//   L20_JoystickMap     1   5838  18%   289  14%    5838   289
+//   L01_Bitwise         6   6636  21%   456  22%    5034   258
+//   L02_TypeConv        2   4824  15%   392  19%    4370   326
+//   L03_LinearMap       3   9898  31%   328  16%    7048   236
+//   L04_MiscMath        6  10114  31%   542  26%    6368   282
+//   L05_RandomNumber    1   6574  20%   224  11%    6574   224
+//   L06_Statistics      6  12174  38%   422  21%    8762   390
+//   L07_Vector2        17  14464  45%   994  49%    7440   488
+//   L08_Point2          4   7270  23%   428  21%    6346   314
+//   L09_Vector3        16  15952  49%  1086  53%    8074   320
+//   L10_Point3          4   7460  23%   464  23%    6420   324
+//   L11_Matrix2x2      13  15012  47%   786  38%    7716   264
+//   L12_Matrix3x3      15  19134  59%   810  40%   11982   376
+//   L13_Matrix4x4       2   8072  25%   378  18%    7282   336
+//   L14_Quaternion      9  16194  50%   494  24%   11260   252
+//   L15_LineFit         3   8184  25%   338  17%    6746   274
+//   L16_Rotation        5  16132  50%   246  12%    8882   234
+//   L17_DeadZone        1   6762  21%  1112  54%    6762  1112
+//   L18_MotorLineFit    1  11668  36%   338  17%   11668   338
+//   L19_JoystickFrame   2   7526  23%   261  13%    5892   259
+//   L20_JoystickMap     1   6316  20%   289  14%    6316   289
 //   RAM is the global variables only; the stack needs the rest.
 //   Since v5.1.0 every topic title is written as F("..."), so it stays
 //   in flash: lessons 7 and 9 dropped from more than 70 percent of RAM
@@ -192,8 +198,33 @@
 #error "Set TOPIC to 0 or to a topic number of this lesson (LESSON_TOPICS in the lesson file)"
 #endif
 
+// v6.4.1: the program title, printed before the lesson starts, names
+// the program, the lesson, and the topic, so the serial monitor shows
+// which program platformio.ini selected. STEP5_TEXT() turns a name
+// into text: #x is the preprocessor stringizing operator, and the two
+// steps let LESSON_NS be replaced by its value before #x is applied.
+#define STEP5_TEXT2(x) #x
+#define STEP5_TEXT(x) STEP5_TEXT2(x)
+
 void setup()
 {
+    // SAFETY: the L298N pins D5 to D10 as outputs and LOW before the
+    // title is printed, as lessons 17 to 20 do first in their Setup(),
+    // so the L298N inputs do not float while the title is sent.
+    for (int pin = 5; pin <= 10; pin++)
+    {
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LOW);
+    }
+    Serial.begin(9600);
+    while (!Serial)
+    {
+    }
+    Serial.println();
+    Serial.println(F("................................................"));
+    Serial.println(F("Step5_MathLessons: lesson " STEP5_TEXT(LESSON) " (" STEP5_TEXT(LESSON_NS) "), topic " STEP5_TEXT(TOPIC) " (0: every topic)"));
+    Serial.println(F("Selected in platformio.ini: +<Step5_MathLessons/>"));
+    Serial.flush(); // send the title before the lesson calls Serial.begin() again
     LESSON_NS::Setup();
 }
 

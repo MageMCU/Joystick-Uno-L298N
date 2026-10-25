@@ -7,13 +7,19 @@ This folder holds the test programs of the MageMCU **Numerics** repository (Alge
 ## Quick Use (PlatformIO)
 
 1. Open the folder `Code-JUL/` in VS Code (not the repository root).
-2. In `platformio.ini`, select Step5_MathLessons on line 31:
+2. In `platformio.ini`, select Step5_MathLessons with `build_src_filter`, lines 31 to 37 (one folder per line since v6.4.0):
    ```
-   build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>
+   build_src_filter =
+       +<*>
+       -<Step1_Joystick/>
+       -<Step2_JUL/>
+       -<Step3_Generator/>
+       -<Step4_Generated/>
+       +<Step5_MathLessons/>
    ```
 3. In `main.cpp` of this folder, set `#define LESSON` to the number of ONE lesson, 1 to 20.
 4. On the line below it, set `#define TOPIC` to the number of ONE topic of that lesson, or to 0 for every topic, in order (since v5.1.0).
-5. Build, upload, and open the Serial Monitor at 9600 baud. Lessons 1 to 16 run the selected topics once, from `Setup()`; lessons 17 to 19 use the bench of Article 1004, Experiments 6 to 8; lesson 20 reads the joystick of Article 1009, Circuit-1, with the motor supply off.
+5. Build, upload, and open the Serial Monitor at 9600 baud. The first lines name the program, the lesson, and the topic (since v6.4.1), for example `Step5_MathLessons: lesson 7 (L07_Vector2), topic 13`; another program name there means `platformio.ini` still selects that program. Lessons 1 to 16 run the selected topics once, from `Setup()`; lessons 17 to 19 use the bench of Article 1004, Experiments 6 to 8; lesson 20 reads the joystick of Article 1009, Circuit-1, with the motor supply off.
 6. Restore the Step2_JUL setting before uploading to the robot.
 
 ## One Lesson at a Time (since v5.0.0)
@@ -44,7 +50,7 @@ Example: `Vector3_T16_Copy()`, the 16th topic of lesson 9, prints the title `Vec
 #endif
 ```
 
-The preprocessor keeps the call when TOPIC is 0 or 16 and drops it otherwise. The linker leaves out every function that is never called, so one topic uses less flash and RAM than the whole lesson (the table in the comments of `main.cpp`). Each lesson defines `LESSON_TOPICS`, its number of topics, and `main.cpp` stops the build with `#error` when TOPIC is below 0 or above that number. Lessons 17 and 18 are one topic each, the bench program of `Setup()` and `Loop()`; TOPIC 0 and 1 both run it, and their `LESSON_TOPICS` is at the end of the file so that the line numbers cited by the lab cards do not change. Lesson 19 has two topics: `JoystickFrame_T01_RotationChecks()` (Part 1) and `JoystickFrame_T02_LiveJoystick()` (Part 2, called from `Loop()`).
+The preprocessor keeps the call when TOPIC is 0 or 16 and drops it otherwise. The linker leaves out every function that is never called, so one topic uses less flash and RAM than the whole lesson (the table in the comments of `main.cpp`). Each lesson defines `LESSON_TOPICS`, its number of topics, and `main.cpp` stops the build with `#error` when TOPIC is below 0 or above that number. Lessons 17 and 18 are one topic each, the bench program of `Setup()` and `Loop()`; TOPIC 0 and 1 both run it, and their `LESSON_TOPICS` is at the end of the file so that the line numbers cited by the lab cards do not change. The output lines added in v6.4.1 sit above the cited lines of lessons 17 and 18, so the lab cards cite the new numbers (lesson 17, lines 139 and 140; lesson 18, lines 179, 185, and 186). Lesson 19 has two topics: `JoystickFrame_T01_RotationChecks()` (Part 1) and `JoystickFrame_T02_LiveJoystick()` (Part 2, called from `Loop()`).
 
 The renamed functions of v5.1.0 (old name, new name) are listed in `RELEASES.md`, v5.1.0.
 
@@ -75,7 +81,7 @@ Code-JUL/src/Step5_MathLessons/
     ├── L17_DeadZone.h            1 topic: joystick at rest, Article 1004 Experiment-6 (hardware; any key repeats)
     ├── L18_MotorLineFit.h        1 topic: motor calibration, Article 1004 Experiment-7 (hardware; n starts a new set)
     ├── L19_JoystickFrame.h       2 topics: rotated joystick frame, Article 1004 Experiment-8 (4 checks plus hardware)
-    └── L20_JoystickMap.h         1 topic: full range and two segment maps on the live joystick (hardware, v6.1.0; the six values of a Step1_Joystick report)
+    └── L20_JoystickMap.h         1 topic: full range and two segment maps on the live joystick (hardware, v6.1.0; the four low and high values of a Step1_Joystick report, and since v6.4.1 the two centers of `include/JoystickCenter.h`)
 ```
 
 Each lesson header holds the topic functions of one class, moved from the original `TestClass.h` file, and a `Setup()` that calls them in order of their topic number, each call inside an `#if` on TOPIC. Since v5.1.0 the functions carry the topic names above and print their titles with `F("...")`; their code is otherwise unchanged. The Button and Timer tests of the original repository were not carried over; those classes are studied in Experiment-1.
@@ -153,6 +159,7 @@ The Uno has 2048 bytes of RAM. Data is the RAM used before the program runs; in 
 - 20261022 (v6.1.3): lesson 6, topic 1, prints the array size as `10.00` (it printed `1010`, the int in base 2). Checked in simavr.
 - 20261022 (v6.3.0): teaching blocks. Above every topic function, a block names the hint (the last word or phrase of the topic name, `LessonName_Tnn_Hint`), the purpose, what is learnt (terms defined at first use: declaration, instantiation, constructor, getter, setter, overload, and so on), and the expected output; in lessons 17 to 19 the blocks are at the end of the file, so the lines cited by the lab cards stay. Code was added, never removed: getters and setters in topic 1 of lessons 7, 8, 9, 10, 13, and 14 (lesson 13 also the `Matrix4x4(Matrix2x2)` constructor, lesson 14 the pure quaternion constructors), `GetElement(row, col)` in lesson 12, topic 2, and the copy assignment `v3 = v1;` in lesson 7, topic 17, and lesson 9, topic 16. Built with avr-gcc 7.3.0 with `-std=gnu++11` and `-std=gnu++17` (`-Wall -Wextra`): every lesson with every topic, no warnings; the 16 changed builds print every line of v6.2.3 in the same order, plus the new lines (simavr); all other builds give the same Intel HEX as v6.2.3.
 - 20261022 (v6.3.1): lesson 3, topic 3, prints its table in columns of fixed width with `dtostrf()` (tabs up to v6.3.0); lesson 11, topic 13, and lesson 13, topic 2, call `Rotation()` and `Translation()` on a finished identity matrix `I` (they called them on the matrix being declared). Checked in simavr; all other builds give the same Intel HEX as v6.3.0.
+- 20261025 (v6.4.1): every input a topic uses is printed, with a correct label (author's review of v6.4.0.a: lesson 7, topic 13, did not print the scalar 3). Code was added, never removed; wrong or unclear labels were corrected. Lesson 1, topic 6, prints a and its reverse with labels and adds the same bits in an `unsigned int` (45568 does not fit in an `int`, which stores -19968); lesson 2 names each byte, in decimal and hex; lessons 3, 5, and 6 print the map and the random intervals, and lesson 6, topic 5, the starting array and the outlier written by `QueueReset()`; lesson 4 names the columns of topics 2 to 5 and prints the input of topic 6; lesson 7 prints the scalar of topic 13 and the cross product of topic 9, and labels topic 8 `mag = v2.Magnitude()`; lesson 8 names the vector `v`; lesson 11 labels the matrix of topic 2 and prints the 30 degree angle of topic 13; lesson 12 prints the index of topic 2, det M in topics 6 and 7, the three 45 degree angles of topic 14, and the ranges and det A of topic 15 (with a line when A is not invertible); lesson 14 names the columns and the angles, separates every label from its values, and prints the axis in topics 8 and 9 (topic 9 reads it back with `GetAxis()`); lesson 15 prints the data of each fit; lesson 16 prints its quaternions; lesson 17 prints the centers of `include/JoystickCenter.h`, the average in ADC counts, and the offset about the file center; lesson 18 echoes each count and prints the five PWM and RPM pairs; lesson 19 prints the mount angle and the ADC counts, and its check labels name the input vectors; lesson 20 takes its centers from `include/JoystickCenter.h` and prints its constants. `main.cpp` holds D5 to D10 LOW, then prints the program title before the lesson starts. Every expected output block was updated. Built with avr-gcc 7.3.0 with `-std=gnu++11` and `-std=gnu++17` (`-Wall -Wextra`): every lesson with every topic, no warnings, the same sizes under both standards; flash and RAM in `main.cpp`. In simavr, every expected output line matches; lessons 3, 15, 16, and 19 print `Failures: 0`; lesson 18 was run with five typed counts.
 
 ## Known Items for Review
 

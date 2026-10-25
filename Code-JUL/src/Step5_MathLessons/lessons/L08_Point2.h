@@ -164,7 +164,7 @@ void Point2_T01_Constructor()
     Point2<float> p3(array);
     printPoint2("p3(array) =", p3);
     
-    printSubTitle("Vector2<float> v1(1, 2);");
+    printSubTitle(F("Vector2<float> v(1, 2);")); // v6.4.1: the name is v (it read v1)
     Vector2<float> v(1, 2);
     printVector2("v(1, 2) =", v);
     Point2<float> p4(v);

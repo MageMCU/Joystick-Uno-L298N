@@ -75,6 +75,7 @@ using namespace csjc;
 //                  nothing but its argument). Once R exists, R =
 //                  R.Rotation(a); is an ordinary assignment (lesson 19).
 // Expected output:
+//   angle: 30 degrees (counterclockwise)
 //   R
 //   0.87 -0.50
 //   0.50 0.87
@@ -101,6 +102,8 @@ void Matrix2x2_T13_Rotation()
     // while R was still being built; Discrepancies.md, 193).
     Matrix2x2<float> I;
     Matrix2x2<float> R = I.Rotation(30 * DEG_TO_RAD);
+    // v6.4.1: print the angle of the rotation, the input of R.
+    Serial.println(F("angle: 30 degrees (counterclockwise)"));
     printMatrix2x2("R ", R);
 
     for (int i = 0; i < 5; i++)
@@ -452,6 +455,7 @@ void Matrix2x2_T03_Determinant()
 //   String(v, 2)   prints a float with 2 decimals; String(index, 0) prints
 //                  the float index without decimals.
 // Expected output:
+//   m1 by its getters: E00() E01() / E10() E11()
 //   1.00 2.00
 //   3.00 4.00
 //   index = m1.GetIndex(1, 0):  2
@@ -464,6 +468,8 @@ void Matrix2x2_T02_Getters()
 
     Matrix2x2<float> m1((float)1, (float)2, (float)3, (float)4);
 
+    // v6.4.1: label the matrix the getters read.
+    Serial.println(F("m1 by its getters: E00() E01() / E10() E11()"));
     Serial.print(String(m1.E00(), 2));
     Serial.print(" ");
     Serial.println(String(m1.E01(), 2));

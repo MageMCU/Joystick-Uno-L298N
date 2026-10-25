@@ -68,7 +68,10 @@ using namespace csjc;
 //                  until the value is not 0.
 //   do { } while (condition); runs its body at least once.
 // Expected output (random values):
-//   A(aM): nine whole numbers   Ainv: its inverse
+//   A: random(18) - 9, whole numbers -9 to 8, never 0
+//   A(aM): nine whole numbers   det A: (not 0 when A is invertible)
+//   Ainv: its inverse
+//   x: random(10) - 5, whole numbers -5 to 4, never 0
 //   x(aV): (2.00, -5.00, -1.00) for example
 //   Invertible
 //   x = A.Solve(b): and x = A.Cramer(b): the same x again
@@ -98,7 +101,10 @@ void Matrix3x3_T15_FindInvertible()
 
     // Matrix A
     Matrix3x3<float> A(aM);
+    // v6.4.1: the ranges of the random whole numbers, and det A.
+    Serial.println(F("A: random(18) - 9, whole numbers -9 to 8, never 0"));
     printMatrix3x3("A(aM): ", A);
+    printResult(F("det A: "), A.Determinant());
 
     // Inverse of Matrix A
     Matrix3x3<float> Ainv = A.Inverse();
@@ -116,6 +122,7 @@ void Matrix3x3_T15_FindInvertible()
     }
 
     // Vector x
+    Serial.println(F("x: random(10) - 5, whole numbers -5 to 4, never 0")); // v6.4.1
     Vector3<float> x(aV);
     printVector3("x(aV): ", x);
 
@@ -133,6 +140,11 @@ void Matrix3x3_T15_FindInvertible()
 
         x = A.Cramer(b);
         printVector3("x = A.Cramer(b): ", x);
+    }
+    else
+    {
+        // v6.4.1: say so when the random A has no inverse.
+        Serial.println(F("NOT invertible (det A = 0): reset the board for a new A"));
     }
 }
 
@@ -155,6 +167,8 @@ void Matrix3x3_T15_FindInvertible()
 //                  the original author kept them out (stack and heap
 //                  collision).
 // Expected output:
+//   angles: 45 degrees about x, 45 about y, 45 about z (XYZ order)
+//   A (the identity), then
 //   ALL
 //   0.50 -0.15 0.85
 //   0.50 0.85 -0.15
@@ -167,6 +181,8 @@ void Matrix3x3_T14_Rotation()
     // In Development --------------------- FIXME
     // working one-direction only (CCW)
     float radian = (float)45 * DEG_TO_RAD;
+    // v6.4.1: print the three angles, the inputs of Rotation().
+    Serial.println(F("angles: 45 degrees about x, 45 about y, 45 about z (XYZ order)"));
 
     Matrix3x3<float> A; // identity
     printMatrix3x3("A ", A);
@@ -389,6 +405,7 @@ void Matrix3x3_T08_Solve()
 //   If det M were 0, Inverse() would return the zero matrix; pass the
 //   address of a bool, M.Inverse(&ok), to be told.
 // Expected output:
+//   det M: 5.00   (v6.4.1, printed after M(array))
 //   M.Inverse():
 //   0.40 0.20 -0.40
 //   -1.40 0.80 0.40
@@ -401,6 +418,7 @@ void Matrix3x3_T07_Inverse()
     float array[] = {2, 1, 2, 3, 2, 2, 1, 2, 3};
     Matrix3x3<float> M(array);
     printMatrix3x3("M(array): ", M);
+    printResult(F("det M: "), M.Determinant()); // v6.4.1: the divisor of adj(M)
     M = M.Inverse();
     printMatrix3x3("M.Inverse(): ", M);
     // Verified Output
@@ -418,6 +436,7 @@ void Matrix3x3_T07_Inverse()
 //   Adjoint        the cofactors, transposed. M adj(M) = det(M) I.
 //   Check: with det M = 5, adj(M) / 5 is the inverse printed in T07.
 // Expected output:
+//   det M: 5.00   (v6.4.1, printed after M(array))
 //   M.Adjoint():
 //   2.00 1.00 -2.00
 //   -7.00 4.00 2.00
@@ -430,6 +449,7 @@ void Matrix3x3_T06_Adjoint()
     float array[] = {2, 1, 2, 3, 2, 2, 1, 2, 3};
     Matrix3x3<float> M(array);
     printMatrix3x3("M(array): ", M);
+    printResult(F("det M: "), M.Determinant()); // v6.4.1: links T06 to T07
     M = M.Adjoint();
     printMatrix3x3("M.Adjoint(): ", M);
     // Verified Output
@@ -537,6 +557,7 @@ void Matrix3x3_T03_Determinant()
 //   Here int index is the proper type for the result of GetIndex()
 //   (compare lesson 11, T02).
 // Expected output:
+//   index = M.GetIndex(0, 1): 1
 //   M.GetElement(1): 2.00
 //   M.SetElement(1, 2.05): row 0 becomes 1.00 2.05 3.00
 //   M.GetElement(0, 1): 2.05
@@ -549,6 +570,9 @@ void Matrix3x3_T02_Access()
     Matrix3x3<float> M(array);
     printMatrix3x3("M(array): ", M);
     int index = M.GetIndex(0, 1);
+    // v6.4.1: print the index that GetIndex() returns.
+    Serial.print(F("index = M.GetIndex(0, 1): "));
+    Serial.println(index);
     float element = M.GetElement(index);
 
     Serial.print("M.GetElement(");

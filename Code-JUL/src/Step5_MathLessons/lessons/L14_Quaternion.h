@@ -57,10 +57,16 @@ using namespace csjc;
 //   The printed angle climbs 0, 2, 4, ... 358: the product has added the
 //   turns, and the x component reaches 1.000 at 180 degrees.
 //   String concatenation  String(iAngle) + " " joins two pieces of text.
-// Expected output (180 lines):
+// Expected output (180 lines between the input lines and the axis):
+//   axis (1.00, 0.00, 0.00)
+//   c: 2 degrees about the axis; each line: step in degrees, w,x,y,z, angle
 //   0 1.000,0.000,0.000,0.000 angle: 0.000
 //   180 0.000,1.000,0.000,0.000 angle: 180.000
 //   358 -1.000,0.017,0.000,0.000 angle: 358.000
+//   axis = c.GetAxis() (1.00, 0.00, 0.00)
+//   q after 360 degrees, q.GetAxis() (0.00, 0.00, 0.00)
+//   (v6.4.1: the axis lines; up to v6.4.0 the topic printed the angle
+//   only.)
 // ---------------------------------------------------------------
 void Quaternion_T09_ToAngleAxis()
 {
@@ -76,6 +82,9 @@ void Quaternion_T09_ToAngleAxis()
     Quaternion<float> c(axis, radian); // Constant set to 2-degrees
     // Multiplicative
     Quaternion<float> q(axis, 0.0);
+    // v6.4.1: print the inputs and name the columns.
+    printVector3(F("axis"), axis);
+    Serial.println(F("c: 2 degrees about the axis; each line: step in degrees, w,x,y,z, angle"));
 
     // Game Loop 1 with first quaternion multiplication
     int iAngle = 0;
@@ -91,6 +100,14 @@ void Quaternion_T09_ToAngleAxis()
         // Counter
         iAngle += 2; // --------------------- Constant set to 2-degrees
     } while (iAngle < 360);
+
+    // v6.4.1: the axis read back out of a quaternion, the second half
+    // of the angle axis pair (GetAxis(), Quaternion.h). c holds 2
+    // degrees about the axis. After the last pass q holds 360 degrees
+    // (w = -1, x = y = z = 0): a full turn has no axis, and GetAxis()
+    // returns the zero vector.
+    printVector3(F("axis = c.GetAxis()"), c.GetAxis());
+    printVector3(F("q after 360 degrees, q.GetAxis()"), q.GetAxis());
 }
 
 // T08: a 1 degree turn about (1, 2, 3) applied 720 times, four columns
@@ -114,7 +131,10 @@ void Quaternion_T09_ToAngleAxis()
 //   CSV            comma separated values; the four columns can be pasted
 //                  into a spreadsheet and plotted as four curves.
 //   Game loop      do { } while (i < 721); one small update per pass.
-// Expected output (721 lines, about a minute):
+// Expected output (721 lines, about a minute, after two input lines,
+// v6.4.1):
+//   axis (1.00, 2.00, 3.00)
+//   c: 1 degree about the axis; 721 lines: w,x,y,z
 //   1.0000000,0.0000000,0.0000000,0.0000000
 //   0.9999619,0.0023323,0.0046645,0.0069968
 //   line 361 (step 360): -0.9999999,-0.0000002,0.0000005,0.0000001
@@ -134,6 +154,9 @@ void Quaternion_T08_Multiplication()
     Quaternion<float> c(axis, radian);
     // Multiplicative
     Quaternion<float> q(axis, 0.0);
+    // v6.4.1: print the inputs and name the columns.
+    printVector3(F("axis"), axis);
+    Serial.println(F("c: 1 degree about the axis; 721 lines: w,x,y,z"));
 
     // Game Loop 1 with first quaternion multiplication
     int i = 0;
@@ -177,7 +200,7 @@ void Quaternion_T08_Multiplication()
 //   (T06); the general formula also covers quaternions of other lengths.
 //   Check: 30 degrees about (1, 1, 1): w = cos(15 degrees) = 0.97.
 // Expected output:
-//   q(axis, angleRadian)0.97 0.15 0.15 0.15
+//   q(axis, 30 degrees) 0.97 0.15 0.15 0.15
 //   qI = q.Inverse(): 0.97 -0.15 -0.15 -0.15
 //   identity = q * qI: 1.00 0.00 0.00 0.00
 // ---------------------------------------------------------------
@@ -189,7 +212,7 @@ void Quaternion_T07_Inverse()
     Vector3<float> axis(1, 1, 1);
     printVector3("axis(1, 1, 1)", axis);
     Quaternion<float> q(axis, angleRadian);
-    printQuaternion("q(axis, angleRadian)", q);
+    printQuaternion(F("q(axis, 30 degrees) "), q); // v6.4.1: angle in the label
 
     Quaternion<float> qI = q.Inverse();
     printQuaternion("qI = q.Inverse(): ", qI);
@@ -313,9 +336,10 @@ void Quaternion_T03_Norm()
 //                  is needed.
 //   q = q.UnitQuaternion(); replaces q with its normalized copy.
 // Expected output:
-//   q: -0.18 -0.37 -0.55 -0.73
+//   q: -1.00 -2.00 -3.00 -4.00
+//   q = q.UnitQuaternion(): -0.18 -0.37 -0.55 -0.73
 //   n = q.NormSquared(): 1.0000
-//   Norm Deviation: FALSE
+//   Norm Deviation (norm not 1): FALSE
 // ---------------------------------------------------------------
 void Quaternion_T02_NormSquared()
 {
@@ -324,14 +348,14 @@ void Quaternion_T02_NormSquared()
     Quaternion<float> q(-1, -2, -3, -4);
     printQuaternion("q: ", q);
     q = q.UnitQuaternion();
-    printQuaternion("q: ", q);
+    printQuaternion(F("q = q.UnitQuaternion(): "), q); // v6.4.1: label
 
     float n = q.NormSquared();
     Serial.print("n = q.NormSquared(): ");
     Serial.println(String(n, 4));
 
     bool flag = q.NormDeviation(n);
-    Serial.print("Norm Deviation: ");
+    Serial.print(F("Norm Deviation (norm not 1): ")); // v6.4.1: label
     if (flag) Serial.println("TRUE");
     else Serial.println("FALSE");
 }
@@ -365,10 +389,13 @@ void Quaternion_T02_NormSquared()
 //   Getters        q2.w(), q2.x(), q2.y(), q2.z(), q2.Element(3).
 //   Setters        q1.w(1), q1.x(0.5), q1.y(0.25), q1.z(0.125).
 // Expected output:
-//   q10.00 0.00 0.00 0.00
-//   q21.00 2.00 3.00 4.00
-//   q3(axis1, angleRadian)1.00 0.00 0.00 0.00
-//   q4(axis2, angleRadian)0.92 0.10 0.20 0.31
+//   columns: w x y z
+//   q1 0.00 0.00 0.00 0.00
+//   q2 1.00 2.00 3.00 4.00
+//   q3(axis1, 0 degrees) 1.00 0.00 0.00 0.00
+//   q4(axis2, 45 degrees) 0.92 0.10 0.20 0.31
+//   (v6.4.1: the column line, the angles in the labels, and a space
+//   after each label; up to v6.4.0 the labels ran into the values.)
 //   q5(5, 6, 7) 0.00 5.00 6.00 7.00
 //   q6(axis2) 0.00 1.00 2.00 3.00
 //   q2.w() 1.00  q2.x() 2.00  q2.y() 3.00  q2.z() 4.00  q2.Element(3) 4.00
@@ -380,22 +407,24 @@ void Quaternion_T01_Constructor()
     printTitle(F("Quaternion T01 Constructors"));
 
     Quaternion<float> q1;
-    printQuaternion("q1", q1);
+    // v6.4.1: name the columns; each label ends with a space.
+    Serial.println(F("columns: w x y z"));
+    printQuaternion(F("q1 "), q1);
 
     Quaternion<float> q2(1, 2, 3, 4);
-    printQuaternion("q2", q2);
+    printQuaternion(F("q2 "), q2);
 
     float angleRadian = 0.0 * DEG_TO_RAD;
     Vector3<float> axis1(1, 1, 1);
     printVector3("axis1(1, 1, 1)", axis1);
     Quaternion<float> q3(axis1, angleRadian);
-    printQuaternion("q3(axis1, angleRadian)", q3);
+    printQuaternion(F("q3(axis1, 0 degrees) "), q3);
 
     angleRadian = 45.0 * DEG_TO_RAD;
     Vector3<float> axis2(1, 2, 3);
     printVector3("axis2(1, 2, 3)", axis2);
     Quaternion<float> q4(axis2, angleRadian);
-    printQuaternion("q4(axis2, angleRadian)", q4);
+    printQuaternion(F("q4(axis2, 45 degrees) "), q4);
 
     // v6.3.0: the pure quaternion constructors make (0, x, y, z), the
     // form that carries a vector into a rotation (Rotate()).

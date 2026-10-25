@@ -58,7 +58,9 @@ using namespace csjc;
 //   Method call    randomNumber.Random() returns the next value; it takes
 //                  no argument because the bounds are stored in the object.
 //   String(x)      a float printed through String() has 2 decimals.
-// Expected output (100 lines, different on each run):
+// Expected output (different on each run):
+//   RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10
+//   then 100 lines:
 //   values such as 6.89, 7.44, 6.27, all from 0.00 to 9.99
 // ---------------------------------------------------------------
 void RandomNumber_T01_Random()
@@ -66,6 +68,8 @@ void RandomNumber_T01_Random()
     printTitle(F("RandomNumber T01 Random"));
 
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
 
     int cnt = 0;
     while (cnt < 100)

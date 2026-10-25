@@ -17,9 +17,17 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
 ## Notes for the bench
 
 - Lab 1: leave the two `analogRead()` lines of `loop()` as shipped, lines 101 and 102, x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed here in v3.2.0; up to v3.1.2 this lab read x on A1 and y on A0; see Discrepancies.md, 68). `setup()` first sets D5 to D10 as outputs and LOW; upload and open the serial monitor before the bench supply is applied, and remove the supply before any upload or reset.
-- Lab 3 uses the Code-JUL folder with Step2_JUL selected on line 31 of platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick, which checks the joystick first; copy the Step2_JUL line of the notes over line 31):
+- Lab 3 uses the Code-JUL folder with Step2_JUL selected in platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick, which checks the joystick first; in `build_src_filter`, lines 31 to 37, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other four folders the sign `-`):
 
-  `build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> -<Step5_MathLessons/>`
+  ```
+  build_src_filter =
+      +<*>
+      -<Step1_Joystick/>
+      +<Step2_JUL/>
+      -<Step3_Generator/>
+      -<Step4_Generated/>
+      -<Step5_MathLessons/>
+  ```
 
   Since v3.0.1 the shipped line also excludes the generator programs, named Step2_Generator and Step3_Generated since v3.1.0, when the math lessons became Step4_MathLessons.
 
@@ -32,7 +40,7 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
   | A. Stay with Step2_JUL | Comment out lines 21 and 22 of Step2_JUL (`DEBUG_STEP2_JOYSTICK`, `DEBUG_STEP2_L298N`), then upload Step2_JUL again | 100 ms |
   | B. Continue to Step 3 | With the motor supply off, select Step3_Generator, answer its checks with the value found, copy the printed program into `Code-JUL/src/Step4_Generated/main.cpp`, select Step4_Generated, and upload it; apply the motor supply after the upload | 50 ms |
 
-  Both paths set the same motor pins for the same joystick readings, with the center offsets of Step2_JUL as shipped (0.05 and 0.06, lines 132 and 133); `ace.h` keeps these values, so offsets changed in Experiment-6 apply to Path A only. Path B uses `include/claude/ace.h` only, not `Common.h`; its `DEBUG_GENERATED` output prints once at startup and may stay on; press the push button after the line Ready (v6.2.3). The `build_src_filter` lines for Step3_Generator and Step4_Generated are in `Code-JUL/platformio.ini` (notes below line 31) and `Code-JUL/README.md` (Selecting a Program); Article 1009, Two Ways to Drive, gives the Path B procedure step by step.
+  Both paths set the same motor pins for the same joystick readings, with the center offsets of Step2_JUL as shipped (0.05 and 0.06, lines 132 and 133); `ace.h` keeps these values, so offsets changed in Experiment-6 apply to Path A only. Path B uses `include/claude/ace.h` only, not `Common.h`; its `DEBUG_GENERATED` output prints once at startup and may stay on; press the push button after the line Ready (v6.2.3). The `build_src_filter` lines for Step3_Generator and Step4_Generated are in `Code-JUL/platformio.ini` (notes below the filter) and `Code-JUL/README.md` (Selecting a Program); Article 1009, Two Ways to Drive, gives the Path B procedure step by step.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

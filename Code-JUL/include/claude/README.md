@@ -21,6 +21,8 @@ Revised for v3.2.0 (2026-10-18), requested by the author after a bench test: the
 
 Revised for v3.2.1 (2026-10-19), requested by the author: the program printed by Step3_Generator calls `robot.begin()` as the first line of `setup()`, ahead of the debug output, so D5 to D10 are outputs and LOW at once after a reset (Discrepancies.md, 85). The shipped Step4_Generated was printed again (bits_0000, with the debug data). `ace.h` changed in one comment only.
 
+Revised for v6.4.0 (2026-10-25), requested by the author after his bench test of v6.3.1.a: `ace.h` takes the joystick center as two more template parameters, `X_CENTER` and `Y_CENTER`, at the end of the list (default 511, range 411 to 611). `tick()` moves each reading by `CENTER - 511` and holds it inside 0 to 1023, so a resting grip gives the command 0; `compute()` is unchanged. Step2_JUL keeps the center 511 (author decision). Step3_Generator reads the centers from `include/JoystickCenter.h`, shows them as Check 1, and prints them into Step4_Generated with `TICK_MS` and `DEBOUNCE_MS`, which come before them in the list. Host test: for six pairs of centers and all 1024 x 1024 pairs of readings, the same commands as the float chain of Step2_JUL applied to the moved readings. Cost: about 24 cycles (1.5 µs) per tick and 46 bytes of flash when a center differs from 511; nothing for 511.
+
 Revised for v5.0.0 (2026-10-21), requested by the author: the default of `LED_PIN` in `ace.h` is 12, the indicator LED of Article 1009, Circuit-1, in place of 3. Step4_Generated passes `LED_PIN = 12` itself, so it builds to the same Intel HEX. The bench test of 2026-10-21 (release v4.0.1) passed.
 
 ## Original code incorporated into ace.h

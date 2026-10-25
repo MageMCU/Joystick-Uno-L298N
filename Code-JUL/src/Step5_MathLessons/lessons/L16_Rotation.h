@@ -80,16 +80,20 @@ void check(const __FlashStringHelper *label, float observed, float expected, flo
 //   Getters q.w(), q.z() and v.x(), v.y(), v.z() feed the checks.
 //   -0.0000        a signed zero from rounding; it passes the tolerance.
 // Expected output (all PASS):
+//   q (w x y z) 0.71 0.00 0.00 0.71
+//   v = q.Rotate((1, 0, 0)) (-0.00, 1.00, 0.00)   (v6.4.1)
 //   q.w 0.7071  q.z 0.7071  Rotated (0, 1, 0)
 // ---------------------------------------------------------------
 void Rotation_T01_RotateVector()
 {
     printTitle(F("Rotation T01 Rotate (1, 0, 0) by 90 degrees about z"));
     Quaternion<float> q(Vector3<float>(0, 0, 1), 90 * DEG_TO_RAD);
+    printQuaternion(F("q (w x y z) "), q); // v6.4.1: print the input
     // q = (cos 45, 0, 0, sin 45)
     check(F("q.w"), q.w(), 0.7071, 0.0001);
     check(F("q.z"), q.z(), 0.7071, 0.0001);
     Vector3<float> v = q.Rotate(Vector3<float>(1, 0, 0));
+    printVector3(F("v = q.Rotate((1, 0, 0))"), v); // v6.4.1
     check(F("Rotated x"), v.x(), 0, 0.0001);
     check(F("Rotated y"), v.y(), 1, 0.0001);
     check(F("Rotated z"), v.z(), 0, 0.0001);
@@ -146,6 +150,8 @@ void Rotation_T02_QuaternionToMatrix()
 //   Nested calls   MatrixToQuaternion(QuaternionToMatrix(q)): the inner
 //                  call runs first.
 // Expected output (all PASS):
+//   q (w x y z) 0.79 0.16 0.33 0.49
+//   q2 (w x y z) 0.79 0.16 0.33 0.49   (v6.4.1)
 //   |q . q2| 1.0000   Angle of q2 (degrees) 75.0000
 // ---------------------------------------------------------------
 void Rotation_T03_MatrixToQuaternion()
@@ -153,6 +159,10 @@ void Rotation_T03_MatrixToQuaternion()
     printTitle(F("Rotation T03 Matrix to Quaternion (round trip)"));
     Quaternion<float> q(Vector3<float>(1, 2, 3), 75 * DEG_TO_RAD);
     Quaternion<float> q2 = MatrixToQuaternion(QuaternionToMatrix(q));
+    // v6.4.1: print both quaternions; q2 may be q or -q (the same
+    // rotation), which is why the check uses |q . q2|.
+    printQuaternion(F("q (w x y z) "), q);
+    printQuaternion(F("q2 (w x y z) "), q2);
     // q2 equals q or -q; both are the same rotation, so |q . q2| = 1.
     check(F("|q . q2|"), fabs(QuaternionDot(q, q2)), 1, 0.0001);
     check(F("Angle of q2 (degrees)"), q2.GetEulerAngle(), 75, 0.01);
@@ -174,6 +184,8 @@ void Rotation_T03_MatrixToQuaternion()
 //                  0.25 is a double in C++ (32 bits on the Uno as well).
 //   Shorter path   with -q1 slerp still turns 45 degrees, not 135.
 // Expected output (all PASS):
+//   q0 (w x y z) 1.00 0.00 0.00 0.00
+//   q1 (w x y z) 0.71 0.00 0.00 0.71   (v6.4.1)
 //   22.4999 (22.5 within the tolerance), 45.0000, 67.5000, 45.0000
 // ---------------------------------------------------------------
 void Rotation_T04_Slerp()
@@ -182,6 +194,8 @@ void Rotation_T04_Slerp()
     Vector3<float> z(0, 0, 1);
     Quaternion<float> q0(z, 0);
     Quaternion<float> q1(z, 90 * DEG_TO_RAD);
+    printQuaternion(F("q0 (w x y z) "), q0); // v6.4.1: print the inputs
+    printQuaternion(F("q1 (w x y z) "), q1);
     check(F("t = 0.25 angle"), Slerp(0.25f, q0, q1).GetEulerAngle(), 22.5, 0.01);
     check(F("t = 0.50 angle"), Slerp(0.50f, q0, q1).GetEulerAngle(), 45, 0.01);
     check(F("t = 0.75 angle"), Slerp(0.75f, q0, q1).GetEulerAngle(), 67.5, 0.01);
@@ -206,6 +220,7 @@ void Rotation_T04_Slerp()
 //   fabs(q.w()) accepts w = 1 or w = -1: 720 degrees, back to the start
 //   either way (double cover).
 // Expected output (all PASS):
+//   q after 720 products (w x y z) 1.00 0.00 -0.00 -0.00   (v6.4.1)
 //   Norm after 720 products 1.0000
 //   w after 720 degrees 1.0000
 //   Failures: 0
@@ -222,6 +237,7 @@ void Rotation_T05_Drift()
     Quaternion<float> q(axis, 0);
     for (int i = 0; i < 720; i++)
         q = q.Multiply(c);
+    printQuaternion(F("q after 720 products (w x y z) "), q); // v6.4.1
     check(F("Norm after 720 products"), q.Norm(), 1, 0.0001);
     check(F("w after 720 degrees"), fabs(q.w()), 1, 0.001);
 }

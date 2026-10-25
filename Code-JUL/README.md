@@ -20,29 +20,66 @@ Drive software. Namespace **csjc** (Carpenter Software, Jesse Carpenter).
 
 `platformio.ini` compiles one `src/` folder at a time through `build_src_filter`. A leading `+` includes a folder and a leading `-` excludes it. **Wire once.** Complete every connection of Article 1009, Circuit-1, before Step 1; Step1_Joystick to Step4_Generated use this one wiring unchanged, and every correction is made in software.
 
-The shipped setting, line 31, selects Step1_Joystick, the joystick self test (Article 1009, Joystick Setup):
+The shipped setting, lines 31 to 37, selects Step1_Joystick, the joystick self test (Article 1009, Joystick Setup):
 
 ```
-build_src_filter = +<*> +<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> -<Step5_MathLessons/>
+build_src_filter =
+    +<*>
+    +<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    -<Step5_MathLessons/>
 ```
+
+Since v6.4.0 the filter is written one folder per line. To select another program, give its line the sign `+` and the other four folder lines the sign `-`; `+<*>` stays as written. Up to v6.3.1 the filter was one line, line 31, copied from the notes below it.
 
 Step2_JUL, the diagnostic program that also drives (L298N Setup and Two Ways to Drive):
 
 ```
-build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> -<Step5_MathLessons/>
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    +<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    -<Step5_MathLessons/>
 ```
 
-Renumbered 2026-10-17: Step1_Joystick was removed, and Step2_JUL became Step1_JUL. Renumbered again 2026-10-18 (v3.1.0), in the order of use: Step2_Generator (formerly Step3_Generator, before that Step4_Generator), Step3_Generated (formerly Step4_Generated, before that Step5_Generated), and Step4_MathLessons (formerly Step2_MathLessons, before that Step3_MathLessons). Renumbered again 2026-10-21 (v4.0.0): Step1_Joystick is new, and the others move up one number, to Step2_JUL, Step3_Generator, Step4_Generated, and Step5_MathLessons. Since v5.0.0 the math lessons are selected the same way, with one more step: copy this line over line 31, then set `#define LESSON` (1 to 20, since v6.1.0) in `src/Step5_MathLessons/main.cpp`, which compiles one lesson only, and, since v5.1.0, `#define TOPIC` on the line below it, which runs one topic of that lesson, or every topic with 0 (see `src/Step5_MathLessons/README.md`):
+Renumbered 2026-10-17: Step1_Joystick was removed, and Step2_JUL became Step1_JUL. Renumbered again 2026-10-18 (v3.1.0), in the order of use: Step2_Generator (formerly Step3_Generator, before that Step4_Generator), Step3_Generated (formerly Step4_Generated, before that Step5_Generated), and Step4_MathLessons (formerly Step2_MathLessons, before that Step3_MathLessons). Renumbered again 2026-10-21 (v4.0.0): Step1_Joystick is new, and the others move up one number, to Step2_JUL, Step3_Generator, Step4_Generated, and Step5_MathLessons. Since v5.0.0 the math lessons are selected the same way, with one more step: select Step5_MathLessons, then set `#define LESSON` (1 to 20, since v6.1.0) in `src/Step5_MathLessons/main.cpp`, which compiles one lesson only, and, since v5.1.0, `#define TOPIC` on the line below it, which runs one topic of that lesson, or every topic with 0 (see `src/Step5_MathLessons/README.md`):
 
 ```
-build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    +<Step5_MathLessons/>
 ```
 
-Step3_Generator and Step4_Generated are selected the same way (since v3.0.1; up to v3.0.0 they had their own environments, `env:step3` and `env:step4`, and build flags). Copy one of these lines over line 31:
+Step3_Generator and Step4_Generated are selected the same way (since v3.0.1; up to v3.0.0 they had their own environments, `env:step3` and `env:step4`, and build flags). Step3_Generator:
 
 ```
-build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> +<Step3_Generator/> -<Step4_Generated/> -<Step5_MathLessons/>
-build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> +<Step4_Generated/> -<Step5_MathLessons/>
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    +<Step3_Generator/>
+    -<Step4_Generated/>
+    -<Step5_MathLessons/>
+```
+
+Step4_Generated:
+
+```
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    +<Step4_Generated/>
+    -<Step5_MathLessons/>
 ```
 
 The PlatformIO monitor also saves its output in a log file in this folder (`monitor_filters = default, log2file`), so the program printed by Step3_Generator can be copied from the file. The `upload_port` and `monitor_port` lines are required since v3.2.0 (Quick Use, step 5); `platformio.ini` lists an example for macOS, Linux, the Raspberry Pi, and Windows.
@@ -60,7 +97,7 @@ Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_S
 | A. Stay with Step2_JUL | Comment out lines 21 and 22 of Step2_JUL (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`), then upload Step2_JUL again | 100 ms |
 | B. Continue to Step 3 | With the motor supply off, run Step3_Generator with the `Bits()` value, copy the printed program into `Step4_Generated/main.cpp`, and upload it (`include/claude/ace.h`, no `Common.h`); apply the motor supply after the upload | 50 ms |
 
-Both paths set the same motor pins for the same joystick readings with the center offsets as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06, lines 132 and 133 of Step2_JUL; `ace.h` keeps these two values and is never edited, so offsets changed in Experiment-6 apply to Path A only). Article 1009 (revision 20261021d), Two Ways to Drive, gives the Path B procedure step by step. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
+Both paths set the same motor pins for the same joystick readings with the dead zones as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06, lines 132 and 133 of Step2_JUL; `ace.h` keeps these two values, so dead zones changed in Experiment-6 apply to Path A only), and with the shipped joystick center, 511. Since v6.4.0 Path B also corrects an off center joystick with the centers of `include/JoystickCenter.h`, written into Step4_Generated by Step3_Generator (run it again after a new center is copied into the file); Step2_JUL keeps 511. Article 1009 (revision 20261021d), Two Ways to Drive, gives the Path B procedure step by step. Path B also leaves the serial monitor free: `DEBUG_GENERATED` prints once at startup and may stay on.
 
 ## `include/`, Header Files
 
@@ -68,6 +105,7 @@ Both paths set the same motor pins for the same joystick readings with the cente
 |---|---|---|
 | `Common.h` | Turns the debug switches of Step2_JUL (`DEBUG_STEP2_JOYSTICK`, `DEBUG_STEP2_L298N`) into the flags of `Joystick.h` and `L298N.h`, and sets the control tick `BUTTON_TIMER_mS` (v6.0.0) | Step2; through `Joystick.h` and `L298N.h`, Step3_Generator and lessons 18 and 19, which define no switch |
 | `Headers.h` | Aggregated include | Step2 |
+| `JoystickCenter.h` | The rest reading of A0 and A1 (`JOYSTICK_A0_CENTER`, `JOYSTICK_A1_CENTER`), printed by Step1_Joystick after a passing self test; shipped 511 and 511, which change nothing (v6.4.0). Step3_Generator checks the range 411 to 611 and writes the values into Step4_Generated | Step1_Joystick (to compare), Step3_Generator, lessons 17 and 20 (v6.4.1) |
 | `Timer.h` | Nonblocking millisecond timer, drifting and fixed rate policies | Step1_Joystick, Step2, lessons 01, 18, 19, and 20 |
 | `Button.h` | Debounced button, latching or momentary mode, optional indicator LED | Step1_Joystick, Step2, lesson 18 |
 | `Joystick.h` | Revised joystick algorithm (class `Joystick`) | Step2, lesson 19 |
@@ -125,11 +163,21 @@ Class templates generate no code until a program uses them, and Step2_JUL does n
 
 | Folder | File | Purpose | Status |
 |---|---|---|---|
-| `Step1_Joystick/` | `main.cpp` | Joystick self test (v6.0.0; a connection check since v4.0.0; questions since v6.2.0; a start question, repeated every 3 s until Enter, and aligned report columns since v6.3.0): five tests in the serial monitor, each ended with Enter, the push button pressed and released (momentary mode, LED on D12 while held), the grip at rest, to every edge, released; reports PASS or FAIL, the low, center, and high readings of A0 and A1, and the `map()` calls that fit the joystick; then asks r (run again) or v (the live values of A0, A1, and SW, four times a second for 20 seconds). Any press during Tests 3 to 5 fails the self test (v6.2.1). Holds D5 to D10 LOW; motor supply off. Finds an open wire, a dead axis, an off center module, or a floating D2 before the motors get power; introduces Button.h and Timer.h | Build checked and simulated in simavr (20261022, v6.0.0, v6.1.0, v6.2.0, and v6.3.0); bench test pending (the v4.0.0 check was bench tested 20261021) |
+| `Step1_Joystick/` | `main.cpp` | Joystick self test (v6.0.0; a connection check since v4.0.0; questions since v6.2.0; a start question, repeated every 3 s until Enter, and aligned report columns since v6.3.0): five tests in the serial monitor, each ended with Enter, the push button pressed and released (momentary mode, LED on D12 while held), the grip at rest, to every edge, released; reports PASS or FAIL and the low, center, and high readings of A0 and A1; after a pass prints `include/JoystickCenter.h` with the measured centers (v6.4.0; the `map()` calls up to v6.3.1); then asks r (run again) or v (the live values of A0 and A1 with their offset from the center, and SW, four times a second for 20 seconds). Test 3 accepts a center within 100 counts of 511 (v6.4.0). Any press during Tests 3 to 5 fails the self test (v6.2.1). Holds D5 to D10 LOW; motor supply off. Finds an open wire, a dead axis, an off center module, or a floating D2 before the motors get power; introduces Button.h and Timer.h | Build checked and simulated in simavr (20261022, v6.0.0, v6.1.0, v6.2.0, and v6.3.0; 20261025, v6.4.0); v6.3.1 bench tested by the author 20261023; v6.4.0 bench test pending |
 | `Step2_JUL/` | `main.cpp` | Full joystick to L298N motor control and, since v3.2.0, the diagnostic program (both debug switches on, lines 21 and 22, 3000 ms tick); one `Bits()` value (line 103) corrects any joystick orientation and L298N wiring; since v6.2.1 the pin variables of lines 66 to 71 carry the name of the L298N input each is wired to in Circuit-1 (`ENB = 5` to `ENA = 10`) | Bench tested as Step2_JUL at commit f2307a1; changed since (v3.1.0 and v3.1.1; LED on D12, v4.0.0); bench tested again by the author 20261021 (release v4.0.1); v6.0.0 adds the debug switches and `setLatching(true)` (behavior unchanged; line numbers from 18 on move down by 6, from 46 on by 11) |
-| `Step3_Generator/` | `main.cpp` | Shows the L298N, button, and LED pins as Uno and ATmega328P pins, for example `D5 (PD5)`, and the joystick lines for the student to check against Step2_JUL; asks for the four binary digits of the `Bits()` value and whether to include the debug data; prints the Step4 program, whose `setup()` calls `robot.begin()` first (v3.2.1); Uno and USB cable only, motor supply off | Build and simulation checked (20261019); bench tested by the author 20261021 (release v4.0.1) |
+| `Step3_Generator/` | `main.cpp` | Shows the joystick center of `include/JoystickCenter.h` (Check 1, v6.4.0), the L298N, button, and LED pins as Uno and ATmega328P pins, for example `D5 (PD5)`, and the joystick lines for the student to check against Step2_JUL; asks for the four binary digits of the `Bits()` value and whether to include the debug data; prints the Step4 program, whose `setup()` calls `robot.begin()` first (v3.2.1); Uno and USB cable only, motor supply off | Build and simulation checked (20261019); bench tested by the author 20261021 (release v4.0.1) |
 | `Step4_Generated/` | `main.cpp` | The drive program, printed by Step3_Generator for bits_0000, the first value of the checklist, with the debug data (`DEBUG_GENERATED`), using `include/claude/ace.h` only (50 ms tick); replace it with the program printed for the value found on the bench | Build checked; motor pin states match Step2_JUL on the host (20261018) and in simavr (20261019, Discrepancies.md, 90); bench tested by the author 20261021 (release v4.0.1) |
 | `Step5_MathLessons/` | `main.cpp`; `lessons/L01_Bitwise.h` to `L20_JoystickMap.h` | Numerics math lessons 1 to 16; hardware lessons 17 to 20 (lesson 20, the two segment map on the live joystick, v6.1.0). `main.cpp` compiles ONE lesson, chosen with `#define LESSON`, because the Uno cannot hold them all (v5.0.0), and runs ONE topic of it, chosen with `#define TOPIC`, or all topics with 0 (v5.1.0); its comments give the flash and RAM of each lesson and of its largest topic. Each topic function carries a teaching block: hint, purpose, what is learnt, expected output (v6.3.0) | Lessons 1 to 16 build and simulation checked; hardware lessons 17 to 20 build checked; bench test of Step5 pending |
+
+**Program titles (v6.4.1).** Each program prints its name first, after a blank line and a dotted line, with the `build_src_filter` entry that selects it:
+
+```
+................................................
+Step1_Joystick: the joystick self test
+Selected in platformio.ini: +<Step1_Joystick/>
+```
+
+Step2_JUL prints `Step2_JUL: the diagnostic program (L298N Setup)` while a debug switch is on (as shipped; with both switches off it opens no serial port and builds to the same Intel HEX as v6.4.0). Step3_Generator prints `Step3_Generator: prints the program Step4_Generated`, and the program it prints, Step4_Generated, prints `Step4_Generated: the drive program printed by Step3_Generator` with `DEBUG_GENERATED` (without it, the same Intel HEX as v6.4.0). Step5_MathLessons prints the lesson and the topic, for example `Step5_MathLessons: lesson 7 (L07_Vector2), topic 13 (0: every topic)`. A title that names another program means `platformio.ini` still selects that program. The title lines of Step1_Joystick and Step2_JUL replace a blank line, so no cited line moves.
 
 ## Debugging
 
@@ -139,9 +187,9 @@ While a switch is defined, each control tick starts with a blank line and a dott
 
 A program that defines no switch gets no debug output. Step3_Generator and lessons L18_MotorLineFit and L19_JoystickFrame include `Common.h` through `L298N.h` or `Joystick.h` and define none. Lessons 18 and 19 build to the same Intel HEX as in v5.1.0, when they defined `DEBUG_ALL_OFF` (removed in v6.0.0); Step3_Generator changes only in the Step2_JUL line numbers it prints. The comment that replaces the `DEBUG_ALL_OFF` lines keeps their line numbers.
 
-Step1_Joystick has no debug switch: its serial monitor output is always on, because the self test is read there. After the report, the answer v prints A0 and A1, raw and mapped, and the button state four times a second for 20 seconds. Up to v6.1.3 the switch `DEBUG_STEP1_LIVE` (shipped on) printed them after the report without end. Step1_Joystick does not include `Common.h`.
+Step1_Joystick has no debug switch: its serial monitor output is always on, because the self test is read there. After the report, the answer v prints A0 and A1, raw and with their offset from the measured center (mapped up to v6.3.1), and the button state four times a second for 20 seconds. Up to v6.1.3 the switch `DEBUG_STEP1_LIVE` (shipped on) printed them after the report without end. Step1_Joystick does not include `Common.h`; it includes `JoystickCenter.h` only, to compare the measured center with the file (v6.4.0).
 
-Step4_Generated has its own flag, `DEBUG_GENERATED`, defined at the top of its `main.cpp` when Step3_Generator is answered y to Question 4. It prints the data checked in Step3_Generator once in `setup()`, then the line `Ready: press the push button; the LED on D12 shows ON.`: the button is read from then on, so a press made during the printout, about 1 s, is not seen (v6.2.3). It does not read the serial monitor and does not change the control tick, so it may stay defined while the robot drives; it is not part of `Common.h`, so the printed program needs `ace.h` only.
+Step4_Generated has its own flag, `DEBUG_GENERATED`, defined at the top of its `main.cpp` when Step3_Generator is answered y to Question 5 (Question 4 up to v6.3.1). It prints the data checked in Step3_Generator once in `setup()`, then the line `Ready: press the push button; the LED on D12 shows ON.`: the button is read from then on, so a press made during the printout, about 1 s, is not seen (v6.2.3). It does not read the serial monitor and does not change the control tick, so it may stay defined while the robot drives; it is not part of `Common.h`, so the printed program needs `ace.h` only.
 
 ## Notes
 

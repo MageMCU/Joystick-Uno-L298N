@@ -17,9 +17,17 @@ Project folder: open `Experiments/Experiment-2/Code` in Visual Studio Code, neve
 ## Notes for the bench
 
 - Lab 1, step 2: `build_flags = -std=gnu++11 -D DEBUG_JOYSTICK`, then restore the line.
-- Lab 3 uses the Code-JUL folder with Step2_JUL selected on line 31 of its platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick; copy the Step2_JUL line of the notes over line 31):
+- Lab 3 uses the Code-JUL folder with Step2_JUL selected in its platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick; in `build_src_filter`, lines 31 to 37, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other four folders the sign `-`):
 
-  `build_src_filter = +<*> -<Step1_Joystick/> +<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> -<Step5_MathLessons/>`
+  ```
+  build_src_filter =
+      +<*>
+      -<Step1_Joystick/>
+      +<Step2_JUL/>
+      -<Step3_Generator/>
+      -<Step4_Generated/>
+      -<Step5_MathLessons/>
+  ```
 
   Since v3.0.1 the shipped line also excludes the generator programs, named Step2_Generator and Step3_Generated since v3.1.0, when the math lessons became Step4_MathLessons.
 

@@ -78,6 +78,14 @@ void prompt()
 void finish()
 {
     motors.PowerDownL298N();
+    // v6.4.1: the data of the fit, the five pairs measured.
+    Serial.println(F("  PWM    RPM"));
+    for (int i = 0; i < points; i++)
+    {
+        char text[10];
+        Serial.print(dtostrf(pwm[i], 5, 0, text));
+        Serial.println(dtostrf(rpm[i], 7, 1, text));
+    }
     LineFit2<float> fit;
     if (!fit.Fit(pwm, rpm, points))
     {
@@ -140,7 +148,10 @@ void readEntry()
             float revolutions = entry.toFloat();
             entry = "";
             rpm[step] = revolutions * 6.0; // revolutions in 10 s to RPM
-            Serial.print(F("RPM: "));
+            // v6.4.1: echo the count that was entered, then the RPM.
+            Serial.print(F("Count: "));
+            Serial.print(revolutions, 1);
+            Serial.print(F(" in 10 s, x 6 = RPM: "));
             Serial.println(rpm[step], 1);
             step++;
             if (step < points)
@@ -210,7 +221,9 @@ void Loop()
 #define LESSON_TOPICS 1
 
 // TEACHING NOTES (v6.1.1), placed at the end of the file so that the
-// line numbers cited by Experiment-7 (168, 174, 175) do not change.
+// line numbers cited by Experiment-7 (179, 185, 186 since v6.4.1, which
+// added the count echo and the data table; 168, 174, 175 up to v6.4.0)
+// move only with the code above them.
 // RPM is revolutions per minute: a count of revolutions in 10 s times 6.
 // The fit (include/numerics/LineFit2.h) gives the slope, the extra RPM
 // for each PWM step, and the x intercept, the PWM at which the fitted
@@ -240,6 +253,14 @@ void Loop()
 //   invalid line is printed (lesson 15, T03).
 //   Getters of LineFit2: Slope(), Intercept(), XIntercept() (the dead
 //   band), Evaluate(255), RmsError().
+//   v6.4.1: the five PWM and RPM pairs are printed first, the data of
+//   the fit, in columns of fixed width (dtostrf(), lesson 3, T03).
+// Expected output (bench; the RPM values depend on the motors):
+//   Count: 2.0 in 10 s, x 6 = RPM: 12.0      (after each entry)
+//     PWM    RPM
+//      60   12.0
+//     100   38.0   ... five rows, then Slope, Intercept, Dead band,
+//   Predicted RPM at PWM 255, and RMS error.
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // newSet (teaching notes, v6.3.0)

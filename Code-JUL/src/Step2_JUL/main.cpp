@@ -41,8 +41,8 @@ void setup()
 #ifdef DEBUG_SERIAL_ON
     Serial.begin(9600);
     while (!Serial) { }
+    Serial.println(F("\n................................................\nStep2_JUL: the diagnostic program (L298N Setup)\nSelected in platformio.ini: +<Step2_JUL/>")); // v6.4.1: program title
 #endif
-
     // Button & Button-LED
     int buttonPin = 2; // UNO D2 (CHIP-PD2)
     // int ledPin = 3; // UNO D3 (CHIP-PD3), advanced wiring

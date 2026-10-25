@@ -86,9 +86,24 @@ integer ReverseBits(integer bitsValue)
 //   bitsVal & 1    isolates the lowest bit, the one that leaves next.
 //   Function template ReverseBits<integer>() works for any integer type;
 //                  sizeof(bitsValue) * 8 gives its number of bits.
+//   Range of int  on the ATmega328P an int has 16 bits and holds
+//                  -32768 to 32767. 0b1011001000000000 is 45568, more
+//                  than 32767, so int a stores 45568 - 65536 = -19968:
+//                  the same 16 bits, read with the top bit as the sign
+//                  (two's complement). The bit pattern is unchanged.
+//   unsigned int   16 bits that hold 0 to 65535; 45568 fits, and the
+//                  shifts never reach a sign bit. v6.4.1 adds this case
+//                  and prints each value with a label.
 // Expected output:
+//   int a = -19968
 //   bits: 1011 0010 0000 0000
+//   int b = ReverseBits(a) = 77
 //   bits: 0000 0000 0100 1101     (the value 77 = 64 + 8 + 4 + 1)
+//    ** unsigned int holds 0 to 65535 **
+//   unsigned int ua = 45568
+//   bits: 1011 0010 0000 0000
+//   unsigned int ub = ReverseBits(ua) = 77
+//   bits: 0000 0000 0100 1101
 // ---------------------------------------------------------------
 void Bitwise_T06_ReverseBits()
 {
@@ -96,11 +111,29 @@ void Bitwise_T06_ReverseBits()
 
     Bitwise<int> bw;
     int a = 0b1011001000000000;
+    Serial.print(F("int a = ")); // v6.4.1: label and value of a
+    Serial.println(a);
     bw.SetBitsValue(a);
     Serial.println(bw.PrintBinaryBits());
     int b = ReverseBits(a);
+    Serial.print(F("int b = ReverseBits(a) = ")); // v6.4.1
+    Serial.println(b);
     bw.SetBitsValue(b);
     Serial.println(bw.PrintBinaryBits());
+
+    // v6.4.1: the same bits in an unsigned int, which holds 45568.
+    printSubTitle(F("unsigned int holds 0 to 65535"));
+    Bitwise<unsigned int> ubw;
+    unsigned int ua = 0b1011001000000000;
+    Serial.print(F("unsigned int ua = "));
+    Serial.println(ua);
+    ubw.SetBitsValue(ua);
+    Serial.println(ubw.PrintBinaryBits());
+    unsigned int ub = ReverseBits(ua);
+    Serial.print(F("unsigned int ub = ReverseBits(ua) = "));
+    Serial.println(ub);
+    ubw.SetBitsValue(ub);
+    Serial.println(ubw.PrintBinaryBits());
 }
 
 // T05: counts down from 10 to 0, one value every 0.5 s (Timer.h); each
@@ -252,7 +285,9 @@ void Bitwise_T03_ClearBitNumber()
 //                  mask 2^n). A setter (also called a mutator) changes a
 //                  private member through a member function.
 //   Place value    each set bit adds 2^n: bits 0 and 3 give 1 + 8 = 9.
-//   Debug(msg, a)  a helper of MiscMath.h that prints a label and values.
+//   Debug(msg, a)  a helper of MiscMath.h that prints a label and values;
+//                  it names its first value a, so a: 9 reads "the value
+//                  is 9".
 // Expected output:
 //   bw.IsBitNumberSet(0): true
 //   bw.IsBitNumberSet(3): true

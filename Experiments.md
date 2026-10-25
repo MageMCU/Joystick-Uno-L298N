@@ -2,6 +2,12 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v6.4.1 (20261025)
+
+- **Program titles.** Every step prints its name first, after a blank line and a dotted line, with the `build_src_filter` entry that selects it, for example `Step2_JUL: the diagnostic program (L298N Setup)` and `Selected in platformio.ini: +<Step2_JUL/>`. Step5_MathLessons also names the lesson and the topic. A wrong name in the serial monitor means `platformio.ini` still selects another program. Step2_JUL prints its title only with a debug switch on, as shipped for Experiment-2 Lab 3 and Experiment-5 Lab 3, and Step4_Generated only with `DEBUG_GENERATED`; no cited line of Step1_Joystick or Step2_JUL moves.
+- **Lessons print every input.** Each topic prints the values it uses (the scalar of lesson 7, topic 13, the angles of lessons 11, 12, and 14, the random intervals of lessons 3, 5, and 6, the data of lesson 15, and so on), and wrong labels are corrected. Lessons 17 and 20 use the centers of `include/JoystickCenter.h`. The new lines move the cited lines of lessons 17 and 18: lesson 17, lines 139 and 140 (Experiment-6); lesson 18, lines 179, 185, and 186 (Experiment-7). Lesson 19 keeps lines 123 and 124 (Experiment-8). Experiment-9: lesson 14, topic 8, prints two input lines before its data.
+- **Filter lines.** Every lab card names `build_src_filter`, lines 31 to 37 (up to v6.4.0 some cards said 32 to 37, the entries without the line `build_src_filter =`).
+
 ## Changes in Release v6.3.1 (20261022)
 
 - **Lessons 3, 11, and 13.** Lesson 3, topic 3, prints its table in aligned columns; lesson 11, topic 13, and lesson 13, topic 2, call `Rotation()` and `Translation()` on a finished identity matrix. Experiment-6 runs lesson 3 and Experiment-8 runs lessons 11 and 13 (Part A); their output is the same except the column layout of lesson 3, topic 3, and the label `T = I.Translation(v):` of lesson 13, topic 2. No line cited by a lab card moves.

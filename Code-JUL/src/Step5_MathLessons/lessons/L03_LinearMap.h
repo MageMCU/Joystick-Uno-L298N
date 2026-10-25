@@ -59,7 +59,8 @@ using namespace csjc;
 //                  difference is rounding of float (about 7 digits).
 //   The loop runs 50 times with random inputs, so negative Fahrenheit
 //   values (below 32 F, below 0 C) are tested as well.
-// Expected output (random values; 50 pairs):
+// Expected output (random values; 50 pairs), after the same two input
+// lines as T01 (v6.4.1):
 //    map: Fahrenheit: 556.80 -> Celsius: 291.56
 //    reverse: Celsius: 291.56 -> Fahrenheit: 556.80
 //   The second line of each pair repeats the first Fahrenheit value.
@@ -76,6 +77,9 @@ void LinearMap_T02_Reverse()
     // while RandomReal() outputs a real (float)...
     RandomNumber<float> random =
         RandomNumber<float>((float)-100, (float)1000);
+    // v6.4.1: print the two points of the map and the input range.
+    Serial.println(F("LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
+    Serial.println(F("RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to 1000"));
     // Test - Looking for negative values
     float celcius;
     float fahrenheit;
@@ -116,6 +120,9 @@ void LinearMap_T02_Reverse()
 //                  class allows it (-40 F gives -40 C).
 //   RandomNumber<float>(-100, 1000) supplies test inputs (lesson 5).
 // Expected output (random values, different on each run):
+//   LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C
+//   RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to 1000
+//   (v6.4.1: the inputs of the topic, printed first), then
 //   ten lines of the form  fahrenheit: 680.18 - Celsius: 360.10
 //   Check one: (680.18 - 32) x 100 / 180 = 360.10.
 // ---------------------------------------------------------------
@@ -131,6 +138,9 @@ void LinearMap_T01_Inclusive()
     // while RandomReal() outputs a real (float)...
     RandomNumber<float> random =
         RandomNumber<float>((float)-100, (float)1000);
+    // v6.4.1: print the two points of the map and the input range.
+    Serial.println(F("LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
+    Serial.println(F("RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to 1000"));
     // Test
     float celcius;
     float fahrenheit;

@@ -27,6 +27,9 @@
 //                    with the Bits() value fixed when it is built.
 //
 // DATA CHECKED IN STEP3_GENERATOR
+//   Joystick center (include/JoystickCenter.h, Step1_Joystick)
+//     A0 center 511 (offset 0)
+//     A1 center 511 (offset 0)
 //   L298N pins (Step2_JUL, lines 66 to 71)
 //     ENB  D5   (PD5)
 //     IN4  D6   (PD6)
@@ -58,6 +61,8 @@
 // and is never edited; a new run of Step3 changes only this file.
 // For the same joystick readings it sets the same pin states as
 // Step2_JUL, with a control tick about 2.5 times faster (see ace.h).
+// ace.h also moves each reading by the joystick center (X_CENTER
+// and Y_CENTER below); Step2_JUL keeps the center 511.
 // The tick repeats every 50 ms (TICK_MS of ace.h); Step2_JUL uses
 // 100 ms.
 //
@@ -66,7 +71,8 @@
 // internal pull up is off.
 //
 // Build: in platformio.ini, select this program with
-//   build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> +<Step4_Generated/> -<Step5_MathLessons/>
+//   build_src_filter, lines 31 to 37: +<Step4_Generated/>, and - before the
+//   other four folders
 // In a project of its own, copy include/claude/ace.h with this file.
 //
 // SAFETY COMES FIRST (WATCH YOUR FINGERS): the motors run only while
@@ -100,10 +106,19 @@ const uint8_t RIGHT_REV = 7;
 const uint8_t BUTTON_PIN = 2;
 const uint8_t LED_PIN = 12;
 
+// Control tick and debounce, in ms (the defaults of ace.h)
+const uint16_t TICK_MS = 50;
+const uint16_t DEBOUNCE_MS = 50;
+
+// Joystick center measured by Step1_Joystick (JoystickCenter.h)
+const uint16_t X_CENTER = 511; // A0
+const uint16_t Y_CENTER = 511; // A1
+
 Ace<X_PIN, Y_PIN,
     LEFT_EN, LEFT_FWD, LEFT_REV,
     RIGHT_EN, RIGHT_FWD, RIGHT_REV,
-    BUTTON_PIN, LED_PIN> robot;
+    BUTTON_PIN, LED_PIN, TICK_MS, DEBOUNCE_MS,
+    X_CENTER, Y_CENTER> robot;
 
 void setup()
 {
@@ -114,8 +129,11 @@ void setup()
     while (!Serial)
     {
     }
-    Serial.println(F("................................................"));
+    Serial.println(F("\n................................................\nStep4_Generated: the drive program printed by Step3_Generator\nSelected in platformio.ini: +<Step4_Generated/>"));
     Serial.println(F("Step4_Generated: data checked in Step3_Generator"));
+    Serial.println(F("Joystick center (include/JoystickCenter.h, Step1_Joystick)"));
+    Serial.println(F("  A0 center 511 (offset 0)"));
+    Serial.println(F("  A1 center 511 (offset 0)"));
     Serial.println(F("L298N pins (Step2_JUL, lines 66 to 71)"));
     Serial.println(F("  ENB  D5   (PD5)"));
     Serial.println(F("  IN4  D6   (PD6)"));

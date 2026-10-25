@@ -183,7 +183,11 @@ void Vector2_T14_VectorVectorAddition()
 //   operator*(real s)  multiplies each component: (1 x 3, 2 x 3).
 //   Order matters in this class: v1 * scalar is defined, scalar * v1 is
 //   not (it would need a free operator* outside the class).
+//   v6.4.1: the scalar is printed before the product, as in lesson 9,
+//   topic 11, so every input of the product appears in the output.
 // Expected output:
+//   v1 (1.00, 2.00)
+//   scalar: 3.00
 //   v2 = v1 * scalar (3.00, 6.00)
 // ---------------------------------------------------------------
 void Vector2_T13_VectorScalarProduct()
@@ -194,6 +198,7 @@ void Vector2_T13_VectorScalarProduct()
     printVector2("v1", v1);
 
     float scalar = 3;
+    printResult(F("scalar: "), scalar); // v6.4.1: print the input
 
     Vector2<float> v2 = v1 * scalar;
     printVector2("v2 = v1 * scalar", v2);
@@ -324,7 +329,11 @@ void Vector2_T10_ZComp()
 //   Check: 1 (4) - 2 (3) = -2: v2 lies clockwise from v1.
 // Expected output:
 //   DotPerp = v1.DotPerp(v2) -2.00
+//   v3 (1.00, 2.00, 0.00)   v4 (3.00, 4.00, 0.00)
+//   v5 = v3 ^ v4 (0.00, 0.00, -2.00)
 //   zComponent = v5.z() -2.00
+//   v6.4.1: the cross product v5 is printed in full; its x and y
+//   components are 0 because v3 and v4 lie in the plane z = 0.
 // ---------------------------------------------------------------
 void Vector2_T09_DotPerp()
 {
@@ -347,11 +356,12 @@ void Vector2_T09_DotPerp()
     printVector3("v4", v4);
 
     Vector3<float> v5 = v3 ^ v4;
+    printVector3(F("v5 = v3 ^ v4"), v5); // v6.4.1: print the whole result
     float zComponent = v5.z();
     Serial.print("zComponent = v5.z() ");
     Serial.println(zComponent);
 
-    printSubTitle("Notice PerpDot and zComponent must be equal...");
+    printSubTitle(F("Notice DotPerp and zComponent must be equal...")); // v6.4.1: name of the function
 }
 
 // T08: Perp(v1) = (-2.00, 1.00), length 2.24; UnitPerp(v1) =
@@ -366,10 +376,11 @@ void Vector2_T09_DotPerp()
 //   Perp() keeps the length of v1: |(-2, 1)| = 2.24.
 //   Both results are perpendicular to v1: both dot products are 0.
 // Expected output:
-//   v2 = v1.Perp() (-2.00, 1.00)   mag = v1 * v2 = 2.24
+//   v2 = v1.Perp() (-2.00, 1.00)   mag = v2.Magnitude() = 2.24
 //   v3 = v1.UnitPerp() (-0.89, 0.45)
 //   dot = v1 * v2 = 0.00   dot = v1 * v3 = 0.00
-//   (The label mag = v1 * v2 prints v2.Magnitude(), the length.)
+//   (v6.4.1: the label read mag = v1 * v2 up to v6.4.0; the value is
+//   v2.Magnitude(), the length of v2.)
 // ---------------------------------------------------------------
 void Vector2_T08_UnitPerp()
 {
@@ -382,7 +393,7 @@ void Vector2_T08_UnitPerp()
     printVector2("v2 = v1.Perp()", v2);
 
     float mag = v2.Magnitude();
-    Serial.print("mag = v1 * v2 = ");
+    Serial.print(F("mag = v2.Magnitude() = ")); // v6.4.1: label of the value
     Serial.println(mag);
 
     // Comparison with Perp()

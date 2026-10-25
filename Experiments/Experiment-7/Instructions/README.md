@@ -4,9 +4,17 @@
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
-**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons on line 31 of `platformio.ini`:
+**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons in `platformio.ini`, `build_src_filter`, lines 31 to 37 (one folder per line since v6.4.0):
 
-`build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>`
+```
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    +<Step5_MathLessons/>
+```
 
 Then set `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp` to the number of the lesson and `#define TOPIC`, the line below it, to the number of one topic of that lesson, or to 0 for every topic in order; build and upload. Only that lesson is compiled, and only the selected topics run. A topic is one function of the lesson, named LessonName_Tnn_Operation, for example `Vector3_T16_Copy()`, and it prints the same name as its title; `LESSON_TOPICS` in each lesson file gives its number of topics; each lesson is one header file in `Code-JUL/src/Step5_MathLessons/lessons/`, for example lesson 17 is `L17_DeadZone.h`. Restore the Step2_JUL line of `platformio.ini` before uploading to the robot.
 
@@ -31,7 +39,7 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 ## Lab 2: Calibrating the Motor
 
-**Code.** Lesson L18_MotorLineFit (Code-JUL/src/Step5_MathLessons/lessons/L18_MotorLineFit.h). Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the `Bits()` value to the one found in Experiment-5, and set `ledPin` to the pin of the indicator LED. The `Button` object on line 168 uses the default `activeLow = true`, and lines 174 and 175 (`button.begin();` and `pinMode(buttonPin, INPUT);`, added in v3.2.0) turn the internal pull up of D2 off, as Step2_JUL does; the external 10 kOhm pull up from D2 to 5 V of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `button = Button(buttonPin, ledPin, false);` on line 168. The lesson defines no debug switch (since v6.0.0; up to v5.1.0 it defined `DEBUG_ALL_OFF`), so no debug output of `Common.h` applies: the motor tick is 100 ms and the serial monitor shows only the lesson's prompts. Before the motor supply is applied, press the button twice and confirm that the indicator LED turns on and then off. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
+**Code.** Lesson L18_MotorLineFit (Code-JUL/src/Step5_MathLessons/lessons/L18_MotorLineFit.h). Wiring: Article 1009, Circuit-1, complete, with the drive raised so that both wheels turn freely. Set the `Bits()` value to the one found in Experiment-5, and set `ledPin` to the pin of the indicator LED. The `Button` object on line 179 (168 up to v6.4.0) uses the default `activeLow = true`, and lines 185 and 186 (174 and 175 up to v6.4.0; `button.begin();` and `pinMode(buttonPin, INPUT);`, added in v3.2.0) turn the internal pull up of D2 off, as Step2_JUL does; the external 10 kOhm pull up from D2 to 5 V of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `button = Button(buttonPin, ledPin, false);` on line 179. The lesson defines no debug switch (since v6.0.0; up to v5.1.0 it defined `DEBUG_ALL_OFF`), so no debug output of `Common.h` applies: the motor tick is 100 ms and the serial monitor shows only the lesson's prompts. Before the motor supply is applied, press the button twice and confirm that the indicator LED turns on and then off. The joystick push button enables the motors. While it is ON, both motors turn forward at one PWM value at a time: 60, 100, 140, 180, and 220.
 
 **Prediction.** From the starting duty cycle recorded in Experiment-3, predict the x intercept of the fit.
 
@@ -39,7 +47,7 @@ Slope and intercept of the least squares line through n points (xi, yi).
 
 2. Mark one wheel with tape. Press the joystick button (state ON). Count the revolutions of the marked wheel in 10 s, type the count, and press Enter. The program converts the count to RPM (count × 6) and moves to the next PWM value.
 
-3. After the fifth value the motors stop and the program prints the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them. The program stores one set of five measurements; send n to start a new set. The motors stop and the button state returns to OFF, so the new set starts only after the button is pressed again.
+3. After the fifth value the motors stop and the program prints the five PWM and RPM pairs (since v6.4.1; each entry is also echoed as Count, then RPM), then the slope, the intercept, the x intercept (the dead band of the motor), the predicted RPM at PWM 255, and the RMS error. Record them. The program stores one set of five measurements; send n to start a new set. The motors stop and the button state returns to OFF, so the new set starts only after the button is pressed again.
 
 4. Send n and repeat with the other wheel. To repeat with the motor bus raised by 1 V, remove the motor supply first as directed by Article 1009, change the supply, apply it again, send n, and collect a new set. Do not press the reset button of the Uno while the motor supply is applied: D5 to D10 float between a reset and `PinsL298N()`.
 

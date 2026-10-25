@@ -59,7 +59,8 @@ using namespace csjc;
 //                  uninitialized array, and Queue() fills it afterwards.
 //   Expected values for [0, 10): mean 5, standard deviation
 //                  10 / sqrt(12) = 2.89.
-// Expected output (random values; 100 values first):
+// Expected output (random values; the interval line, v6.4.1, then 100
+// values first):
 //   Average: 5.16
 //   Standard Deviation: 2.74
 // ---------------------------------------------------------------
@@ -71,6 +72,8 @@ void Statistics_T06_Queue100()
     float tuples[size];
     Statistics<float> stats = Statistics<float>(tuples, size);
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
 
     int cnt = 0;
     while (cnt < size)
@@ -109,19 +112,28 @@ void Statistics_T06_Queue100()
 //                  plus 10000 into the last place, and the standard
 //                  deviation jumps from about 3 to about 3162.
 // Expected output (random values):
+//   tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5}
+//   RandomNumber<float>(0, 10): 10 values, 0 up to (not including) 10
 //   0 5.31 ... 9 8.60
 //   Average: 5.02   Standard Deviation: 3.33
 //   Standard Deviation: 3162.41
+//   Largest element after QueueReset(): 10005.02 (for example)
+//   Average after QueueReset(): about 1004 (the mean grows by about
+//   10000 / 10 = 1000)
 // ---------------------------------------------------------------
 void Statistics_T05_QueueReset()
 {
     printTitle(F("Statistics T05 Queue and QueueReset"));
 
     float tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5};
+    // v6.4.1: the starting values, replaced one at a time by Queue().
+    Serial.println(F("tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5}"));
     int size = 10;
 
     Statistics<float> stats = Statistics<float>(tuples, size);
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(0, 10): 10 values, 0 up to (not including) 10"));
     float randomNum;
 
     // randomNumber.Random()
@@ -145,6 +157,12 @@ void Statistics_T05_QueueReset()
     Serial.println("by arbitrarily increasing one of the elements...");
     Serial.print("Standard Deviation: ");
     Serial.println(String(stats.StandardDeviation(), 2));
+    // v6.4.1: show the outlier that QueueReset() wrote (the mean plus
+    // 10000, now the largest element) and the new average.
+    Serial.print(F("Largest element after QueueReset(): "));
+    Serial.println(String(stats.GetElement(size - 1), 2));
+    Serial.print(F("Average after QueueReset(): "));
+    Serial.println(String(stats.Average(), 2));
 }
 
 // T04: 200 random values in [-1.9, 2.3). After sorting, element 0 is the
@@ -162,7 +180,8 @@ void Statistics_T05_QueueReset()
 //   Min and max    after the sort, element 0 is the smallest value and
 //                  element size - 1 the largest.
 //   printResult()  prints a label and a float with 2 decimals.
-// Expected output (random values; 200 values first):
+// Expected output (random values; the interval line, v6.4.1, then 200
+// values first):
 //   Average: 0.21   Standard Deviation: 1.22   Median: 0.21
 //   Min Value: -1.90   Max Value: 2.30
 // ---------------------------------------------------------------
@@ -173,6 +192,8 @@ void Statistics_T04_Median()
     float tuples[200];
     int size = 200;
     RandomNumber<float> rnd = RandomNumber<float>(-1.9, 2.3);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(-1.9, 2.3): 200 values, -1.9 up to (not including) 2.3"));
 
     for (int i = 0; i < size; i++)
     {
@@ -227,6 +248,7 @@ void Statistics_T04_Median()
 //                  the data. For values spread evenly over [a, b) it is
 //                  near (b - a) / sqrt(12), here about 58000.
 // Expected output (random values):
+//   RandomNumber<float>(-99999.9, 99999.9): 10 values
 //   ten values, then for example  Standard Deviation: 46498.41
 // ---------------------------------------------------------------
 void Statistics_T03_StandardDeviation()
@@ -236,6 +258,8 @@ void Statistics_T03_StandardDeviation()
     float tuples[10];
     int size = 10;
     RandomNumber<float> rnd = RandomNumber<float>(-99999.9, 99999.9);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(-99999.9, 99999.9): 10 values"));
 
     for (int i = 0; i < size; i++)
     {
@@ -266,6 +290,7 @@ void Statistics_T03_StandardDeviation()
 //   The values are printed before the constructor runs, so this list is
 //   in the original, unsorted order.
 // Expected output (random values):
+//   RandomNumber<float>(-99999.9, 99999.9): 10 values
 //   0 59461.12 ... 9 30808.82
 //   Average: 4354.06
 // ---------------------------------------------------------------
@@ -276,6 +301,8 @@ void Statistics_T02_Average()
     float tuples[10];
     int size = 10;
     RandomNumber<float> rnd = RandomNumber<float>(-99999.9, 99999.9);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(-99999.9, 99999.9): 10 values"));
 
     for (int i = 0; i < size; i++)
     {
@@ -313,7 +340,8 @@ void Statistics_T02_Average()
 //   Getters        GetTuplesSize() and GetElement(i).
 //   Tuple          the class name for one data value of the set.
 // Expected output (random values):
-//   Array Size: 10.00
+//   RandomNumber<float>(-99999.9, 99999.9): 10 values
+//   Array Size: 10
 //   ten values in increasing order, for example -56549.89, -34731.28, ...
 // ---------------------------------------------------------------
 void Statistics_T01_Constructor()
@@ -323,6 +351,8 @@ void Statistics_T01_Constructor()
     float tuples[10];
     int size = 10;
     RandomNumber<float> rnd = RandomNumber<float>(-99999.9, 99999.9);
+    // v6.4.1: print the interval and the number of values.
+    Serial.println(F("RandomNumber<float>(-99999.9, 99999.9): 10 values"));
 
     for (int i = 0; i < size; i++)
     {
@@ -337,7 +367,10 @@ void Statistics_T01_Constructor()
     Statistics<float> stats = Statistics<float>(tuples, size);
 
     float v;
-    printResult("Array Size: ", (float)stats.GetTuplesSize());
+    // v6.4.1: the size is a whole number, printed as an int (it printed
+    // 10.00 through printResult(), which takes a float).
+    Serial.print(F("Array Size: "));
+    Serial.println(stats.GetTuplesSize());
     for (int i = 0; i < size; i++)
     {
         v = stats.GetElement(i);

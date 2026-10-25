@@ -42,6 +42,17 @@ namespace L02_TypeConv
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
 
+// v6.4.1: prints a label, a byte in decimal, and the same byte in
+// hexadecimal (base 16): Serial.print(value, HEX) prints 63 as 3F.
+void printByte(const __FlashStringHelper *label, int value)
+{
+    Serial.print(label);
+    Serial.print(value);
+    Serial.print(F(" (0x"));
+    Serial.print(value, HEX);
+    Serial.print(F(")"));
+}
+
 // T02: 715827882 is 0x2AAAAAAA, so the four bytes are 42, 170, 170, 170
 // (0x2A, 0xAA, 0xAA, 0xAA), and both joins return 715827882.
 // ---------------------------------------------------------------
@@ -57,9 +68,13 @@ using namespace csjc;
 //   Getters        GetByte3() to GetByte0().
 //   Hexadecimal    one hex digit is four bits, so 0x2AAAAAAA shows the
 //                  bytes directly: 2A AA AA AA = 42 170 170 170.
+//   Debug labels   Debug() of MiscMath.h names its values a, b, c, d in
+//                  the order passed; here a is b3 and d is b0. v6.4.1 adds
+//                  a line that names each byte and prints it in hex.
 // Expected output:
 //   INT32_MAX a: 2147483647
 //   DWordTo4Bytes(715827882):  a: 42 b: 170 c: 170 d: 170
+//   b3 42 (0x2A)  b2 170 (0xAA)  b1 170 (0xAA)  b0 170 (0xAA)
 //   BytesToDWord():  a: 715827882
 //   BytesToDWord(b3, b2, b1, b0):  a: 715827882
 // ---------------------------------------------------------------
@@ -77,6 +92,12 @@ void TypeConv_T02_DWordTo4Bytes()
     int b1 = typeConv.GetByte1();
     int b0 = typeConv.GetByte0();
     Debug("DWordTo4Bytes(715827882): ", b3, b2, b1, b0);
+    // v6.4.1: name each byte and show it in hexadecimal.
+    printByte(F("b3 "), b3);
+    printByte(F("  b2 "), b2);
+    printByte(F("  b1 "), b1);
+    printByte(F("  b0 "), b0);
+    Serial.println();
     // The Code-JUL TypeConv.h has no GetDWord(); BytesToDWord()
     // returns the same value.
     int32_t dWd = typeConv.BytesToDWord();
@@ -104,9 +125,13 @@ void TypeConv_T02_DWordTo4Bytes()
 //                  lo) joins the two bytes passed to it. Two functions with
 //                  one name and different parameters are overloads.
 //   Join           word = hi * 256 + lo = (hi << 8) | lo.
+//   Debug labels   Debug() names its values a and b in the order passed:
+//                  a is hi, b is lo. v6.4.1 adds a line that names each
+//                  byte and prints it in hex.
 // Expected output:
 //   INT16_MAX a: 32767
 //   WordTo2Bytes(16234) a: 63 b: 106
+//   hi 63 (0x3F)  lo 106 (0x6A)
 //   BytesToWord:  a: 16234
 //   BytesToWord(hi, lo):  a: 16234
 // ---------------------------------------------------------------
@@ -122,6 +147,10 @@ void TypeConv_T01_WordTo2Bytes()
     int hi = typeConv.GetHiByte();
     int lo = typeConv.GetLoByte();
     Debug("WordTo2Bytes(16234)", hi, lo);
+    // v6.4.1: name each byte and show it in hexadecimal.
+    printByte(F("hi "), hi);
+    printByte(F("  lo "), lo);
+    Serial.println();
 
     // The Code-JUL TypeConv.h has no GetWord(); BytesToWord()
     // returns the same value.

@@ -56,6 +56,27 @@ using namespace csjc;
 
 int failures = 0;
 
+// v6.4.1: prints the data of a fit, one labelled row for x and one for
+// y, so the output shows every input of the topic.
+void printData(const __FlashStringHelper *xLabel, const float *x,
+               const __FlashStringHelper *yLabel, const float *y, int n)
+{
+    Serial.print(xLabel);
+    for (int i = 0; i < n; i++)
+    {
+        Serial.print(' ');
+        Serial.print(x[i], 0);
+    }
+    Serial.println();
+    Serial.print(yLabel);
+    for (int i = 0; i < n; i++)
+    {
+        Serial.print(' ');
+        Serial.print(y[i], 0);
+    }
+    Serial.println();
+}
+
 void check(const __FlashStringHelper *label, float observed, float expected, float tolerance)
 {
     bool pass = fabs(observed - expected) <= tolerance;
@@ -92,6 +113,8 @@ void check(const __FlashStringHelper *label, float observed, float expected, flo
 //   Ternary to number  fit.Fit(...) ? 1 : 0 turns the bool into 1 or 0 so
 //                  check() can compare it.
 // Expected output:
+//   x: 0 1 2 3 4
+//   y: 1 3 5 7 9
 //   every line ends in PASS: Slope 2.0000, Intercept 1.0000, RMS 0.0000
 // ---------------------------------------------------------------
 void LineFit_T01_ExactLine()
@@ -99,6 +122,7 @@ void LineFit_T01_ExactLine()
     printTitle(F("LineFit T01 Exact Line y = 2x + 1"));
     float x[] = {0, 1, 2, 3, 4};
     float y[] = {1, 3, 5, 7, 9};
+    printData(F("x:"), x, F("y:"), y, 5); // v6.4.1
     LineFit2<float> fit;
     check(F("Fit() returns true"), fit.Fit(x, y, 5) ? 1 : 0, 1, 0);
     check(F("Slope"), fit.Slope(), 2.0, 0.0001);
@@ -124,6 +148,8 @@ void LineFit_T01_ExactLine()
 //   RMS error 0.75 RPM: the typical scatter of the measurements about the
 //   line.
 // Expected output (all PASS):
+//   PWM: 60 100 140 180 220
+//   RPM: 12 38 61 88 113
 //   Slope 0.6300  Intercept -25.8000  Dead band 40.9524
 //   Predicted RPM at PWM 255 134.8500  RMS error 0.7483
 // ---------------------------------------------------------------
@@ -132,6 +158,7 @@ void LineFit_T02_MotorCalibration()
     printTitle(F("LineFit T02 Motor Calibration (PWM to RPM)"));
     float pwm[] = {60, 100, 140, 180, 220};
     float rpm[] = {12, 38, 61, 88, 113};
+    printData(F("PWM:"), pwm, F("RPM:"), rpm, 5); // v6.4.1
     LineFit2<float> fit;
     fit.Fit(pwm, rpm, 5);
     check(F("Slope (RPM per PWM step)"), fit.Slope(), 0.63, 0.0001);
@@ -156,6 +183,8 @@ void LineFit_T02_MotorCalibration()
 //   Return value as an error report: false means the object holds no
 //                  valid line; always test it before reading Slope().
 // Expected output (both PASS):
+//   x: 3 3 3
+//   y: 1 2 3
 //   All x equal: Fit() returns false ... PASS
 //   One point: Fit() returns false ... PASS
 //   Failures: 0
@@ -165,6 +194,7 @@ void LineFit_T03_Degenerate()
     printTitle(F("LineFit T03 Degenerate Data"));
     float x[] = {3, 3, 3};
     float y[] = {1, 2, 3};
+    printData(F("x:"), x, F("y:"), y, 3); // v6.4.1
     LineFit2<float> fit;
     check(F("All x equal: Fit() returns false"), fit.Fit(x, y, 3) ? 1 : 0, 0, 0);
     check(F("One point: Fit() returns false"), fit.Fit(x, y, 1) ? 1 : 0, 0, 0);

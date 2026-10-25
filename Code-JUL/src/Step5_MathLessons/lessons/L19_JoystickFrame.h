@@ -94,19 +94,19 @@ void JoystickFrame_T01_RotationChecks()
     // Rotate (1, 0) by 90 degrees: (0, 1)
     R = R.Rotation(HALF_PI);
     Vector2<float> v = R * Vector2<float>(1, 0);
-    check(F("90 deg: x"), v.x(), 0);
-    check(F("90 deg: y"), v.y(), 1);
+    check(F("90 deg of (1, 0): x"), v.x(), 0);
+    check(F("90 deg of (1, 0): y"), v.y(), 1);
     // A 90 degree mount exchanges the axes and reverses one of them:
     // one of the eight orientations of Article 1009.
     R = R.Rotation(-HALF_PI);
     v = R * Vector2<float>(0, 1);
-    check(F("-90 deg undoes it: x"), v.x(), 1);
-    check(F("-90 deg undoes it: y"), v.y(), 0);
+    check(F("-90 deg of (0, 1) undoes it: x"), v.x(), 1);
+    check(F("-90 deg of (0, 1) undoes it: y"), v.y(), 0);
     // A 45 degree mount, which no exchange or reversal can correct
     R = R.Rotation(-PI / 4.0);
     v = R * Vector2<float>(0.7071068, 0.7071068);
-    check(F("-45 deg: x"), v.x(), 1);
-    check(F("-45 deg: y"), v.y(), 0);
+    check(F("-45 deg of (0.7071, 0.7071): x"), v.x(), 1);
+    check(F("-45 deg of (0.7071, 0.7071): y"), v.y(), 0);
     // A rotation keeps the length of the vector
     check(F("Magnitude kept"), v.Magnitude(), 1);
     Serial.print(F("Failures: "));
@@ -125,6 +125,12 @@ void JoystickFrame_T02_LiveJoystick()
         Vector2<float> raw(mapInput.Map((float)xDigital), mapInput.Map((float)yDigital));
         Vector2<float> robot = correction * raw;
         joystick.UpdateInputs(robot.x(), robot.y());
+        // v6.4.1: the ADC counts, the inputs of the map.
+        Serial.print(F("counts ("));
+        Serial.print(xDigital);
+        Serial.print(F(", "));
+        Serial.print(yDigital);
+        Serial.print(F(")  "));
         printVector(F("raw "), raw);
         printVector(F("robot "), robot);
         Serial.print(F("octant "));
@@ -154,6 +160,8 @@ void Setup()
 #if TOPIC == 0 || TOPIC == 2
     correction = correction.Rotation(MOUNT_ANGLE_DEG * DEG_TO_RAD);
     Serial.println(F("JoystickFrame T02 Part 2: live joystick, once per second"));
+    Serial.print(F("MOUNT_ANGLE_DEG: ")); // v6.4.1: the input of the correction
+    Serial.println(MOUNT_ANGLE_DEG, 1);
     timer.resetTimer();
 #endif
 }
@@ -199,7 +207,9 @@ void Loop()
 //   A rotation keeps length: |v| stays 1.
 //   0.7071068 = cos 45 degrees = sin 45 degrees.
 // Expected output (Uno and USB cable only):
-//   every check PASS, then Failures: 0
+//   90 deg of (1, 0): x expected 0.0000 observed -0.0000  PASS
+//   every check PASS, then Failures: 0 (v6.4.1: the labels name the
+//   input vector of each check)
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // JoystickFrame_T02_LiveJoystick (teaching notes, v6.3.0)
@@ -215,6 +225,8 @@ void Loop()
 //   logic the drive program uses.
 //   Called from Loop(); timer.isTimer(1000) limits it to once per second.
 // Expected output (bench):
-//   raw (0.00, 0.00)  robot (0.00, 0.00)  octant 0   at rest
+//   MOUNT_ANGLE_DEG: 0.0
+//   counts (511, 511)  raw (0.00, 0.00)  robot (0.00, 0.00)  octant 0
+//   at rest (v6.4.1: the mount angle and the counts are printed)
 // ---------------------------------------------------------------
 #endif // Lesson_L19_JoystickFrame_h

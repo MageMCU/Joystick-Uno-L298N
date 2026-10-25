@@ -36,6 +36,14 @@
 // compiled program is unchanged. The author's bench test of 20261021
 // (release v4.0.1) passed: Step4_Generated drives the robot, and the
 // LED on D12 follows the push button.
+// Revised 20261025 (v6.4.0): requested by the author. Two template
+// parameters at the end of the list, X_CENTER and Y_CENTER (default
+// 511), hold the joystick center measured by Step1_Joystick
+// (include/JoystickCenter.h). tick() moves each reading by the
+// offset of its center from 511 before compute(); Step2_JUL keeps
+// the center 511 (author decision). With the defaults the compiled program is
+// unchanged, so a Step4_Generated printed before v6.4.0 still builds
+// and drives as before.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
@@ -277,9 +285,13 @@ namespace csjc
               uint8_t LEFT_EN, uint8_t LEFT_FWD, uint8_t LEFT_REV,
               uint8_t RIGHT_EN, uint8_t RIGHT_FWD, uint8_t RIGHT_REV,
               uint8_t BUTTON_PIN = 2, uint8_t LED_PIN = 12,
-              uint16_t TICK_MS = 50, uint16_t DEBOUNCE_MS = 50>
+              uint16_t TICK_MS = 50, uint16_t DEBOUNCE_MS = 50,
+              uint16_t X_CENTER = 511, uint16_t Y_CENTER = 511>
     class Ace
     {
+        static_assert(X_CENTER >= 411 && X_CENTER <= 611 &&
+                          Y_CENTER >= 411 && Y_CENTER <= 611,
+                      "each joystick center must be 411 to 611");
         static_assert(X_PIN >= A0 && X_PIN <= A5 && Y_PIN >= A0 && Y_PIN <= A5,
                       "joystick pins must be A0 to A5");
         static_assert(acePwmPin(LEFT_EN) && acePwmPin(RIGHT_EN),
@@ -494,11 +506,28 @@ namespace csjc
             AcePin<RIGHT_EN>::pwm(0);
         }
 
-        // One control tick: read, compute, drive
+        // The joystick center correction (v6.4.0): the reading moves
+        // by CENTER - 511 and stays inside 0 to 1023, so a resting
+        // grip reads 511 and gives the command 0. For CENTER 511 the test below is
+        // false when the program is built, and no code is added.
+        template <uint16_t CENTER>
+        static inline uint16_t centered(uint16_t reading)
+        {
+            if (CENTER == 511)
+                return reading;
+            int16_t moved = (int16_t)reading - ((int16_t)CENTER - 511);
+            if (moved < 0)
+                return 0;
+            if (moved > 1023)
+                return 1023;
+            return (uint16_t)moved;
+        }
+
+        // One control tick: read, center, compute, drive
         static void tick()
         {
-            uint16_t xd = adc<X_PIN>();
-            uint16_t yd = adc<Y_PIN>();
+            uint16_t xd = centered<X_CENTER>(adc<X_PIN>());
+            uint16_t yd = centered<Y_CENTER>(adc<Y_PIN>());
             int16_t left;
             int16_t right;
             compute(xd, yd, left, right);

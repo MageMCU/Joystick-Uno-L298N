@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated October 22, 2026 (v6.3.1); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated October 25, 2026 (v6.4.1); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 Open as of 2026-10-12: 11 (Article 1000 axis mapping), 29 (bench check of the joystick power procedure only), 36 (Experiment-5, Lab 3, step 4, against Article 1009), 37 (tag v2.4.0 and Bibliography [1] date), 38 (Eberly credits for the matrix and quaternion fixes, author decision).
 
@@ -11,6 +11,10 @@ Open as of 2026-10-17 (v3.0.1): 61 (the line 31 filter printed in Article 1009).
 Open as of 2026-10-18 (v3.1.0): 68 (Experiment-5 Lab 1 and lessons 17 and 19 keep x on A1 and y on A0), 69 (Article 1009, folder names, joystick lines, and the generator).
 
 Open as of 2026-10-18 (v3.1.1): 71 (button polarity of Step3_Generated).
+
+Open as of 2026-10-25 (v6.4.1): 202 (Article 1009 and lab cards, now also the program titles and the lesson outputs of v6.4.1); bench test of v6.4.1 by the author. 107 (release tags not on GitHub).
+
+Open as of 2026-10-25 (v6.4.0): 202 (Article 1009 and lab cards: the joystick center, the five items of Step3_Generator, and the filter written one folder per line).
 
 Open as of 2026-10-18 (v3.1.2): bench retest of Step1_JUL, Step2_Generator, and Step3_Generated (see 73); 68, 69, and 71 as above.
 
@@ -53,6 +57,32 @@ Open as of 2026-10-22 (v6.2.3): 107 (release tags not on GitHub); 137 and 152 (b
 Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.0, with the Step1_Joystick of 188 and 189), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests; 192 and 193 (author decisions).
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
+
+## Review of v6.4.0.a: Lesson Outputs and Program Titles (2026-10-25, v6.4.1)
+
+Requested by the author after his bench test of v6.4.0.a (passed): review the whole repository for correctness and discrepancies, make the lessons print all their information, and print a title at the start of every step. Every lesson was run in simavr with TOPIC 0, and each topic was compared with the values it uses.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 203 | Lesson topics used values they never printed: lesson 7, topic 13, the scalar 3 (lesson 9, topic 11, prints it); the angles of lesson 11, topic 13, lesson 12, topic 14, and lesson 14, topics 1, 7, 8, and 9; the map and random intervals of lessons 3, 5, 6, and 12, topic 15; the data of lesson 15 and the quaternions of lesson 16; the index of lesson 12, topic 2; det M, which links the adjoint and the inverse of lesson 12, topics 6 and 7; the starting array and the outlier of lesson 6, topic 5; the axis of lesson 14, topic 9, named Angle Axis; the ADC counts of lessons 17 and 19, the mount angle of lesson 19, the entered counts and the data of lesson 18, and the constants of lesson 20. | `Code-JUL/src/Step5_MathLessons/lessons/` | **Fixed 2026-10-25 (v6.4.1).** Each topic prints its inputs; code added, never removed; every expected output block updated (RELEASES.md, v6.4.1). |
+| 204 | No program printed its own name, so a serial monitor showing the output of the wrong step (a forgotten `platformio.ini` change) gave no sign of it. | Step1_Joystick to Step5_MathLessons | **Fixed 2026-10-25 (v6.4.1).** A blank line, a dotted line, the name, and the `build_src_filter` entry, first; Step5 adds the lesson and topic. Step2_JUL prints it while a debug switch is on, Step4_Generated with `DEBUG_GENERATED`. No cited line of Step1_Joystick or Step2_JUL moves. |
+| 205 | Wrong or unclear labels: lesson 7, topic 8, `mag = v1 * v2` printed `v2.Magnitude()`; topic 9 said PerpDot for DotPerp; lesson 8, topic 1, named the vector `v1` (it is `v`); lesson 14 ran its labels into the values (`q10.00`) and labelled two different quaternions `q:`; lesson 6, topic 1, printed the size 10 as `10.00`; lessons 2 and 4 printed the generic labels `a:` to `d:` of `Debug()` only; lesson 1, topic 6, printed two bit patterns with no label, and assigned 45568 to an `int` (it stores -19968). | lessons 1, 2, 4, 6, 7, 8, 14 | **Fixed 2026-10-25 (v6.4.1).** Labels corrected; `Debug()` calls kept, with a named line after them; lesson 1, topic 6, adds the `unsigned int` case and explains the two's complement value. |
+| 206 | Lessons 17 and 20 used the center 511 after v6.4.0 introduced `include/JoystickCenter.h`; lesson 20 also said Step4_Generated assumes the center 511. | lessons 17 and 20 | **Fixed 2026-10-25 (v6.4.1)**, author decision: lesson 20 takes its centers from the file; lesson 17 prints the file centers and the offset about them, beside the offset of Step2_JUL. |
+| 207 | The new lines move the lines cited by the lab cards: lesson 17, lines 116 and 117; lesson 18, lines 168, 174, and 175. | Experiment-6 and -7 cards; `Experiments.md`; lesson 18 notes | **Fixed 2026-10-25 (v6.4.1).** Now 139 and 140; 179, 185, and 186. Lesson 19 keeps 123 and 124. Experiment-9 notes the two input lines of lesson 14, topic 8. |
+| 208 | The filter was cited as lines 31 to 37 in some documents and 32 to 37 in others. | lab cards 2 and 5 to 9; Step3_Generator, Step4_Generated, Step5_MathLessons comments | **Fixed 2026-10-25 (v6.4.1).** Lines 31 to 37 everywhere; `platformio.ini` keeps its note that the entries are lines 32 to 37. |
+| 209 | The memory table of `Step5_MathLessons/main.cpp` no longer matched the lessons. | `Step5_MathLessons/main.cpp` | **Fixed 2026-10-25 (v6.4.1).** Rebuilt for all 20 lessons. The review environment measures the v6.4.0 code 20 bytes of flash smaller than the earlier tables (RAM equal), noted in the table. |
+
+Not changed: `Matrix3x3::Rotation()` still carries its FIXME (order of the three rotations not tested) and lesson 12, topic 14, prints one combined matrix only; lesson 1, topic 6, keeps the `int` case, as a lesson on the range of `int`; lesson 18 drives with `bits_0000`, which may turn a wheel backward on another bench (the counts are unaffected).
+
+## Bench Test of v6.3.1.a: Joystick Center and Filter Lines (2026-10-25, v6.4.0)
+
+Requested by the author after his bench test of v6.3.1.a (downloaded 20261024).
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 200 | An old joystick failed Step1_Joystick, Test 3 (x center more than 25 counts from 511), and the motors whined in Steps 2 to 4. Step2_JUL and Step4_Generated assumed a rest reading of 511, so the dead zone had to absorb any center offset; a module resting farther off left the motors turning with the grip released. The report printed `map()` calls that no step used. | `src/Step1_Joystick/main.cpp`; `src/Step3_Generator/main.cpp`; `include/claude/ace.h` | **Fixed 2026-10-25 (v6.4.0).** Approved by the author. New `include/JoystickCenter.h` (shipped 511 and 511). Step1_Joystick accepts a center within 100 counts of 511, and after a pass prints the file with the measured centers in place of the `map()` calls. Step2_JUL is not changed (author decision): it keeps the center 511, so with an off center joystick its motors may turn slowly with the grip released; the push button OFF stops them. Step3_Generator reads the file, checks the range 411 to 611, shows the centers as Check 1 and writes `X_CENTER` and `Y_CENTER` into Step4_Generated; `ace.h` takes them as the last two template parameters (default 511) and moves each reading by `CENTER - 511`, held inside 0 to 1023, before `compute()`. Host test: for six pairs of centers and all 1024 x 1024 pairs of readings, `ace.h` gives the same commands as the float chain of Step2_JUL applied to the moved readings; a rest reading at the centers gives 0 and 0. With centers of 511, `ace.h` and Step2_JUL give the same commands, as before. With the shipped centers Step4_Generated builds to the same Intel HEX as before; with other centers it adds 46 bytes of flash and about 24 cycles (1.5 µs) per tick (simavr). |
+| 201 | The `build_src_filter` line, one line of about 110 characters, was hard to read and to change; the author's bench test confirmed that PlatformIO accepts the filter over several lines. | `Code-JUL/platformio.ini`; README files; lab cards 2 and 5 to 9; comments of Step3_Generator, Step4_Generated, and Step5_MathLessons | **Fixed 2026-10-25 (v6.4.0).** Lines 31 to 37: `build_src_filter =`, then one entry per line. A program is selected by its sign: `+` on its line, `-` on the other four folder lines. The notes give one example and the list of programs in place of five complete lines. `pio project config` reads the six entries. The Experiment projects 1 to 5 keep their own one line filters. |
+| 202 | Article 1009 prints the one line filter, the `map()` calls of the report, the Test 3 limit of 25, and the four items of Step3_Generator. | Article 1009 | **Open.** To be revised by the author after the bench test of v6.4.0. |
 
 ## Fixes of 192 and 193 and Full Review (2026-10-22, v6.3.1)
 

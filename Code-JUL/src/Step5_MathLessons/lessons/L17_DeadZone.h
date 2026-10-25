@@ -38,6 +38,7 @@
 #include <Arduino.h>
 #include "numerics/LinearMap.h"
 #include "numerics/Statistics.h"
+#include "JoystickCenter.h" // v6.4.1: the centers printed by Step1_Joystick
 
 namespace L17_DeadZone
 {
@@ -51,7 +52,7 @@ LinearMap<float> mapInput(0, 1023, -1.0, 1.0);
 
 void measure();
 
-void report(const char *axis, float *data, float stepOffset)
+void report(const char *axis, float *data, float stepOffset, int fileCenter)
 {
     Statistics<float> stats(data, size); // note: sorts data in place
     float average = stats.Average();
@@ -74,6 +75,22 @@ void report(const char *axis, float *data, float stepOffset)
     Serial.print("  (Step2_JUL uses ");
     Serial.print(stepOffset, 2);
     Serial.println(")");
+
+    // v6.4.1: the same average in ADC counts (Reverse() of lesson 3
+    // undoes the map), beside the center of include/JoystickCenter.h,
+    // and the offset measured about that center, the form Step4_Generated
+    // uses (ace.h moves each reading by the center before the dead zone).
+    float fileCenterMapped = mapInput.Map((float)fileCenter);
+    float aboutCenter = fabs(average - fileCenterMapped) + 3.0 * deviation;
+    Serial.print(axis);
+    Serial.print(F("  average in counts: "));
+    Serial.print(mapInput.Reverse(average), 1);
+    Serial.print(F("  (JoystickCenter.h: "));
+    Serial.print(fileCenter);
+    Serial.println(F(")"));
+    Serial.print(axis);
+    Serial.print(F("  suggested offset about the file center: "));
+    Serial.println(aboutCenter, 3);
 }
 
 void Setup()
@@ -91,6 +108,12 @@ void Setup()
     {
     }
     Serial.println(F("Lesson 17: joystick at rest, 100 readings per axis"));
+    // v6.4.1: the inputs of the measurement.
+    Serial.println(F("x on A0, y on A1; map 0 to 1023 onto -1 to 1 (Step2_JUL)"));
+    Serial.print(F("JoystickCenter.h: A0 "));
+    Serial.print(JOYSTICK_A0_CENTER);
+    Serial.print(F(", A1 "));
+    Serial.println(JOYSTICK_A1_CENTER);
     measure();
 }
 
@@ -120,8 +143,8 @@ void measure()
         delay(10); // 100 readings over about one second
     }
 
-    report("x", xs, 0.05);
-    report("y", ys, 0.06);
+    report("x", xs, 0.05, JOYSTICK_A0_CENTER);
+    report("y", ys, 0.06, JOYSTICK_A1_CENTER);
     Serial.println(F("Send any key to repeat"));
 }
 } // namespace L17_DeadZone
@@ -158,7 +181,8 @@ void measure()
 // What is learnt:
 //   Parameters     const char *axis is the text "x" or "y"; float *data
 //                  points to the first of the 100 values; stepOffset is the
-//                  offset of Step2_JUL for comparison.
+//                  offset of Step2_JUL for comparison; fileCenter (v6.4.1)
+//                  is the center of the axis in include/JoystickCenter.h.
 //   Statistics<float> stats(data, size); declared inside the function:
 //                  the object exists only until the function returns (a
 //                  local, automatic object on the stack).
@@ -169,6 +193,11 @@ void measure()
 // Expected output (bench, values depend on the joystick):
 //   x  average: 0.0120  std dev: 0.0040  median: ...  min: ...  max: ...
 //   x  suggested offset: 0.024  (Step2_JUL uses 0.05)
+//   x  average in counts: 517.6  (JoystickCenter.h: 511)
+//   x  suggested offset about the file center: 0.025
+//   (v6.4.1: the last two lines. The first offset is measured about 511,
+//   the center of Step2_JUL; the second about the center of
+//   include/JoystickCenter.h, the center of Step4_Generated.)
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // Setup (teaching notes, v6.3.0)

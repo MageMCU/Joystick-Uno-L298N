@@ -55,13 +55,17 @@ using namespace csjc;
 //                  evaluated once and its type is checked.
 //   String(value, 6)  converts a float to text with 6 decimal places.
 // Expected output:
+//   value = -4.9384
 //   absT<float>(-4.9384):  a: 4.938400
+//   (v6.4.1: the input is printed first; Debug() names its value a.)
 // ---------------------------------------------------------------
 void MiscMath_T06_AbsoluteValue()
 {
     printTitle(F("MiscMath T06 Absolute Value"));
 
     float value = -4.9384;
+    Serial.print(F("value = ")); // v6.4.1: print the input
+    Serial.println(value, 4);
     value = absT<float>(value);
     Debug<String>("absT<float>(-4.9384): ", String(value, 6));
 
@@ -81,13 +85,16 @@ void MiscMath_T06_AbsoluteValue()
 //   Getters        vector.x() and vector.z() read the components.
 //   T04 and T05 compared: references give loose numbers; a returned
 //   object keeps the three components together.
-// Expected output (72 lines):
+// Expected output (72 lines, after a line that names the columns,
+// v6.4.1):
 //   DirectionVector:  deg: 0 dv(1.00, 0.00, 0.00) result: 0.00
 //   DirectionVector:  deg: 5 dv(1.00, 0.00, 0.09) result: 0.09
 // ---------------------------------------------------------------
 void MiscMath_T05_DirectionVector()
 {
     printTitle(F("MiscMath T05 Direction Vector"));
+    // v6.4.1: name the columns: the input angle, the vector, the result.
+    Serial.println(F("deg: angle in degrees; dv = DirectionVector(rad, XZ); result: AngleRadian(x, z) in radians"));
 
     float rad;
     Vector3<float> vector;
@@ -120,13 +127,16 @@ void MiscMath_T05_DirectionVector()
 //   Plane selector XY places the unit vector in the x y plane; z stays 0.
 //   printAngle() overloads: this call passes five numbers (x, y, z, and
 //                  the result) and prints dv(x, y, z).
-// Expected output (72 lines, 0 to 355 degrees):
+// Expected output (72 lines, 0 to 355 degrees, after a line that names
+// the columns, v6.4.1):
 //   DirectionComponents:  deg: 0 dv(1.00, 0.00, 0.00) result: 0.00
 //   DirectionComponents:  deg: 355 dv(1.00, -0.09, 0.00) result: 6.20
 // ---------------------------------------------------------------
 void MiscMath_T04_DirectionComponents()
 {
     printTitle(F("MiscMath T04 Direction Components"));
+    // v6.4.1: name the columns: the input angle, the vector, the result.
+    Serial.println(F("deg: angle in degrees; dv = DirectionComponents(rad, x, y, z, XY); result: AngleRadian(x, y) in radians"));
 
     float x;
     float y;
@@ -162,13 +172,16 @@ void MiscMath_T04_DirectionComponents()
 //   -0.00          float has a signed zero; cos(90 degrees) computes to
 //                  a tiny negative number that prints as -0.00.
 //   Two methods, one answer: a second calculation is a check on the first.
-// Expected output: the same results as T02, for example
+// Expected output: a line that names the columns (v6.4.1), then the
+// same results as T02, for example
 //    Angle2Radian:  deg: 90 v(-0.00, 1.00) result: 1.57
 //    Angle2Radian:  deg: 360 v(1.00, 0.00) result: 0.00 (or 6.28)
 // ---------------------------------------------------------------
 void MiscMath_T03_Angle2Radian()
 {
     printTitle(F("MiscMath T03 Angle2Radian"));
+    // v6.4.1: name the columns: the input angle, the vector, the result.
+    Serial.println(F("deg: angle in degrees; v = (cos, sin); result: Angle2Radian(x, y) in radians"));
     float x;
     float y;
     float rad;
@@ -202,7 +215,8 @@ void MiscMath_T03_Angle2Radian()
 //                  quadrant correction, the fix that depends on the signs
 //                  of x and y, to cover the full circle.
 //   Round trip test: angle to vector to angle.
-// Expected output (73 lines, 0 to 360 degrees in steps of 5):
+// Expected output: a line that names the columns (v6.4.1), then 73
+// lines, 0 to 360 degrees in steps of 5:
 //   AngleRadian:  deg: 0 v(1.00, 0.00) result: 0.00
 //   AngleRadian:  deg: 90 v(-0.00, 1.00) result: 1.57
 //   AngleRadian:  deg: 180 v(-1.00, -0.00) result: 3.14
@@ -211,6 +225,8 @@ void MiscMath_T03_Angle2Radian()
 void MiscMath_T02_AngleRadian()
 {
     printTitle(F("MiscMath T02 AngleRadian"));
+    // v6.4.1: name the columns: the input angle, the vector, the result.
+    Serial.println(F("deg: angle in degrees; v = (cos, sin); result: AngleRadian(x, y) in radians"));
     float x;
     float y;
     float rad;

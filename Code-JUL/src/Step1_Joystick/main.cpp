@@ -32,11 +32,13 @@
 //   Test 3  Leave the grip at rest       (measures the center)
 //   Test 4  Move the grip to every edge  (measures the ends)
 //   Test 5  Release the grip             (measures the return)
-// The report gives PASS or FAIL for each test, the measured values,
-// and the map() calls that fit this joystick. A press of the button
-// during Tests 3 to 5 also fails the self test (a floating D2). Which way A0 and A1
-// count does not matter; the Bits() value of L298N Setup corrects
-// the orientation. After the report the program asks:
+// The report gives PASS or FAIL for each test and the measured
+// values. After a pass it prints a new include/JoystickCenter.h, the
+// center of each axis, to be copied into the project (see the end of
+// printReport()). A press of the button during Tests 3 to 5 also
+// fails the self test (a floating D2). Which way A0 and A1 count does
+// not matter; the Bits() value of L298N Setup corrects the
+// orientation. After the report the program asks:
 //   r  run the self test again
 //   v  view the live values of A0, A1, and SW four times a second
 //      for 20 seconds; then the question is asked again
@@ -50,10 +52,18 @@
 // v6.2.3 the first Enter could end Test 1 before it was read).
 // Characters typed ahead are discarded before each question. The
 // report and the live values print in columns of spaces, not tabs.
+// Revised 20261025 (v6.4.0): the joystick center. Test 3 passes a
+// center within 100 counts of 511 (25 up to v6.3.1), because
+// Step2_JUL and Step4_Generated now move each reading by the measured
+// center. After a pass the report prints include/JoystickCenter.h
+// for Step2_JUL and Step3_Generator, in place of the map() calls of
+// v6.0.0 to v6.3.1; the live values show each reading's offset from
+// the measured center in place of the mapped value.
 // ---------------------------------------------------------------
 #include <Arduino.h>
 #include "Button.h"
 #include "Timer.h"
+#include "JoystickCenter.h" // the center now in the project (v6.4.0)
 
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
@@ -65,21 +75,26 @@ using namespace csjc;
 // measures both instead of assuming them.
 //   ADC_MIDDLE               511, the middle of 0 to 1023.
 //   CENTER_TOLERANCE         The rest reading must lie within this
-//                            many counts of ADC_MIDDLE. Step2_JUL and
-//                            Step4_Generated map 0 to 1023 onto -1 to
-//                            1 and assume the rest reading is 511;
-//                            their dead zone, X_OFFSET 0.05 of 511
-//                            counts (about 25), absorbs a smaller
-//                            offset. A larger one would leave the
-//                            motors turning with the grip released.
+//                            many counts of ADC_MIDDLE (v6.4.0, 25 up
+//                            to v6.3.1). Step2_JUL and Step4_Generated
+//                            move each reading by the measured center
+//                            (include/JoystickCenter.h), so a resting
+//                            grip maps to 0. A center farther than 100
+//                            counts from 511 leaves one side of the
+//                            axis less than 412 counts of travel (80
+//                            percent of full speed), and a center near
+//                            0 or 1023 is a wiring fault.
 //   MIN_TRAVEL               Each direction must reach this many
 //                            counts from the center.
 //   RETURN_TOLERANCE         The released grip must come back within
-//                            this many counts of the center, for the
-//                            same reason.
+//                            this many counts of the center. The dead
+//                            zone of Step2_JUL, X_OFFSET 0.05 of 511
+//                            counts (about 25), covers this spread; a
+//                            larger one would leave the motors turning
+//                            with the grip released.
 // ---------------------------------------------------------------
 const int ADC_MIDDLE = 511;
-const int CENTER_TOLERANCE = 25;
+const int CENTER_TOLERANCE = 100;
 const int MIN_TRAVEL = 200;
 const int RETURN_TOLERANCE = 25;
 
@@ -110,21 +125,6 @@ struct Axis
     bool travelPassed() const
     {
         return (center - low) >= MIN_TRAVEL && (high - center) >= MIN_TRAVEL;
-    }
-
-    // Map a raw reading to -100 to 100 with Arduino map(). The
-    // center seldom lies halfway between low and high, so each side
-    // of the center has its own map() call: low to center gives
-    // -100 to 0, and center to high gives 0 to 100. constrain()
-    // holds the result inside -100 to 100, because map() does not.
-    int mapped(int raw) const
-    {
-        long value;
-        if (raw < center)
-            value = map(raw, low, center, -100, 0);
-        else
-            value = map(raw, center, high, 0, 100);
-        return (int)constrain(value, -100, 100);
     }
 };
 
@@ -350,23 +350,68 @@ void printAxisRow(const Axis &axis)
     Serial.println();
 }
 
-// The two map() calls of one axis, with the measured values
-void printMapCalls(const Axis &axis)
+// A signed number with its sign, for example +12, -7, or 0
+void printSigned(int value)
 {
-    Serial.print(F("  below center: map("));
-    Serial.print(axis.name);
-    Serial.print(F(", "));
-    Serial.print(axis.low);
-    Serial.print(F(", "));
-    Serial.print(axis.center);
-    Serial.println(F(", -100, 0)"));
-    Serial.print(F("  above center: map("));
-    Serial.print(axis.name);
-    Serial.print(F(", "));
-    Serial.print(axis.center);
-    Serial.print(F(", "));
-    Serial.print(axis.high);
-    Serial.println(F(", 0, 100)"));
+    if (value > 0)
+        Serial.print('+');
+    Serial.print(value);
+}
+
+// The center of one axis and its offset from 511
+void printCenterLine(const __FlashStringHelper *name, int center)
+{
+    Serial.print(F("  "));
+    Serial.print(name);
+    Serial.print(F(" center "));
+    Serial.print(center);
+    Serial.print(F(" (offset "));
+    printSigned(center - ADC_MIDDLE);
+    Serial.println(F(")"));
+}
+
+// ---------------------------------------------------------------
+// The joystick center file (v6.4.0)
+// After a pass, the report prints a complete include/JoystickCenter.h
+// between two marker lines. Copy every line between the markers and
+// replace the whole file with them; the PlatformIO monitor also saves
+// the output in a log file (monitor_filters = log2file), so the lines
+// can be copied from that file. Step2_JUL reads the file through
+// Common.h, and Step3_Generator writes its values into
+// Step4_Generated. Run this self test again after the joystick is
+// exchanged, and copy the new file.
+// ---------------------------------------------------------------
+void printCenterFile()
+{
+    Serial.println(F("// ----- BEGIN JoystickCenter.h -----"));
+    Serial.println(F("//"));
+    Serial.println(F("// Carpenter Software"));
+    Serial.println(F("// File: JoystickCenter.h"));
+    Serial.println(F("// Github: MageMCU"));
+    Serial.println(F("// Repository: Joystick-Uno-L298N"));
+    Serial.println(F("// Folder: Code-JUL"));
+    Serial.println(F("//"));
+    Serial.println(F("// By Jesse Carpenter (carpentersoftware.com)"));
+    Serial.println(F("//"));
+    Serial.println(F("// MIT LICENSE"));
+    Serial.println(F("//"));
+    Serial.println(F("// The joystick center, printed by Step1_Joystick (v6.4.0) after a"));
+    Serial.println(F("// passing self test: the rest reading of each axis (Test 3)."));
+    Serial.println(F("// Step3_Generator checks these two values and writes them into"));
+    Serial.println(F("// Step4_Generated; Step2_JUL does not use them."));
+    Serial.println(F("// Allowed range: 411 to 611 (Step1_Joystick, Test 3)."));
+    Serial.println(F("//"));
+    Serial.println();
+    Serial.println(F("#ifndef JoystickCenter_h"));
+    Serial.println(F("#define JoystickCenter_h"));
+    Serial.println();
+    Serial.print(F("#define JOYSTICK_A0_CENTER "));
+    Serial.println(axisA0.center);
+    Serial.print(F("#define JOYSTICK_A1_CENTER "));
+    Serial.println(axisA1.center);
+    Serial.println();
+    Serial.println(F("#endif"));
+    Serial.println(F("// ----- END JoystickCenter.h -----"));
 }
 
 // The readings of both axes, after each axis test
@@ -387,12 +432,13 @@ void printAxisReadings(int valueA0, int valueA1)
 //   Test 2  No release seen: check the pull up resistor on D2.
 //   Test 3  A center near 0 or 1023: check the VRx (A0) or VRy (A1)
 //           wire, then the 5V and GND wires of the module. A center
-//           between those, but more than 25 counts from 511: the
-//           module rests off center; try another module.
+//           between those, but more than 100 counts from 511: the
+//           module rests too far off center; try another module.
 //   Test 4  One direction short of MIN_TRAVEL: check that wire, and
 //           move the grip all the way to the edge.
 //   Test 5  The grip does not come back to center: try another
-//           module, or enlarge the dead zone of Step2_JUL.
+//           module, or enlarge the dead zone of Step2_JUL (lines 132
+//           and 133).
 //   Presses during Tests 3 to 5: a floating D2 gives presses that no
 //           one made. Any press fails the self test (v6.2.1). Check the
 //           pull up resistor on D2.
@@ -408,7 +454,7 @@ void printReport()
     printAxisRow(axisA1);
     printResult(1, F("Button press                 "));
     printResult(2, F("Button release               "));
-    printResult(3, F("Center (511, within 25)      "));
+    printResult(3, F("Center (511, within 100)     "));
     printResult(4, F("Ends (200 counts each way)   "));
     printResult(5, F("Return (within 25 of center) "));
     Serial.print(F("Presses during Tests 3 to 5: "));
@@ -423,9 +469,22 @@ void printReport()
     if (all)
     {
         Serial.println(F("Result: PASS. The joystick is ready for L298N Setup."));
-        Serial.println(F("map() for this joystick (output -100 to 100):"));
-        printMapCalls(axisA0);
-        printMapCalls(axisA1);
+        Serial.println(F("Joystick center measured by Test 3:"));
+        printCenterLine(F("A0"), axisA0.center);
+        printCenterLine(F("A1"), axisA1.center);
+        Serial.println(F("Joystick center now in include/JoystickCenter.h:"));
+        printCenterLine(F("A0"), JOYSTICK_A0_CENTER);
+        printCenterLine(F("A1"), JOYSTICK_A1_CENTER);
+        if (axisA0.center == JOYSTICK_A0_CENTER &&
+            axisA1.center == JOYSTICK_A1_CENTER)
+            Serial.println(F("They match; the file needs no change."));
+        printDots();
+        Serial.println(F("Copy every line between the two marker lines and replace"));
+        Serial.println(F("all of include/JoystickCenter.h with them (Step3_Generator"));
+        Serial.println(F("uses the file). The PlatformIO monitor also"));
+        Serial.println(F("saves this output in a log file (log2file)."));
+        Serial.println();
+        printCenterFile();
     }
     else
     {
@@ -547,13 +606,12 @@ void runSelfTest()
 // After the report
 // ---------------------------------------------------------------
 
-// A0 and A1, raw (mapped), and SW, four times a second for LIVE_MS.
-// An axis that failed Test 4 is printed raw only, because its map()
-// has no measured ends.
+// A0 and A1, raw (offset from the measured center), and SW, four
+// times a second for LIVE_MS. At rest both offsets stay near 0.
 void printLiveValues()
 {
     printDots();
-    Serial.println(F("Live values: A0 and A1, raw (mapped), and SW,"));
+    Serial.println(F("Live values: A0 and A1, raw (offset from center), and SW,"));
     Serial.println(F("four times a second for 20 seconds."));
     timerPrint.resetTimer();
     timerLive.resetTimer();
@@ -565,29 +623,19 @@ void printLiveValues()
         if (timerPrint.isTimer(PRINT_MS))
         {
             // Columns of fixed width (v6.3.0): raw 4 characters,
-            // mapped 4 characters inside the parentheses
+            // offset 5 characters inside the parentheses (v6.4.0)
             int rawA0 = analogRead(axisA0.pin);
             int rawA1 = analogRead(axisA1.pin);
             Serial.print(F("A0: "));
             printColumn(rawA0, 4);
-            if (axisA0.travelPassed())
-            {
-                Serial.print(F(" ("));
-                printColumn(axisA0.mapped(rawA0), 4);
-                Serial.print(F(")"));
-            }
-            else
-                Serial.print(F("       ")); // keeps A1 in its column
+            Serial.print(F(" ("));
+            printColumn(rawA0 - axisA0.center, 5);
+            Serial.print(F(")"));
             Serial.print(F("  A1: "));
             printColumn(rawA1, 4);
-            if (axisA1.travelPassed())
-            {
-                Serial.print(F(" ("));
-                printColumn(axisA1.mapped(rawA1), 4);
-                Serial.print(F(")"));
-            }
-            else
-                Serial.print(F("       "));
+            Serial.print(F(" ("));
+            printColumn(rawA1 - axisA1.center, 5);
+            Serial.print(F(")"));
             Serial.println(button.isButtonOn() ? F("  SW: ON") : F("  SW: OFF"));
         }
     }
@@ -616,7 +664,7 @@ void setup()
 {
     Serial.begin(9600);
     while (!Serial) { }
-
+    Serial.println(F("\n................................................\nStep1_Joystick: the joystick self test\nSelected in platformio.ini: +<Step1_Joystick/>")); // v6.4.1: program title
     // Button class: SW on D2, indicator LED on D12
     int buttonPin = 2; // UNO D2 (CHIP-PD2), joystick SW
     int ledPin = 12;   // UNO D12 (CHIP-PB4), indicator LED

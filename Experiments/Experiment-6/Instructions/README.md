@@ -4,9 +4,17 @@
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
-**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons on line 31 of `platformio.ini`:
+**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons in `platformio.ini`, `build_src_filter`, lines 31 to 37 (one folder per line since v6.4.0):
 
-`build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>`
+```
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    +<Step5_MathLessons/>
+```
 
 Then set `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp` to the number of the lesson and `#define TOPIC`, the line below it, to the number of one topic of that lesson, or to 0 for every topic in order; build and upload. Only that lesson is compiled, and only the selected topics run. A topic is one function of the lesson, named LessonName_Tnn_Operation, for example `Vector3_T16_Copy()`, and it prints the same name as its title; `LESSON_TOPICS` in each lesson file gives its number of topics; each lesson is one header file in `Code-JUL/src/Step5_MathLessons/lessons/`, for example lesson 17 is `L17_DeadZone.h`. Restore the Step2_JUL line of `platformio.ini` before uploading to the robot.
 
@@ -32,7 +40,7 @@ Run lessons L05_RandomNumber and L06_Statistics. Record the average, standard de
 
 ## Lab 3: The Joystick at Rest
 
-**Code.** Lesson L17_DeadZone (Code-JUL/src/Step5_MathLessons/lessons/L17_DeadZone.h). Wiring: the drive as wired since Experiment-3; power the joystick as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3. The two analogRead() lines, 116 and 117, read x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed in v3.2.0; up to v3.1.2 the student made them match the lines recorded in Experiment-2). The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
+**Code.** Lesson L17_DeadZone (Code-JUL/src/Step5_MathLessons/lessons/L17_DeadZone.h). Wiring: the drive as wired since Experiment-3; power the joystick as in Article 1004, Experiment-3, Powering the Joystick after Experiment-3. The two analogRead() lines, 139 and 140 (116 and 117 up to v6.4.0), read x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed in v3.2.0; up to v3.1.2 the student made them match the lines recorded in Experiment-2). The program takes 100 readings of each axis with the grip at rest, maps them into the range −1 to 1 as Step2_JUL does, and prints the average, standard deviation, median, minimum, and maximum of each axis, and a suggested offset of |average| + 3 standard deviations. Since v6.4.1 it also prints, first, the centers of `include/JoystickCenter.h` (Step1_Joystick), and for each axis the average in ADC counts beside the center of that file and the suggested offset about that center, the center Step4_Generated uses. For readings that follow the normal distribution, about 99.7 percent lie within 3 standard deviations of the average.
 
 **Prediction.** From the readings at rest recorded in Experiment-2, estimate the average of each axis in the range −1 to 1.
 

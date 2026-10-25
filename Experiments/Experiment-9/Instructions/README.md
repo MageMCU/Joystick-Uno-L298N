@@ -4,9 +4,17 @@
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
-**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons on line 31 of `platformio.ini`:
+**Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons in `platformio.ini`, `build_src_filter`, lines 31 to 37 (one folder per line since v6.4.0):
 
-`build_src_filter = +<*> -<Step1_Joystick/> -<Step2_JUL/> -<Step3_Generator/> -<Step4_Generated/> +<Step5_MathLessons/>`
+```
+build_src_filter =
+    +<*>
+    -<Step1_Joystick/>
+    -<Step2_JUL/>
+    -<Step3_Generator/>
+    -<Step4_Generated/>
+    +<Step5_MathLessons/>
+```
 
 Then set `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp` to the number of the lesson and `#define TOPIC`, the line below it, to the number of one topic of that lesson, or to 0 for every topic in order; build and upload. Only that lesson is compiled, and only the selected topics run. A topic is one function of the lesson, named LessonName_Tnn_Operation, for example `Vector3_T16_Copy()`, and it prints the same name as its title; `LESSON_TOPICS` in each lesson file gives its number of topics; each lesson is one header file in `Code-JUL/src/Step5_MathLessons/lessons/`, for example lesson 17 is `L17_DeadZone.h`. Restore the Step2_JUL line of `platformio.ini` before uploading to the robot.
 
@@ -21,7 +29,7 @@ The unit quaternion of a rotation by θ about the unit axis u.
 
 ## Lab 1: Quaternion Products
 
-**Code.** Lesson L14_Quaternion. Uno and USB cable only. Topic T08, `Quaternion_T08_Multiplication()`, multiplies the quaternion of a 1 degree rotation about the axis (1, 2, 3) by itself repeatedly and prints the four components, the stream of data plotted in Article 1005. Run the lesson with TOPIC 8, so that only this topic prints, copy the T08 output from the serial monitor into a spreadsheet, and plot w, x, y, and z against the number of products.
+**Code.** Lesson L14_Quaternion. Uno and USB cable only. Topic T08, `Quaternion_T08_Multiplication()`, multiplies the quaternion of a 1 degree rotation about the axis (1, 2, 3) by itself repeatedly and prints the four components, the stream of data plotted in Article 1005. Run the lesson with TOPIC 8, so that only this topic prints, copy the T08 output from the serial monitor into a spreadsheet (since v6.4.1 the first two lines after the title name the axis and the columns; leave them out of the plot), and plot w, x, y, and z against the number of products.
 
 **Expected output and verification.** Each component follows a cosine or sine of half the total angle, so one full turn of the rotation, 360 degrees, is half a period of w; the quaternion returns to its start after 720 degrees. The norm stays at 1 within the rounding of float arithmetic.
 
