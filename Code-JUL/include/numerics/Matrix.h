@@ -52,10 +52,12 @@ namespace csjc
 
     /* Experimental
     template <typename real>
-    Vector2<real> Matrix2x2<real>::m_Ax(real A[], real x[], int NumRows, int NumCommon, int NumCols)
+    Vector2<real> Matrix2x2<real>::m_Ax(real A[], real x[], int NumRows,
+                                        int NumCommon, int NumCols)
     {
         // Test the following conditions
-        // (1) A(2x2)(rows)=2 * B(2x2)(cols)=2 where A(cols) & B(rows) = 2... DO NOT USE HERE
+        // (1) A(2x2)(rows)=2 * B(2x2)(cols)=2 where A(cols) & B(rows) = 2... DO
+        //     NOT USE HERE
         // (2) A(2x2)(rows)=2 * v(2x1)(col)=1 where A(cols) & B(rows) = 2
         // Minimum Size (2, 2, 1)
 
@@ -102,7 +104,8 @@ namespace csjc
      {
          // Test the following conditions
          // (1) A(2x2)(rows)=2 * B(2x2)(cols)=2 where A(cols) & B(rows) = 2
-         // (2) A(2x2)(rows)=2 * v(2x1)(col)=1 where A(cols) & B(rows) = 2 ... DO NOT USE HERE
+         // (2) A(2x2)(rows)=2 * v(2x1)(col)=1 where A(cols) & B(rows) = 2 ...
+         //     DO NOT USE HERE
          // Minimum Size (2, 2, 2)
 
          int arraySize = NumRows * NumCols;
@@ -188,7 +191,8 @@ namespace csjc
     {
         // Test the following conditions
         // (1) A(2x2)(rows)=2 * B(2x2)(cols)=2 where A(cols) & B(rows) = 2
-        // (2) A(2x2)(rows)=2 * v(2x1)(col)=1 where A(cols) & B(rows) = 2 ... DO NOT USE HERE
+        // (2) A(2x2)(rows)=2 * v(2x1)(col)=1 where A(cols) & B(rows) = 2 ... DO
+        //     NOT USE HERE
         // Minimum Size (2, 2, 2)
 
         int rIndex;

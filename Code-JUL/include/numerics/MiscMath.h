@@ -107,7 +107,8 @@ namespace csjc
         return refAngle;
     }
 
-    // REVIEW 20261008: calls DirectionVector(), which is defined after this function.
+    // REVIEW 20261008: calls DirectionVector(), which is defined after this
+    // function.
     // It compiles because the Plane2D argument lets the compiler find
     // DirectionVector() in namespace csjc when the template is instantiated
     // (argument dependent lookup). Defining DirectionVector() first is clearer.
@@ -115,7 +116,8 @@ namespace csjc
     // through references (real &x): the function writes into the caller's
     // variables instead of returning a value.
     template <typename real>
-    void DirectionComponents(real angleRadian, real &x, real &y, real &z, Plane2D plane2D)
+    void DirectionComponents(real angleRadian, real &x, real &y, real &z,
+                             Plane2D plane2D)
     {
         Vector3<real> vector = DirectionVector(angleRadian, plane2D);
         x = vector.x();
@@ -139,20 +141,28 @@ namespace csjc
         switch (plane2D)
         {
         case XY:
-            x = a; // X
-            y = b; // Y
+            // X
+            x = a;
+            // Y
+            y = b;
             break;
         case XZ:
-            x = a; // X
-            z = b; // Z
+            // X
+            x = a;
+            // Z
+            z = b;
             break;
         case YZ:
-            y = a; // Y
-            z = b; // Z
+            // Y
+            y = a;
+            // Z
+            z = b;
             break;
         default:
-            x = a; // X
-            y = b; // Y
+            // X
+            x = a;
+            // Y
+            y = b;
             break;
         }
         Vector3<real> vector(x, y, z);

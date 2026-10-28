@@ -4,7 +4,8 @@
 //         (carpentersoftware.com)
 // File: L17_DeadZone.h
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L17_DeadZone, selected with LESSON 17 in Step5_MathLessons/main.cpp
+// Namespace: L17_DeadZone, selected with LESSON 17 in
+// Step5_MathLessons/main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //
@@ -38,7 +39,8 @@
 #include <Arduino.h>
 #include "numerics/LinearMap.h"
 #include "numerics/Statistics.h"
-#include "JoystickCenter.h" // v6.4.1: the centers printed by Step1_Joystick
+// v6.4.1: the centers printed by Step1_Joystick
+#include "JoystickCenter.h"
 
 namespace L17_DeadZone
 {
@@ -54,7 +56,8 @@ void measure();
 
 void report(const char *axis, float *data, float stepOffset, int fileCenter)
 {
-    Statistics<float> stats(data, size); // note: sorts data in place
+    // note: sorts data in place
+    Statistics<float> stats(data, size);
     float average = stats.Average();
     float deviation = stats.StandardDeviation();
     float suggested = fabs(average) + 3.0 * deviation;
@@ -109,7 +112,8 @@ void Setup()
     }
     Serial.println(F("Lesson 17: joystick at rest, 100 readings per axis"));
     // v6.4.1: the inputs of the measurement.
-    Serial.println(F("x on A0, y on A1; map 0 to 1023 onto -1 to 1 (Step2_JUL)"));
+    Serial.println(F( \
+        "x on A0, y on A1; map 0 to 1023 onto -1 to 1 (Step2_JUL)"));
     Serial.print(F("JoystickCenter.h: A0 "));
     Serial.print(JOYSTICK_A0_CENTER);
     Serial.print(F(", A1 "));
@@ -123,7 +127,8 @@ void Loop()
 {
     if (Serial.available() > 0)
     {
-        delay(20); // let a line ending arrive, then discard the input
+        // let a line ending arrive, then discard the input
+        delay(20);
         while (Serial.available() > 0)
             Serial.read();
         measure();
@@ -140,14 +145,16 @@ void measure()
         int yDigital = analogRead(A1);
         xs[i] = mapInput.Map((float)xDigital);
         ys[i] = mapInput.Map((float)yDigital);
-        delay(10); // 100 readings over about one second
+        // 100 readings over about one second
+        delay(10);
     }
 
     report("x", xs, 0.05, JOYSTICK_A0_CENTER);
     report("y", ys, 0.06, JOYSTICK_A1_CENTER);
     Serial.println(F("Send any key to repeat"));
 }
-} // namespace L17_DeadZone
+// namespace L17_DeadZone
+}
 
 // Number of topics of this lesson; main.cpp checks TOPIC against it.
 // One topic: the bench program of Setup() and Loop(); TOPIC 0 and 1
@@ -229,4 +236,5 @@ void measure()
 //   to 1 (lesson 3); one ADC count is 0.002 after the map.
 //   delay(10) spreads the 100 readings over about one second.
 // ---------------------------------------------------------------
-#endif // Lesson_L17_DeadZone_h
+// Lesson_L17_DeadZone_h
+#endif

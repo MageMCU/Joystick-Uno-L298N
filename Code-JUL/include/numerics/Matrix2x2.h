@@ -201,7 +201,8 @@ namespace csjc
         return (E00() * E11()) - (E01() * E10());
     }
 
-    // NOTE 20261008: compares |det| with FLT_EPSILON, an absolute threshold. For
+    // NOTE 20261008: compares |det| with FLT_EPSILON, an absolute threshold.
+    // For
     // matrices with very small elements a valid inverse can be rejected.
     // A float is rarely exactly 0 after a computation, so the determinant is
     // compared with FLT_EPSILON (about 1.2e-7) instead of 0.
@@ -349,10 +350,14 @@ namespace csjc
     {
         // |a0  a1|  |b0  b1| - |a0b0 + a1b2, a0b1 + a1b3|
         // |a2  a3|  |b2  b3| - |a2b0 + a3b2, a2b1 + a3b3|
-        real w = (m_tuples[0] * M.GetElement(0)) + (m_tuples[1] * M.GetElement(2));
-        real x = (m_tuples[0] * M.GetElement(1)) + (m_tuples[1] * M.GetElement(3));
-        real y = (m_tuples[2] * M.GetElement(0)) + (m_tuples[3] * M.GetElement(2));
-        real z = (m_tuples[2] * M.GetElement(1)) + (m_tuples[3] * M.GetElement(3));
+        real w = (m_tuples[0] * M.GetElement(0)) +
+                 (m_tuples[1] * M.GetElement(2));
+        real x = (m_tuples[0] * M.GetElement(1)) +
+                 (m_tuples[1] * M.GetElement(3));
+        real y = (m_tuples[2] * M.GetElement(0)) +
+                 (m_tuples[3] * M.GetElement(2));
+        real z = (m_tuples[2] * M.GetElement(1)) +
+                 (m_tuples[3] * M.GetElement(3));
         Matrix2x2<real> matrix(w, x, y, z);
         return matrix;
     }

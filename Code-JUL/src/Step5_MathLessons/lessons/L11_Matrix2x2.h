@@ -4,7 +4,8 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L11_Matrix2x2, selected with LESSON 11 in Step5_MathLessons/main.cpp
+// Namespace: L11_Matrix2x2, selected with LESSON 11 in
+// Step5_MathLessons/main.cpp
 // Origin: MageMCU/Numerics, Algebra/src/TESTS/TestMatrix2x2.h (merged 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
@@ -85,7 +86,7 @@ using namespace csjc;
 void Matrix2x2_T13_Rotation()
 {
     printTitle(F("Matrix2x2 T13 Rotation"));
-    
+
     // House centered at the origin (0, 0)
     //               *
     //            *  |  *
@@ -140,10 +141,10 @@ void Matrix2x2_T13_Rotation()
 void Matrix2x2_T12_Identity()
 {
     printTitle(F("Matrix2x2 T12 Identity"));
-    
+
     Matrix2x2<float> M1((float)3, (float)2, (float)2, (float)4);
     printMatrix2x2("M1 ", M1);
-    
+
     // By using the default constructor as shown below,
     // the matrix is not zeros but an identity matrix 2x2...
     Matrix2x2<float> I;
@@ -151,7 +152,7 @@ void Matrix2x2_T12_Identity()
 
     Matrix2x2<float> M2 = M1 * I;
     printMatrix2x2("M2 = M1 * I ", M2);
-    
+
 }
 
 // T11: the product is worked out in the comment below; compare the
@@ -174,10 +175,10 @@ void Matrix2x2_T12_Identity()
 void Matrix2x2_T11_MatrixMatrixMultiplication()
 {
     printTitle(F("Matrix2x2 T11 operator*(Matrix2x2 M)"));
-    
+
     Matrix2x2<float> M1((float)3, (float)2, (float)2, (float)4);
     printMatrix2x2("M1 ", M1);
-    
+
     Matrix2x2<float> M2((float)-4, (float)1, (float)8, (float)5);
     printMatrix2x2("M2 ", M2);
 
@@ -208,7 +209,7 @@ void Matrix2x2_T11_MatrixMatrixMultiplication()
 void Matrix2x2_T10_MatrixVectorMultiplication()
 {
     printTitle(F("Matrix2x2 T10 Matrix Vector Multiplication"));
-    
+
     Matrix2x2<float> M((float)3, (float)2, (float)2, (float)4);
     printMatrix2x2("Original M: ", M);
     Vector2<float> v(1, 1);
@@ -234,7 +235,7 @@ void Matrix2x2_T10_MatrixVectorMultiplication()
 void Matrix2x2_T09_MatrixScalarMultiplication()
 {
     printTitle(F("Matrix2x2 T09 operator*(real s)"));
-    
+
     Matrix2x2<float> M((float)3, (float)2, (float)2, (float)4);
     printMatrix2x2("Original M: ", M);
     float s = (float)-0.5;
@@ -257,7 +258,7 @@ void Matrix2x2_T09_MatrixScalarMultiplication()
 void Matrix2x2_T08_UnaryMinus()
 {
     printTitle(F("Matrix2x2 T08 Unary Minus operator-()"));
-    
+
     Matrix2x2<float> M((float)3, (float)2, (float)2, (float)4);
     printMatrix2x2("Original M: ", M);
     printMatrix2x2("Unary Minus -M: ", -M);
@@ -420,12 +421,12 @@ void Matrix2x2_T03_Determinant()
     printMatrix2x2("m1: ", m1);
     float det = m1.Determinant();
     printResult("det: ", det);
-    
+
     Matrix2x2<float> m2((float)2, (float)1, (float)10, (float)5);
     printMatrix2x2("m2: ", m2);
     det = m2.Determinant();
     printResult("det: ", det);
-    
+
     Matrix2x2<float> m3((float)-3, (float)3, (float)-7, (float)5);
     printMatrix2x2("m3: ", m3);
     det = m3.Determinant();
@@ -587,6 +588,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L11_Matrix2x2
+// namespace L11_Matrix2x2
+}
 
-#endif // Lesson_L11_Matrix2x2_h
+// Lesson_L11_Matrix2x2_h
+#endif

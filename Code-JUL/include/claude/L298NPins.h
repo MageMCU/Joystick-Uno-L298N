@@ -81,8 +81,10 @@ namespace csjc
         uint8_t _EN_B;
 
         int _bitsValue;
-        MotorPins _left;  // pins that follow the left command
-        MotorPins _right; // pins that follow the right command
+        // pins that follow the left command
+        MotorPins _left;
+        // pins that follow the right command
+        MotorPins _right;
 
     public:
         L298NPins();
@@ -132,10 +134,14 @@ namespace csjc
         Bitwise<int> bWise;
         _bitsValue = (int)bitsValue - (int)BitsL298N::bits_0000;
 
-        bool bitEN = bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitEN, _bitsValue);
-        bool bitPWM = bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitPWM, _bitsValue);
-        bool bitLeftIN = bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitLeftIN, _bitsValue);
-        bool bitRightIN = bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitRightIN, _bitsValue);
+        bool bitEN = bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitEN, _bitsValue);
+        bool bitPWM = bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitPWM, _bitsValue);
+        bool bitLeftIN = bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitLeftIN, _bitsValue);
+        bool bitRightIN = bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitRightIN, _bitsValue);
 
         // Channel A: the left IN pair and the enable pin chosen by bit 3.
         // Channel B: the right IN pair and the other enable pin.

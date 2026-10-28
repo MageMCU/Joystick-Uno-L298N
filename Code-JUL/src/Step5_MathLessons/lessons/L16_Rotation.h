@@ -4,7 +4,8 @@
 //         (carpentersoftware.com)
 // File: L16_Rotation.h
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L16_Rotation, selected with LESSON 16 in Step5_MathLessons/main.cpp
+// Namespace: L16_Rotation, selected with LESSON 16 in
+// Step5_MathLessons/main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //
@@ -52,7 +53,8 @@ using namespace csjc;
 
 int failures = 0;
 
-void check(const __FlashStringHelper *label, float observed, float expected, float tolerance)
+void check(const __FlashStringHelper *label, float observed,
+           float expected, float tolerance)
 {
     bool pass = fabs(observed - expected) <= tolerance;
     if (!pass)
@@ -88,12 +90,14 @@ void Rotation_T01_RotateVector()
 {
     printTitle(F("Rotation T01 Rotate (1, 0, 0) by 90 degrees about z"));
     Quaternion<float> q(Vector3<float>(0, 0, 1), 90 * DEG_TO_RAD);
-    printQuaternion(F("q (w x y z) "), q); // v6.4.1: print the input
+    // v6.4.1: print the input
+    printQuaternion(F("q (w x y z) "), q);
     // q = (cos 45, 0, 0, sin 45)
     check(F("q.w"), q.w(), 0.7071, 0.0001);
     check(F("q.z"), q.z(), 0.7071, 0.0001);
     Vector3<float> v = q.Rotate(Vector3<float>(1, 0, 0));
-    printVector3(F("v = q.Rotate((1, 0, 0))"), v); // v6.4.1
+    // v6.4.1
+    printVector3(F("v = q.Rotate((1, 0, 0))"), v);
     check(F("Rotated x"), v.x(), 0, 0.0001);
     check(F("Rotated y"), v.y(), 1, 0.0001);
     check(F("Rotated z"), v.z(), 0, 0.0001);
@@ -124,7 +128,8 @@ void Rotation_T01_RotateVector()
 // ---------------------------------------------------------------
 void Rotation_T02_QuaternionToMatrix()
 {
-    printTitle(F("Rotation T02 Quaternion to Matrix, 120 degrees about (1, 1, 1)"));
+    printTitle(F( \
+        "Rotation T02 Quaternion to Matrix, 120 degrees about (1, 1, 1)"));
     // A 120 degree turn about (1, 1, 1) maps x to y, y to z, and z to x.
     Quaternion<float> q(Vector3<float>(1, 1, 1), 120 * DEG_TO_RAD);
     Matrix3x3<float> R = QuaternionToMatrix(q);
@@ -194,13 +199,17 @@ void Rotation_T04_Slerp()
     Vector3<float> z(0, 0, 1);
     Quaternion<float> q0(z, 0);
     Quaternion<float> q1(z, 90 * DEG_TO_RAD);
-    printQuaternion(F("q0 (w x y z) "), q0); // v6.4.1: print the inputs
+    // v6.4.1: print the inputs
+    printQuaternion(F("q0 (w x y z) "), q0);
     printQuaternion(F("q1 (w x y z) "), q1);
-    check(F("t = 0.25 angle"), Slerp(0.25f, q0, q1).GetEulerAngle(), 22.5, 0.01);
+    check(F("t = 0.25 angle"),
+          Slerp(0.25f, q0, q1).GetEulerAngle(), 22.5, 0.01);
     check(F("t = 0.50 angle"), Slerp(0.50f, q0, q1).GetEulerAngle(), 45, 0.01);
-    check(F("t = 0.75 angle"), Slerp(0.75f, q0, q1).GetEulerAngle(), 67.5, 0.01);
+    check(F("t = 0.75 angle"),
+          Slerp(0.75f, q0, q1).GetEulerAngle(), 67.5, 0.01);
     // -q1 is the same rotation; slerp still takes the shorter path.
-    check(F("t = 0.50 with -q1"), Slerp(0.5f, q0, q1.Scale(-1)).GetEulerAngle(), 45, 0.01);
+    check(F("t = 0.50 with -q1"),
+          Slerp(0.5f, q0, q1.Scale(-1)).GetEulerAngle(), 45, 0.01);
 }
 
 // T05: rounding drift (Quaternion.h, m_driftCorrect()): after 720
@@ -237,7 +246,8 @@ void Rotation_T05_Drift()
     Quaternion<float> q(axis, 0);
     for (int i = 0; i < 720; i++)
         q = q.Multiply(c);
-    printQuaternion(F("q after 720 products (w x y z) "), q); // v6.4.1
+    // v6.4.1
+    printQuaternion(F("q after 720 products (w x y z) "), q);
     check(F("Norm after 720 products"), q.Norm(), 1, 0.0001);
     check(F("w after 720 degrees"), fabs(q.w()), 1, 0.001);
 }
@@ -273,6 +283,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L16_Rotation
+// namespace L16_Rotation
+}
 
-#endif // Lesson_L16_Rotation_h
+// Lesson_L16_Rotation_h
+#endif

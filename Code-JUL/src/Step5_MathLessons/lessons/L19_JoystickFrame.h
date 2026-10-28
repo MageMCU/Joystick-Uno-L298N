@@ -4,7 +4,8 @@
 //         (carpentersoftware.com)
 // File: L19_JoystickFrame.h
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L19_JoystickFrame, selected with LESSON 19 in Step5_MathLessons/main.cpp
+// Namespace: L19_JoystickFrame, selected with LESSON 19 in
+// Step5_MathLessons/main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //
@@ -122,7 +123,8 @@ void JoystickFrame_T02_LiveJoystick()
         // (x A0, y A1; changed here 20261018, v3.2.0)
         int xDigital = analogRead(A0);
         int yDigital = analogRead(A1);
-        Vector2<float> raw(mapInput.Map((float)xDigital), mapInput.Map((float)yDigital));
+        Vector2<float> raw(mapInput.Map((float)xDigital),
+                           mapInput.Map((float)yDigital));
         Vector2<float> robot = correction * raw;
         joystick.UpdateInputs(robot.x(), robot.y());
         // v6.4.1: the ADC counts, the inputs of the map.
@@ -159,8 +161,10 @@ void Setup()
 #endif
 #if TOPIC == 0 || TOPIC == 2
     correction = correction.Rotation(MOUNT_ANGLE_DEG * DEG_TO_RAD);
-    Serial.println(F("JoystickFrame T02 Part 2: live joystick, once per second"));
-    Serial.print(F("MOUNT_ANGLE_DEG: ")); // v6.4.1: the input of the correction
+    Serial.println(F( \
+        "JoystickFrame T02 Part 2: live joystick, once per second"));
+    // v6.4.1: the input of the correction
+    Serial.print(F("MOUNT_ANGLE_DEG: "));
     Serial.println(MOUNT_ANGLE_DEG, 1);
     timer.resetTimer();
 #endif
@@ -172,7 +176,8 @@ void Loop()
     JoystickFrame_T02_LiveJoystick();
 #endif
 }
-} // namespace L19_JoystickFrame
+// namespace L19_JoystickFrame
+}
 
 // TEACHING NOTES (v6.1.1), placed at the end of the file so that the
 // line numbers cited by Experiment-8 do not change.
@@ -229,4 +234,5 @@ void Loop()
 //   counts (511, 511)  raw (0.00, 0.00)  robot (0.00, 0.00)  octant 0
 //   at rest (v6.4.1: the mount angle and the counts are printed)
 // ---------------------------------------------------------------
-#endif // Lesson_L19_JoystickFrame_h
+// Lesson_L19_JoystickFrame_h
+#endif

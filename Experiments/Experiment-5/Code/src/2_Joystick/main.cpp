@@ -59,7 +59,9 @@ void runTest(const TestVector &t)
     float left = joystick.Left();
     float right = joystick.Right();
     int octant = joystick.Octant();
-    bool pass = fabs(left - t.left) < 0.0001 && fabs(right - t.right) < 0.0001 && octant == t.octant;
+    bool pass = fabs(left - t.left) < 0.0001 &&
+                fabs(right - t.right) < 0.0001 &&
+                octant == t.octant;
     if (!pass)
         failures++;
     Serial.print(t.name);

@@ -53,7 +53,8 @@ namespace csjc
     public:
         // Constructor
         LinearMap() = default;
-        // REVIEW 20261008: argument order is (x1, x2, y1, y2): both x values first,
+        // REVIEW 20261008: argument order is (x1, x2, y1, y2): both x values
+        // first,
         // then both y values. It is not the point order (x1, y1, x2, y2).
         // x1 must differ from x2 (Map divides by x2 - x1), and y1 must differ
         // from y2 for Reverse().
@@ -62,7 +63,8 @@ namespace csjc
 
         // Methods
         T Map(T x);
-        // REVIEW 20261008: the parameter is a y value; the definition below names it y.
+        // REVIEW 20261008: the parameter is a y value; the definition below
+        // names it y.
         T Reverse(T x);
         T Map(T x, T x1, T x2, T y1, T y2);
     };

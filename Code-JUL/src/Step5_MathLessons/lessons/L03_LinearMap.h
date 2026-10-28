@@ -4,7 +4,8 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L03_LinearMap, selected with LESSON 3 in Step5_MathLessons/main.cpp
+// Namespace: L03_LinearMap, selected with LESSON 3 in
+// Step5_MathLessons/main.cpp
 // Origin: MageMCU/Numerics, Algebra/src/TESTS/TestLinearMap.h (merged 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
@@ -69,17 +70,20 @@ void LinearMap_T02_Reverse()
 {
     printTitle(F("LinearMap T02 Reverse"));
 
-    // Constructor 
+    // Constructor
     LinearMap<float> mapCelcius =
         LinearMap<float>(32, 212, 0, 100);
     // Random Float
-    // The constructor inputs an integer (int) type 
+    // The constructor inputs an integer (int) type
     // while RandomReal() outputs a real (float)...
     RandomNumber<float> random =
         RandomNumber<float>((float)-100, (float)1000);
     // v6.4.1: print the two points of the map and the input range.
-    Serial.println(F("LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
-    Serial.println(F("RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to 1000"));
+    Serial.println(F( \
+        "LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
+    Serial.println(F( \
+        "RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to " \
+        "1000"));
     // Test - Looking for negative values
     float celcius;
     float fahrenheit;
@@ -90,11 +94,13 @@ void LinearMap_T02_Reverse()
         Serial.println("");
         // Map
         Serial.print(" map: ");
-        celcius = mapCelcius.Map(fahrenheit); // Save Values
+        // Save Values
+        celcius = mapCelcius.Map(fahrenheit);
         printResults("Fahrenheit: ", fahrenheit, " -> Celsius: ", celcius);
         // Reverse
         Serial.print(" reverse: ");
-        fahrenheit = mapCelcius.Reverse(celcius); // Reverse Values
+        // Reverse Values
+        fahrenheit = mapCelcius.Reverse(celcius);
         printResults("Celsius: ", celcius, " -> Fahrenheit: ", fahrenheit);
     }
 }
@@ -130,24 +136,28 @@ void LinearMap_T01_Inclusive()
 {
     printTitle(F("LinearMap T01 Inclusive"));
 
-    // Constructor 
+    // Constructor
     LinearMap<float> mapCelcius =
         LinearMap<float>(32, 212, 0, 100);
     // Random Float
-    // The constructor inputs an integer (int) type 
+    // The constructor inputs an integer (int) type
     // while RandomReal() outputs a real (float)...
     RandomNumber<float> random =
         RandomNumber<float>((float)-100, (float)1000);
     // v6.4.1: print the two points of the map and the input range.
-    Serial.println(F("LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
-    Serial.println(F("RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to 1000"));
+    Serial.println(F( \
+        "LinearMap<float>(32, 212, 0, 100): 32 F -> 0 C, 212 F -> 100 C"));
+    Serial.println(F( \
+        "RandomNumber<float>(-100, 1000): Fahrenheit inputs from -100 to " \
+        "1000"));
     // Test
     float celcius;
     float fahrenheit;
     for (int i = 0; i < 10; i++)
     {
         fahrenheit = random.Random();
-        celcius = mapCelcius.Map(fahrenheit); // ---------------- Normal Mapping
+        // ---------------- Normal Mapping
+        celcius = mapCelcius.Map(fahrenheit);
         printResults("fahrenheit: ", fahrenheit, " - Celsius: ", celcius);
     }
 }
@@ -271,6 +281,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L03_LinearMap
+// namespace L03_LinearMap
+}
 
-#endif // Lesson_L03_LinearMap_h
+// Lesson_L03_LinearMap_h
+#endif

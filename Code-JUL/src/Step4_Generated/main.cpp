@@ -30,20 +30,20 @@
 //   Joystick center (include/JoystickCenter.h, Step1_Joystick)
 //     A0 center 511 (offset 0)
 //     A1 center 511 (offset 0)
-//   L298N pins (Step2_JUL, lines 66 to 71)
+//   L298N pins (Step2_JUL, the six pin lines)
 //     ENB  D5   (PD5)
 //     IN4  D6   (PD6)
 //     IN3  D7   (PD7)
 //     IN2  D8   (PB0)
 //     IN1  D9   (PB1)
 //     ENA  D10  (PB2)
-//   Push button and LED (Step2_JUL, lines 47 and 50)
+//   Push button and LED (Step2_JUL, buttonPin and ledPin)
 //     SW   D2   (PD2)
 //     LED  D12  (PB4)
-//   Joystick (Step2_JUL, lines 114 and 115)
+//   Joystick (Step2_JUL, the analogRead() lines)
 //     int xDigital = analogRead(A0);  x on A0 (PC0)
 //     int yDigital = analogRead(A1);  y on A1 (PC1)
-//   Bits value (Step2_JUL, line 103)
+//   Bits value (Step2_JUL, the Bits() line)
 //     motors.Bits(BitsL298N::bits_0000);
 //     Left command:  EN D5, D8 HIGH for +, D9 HIGH for -
 //     Right command: EN D10, D6 HIGH for +, D7 HIGH for -
@@ -67,11 +67,11 @@
 // 100 ms.
 //
 // Push button: SW on D2 with the external 10 kOhm pull up to 5 V
-// (pressed reads LOW), line 58 of Step2_JUL as written. The
+// (pressed reads LOW), the shipped form of Step2_JUL. The
 // internal pull up is off.
 //
 // Build: in platformio.ini, select this program with
-//   build_src_filter, lines 31 to 37: +<Step4_Generated/>, and - before the
+//   build_src_filter: +<Step4_Generated/>, and - before the
 //   other four folders
 // In a project of its own, copy include/claude/ace.h with this file.
 //
@@ -110,9 +110,10 @@ const uint8_t LED_PIN = 12;
 const uint16_t TICK_MS = 50;
 const uint16_t DEBOUNCE_MS = 50;
 
-// Joystick center measured by Step1_Joystick (JoystickCenter.h)
-const uint16_t X_CENTER = 511; // A0
-const uint16_t Y_CENTER = 511; // A1
+// Joystick center measured by Step1_Joystick (JoystickCenter.h):
+// X_CENTER of A0, Y_CENTER of A1
+const uint16_t X_CENTER = 511;
+const uint16_t Y_CENTER = 511;
 
 Ace<X_PIN, Y_PIN,
     LEFT_EN, LEFT_FWD, LEFT_REV,
@@ -129,25 +130,29 @@ void setup()
     while (!Serial)
     {
     }
-    Serial.println(F("\n................................................\nStep4_Generated: the drive program printed by Step3_Generator\nSelected in platformio.ini: +<Step4_Generated/>"));
+    Serial.println(F( \
+        "\n................................................" \
+        "\nStep4_Generated: the drive program printed by Step3_Generator" \
+        "\nSelected in platformio.ini: +<Step4_Generated/>"));
     Serial.println(F("Step4_Generated: data checked in Step3_Generator"));
-    Serial.println(F("Joystick center (include/JoystickCenter.h, Step1_Joystick)"));
+    Serial.println(F( \
+        "Joystick center (include/JoystickCenter.h, Step1_Joystick)"));
     Serial.println(F("  A0 center 511 (offset 0)"));
     Serial.println(F("  A1 center 511 (offset 0)"));
-    Serial.println(F("L298N pins (Step2_JUL, lines 66 to 71)"));
+    Serial.println(F("L298N pins (Step2_JUL, the six pin lines)"));
     Serial.println(F("  ENB  D5   (PD5)"));
     Serial.println(F("  IN4  D6   (PD6)"));
     Serial.println(F("  IN3  D7   (PD7)"));
     Serial.println(F("  IN2  D8   (PB0)"));
     Serial.println(F("  IN1  D9   (PB1)"));
     Serial.println(F("  ENA  D10  (PB2)"));
-    Serial.println(F("Push button and LED (Step2_JUL, lines 47 and 50)"));
+    Serial.println(F("Push button and LED (Step2_JUL, buttonPin and ledPin)"));
     Serial.println(F("  SW   D2   (PD2)"));
     Serial.println(F("  LED  D12  (PB4)"));
-    Serial.println(F("Joystick (Step2_JUL, lines 114 and 115)"));
+    Serial.println(F("Joystick (Step2_JUL, the analogRead() lines)"));
     Serial.println(F("  int xDigital = analogRead(A0);  x on A0 (PC0)"));
     Serial.println(F("  int yDigital = analogRead(A1);  y on A1 (PC1)"));
-    Serial.println(F("Bits value (Step2_JUL, line 103)"));
+    Serial.println(F("Bits value (Step2_JUL, the Bits() line)"));
     Serial.println(F("  motors.Bits(BitsL298N::bits_0000);"));
     Serial.println(F("  Left command:  EN D5, D8 HIGH for +, D9 HIGH for -"));
     Serial.println(F("  Right command: EN D10, D6 HIGH for +, D7 HIGH for -"));

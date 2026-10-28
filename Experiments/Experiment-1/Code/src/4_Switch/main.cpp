@@ -32,7 +32,8 @@
 using namespace csjc;
 
 // Objects (global: constructed before setup() runs)
-Switch pushSwitch(2, 3); // D2 switch, D3 indicator LED
+// D2 switch, D3 indicator LED
+Switch pushSwitch(2, 3);
 Timer timer;
 
 // Global Variables

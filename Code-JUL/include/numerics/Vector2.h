@@ -286,7 +286,8 @@ namespace csjc
         // Perpendicular Vector
         Vector2<real> u = Perp();
         // Dot Product
-        real value = u * v; // FIXED 20261008: was float
+        // FIXED 20261008: was float
+        real value = u * v;
 
         return value;
     }

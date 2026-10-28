@@ -74,7 +74,7 @@
 //   numerics/MiscMath.h    function template absT()
 //   Button.h               class Button: active LOW, latching, 50 ms
 //                          debounce, LED; the internal pull up is off,
-//                          as in Step2_JUL (lines 51 to 58)
+//                          as in Step2_JUL (THE PUSH BUTTON)
 //   Timer.h                class Timer: isTimer(), armed on first call
 //   Common.h               BUTTON_TIMER_mS, the control tick: 100 ms
 //                          in Step2_JUL, 50 ms here (TICK_MS, v3.2.0)
@@ -163,7 +163,8 @@ namespace csjc
 
     constexpr bool acePwmPin(uint8_t pin)
     {
-        return pin == 3 || pin == 5 || pin == 6 || pin == 9 || pin == 10 || pin == 11;
+        return pin == 3 || pin == 5 || pin == 6 ||
+               pin == 9 || pin == 10 || pin == 11;
     }
 
     template <uint8_t P>
@@ -379,7 +380,8 @@ namespace csjc
             if ((now - _lastChange) >= DEBOUNCE_MS && reading != _stableState)
             {
                 _stableState = reading;
-                if (!_stableState) // pressed reads LOW
+                // pressed reads LOW
+                if (!_stableState)
                 {
                     _on = !_on;
                     if (_on)
@@ -435,12 +437,14 @@ namespace csjc
             {
                 if (x >= 0 && y >= 0)
                 {
-                    l = x; // octant 1
+                    // octant 1
+                    l = x;
                     r = -d;
                 }
                 else if (x <= 0 && y >= 0)
                 {
-                    l = -d; // octant 4
+                    // octant 4
+                    l = -d;
                     r = -x;
                     // Step2_JUL computes this case in float as
                     // 84.99998 and truncates it to 84, not 85. At
@@ -455,12 +459,14 @@ namespace csjc
                 }
                 else if (x <= 0 && y <= 0)
                 {
-                    l = x; // octant 5
+                    // octant 5
+                    l = x;
                     r = d;
                 }
                 else
                 {
-                    l = d; // octant 8
+                    // octant 8
+                    l = d;
                     r = -x;
                 }
             }
@@ -468,22 +474,26 @@ namespace csjc
             {
                 if (x >= 0 && y >= 0)
                 {
-                    l = y; // octant 2
+                    // octant 2
+                    l = y;
                     r = d;
                 }
                 else if (x <= 0 && y >= 0)
                 {
-                    l = d; // octant 3
+                    // octant 3
+                    l = d;
                     r = y;
                 }
                 else if (x <= 0 && y <= 0)
                 {
-                    l = y; // octant 6
+                    // octant 6
+                    l = y;
                     r = -d;
                 }
                 else
                 {
-                    l = -d; // octant 7
+                    // octant 7
+                    l = -d;
                     r = y;
                 }
             }
@@ -512,7 +522,8 @@ namespace csjc
 
         // The joystick center correction (v6.4.0): the reading moves
         // by CENTER - 511 and stays inside 0 to 1023, so a resting
-        // grip reads 511 and gives the command 0. For CENTER 511 the test below is
+        // grip reads 511 and gives the command 0. For CENTER 511 the test below
+        // is
         // false when the program is built, and no code is added.
         template <uint16_t CENTER>
         static inline uint16_t centered(uint16_t reading)

@@ -48,7 +48,8 @@ void loop()
         Serial.print("Number of Loops: ");
         Serial.println(currentCount);
 
-        digitalWrite(LED_PIN, HIGH); // turn the LED on (HIGH is the voltage level)
+        // turn the LED on (HIGH is the voltage level)
+        digitalWrite(LED_PIN, HIGH);
         Serial.println("LED HIGH");
 
         toggle = false;
@@ -56,7 +57,8 @@ void loop()
 
     if (!toggle && timer.isTimer(1000))
     {
-        digitalWrite(LED_PIN, LOW); // turn the LED off by making the voltage LOW
+        // turn the LED off by making the voltage LOW
+        digitalWrite(LED_PIN, LOW);
         Serial.println("LED LOW");
 
         toggle = true;

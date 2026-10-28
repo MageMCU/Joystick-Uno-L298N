@@ -112,8 +112,10 @@ namespace csjc
     {
     private:
         // Private Properties
-        unsigned long t_previousTime; // millis() at last fire (or arm)
-        unsigned long t_deltaTime;    // measured interval ending at last fire, ms
+        // millis() at last fire (or arm)
+        unsigned long t_previousTime;
+        // measured interval ending at last fire, ms
+        unsigned long t_deltaTime;
         bool t_armed;
 
         // Arm on first use. Returns true if the timer was just armed.

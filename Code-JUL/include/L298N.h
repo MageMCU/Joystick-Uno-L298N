@@ -30,7 +30,7 @@ namespace csjc
 {
     enum BitsL298N
     {
-        // See the Bits() method and Article 1009, Table-3
+        // See the Bits() method and Article 1009, Table-4
         // Bit order: 3, 2, 1, 0 (decimal value: 8+4+2+1 = 15)
         // Right IN pair direction convention (bit 0)
         bitRightIN = 0,
@@ -41,7 +41,8 @@ namespace csjc
         // 1: enable pins straight; 0: crossed (bit 3)
         bitEN,
         // Enable pins crossed (bit 3 = 0)
-        bits_0000, // enumeration value 4; Bits() subtracts it
+        // enumeration value 4; Bits() subtracts it
+        bits_0000,
         bits_0001,
         bits_0010,
         bits_0011,
@@ -72,10 +73,14 @@ namespace csjc
 
         // Used for motors setup() which aligns the
         // correct left and right directions...
-        bool _bitRightIN_Flag; // Bit 0: right IN pair convention
-        bool _bitLeftIN_Flag;  // Bit 1: left IN pair convention
-        bool _bitPWM_Flag;     // Bit 2: false swaps the commands
-        bool _bitEN_Flag;      // Bit 3: false crosses the enable pins
+        // Bit 0: right IN pair convention
+        bool _bitRightIN_Flag;
+        // Bit 1: left IN pair convention
+        bool _bitLeftIN_Flag;
+        // Bit 2: false swaps the commands
+        bool _bitPWM_Flag;
+        // Bit 3: false crosses the enable pins
+        bool _bitEN_Flag;
 
         // Used for L298N Pins
         uint8_t _EN_A;
@@ -91,7 +96,8 @@ namespace csjc
 
         // Private Methods
         void _SetDirectionPins();
-        void _LeftSet1(); // Priority Left
+        // Priority Left
+        void _LeftSet1();
         void _LeftSet2();
         void _RightSet1();
         void _RightSet2();
@@ -187,7 +193,7 @@ namespace csjc
         // USE IT IN THIS CLASS ONLY...
         _bitsValue = (int)bitsValue - (int)BitsL298N::bits_0000;
 
-        // 16 patterns, written bit 3, 2, 1, 0 (Article 1009, Table-3)
+        // 16 patterns, written bit 3, 2, 1, 0 (Article 1009, Table-4)
         // USE: analogWrite(EN, PWM) and digitalWrite(IN, LOW or HIGH)
         // Bit 3, EN:      1 = _EN_A with the left IN pair, _EN_B with
         //                     the right; 0 = enable pins crossed
@@ -204,16 +210,20 @@ namespace csjc
         // Bits:       1000  1001  1010  1011  1100  1101  1110  1111
         // -----------------------------------------------------------
         // Changing the value is easier than moving wires on the L298N.
-        // The author's bench uses bits_1010.
+        // Each bench has its own value (Motor Movement Checklist).
 
         // Bit 3: 1 = enable pins straight, 0 = crossed
-        _bitEN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitEN, _bitsValue);
+        _bitEN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitEN, _bitsValue);
         // Bit 2: 1 = commands straight, 0 = swapped
-        _bitPWM_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitPWM, _bitsValue);
+        _bitPWM_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitPWM, _bitsValue);
         // Bit 1: left IN pair direction convention
-        _bitLeftIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitLeftIN, _bitsValue);
+        _bitLeftIN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitLeftIN, _bitsValue);
         // Bit 0: right IN pair direction convention
-        _bitRightIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitRightIN, _bitsValue);
+        _bitRightIN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitRightIN, _bitsValue);
 
         // DEBUG
 #ifdef DEBUG_L298N
@@ -222,10 +232,13 @@ namespace csjc
     }
 
     // Used with a timer within loop()
-    void L298N::UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag = false)
+    void L298N::UpdateL298N(int outMapLeft, int outMapRight,
+                            bool SafetyMotorFlag = false)
     {
-        uint8_t enPinA; // enable pin of _pwmA (class channel A, not L298N ENA)
-        uint8_t enPinB; // enable pin of _pwmB (class channel B, not L298N ENB)
+        // enable pin of _pwmA (class channel A, not L298N ENA)
+        uint8_t enPinA;
+        // enable pin of _pwmB (class channel B, not L298N ENB)
+        uint8_t enPinB;
 
         if (_bitEN_Flag)
         {

@@ -4,7 +4,8 @@
 //         (carpentersoftware.com)
 // File: L20_JoystickMap.h
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L20_JoystickMap, selected with LESSON 20 in Step5_MathLessons/main.cpp
+// Namespace: L20_JoystickMap, selected with LESSON 20 in
+// Step5_MathLessons/main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //
@@ -23,7 +24,8 @@
 // line, 0 to 1023 onto -1 to 1, which assumes the center is 511, and
 // then set values inside the dead zone (X_OFFSET 0.05, Y_OFFSET 0.06)
 // to 0. Since v6.4.0 Step4_Generated (ace.h) first moves each reading
-// by the center of include/JoystickCenter.h; Step2_JUL does not. Lesson 3, topic 3, introduces the two segment map: low to
+// by the center of include/JoystickCenter.h; Step2_JUL does not. Lesson 3,
+// topic 3, introduces the two segment map: low to
 // center onto -1 to 0, center to high onto 0 to 1, from the readings
 // that the Step1_Joystick self test measures.
 //
@@ -48,7 +50,8 @@
 #include <Arduino.h>
 #include "Timer.h"
 #include "numerics/LinearMap.h"
-#include "JoystickCenter.h" // v6.4.1: the centers printed by Step1_Joystick
+// v6.4.1: the centers printed by Step1_Joystick
+#include "JoystickCenter.h"
 
 namespace L20_JoystickMap
 {
@@ -67,7 +70,7 @@ const float A1_CENTER = JOYSTICK_A1_CENTER;
 const float A1_HIGH = 1023;
 // --------------------------------------------------------------
 
-// The dead zones of Step2_JUL (lines 132 and 133)
+// The dead zones of Step2_JUL (X_OFFSET and Y_OFFSET)
 const float X_OFFSET = 0.05;
 const float Y_OFFSET = 0.06;
 
@@ -83,7 +86,8 @@ LinearMap<float> aboveA1;
 // passes the caller's object itself instead of a copy, which saves RAM
 // and time; the formula of each segment is LinearMap.h, Map(), and the
 // two segment map is worked out in lesson 3, topic 3.
-float twoSegment(float raw, float center, LinearMap<float> &below, LinearMap<float> &above)
+float twoSegment(float raw, float center, LinearMap<float> &below,
+                 LinearMap<float> &above)
 {
     float value;
     if (raw < center)
@@ -95,7 +99,8 @@ float twoSegment(float raw, float center, LinearMap<float> &below, LinearMap<flo
 
 // The dead zone of Step2_JUL: a full range value closer to 0 than the
 // offset is set to 0 (fabs() is the absolute value of a float).
-void printAxis(const __FlashStringHelper *name, int raw, float full, float offset, float two)
+void printAxis(const __FlashStringHelper *name, int raw, float full,
+               float offset, float two)
 {
     float dead = full;
     if (fabs(dead) < offset)
@@ -189,11 +194,13 @@ void Setup()
     belowA1 = LinearMap<float>(A1_LOW, A1_CENTER, -1, 0);
     aboveA1 = LinearMap<float>(A1_CENTER, A1_HIGH, 0, 1);
 
-    Serial.println(F("JoystickMap T01 Live Compare: full range and two segment maps"));
+    Serial.println(F( \
+        "JoystickMap T01 Live Compare: full range and two segment maps"));
     // v6.4.1: the constants of the two maps and of the dead zone.
     printConstants(F("A0"), A0_LOW, A0_CENTER, A0_HIGH, X_OFFSET);
     printConstants(F("A1"), A1_LOW, A1_CENTER, A1_HIGH, Y_OFFSET);
-    Serial.println(F("Centers: include/JoystickCenter.h; low and high: this file"));
+    Serial.println(F( \
+        "Centers: include/JoystickCenter.h; low and high: this file"));
     timer.resetTimer();
 }
 
@@ -203,6 +210,8 @@ void Loop()
     JoystickMap_T01_LiveCompare();
 #endif
 }
-} // namespace L20_JoystickMap
+// namespace L20_JoystickMap
+}
 
-#endif // Lesson_L20_JoystickMap_h
+// Lesson_L20_JoystickMap_h
+#endif

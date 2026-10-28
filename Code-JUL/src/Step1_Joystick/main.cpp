@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // ---------------------------------------------------------------
-// The Initial Joystick Setup Code for Step1_Joystick
-// (Article 1009, Joystick Setup)
+// Step1_Joystick, the joystick self test
+// (Article 1009, Step1, The Joystick Self Test)
 // A self test of the joystick connections: the push button (SW on
 // D2), A0 (VRx), and A1 (VRy). Wire all of Circuit-1 first; Step 1
 // to Step 4 use that wiring unchanged. Keep the motor supply off for
@@ -67,7 +67,8 @@
 #include <Arduino.h>
 #include "Button.h"
 #include "Timer.h"
-#include "JoystickCenter.h" // the center now in the project (v6.4.0)
+// the center now in the project (v6.4.0)
+#include "JoystickCenter.h"
 
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
@@ -105,24 +106,33 @@ using namespace csjc;
 //                            with the grip released.
 // ---------------------------------------------------------------
 const int ADC_MIDDLE = 511;
-const int CENTER_TOLERANCE = 50; // Test 3 FAIL above this (v6.5.0)
-const int CENTER_WARNING = 25;   // Test 3 PASS with a warning above this (v6.5.0)
+// Test 3 FAIL above this (v6.5.0)
+const int CENTER_TOLERANCE = 50;
+// Test 3 PASS with a warning above this (v6.5.0)
+const int CENTER_WARNING = 25;
 const int MIN_TRAVEL = 200;
 const int RETURN_TOLERANCE = 25;
 
-const unsigned long SAMPLE_MS = 20;  // Test 4: 50 samples/s
-const unsigned long PRINT_MS = 250;  // live values: 4 times/s
-const unsigned long LIVE_MS = 20000; // live values: 20 seconds
+// Test 4: 50 samples/s
+const unsigned long SAMPLE_MS = 20;
+// live values: 4 times/s
+const unsigned long PRINT_MS = 250;
+// live values: 20 seconds
+const unsigned long LIVE_MS = 20000;
 
 // One joystick axis: its pin and the values the self test measures.
 struct Axis
 {
     uint8_t pin;
     const __FlashStringHelper *name;
-    int center; // Test 3: rest reading
-    int low;    // Test 4: lowest reading
-    int high;   // Test 4: highest reading
-    int rest;   // Test 5: reading after the release
+    // Test 3: rest reading
+    int center;
+    // Test 4: lowest reading
+    int low;
+    // Test 4: highest reading
+    int high;
+    // Test 5: reading after the release
+    int rest;
 
     // Average of 16 readings, which smooths the ADC noise
     int readAverage() const
@@ -143,20 +153,32 @@ struct Axis
 // What the program does while it waits for Enter
 enum class Wait
 {
-    Button,  // Tests 1 and 2: the button only (debounce and LED)
-    Count,   // Tests 3 and 5: also count the presses of the button
-    Record,  // Test 4: also count presses and record the ends
+    // Tests 1 and 2: the button only (debounce and LED)
+    Button,
+    // Tests 3 and 5: also count the presses of the button
+    Count,
+    // Test 4: also count presses and record the ends
+    Record,
 };
 
-Button button;     // push button (SW) and indicator LED
-Timer timerSample; // paces the readings of Test 4
-Timer timerPrint;  // paces the live values
-Timer timerLive;   // length of the live values
-Timer timerStart;  // repeats the start question
-Axis axisA0;       // joystick VRx on A0
-Axis axisA1;       // joystick VRy on A1
-bool passed[5];    // result of Tests 1 to 5
-int extraPresses;  // presses during Tests 3 to 5 (0 expected)
+// push button (SW) and indicator LED
+Button button;
+// paces the readings of Test 4
+Timer timerSample;
+// paces the live values
+Timer timerPrint;
+// length of the live values
+Timer timerLive;
+// repeats the start question
+Timer timerStart;
+// joystick VRx on A0
+Axis axisA0;
+// joystick VRy on A1
+Axis axisA1;
+// result of Tests 1 to 5
+bool passed[5];
+// presses during Tests 3 to 5 (0 expected)
+int extraPresses;
 
 // ---------------------------------------------------------------
 // Serial input (the same line rules as Step3_Generator)
@@ -226,7 +248,8 @@ void readLine(char *line, int size, Wait wait)
         lastWasCR = (c == '\r');
         if (c == '\r' || c == '\n')
             break;
-        if (c == 8 || c == 127) // Backspace or Delete
+        // Backspace or Delete
+        if (c == 8 || c == 127)
         {
             if (n > 0)
             {
@@ -251,7 +274,8 @@ void readLine(char *line, int size, Wait wait)
 // question that has not been asked yet (v6.3.0).
 void discardInput()
 {
-#ifndef TEST_INPUT // the simulation supplies its answers in order
+// the simulation supplies its answers in order
+#ifndef TEST_INPUT
     while (readChar() >= 0)
     {
     }
@@ -268,7 +292,8 @@ void waitForStart()
 {
     discardInput();
     timerStart.resetTimer();
-    timerStart.isTimer(3000); // arm the timer
+    // arm the timer
+    timerStart.isTimer(3000);
     Serial.println(F("Press Enter to start the joystick self test."));
     while (true)
     {
@@ -285,7 +310,8 @@ void waitForStart()
 void waitForEnter(Wait wait)
 {
     char line[8];
-    discardInput(); // v6.3.0: nothing typed ahead counts
+    // v6.3.0: nothing typed ahead counts
+    discardInput();
     Serial.print(F("  Press Enter: "));
     readLine(line, sizeof(line), wait);
 }
@@ -340,7 +366,8 @@ void printResult(int number, const __FlashStringHelper *label)
 // the base, so String(508, 3) gives 200211 (508 in base 3).
 void printColumn(long value, uint8_t width)
 {
-    uint8_t digits = (value < 0) ? 2 : 1; // the minus sign counts
+    // the minus sign counts
+    uint8_t digits = (value < 0) ? 2 : 1;
     for (long v = (value < 0) ? -value : value; v >= 10; v /= 10)
         digits++;
     for (uint8_t i = digits; i < width; i++)
@@ -421,42 +448,82 @@ void printCenterFile()
     Serial.println(F("// The joystick center (added 20261025, v6.4.0)"));
     Serial.println(F("//"));
     Serial.println(F("// WHY THIS FILE WAS ADDED"));
-    Serial.println(F("// A thumb joystick seldom rests at exactly 511, the middle of the"));
-    Serial.println(F("// ADC range 0 to 1023. The rest reading of an axis is called its"));
-    Serial.println(F("// center. When the center differs from 511, a released grip reads"));
-    Serial.println(F("// as a small push in one direction, and the dead zone must be made"));
-    Serial.println(F("// wider to hide it. The bench test of v6.3.1.a showed this: an old"));
-    Serial.println(F("// joystick failed Step1_Joystick Test 3 with its x center more than"));
-    Serial.println(F("// 25 counts from 511. This file keeps the measured center of each"));
-    Serial.println(F("// axis in one place, so each program reads the same two values and"));
+    Serial.println(F( \
+        "// A thumb joystick seldom rests at exactly 511, the middle of the"));
+    Serial.println(F( \
+        "// ADC range 0 to 1023. The rest reading of an axis is called its"));
+    Serial.println(F( \
+        "// center. When the center differs from 511, a released grip reads"));
+    Serial.println(F( \
+        "// as a small push in one direction, and the dead zone must be made"));
+    Serial.println(F( \
+        "// wider to hide it. The bench test of v6.3.1.a showed this: an old"));
+    Serial.println(F( \
+        "// joystick failed Step1_Joystick Test 3 with its x center more " \
+        "than"));
+    Serial.println(F( \
+        "// 25 counts from 511. This file keeps the measured center of each"));
+    Serial.println(F( \
+        "// axis in one place, so each program reads the same two values and"));
     Serial.println(F("// a resting grip maps to 0."));
     Serial.println(F("//"));
     Serial.println(F("// WHERE IT IS USED"));
-    Serial.println(F("//   Step1_Joystick     Includes it to show the center now in the"));
-    Serial.println(F("//                      project. Test 3 measures the center; after a"));
-    Serial.println(F("//                      passing self test the report prints a new copy"));
+    Serial.println(F( \
+        "//   Step1_Joystick     Includes it to show the center now in the"));
+    Serial.println(F( \
+        "//                      project. Test 3 measures the center; " \
+        "after a"));
+    Serial.println(F( \
+        "//                      passing self test the report prints a " \
+        "new copy"));
     Serial.println(F("//                      of this file."));
-    Serial.println(F("//   Step3_Generator    Check 1 shows these two values for the student"));
-    Serial.println(F("//                      to confirm, rejects a value outside 461 to 561"));
-    Serial.println(F("//                      at compile time (#error), and writes them into"));
-    Serial.println(F("//                      Step4_Generated as X_CENTER and Y_CENTER."));
-    Serial.println(F("//   Step4_Generated    Does not include this file. It holds the copied"));
-    Serial.println(F("//                      values, which claude/ace.h uses to move each"));
-    Serial.println(F("//                      reading by its offset from 511."));
-    Serial.println(F("//   Lesson 17          DeadZone: prints the centers and suggests the"));
-    Serial.println(F("//                      dead zone offset about each center (v6.4.1)."));
-    Serial.println(F("//   Lesson 20          JoystickMap: the center of each two segment map"));
+    Serial.println(F( \
+        "//   Step3_Generator    Check 1 shows these two values for the " \
+        "student"));
+    Serial.println(F( \
+        "//                      to confirm, rejects a value outside 461 " \
+        "to 561"));
+    Serial.println(F( \
+        "//                      at compile time (#error), and writes " \
+        "them into"));
+    Serial.println(F( \
+        "//                      Step4_Generated as X_CENTER and Y_CENTER."));
+    Serial.println(F( \
+        "//   Step4_Generated    Does not include this file. It holds the " \
+        "copied"));
+    Serial.println(F( \
+        "//                      values, which claude/ace.h uses to move " \
+        "each"));
+    Serial.println(F( \
+        "//                      reading by its offset from 511."));
+    Serial.println(F( \
+        "//   Lesson 17          DeadZone: prints the centers and " \
+        "suggests the"));
+    Serial.println(F( \
+        "//                      dead zone offset about each center " \
+        "(v6.4.1)."));
+    Serial.println(F( \
+        "//   Lesson 20          JoystickMap: the center of each two " \
+        "segment map"));
     Serial.println(F("//                      (v6.4.1)."));
-    Serial.println(F("//   Step2_JUL          Does not use it; it keeps the center 511"));
+    Serial.println(F( \
+        "//   Step2_JUL          Does not use it; it keeps the center 511"));
     Serial.println(F("//                      (author decision, v6.4.0)."));
     Serial.println(F("//"));
     Serial.println(F("// HOW TO UPDATE IT"));
-    Serial.println(F("// Shipped with 511 and 511, which leave every reading unchanged."));
-    Serial.println(F("// After a passing self test, replace the whole file with the lines"));
-    Serial.println(F("// Step1_Joystick prints between its two marker lines. Then run"));
-    Serial.println(F("// Step3_Generator again so Step4_Generated receives the new values."));
-    Serial.println(F("// Allowed range: 461 to 561 (Step1_Joystick, Test 3 fails a center"));
-    Serial.println(F("// more than 50 counts from 511 and warns above 25 counts: a new"));
+    Serial.println(F( \
+        "// Shipped with 511 and 511, which leave every reading unchanged."));
+    Serial.println(F( \
+        "// After a passing self test, replace the whole file with the lines"));
+    Serial.println(F( \
+        "// Step1_Joystick prints between its two marker lines. Then run"));
+    Serial.println(F( \
+        "// Step3_Generator again so Step4_Generated receives the new " \
+        "values."));
+    Serial.println(F( \
+        "// Allowed range: 461 to 561 (Step1_Joystick, Test 3 fails a center"));
+    Serial.println(F( \
+        "// more than 50 counts from 511 and warns above 25 counts: a new"));
     Serial.println(F("// joystick is recommended; v6.5.0)."));
     Serial.println(F("//"));
     Serial.println();
@@ -497,8 +564,8 @@ void printAxisReadings(int valueA0, int valueA1)
 //   Test 4  One direction short of MIN_TRAVEL: check that wire, and
 //           move the grip all the way to the edge.
 //   Test 5  The grip does not come back to center: try another
-//           module, or enlarge the dead zone of Step2_JUL (lines 132
-//           and 133).
+//           module, or enlarge the dead zone of Step2_JUL (X_OFFSET
+//           and Y_OFFSET).
 //   Presses during Tests 3 to 5: a floating D2 gives presses that no
 //           one made. Any press fails the self test (v6.2.1). Check the
 //           pull up resistor on D2.
@@ -528,14 +595,19 @@ void printReport()
 
     if (all)
     {
-        Serial.println(F("Result: PASS. The joystick is ready for L298N Setup."));
+        Serial.println(F( \
+            "Result: PASS. The joystick is ready for L298N Setup."));
         // v6.5.0: a center more than 25 counts from 511 passes with a warning
         if (centerWarning())
         {
-            Serial.println(F("WARNING: a center lies more than 25 counts from 511."));
-            Serial.println(F("A new joystick is recommended. Step4_Generated corrects"));
-            Serial.println(F("the center; Step2_JUL does not, so its motors may turn"));
-            Serial.println(F("slowly with the grip released (push button OFF stops them)."));
+            Serial.println(F( \
+                "WARNING: a center lies more than 25 counts from 511."));
+            Serial.println(F( \
+                "A new joystick is recommended. Step4_Generated corrects"));
+            Serial.println(F( \
+                "the center; Step2_JUL does not, so its motors may turn"));
+            Serial.println(F( \
+                "slowly with the grip released (push button OFF stops them)."));
         }
         Serial.println(F("Joystick center measured by Test 3:"));
         printCenterLine(F("A0"), axisA0.center);
@@ -547,8 +619,10 @@ void printReport()
             axisA1.center == JOYSTICK_A1_CENTER)
             Serial.println(F("They match; the file needs no change."));
         printDots();
-        Serial.println(F("Copy every line between the two marker lines and replace"));
-        Serial.println(F("all of include/JoystickCenter.h with them (Step3_Generator"));
+        Serial.println(F( \
+            "Copy every line between the two marker lines and replace"));
+        Serial.println(F( \
+            "all of include/JoystickCenter.h with them (Step3_Generator"));
         Serial.println(F("uses the file). The PlatformIO monitor also"));
         Serial.println(F("saves this output in a log file (log2file)."));
         Serial.println();
@@ -557,9 +631,11 @@ void printReport()
     else
     {
         if (extraPresses > 0)
-            Serial.println(F("Presses were counted: check the pull up resistor on D2."));
+            Serial.println(F( \
+                "Presses were counted: check the pull up resistor on D2."));
         Serial.println(F("Result: FAIL. See the notes above printReport() in"));
-        Serial.println(F("src/Step1_Joystick/main.cpp, then run the test again."));
+        Serial.println(F( \
+            "src/Step1_Joystick/main.cpp, then run the test again."));
     }
 }
 
@@ -572,7 +648,8 @@ void printReport()
 void testPress()
 {
     printDots();
-    Serial.println(F("Test 1 of 5: Press the push button and hold it. The LED turns on."));
+    Serial.println(F( \
+        "Test 1 of 5: Press the push button and hold it. The LED turns on."));
     Serial.println(F("  While holding it, press Enter with the other hand."));
     waitForEnter(Wait::Button);
     passed[0] = button.isButtonOn();
@@ -584,20 +661,23 @@ void testPress()
 void testRelease()
 {
     printDots();
-    Serial.println(F("Test 2 of 5: Release the push button. The LED turns off."));
+    Serial.println(F( \
+        "Test 2 of 5: Release the push button. The LED turns off."));
     waitForEnter(Wait::Button);
     // A release after a failed press proves nothing
     passed[1] = passed[0] && !button.isButtonOn();
     Serial.print(button.isButtonOn() ? F("  SW: ON  ") : F("  SW: OFF  "));
     printPass(passed[1]);
-    button.wasPressed(); // clear the press of Test 1
+    // clear the press of Test 1
+    button.wasPressed();
 }
 
 // Test 3: the average reading at rest is the center
 void testCenter()
 {
     printDots();
-    Serial.println(F("Test 3 of 5: Leave the grip at rest. Do not touch the joystick."));
+    Serial.println(F( \
+        "Test 3 of 5: Leave the grip at rest. Do not touch the joystick."));
     waitForEnter(Wait::Count);
     axisA0.center = axisA0.readAverage();
     axisA1.center = axisA1.readAverage();
@@ -615,7 +695,9 @@ void testCenter()
     printPass(passed[2]);
     // v6.5.0: a center more than 25 counts from 511 passes with a warning
     if (passed[2] && centerWarning())
-        Serial.println(F("  WARNING: more than 25 counts from 511; a new joystick is recommended."));
+        Serial.println(F( \
+            "  WARNING: more than 25 counts from 511; a new joystick is " \
+            "recommended."));
 }
 
 // Test 4: the ends are recorded until Enter is pressed
@@ -643,7 +725,8 @@ void testMove()
 void testReturn()
 {
     printDots();
-    Serial.println(F("Test 5 of 5: Release the grip. Let it return to center."));
+    Serial.println(F( \
+        "Test 5 of 5: Release the grip. Let it return to center."));
     waitForEnter(Wait::Count);
     axisA0.rest = axisA0.readAverage();
     axisA1.rest = axisA1.readAverage();
@@ -682,11 +765,13 @@ void runSelfTest()
 void printLiveValues()
 {
     printDots();
-    Serial.println(F("Live values: A0 and A1, raw (offset from center), and SW,"));
+    Serial.println(F( \
+        "Live values: A0 and A1, raw (offset from center), and SW,"));
     Serial.println(F("four times a second for 20 seconds."));
     timerPrint.resetTimer();
     timerLive.resetTimer();
-    timerPrint.isTimer(PRINT_MS); // arm both timers
+    // arm both timers
+    timerPrint.isTimer(PRINT_MS);
     timerLive.isTimer(LIVE_MS);
     while (!timerLive.isTimer(LIVE_MS))
     {
@@ -707,7 +792,8 @@ void printLiveValues()
             Serial.print(F(" ("));
             printColumn(rawA1 - axisA1.center, 5);
             Serial.print(F(")"));
-            Serial.println(button.isButtonOn() ? F("  SW: ON") : F("  SW: OFF"));
+            Serial.println(button.isButtonOn() ? F("  SW: ON")
+                                               : F("  SW: OFF"));
         }
     }
     // Keys typed during the live values are discarded
@@ -723,7 +809,9 @@ char askNext()
     printDots();
     while (true)
     {
-        Serial.print(F("Type r to run the self test again, or v to view the live values (20 s): "));
+        Serial.print(F( \
+            "Type r to run the self test again, or v to view the live " \
+            "values (20 s): "));
         char c = readLetter('r', 'v');
         if (c)
             return c;
@@ -735,10 +823,16 @@ void setup()
 {
     Serial.begin(9600);
     while (!Serial) { }
-    Serial.println(F("\n................................................\nStep1_Joystick: the joystick self test\nSelected in platformio.ini: +<Step1_Joystick/>")); // v6.4.1: program title
+    // v6.4.1: program title
+    Serial.println(F( \
+        "\n................................................" \
+        "\nStep1_Joystick: the joystick self test" \
+        "\nSelected in platformio.ini: +<Step1_Joystick/>"));
     // Button class: SW on D2, indicator LED on D12
-    int buttonPin = 2; // UNO D2 (CHIP-PD2), joystick SW
-    int ledPin = 12;   // UNO D12 (CHIP-PB4), indicator LED
+    // UNO D2 (CHIP-PD2), joystick SW
+    int buttonPin = 2;
+    // UNO D12 (CHIP-PB4), indicator LED
+    int ledPin = 12;
     button = Button(buttonPin, ledPin);
     // -----------------------------------------------------------
     // setLatching() selects how isButtonOn() and the LED follow the
@@ -755,8 +849,10 @@ void setup()
     // mode instead (see its setup()).
     // -----------------------------------------------------------
     button.setLatching(false);
-    button.begin();            // D2 as INPUT_PULLUP, LED as OUTPUT
-    pinMode(buttonPin, INPUT); // internal pull up off: external 10 kOhm
+    // D2 as INPUT_PULLUP, LED as OUTPUT
+    button.begin();
+    // internal pull up off: external 10 kOhm
+    pinMode(buttonPin, INPUT);
     // Internal pull up instead: comment out the line above.
 
     // L298N pins D5 to D10: outputs, LOW (enable inputs held LOW)
@@ -767,8 +863,10 @@ void setup()
     }
 
     // Joystick axes
-    axisA0 = Axis{A0, F("A0"), 0, 0, 0, 0}; // joystick VRx
-    axisA1 = Axis{A1, F("A1"), 0, 0, 0, 0}; // joystick VRy
+    // joystick VRx
+    axisA0 = Axis{A0, F("A0"), 0, 0, 0, 0};
+    // joystick VRy
+    axisA1 = Axis{A1, F("A1"), 0, 0, 0, 0};
 
     // Timer class: the timers arm on their first isTimer() call
     timerSample = Timer();

@@ -99,7 +99,8 @@ namespace csjc
 
     // REVIEW 20261008: for a bit number outside 0 to (number of bits - 1) this
     // function prints an error and then returns 1, which is the mask of bit 0.
-    // SetBitNumber(), ClearBitNumber(), and the IsBitNumber...() tests therefore
+    // SetBitNumber(), ClearBitNumber(), and the IsBitNumber...() tests
+    // therefore
     // act on bit 0 for an invalid bit number. Example: SetBitNumber(8) on a
     // Bitwise<uint8_t> sets bit 0. L298N.h only uses bits 0 to 3.
     // 2^n by repeated multiplication: 1, 2, 4, 8, ... (n times 2).
@@ -156,7 +157,8 @@ namespace csjc
 
     // The same test on a value passed in, without storing it.
     template <typename integer>
-    bool Bitwise<integer>::IsBitNumberSetToBitsValue(integer bitNumber, integer bitsValue)
+    bool Bitwise<integer>::IsBitNumberSetToBitsValue(integer bitNumber,
+                                                     integer bitsValue)
     {
         if ((bitsValue & b_powerOfTwo(bitNumber)) != 0)
             return true;
@@ -164,7 +166,8 @@ namespace csjc
         return false;
     }
 
-    // REVIEW 20261008: returns the LOWEST bit number that is set (for the value 5,
+    // REVIEW 20261008: returns the LOWEST bit number that is set (for the value
+    // 5,
     // binary 0101, it returns 0, not 2). b_maxSize equals 2^(n-1) - 1, so a
     // value with the highest bit set, or equal to b_maxSize, reports an error.
     template <typename integer>
@@ -173,7 +176,8 @@ namespace csjc
         // bit-numbers: 0, 1, 2, 3,  ... 13, 14, 15.
         if (b_bits > (integer)0 && b_bits < b_maxSize)
         {
-            for (int bitNumber = 0; bitNumber < (int)b_numberOfBits; bitNumber++)
+            for (int bitNumber = 0; bitNumber < (int)b_numberOfBits;
+                 bitNumber++)
             {
                 // GET FIRST BIT-NUMBER OF BITS
                 // If there is more than one bit number,
@@ -215,7 +219,8 @@ namespace csjc
         b_bits = (integer)0;
     }
 
-    // REVIEW 20261008: builds an Arduino String on the heap; the Uno has 2 KB of RAM,
+    // REVIEW 20261008: builds an Arduino String on the heap; the Uno has 2 KB
+    // of RAM,
     // so call it for diagnostics only, not inside a fast control loop.
     // Prints the bits from the most significant (left) to bit 0 (right),
     // with a space every 4 bits, as the Bits table of L298N.h is written.
@@ -224,7 +229,8 @@ namespace csjc
     {
         String str = "bits:";
         // Count backwards
-        for (int bitNumber = (int)b_numberOfBits - 1; bitNumber >= 0; bitNumber--)
+        for (int bitNumber = (int)b_numberOfBits - 1; bitNumber >= 0;
+             bitNumber--)
         {
             // Insert Space-Char after every 4th digit
             if (((bitNumber + (integer)1) % (integer)4) == (integer)0)

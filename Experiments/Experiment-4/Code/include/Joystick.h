@@ -133,7 +133,8 @@ namespace csjc
         real delta = absT<real>(absT<real>(_inputX) - absT<real>(_inputY));
 
         // --- OCTANT ZERO: CENTER STOP ---
-        if (absT<real>(_inputX) < _tolerance && absT<real>(_inputY) < _tolerance)
+        if (absT<real>(_inputX) < _tolerance &&
+            absT<real>(_inputY) < _tolerance)
         {
             outLeft = (real)0;
             outRight = (real)0;

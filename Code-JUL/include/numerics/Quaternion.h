@@ -61,7 +61,8 @@ namespace csjc
     {
     private:
         // PRIVATE MEMBERS
-        real q_tuples[4]; // w, x, y, z
+        // w, x, y, z
+        real q_tuples[4];
         // Drift correction for products of unit quaternions
         Quaternion<real> m_driftCorrect(Quaternion<real> quat);
 
@@ -120,10 +121,14 @@ namespace csjc
     template <typename real>
     Quaternion<real>::Quaternion()
     {
-        q_tuples[0] = (real)0; // w
-        q_tuples[1] = (real)0; // x
-        q_tuples[2] = (real)0; // y
-        q_tuples[3] = (real)0; // z
+        // w
+        q_tuples[0] = (real)0;
+        // x
+        q_tuples[1] = (real)0;
+        // y
+        q_tuples[2] = (real)0;
+        // z
+        q_tuples[3] = (real)0;
     }
 
     template <typename real>
@@ -202,7 +207,8 @@ namespace csjc
     template <typename real>
     Quaternion<real> Quaternion<real>::ToQuaternion()
     {
-        Quaternion<real> quat(q_tuples[0], q_tuples[1], q_tuples[2], q_tuples[3]);
+        Quaternion<real> quat(q_tuples[0], q_tuples[1],
+                              q_tuples[2], q_tuples[3]);
         return quat;
     }
 
@@ -338,7 +344,8 @@ namespace csjc
     template <typename real>
     Vector3<real> Quaternion<real>::GetAxis()
     {
-        Vector3<real> vector; // Zero Vector
+        // Zero Vector
+        Vector3<real> vector;
         if (abs(q_tuples[0]) < (real)1)
         {
             real den = sqrt((real)1 - (q_tuples[0] * q_tuples[0]));
@@ -411,8 +418,10 @@ namespace csjc
         Vector3<real> qV = q.ToVector();
         Vector3<real> cV = c.ToVector();
         // Quaternion Product
-        real wS = q.w() * c.w(); // Scalar Multiplication
-        wS -= qV * cV;           // Vector Dot Product
+        // Scalar Multiplication
+        real wS = q.w() * c.w();
+        // Vector Dot Product
+        wS -= qV * cV;
         // Vector-Scalar Products & Vector-Cross Product (^)
         // includes vector additions...
         Vector3<real> v = (qV * c.w()) + (cV * q.w()) + (qV ^ cV);

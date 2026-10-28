@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated October 25, 2026 (v6.4.1); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated October 28, 2026 (v6.7.0.b); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 Open as of 2026-10-12: 11 (Article 1000 axis mapping), 29 (bench check of the joystick power procedure only), 36 (Experiment-5, Lab 3, step 4, against Article 1009), 37 (tag v2.4.0 and Bibliography [1] date), 38 (Eberly credits for the matrix and quaternion fixes, author decision).
 
@@ -11,6 +11,12 @@ Open as of 2026-10-17 (v3.0.1): 61 (the line 31 filter printed in Article 1009).
 Open as of 2026-10-18 (v3.1.0): 68 (Experiment-5 Lab 1 and lessons 17 and 19 keep x on A1 and y on A0), 69 (Article 1009, folder names, joystick lines, and the generator).
 
 Open as of 2026-10-18 (v3.1.1): 71 (button polarity of Step3_Generated).
+
+Open as of 2026-10-28 (v6.7.0.b): 219 (Step2_JUL line numbers in the lab cards); 107 (release tags: commands in 227). The bench test of v6.7.0 passed.
+
+Open as of 2026-10-27 (v6.7.0): 219 (Step2_JUL line numbers in the lab cards, with Article 1004); 107 (release tags not on GitHub); bench test of v6.7.0 by the author.
+
+Open as of 2026-10-27 (v6.6.0): 219 (line numbers in the lab cards, with Article 1004); 107 (release tags not on GitHub); bench test of v6.6.0 by the author.
 
 Open as of 2026-10-25 (v6.4.1): 202 (Article 1009 and lab cards, now also the program titles and the lesson outputs of v6.4.1); bench test of v6.4.1 by the author. 107 (release tags not on GitHub).
 
@@ -57,6 +63,39 @@ Open as of 2026-10-22 (v6.2.3): 107 (release tags not on GitHub); 137 and 152 (b
 Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.0, with the Step1_Joystick of 188 and 189), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests; 192 and 193 (author decisions).
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
+
+## Bench Test of v6.7.0.a and Commit Plan (2026-10-28, v6.7.0.b)
+
+The author bench tested v6.7.0.a on 2026-10-28: passed. v6.6.0 and v6.7.0 were not pushed. The code of v6.7.0.b equals v6.7.0.a.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 227 | The documents said the bench test of v6.7.0 (and of v6.5.0 and v6.6.0) was pending; the last commit is v6.5.0.a (7ce250f), and v6.6.0 and v6.7.0 were never committed; the repository has no tags (107). | `README.md`, `RELEASES.md`, `Code-JUL/README.md`, `LAB-NOTEBOOK-TEMPLATE.md`; git | **Fixed 2026-10-28 (v6.7.0.b).** Bench status recorded. v6.6.0 is committed with v6.7.0 and gets no tag of its own (as v6.4.0 was committed with v6.4.1). Tags for the author: v6.7.0 on the new commit; v6.5.0 7ce250f; v6.4.1 e2e8871 (holds v6.4.0); v6.3.1 b985ee9; v3.2.2 381a3de; v3.2.1 011700a; v3.2.0 ad0c4e7; v2.4.0 ce8d226; v2.3.0 c08735a. 107 closes when the tags are pushed. |
+
+## Coding Rules in Every Program (2026-10-27, v6.7.0)
+
+Requested by the author with Article 1009 revision 20261027b: apply the coding rules to the whole repository without changing the code shown in the Article 1009 images, update the README and md files, and fix what the change requires.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 221 | Only Step2_JUL followed the coding rules of 20261027: 222 lines over 80 characters and 125 comments beside their statements in 44 files. | `Code-JUL`, `Experiments/Experiment-N/Code` | **Fixed 2026-10-27 (v6.7.0).** Every file within the rules; Step2_JUL and the Image-4 lines of `L298N.h` unchanged. All programs but Step3_Generator build to the same Intel HEX as v6.6.0. |
+| 222 | Step4_Generated had a title line of 155 characters and comments beside X_CENTER and Y_CENTER, and Step3_Generator printed them. | Step3_Generator, Step4_Generated | **Fixed 2026-10-27 (v6.7.0).** Step3_Generator prints the new layout; the printed program equals the shipped Step4_Generated (simavr). |
+| 223 | `L298N.h` cited Article 1009, Table-3, for the flags table, now Table-4, and named bits_1010 as the author's value (Image-7, 2024). | `L298N.h` | **Fixed 2026-10-27 (v6.7.0).** Table-4; each bench has its own value. Same number of lines. |
+| 224 | Article 1009 has no section Joystick Setup since 20261025; the README files, `platformio.ini`, Step1_Joystick, the Experiment-2 card, and the lab notebook template still cited it. | several | **Fixed 2026-10-27 (v6.7.0).** Article 1009, Step1, The Joystick Self Test. History entries keep the old name. |
+| 225 | The README tree cited Article 1009, Code-2 and Code-3, and the signal chain called the dead zones center offsets. | `README.md` | **Fixed 2026-10-27 (v6.7.0).** Code-2a to Code-4; dead zones X_OFFSET and Y_OFFSET. |
+| 226 | The coding rules moved lines cited by the lab cards of Experiments 3 to 8. | lab cards | **Fixed 2026-10-27 (v6.7.0)** for the lines this release moved; the Step2_JUL citations stay open with 219. |
+
+## Review of v6.5.0 with Article 1009 Code Listings (2026-10-27, v6.6.0)
+
+Requested by the author: the statements of Step2_JUL must fit the code listings of Article 1009, and the line numbers cited in the article and the code are detail overload.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 216 | Step2_JUL lines up to 78 characters (the dotted line and the program title) did not fit the Code-2 to Code-4 listings of Article 1009. The author's example used a backslash inside the string, which compiles but prints the indentation of each continuation line (23 trailing spaces per line). | Step2_JUL | **Fixed 2026-10-27 (v6.6.0).** Statements are 72 characters or less and comments 76, inside the 80 character cutoff of the listings (author decision). Long strings are written as several strings, each starting with `\n` and closed before a backslash (author decision); the build is the same Intel HEX as v6.5.0. |
+| 217 | Trailing comments beside statements made lines long. | Step2_JUL | **Fixed 2026-10-27 (v6.6.0).** Author rule: every comment is written on its own line above its statement. |
+| 218 | Line numbers cited for Step2_JUL were wrong after v6.4.1 moved the lines (for example, Step3_Generator printed "lines 114 and 115" for the analogRead() lines, by then lines 117 and 118, and "line 103" for the Bits() line, by then line 106). | Step2_JUL, Step1_Joystick, Step3_Generator (printed text), Step4_Generated, Step5_MathLessons, `ace.h`, `platformio.ini`, `README.md`, `Code-JUL/README.md`, `Motor-Movement-Checklist/ReadMe.md` | **Fixed 2026-10-27 (v6.6.0).** Each citation names what it points to: the Bits() line, the analogRead() lines, the six pin lines, the debug switches, X_OFFSET and Y_OFFSET, the line `pinMode(buttonPin, INPUT)`. Step3_Generator prints the shipped Step4_Generated line for line. |
+| 219 | The lab cards of Experiments 2, 3, 5, 6, 7, 8, and 9 and `LAB-NOTEBOOK-TEMPLATE.md` still cite line numbers. | `Experiments/` | **Open.** To be revised with Article 1004 (author decision: Article 1009 and the repository first). History entries of `RELEASES.md`, `Discrepancies.md`, and `Experiments.md` keep the numbers of their time. |
+| 220 | Article 1009 cited Step2_JUL line numbers in the walkthroughs of Code-2 to Code-4 and in Circuit-1, note (3); Table-2 named A0 yDigital and A1 xDigital, the reverse of the code. | Article 1009 | **Fixed 2026-10-27 (Article 1009, 20261027a)** in the text and Table-2; Circuit-1, note (3), is the author's image (punch list). |
 
 ## Review of v6.4.1.a with Article 1009 (2026-10-25, v6.5.0)
 

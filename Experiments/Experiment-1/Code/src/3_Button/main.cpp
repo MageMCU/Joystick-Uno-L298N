@@ -47,7 +47,7 @@ void setup()
     // replace a pinMode(buttonPin, INPUT) written here.
     button = Button(buttonPin, buttonLED, false);
 
-    // 
+    //
     timer.resetTimer();
 }
 
@@ -73,7 +73,7 @@ void loop()
     bool tickON = timer.isTimer(timerMS);
 
     // Complete the cycle with LOW
-    // by using (OR !toggle) 
+    // by using (OR !toggle)
     if (buttonON || !toggle)
     {
         if (tickON)
@@ -105,8 +105,9 @@ void loop()
                 Serial.println("-----------");
             }
         }
-    } 
-    else // Button OFF (Should always 
+    }
+    // Button OFF (Should always
+    else
     // come first upon start-up)
     if (once && tickON)
     {

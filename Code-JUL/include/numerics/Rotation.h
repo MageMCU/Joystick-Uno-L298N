@@ -122,15 +122,20 @@ namespace csjc
     Quaternion<real> MatrixToQuaternion(Matrix3x3<real> R)
     {
         // r(row, col) = R.GetElement(row * 3 + col)
-        real r00 = R.GetElement(0), r01 = R.GetElement(1), r02 = R.GetElement(2);
-        real r10 = R.GetElement(3), r11 = R.GetElement(4), r12 = R.GetElement(5);
-        real r20 = R.GetElement(6), r21 = R.GetElement(7), r22 = R.GetElement(8);
+        real r00 = R.GetElement(0), r01 = R.GetElement(1),
+             r02 = R.GetElement(2);
+        real r10 = R.GetElement(3), r11 = R.GetElement(4),
+             r12 = R.GetElement(5);
+        real r20 = R.GetElement(6), r21 = R.GetElement(7),
+             r22 = R.GetElement(8);
         real qx, qy, qz, qw;
-        if (r22 <= (real)0) // x^2 + y^2 >= z^2 + w^2
+        // x^2 + y^2 >= z^2 + w^2
+        if (r22 <= (real)0)
         {
             real dif10 = r11 - r00;
             real omr22 = (real)1 - r22;
-            if (dif10 <= (real)0) // x^2 >= y^2
+            // x^2 >= y^2
+            if (dif10 <= (real)0)
             {
                 real fourXSqr = omr22 - dif10;
                 real inv4x = (real)0.5 / (real)sqrt(fourXSqr);
@@ -139,7 +144,8 @@ namespace csjc
                 qz = (r02 + r20) * inv4x;
                 qw = (r21 - r12) * inv4x;
             }
-            else // y^2 >= x^2
+            // y^2 >= x^2
+            else
             {
                 real fourYSqr = omr22 + dif10;
                 real inv4y = (real)0.5 / (real)sqrt(fourYSqr);
@@ -149,11 +155,13 @@ namespace csjc
                 qw = (r02 - r20) * inv4y;
             }
         }
-        else // z^2 + w^2 >= x^2 + y^2
+        // z^2 + w^2 >= x^2 + y^2
+        else
         {
             real sum10 = r11 + r00;
             real opr22 = (real)1 + r22;
-            if (sum10 <= (real)0) // z^2 >= w^2
+            // z^2 >= w^2
+            if (sum10 <= (real)0)
             {
                 real fourZSqr = opr22 - sum10;
                 real inv4z = (real)0.5 / (real)sqrt(fourZSqr);
@@ -162,7 +170,8 @@ namespace csjc
                 qz = fourZSqr * inv4z;
                 qw = (r10 - r01) * inv4z;
             }
-            else // w^2 >= z^2
+            // w^2 >= z^2
+            else
             {
                 real fourWSqr = opr22 + sum10;
                 real inv4w = (real)0.5 / (real)sqrt(fourWSqr);

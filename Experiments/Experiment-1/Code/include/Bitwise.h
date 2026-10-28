@@ -117,7 +117,8 @@ namespace csjc
     }
 
     template <typename integer>
-    bool Bitwise<integer>::IsBitNumberSetToBitsValue(integer bitNumber, integer bitsValue)
+    bool Bitwise<integer>::IsBitNumberSetToBitsValue(integer bitNumber,
+                                                     integer bitsValue)
     {
         if ((bitsValue & b_powerOfTwo(bitNumber)) != 0)
             return true;
@@ -131,7 +132,8 @@ namespace csjc
         // bit-numbers: 0, 1, 2, 3,  ... 13, 14, 15.
         if (b_bits > (integer)0 && b_bits < b_maxSize)
         {
-            for (int bitNumber = 0; bitNumber < (int)b_numberOfBits; bitNumber++)
+            for (int bitNumber = 0; bitNumber < (int)b_numberOfBits;
+                 bitNumber++)
             {
                 // GET FIRST BIT-NUMBER OF BITS
                 // If there is more than one bit number,
@@ -176,7 +178,8 @@ namespace csjc
     {
         String str = "bits:";
         // Count backwards
-        for (int bitNumber = (int)b_numberOfBits - 1; bitNumber >= 0; bitNumber--)
+        for (int bitNumber = (int)b_numberOfBits - 1; bitNumber >= 0;
+             bitNumber--)
         {
             // Insert Space-Char after every 4th digit
             if (((bitNumber + (integer)1) % (integer)4) == (integer)0)

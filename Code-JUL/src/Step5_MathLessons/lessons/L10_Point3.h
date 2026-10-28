@@ -151,7 +151,7 @@ void Point3_T01_Constructor()
     float array[] = {4, 5, 6};
     Point3<float> p3(array);
     printPoint3("p3(array) =", p3);
-    
+
     Vector3<float> v(1, 2, 3);
     printVector3("v(1, 2, 3) =", v);
     Point3<float> p4(v);
@@ -202,6 +202,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L10_Point3
+// namespace L10_Point3
+}
 
-#endif // Lesson_L10_Point3_h
+// Lesson_L10_Point3_h
+#endif

@@ -636,6 +636,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L09_Vector3
+// namespace L09_Vector3
+}
 
-#endif // Lesson_L09_Vector3_h
+// Lesson_L09_Vector3_h
+#endif

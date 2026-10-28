@@ -180,6 +180,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L02_TypeConv
+// namespace L02_TypeConv
+}
 
-#endif // Lesson_L02_TypeConv_h
+// Lesson_L02_TypeConv_h
+#endif

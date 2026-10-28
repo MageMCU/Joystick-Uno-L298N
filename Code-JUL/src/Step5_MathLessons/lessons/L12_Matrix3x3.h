@@ -4,7 +4,8 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L12_Matrix3x3, selected with LESSON 12 in Step5_MathLessons/main.cpp
+// Namespace: L12_Matrix3x3, selected with LESSON 12 in
+// Step5_MathLessons/main.cpp
 // Origin: MageMCU/Numerics, Algebra/src/TESTS/TestMatrix3x3.h (merged 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
@@ -122,7 +123,8 @@ void Matrix3x3_T15_FindInvertible()
     }
 
     // Vector x
-    Serial.println(F("x: random(10) - 5, whole numbers -5 to 4, never 0")); // v6.4.1
+    // v6.4.1
+    Serial.println(F("x: random(10) - 5, whole numbers -5 to 4, never 0"));
     Vector3<float> x(aV);
     printVector3("x(aV): ", x);
 
@@ -144,7 +146,8 @@ void Matrix3x3_T15_FindInvertible()
     else
     {
         // v6.4.1: say so when the random A has no inverse.
-        Serial.println(F("NOT invertible (det A = 0): reset the board for a new A"));
+        Serial.println(F( \
+            "NOT invertible (det A = 0): reset the board for a new A"));
     }
 }
 
@@ -182,9 +185,11 @@ void Matrix3x3_T14_Rotation()
     // working one-direction only (CCW)
     float radian = (float)45 * DEG_TO_RAD;
     // v6.4.1: print the three angles, the inputs of Rotation().
-    Serial.println(F("angles: 45 degrees about x, 45 about y, 45 about z (XYZ order)"));
+    Serial.println(F( \
+        "angles: 45 degrees about x, 45 about y, 45 about z (XYZ order)"));
 
-    Matrix3x3<float> A; // identity
+    // identity
+    Matrix3x3<float> A;
     printMatrix3x3("A ", A);
 
     // CAUTION: DO NOT USE ALL AT ONCE... STACK-HEAP COLLISION
@@ -418,7 +423,8 @@ void Matrix3x3_T07_Inverse()
     float array[] = {2, 1, 2, 3, 2, 2, 1, 2, 3};
     Matrix3x3<float> M(array);
     printMatrix3x3("M(array): ", M);
-    printResult(F("det M: "), M.Determinant()); // v6.4.1: the divisor of adj(M)
+    // v6.4.1: the divisor of adj(M)
+    printResult(F("det M: "), M.Determinant());
     M = M.Inverse();
     printMatrix3x3("M.Inverse(): ", M);
     // Verified Output
@@ -449,7 +455,8 @@ void Matrix3x3_T06_Adjoint()
     float array[] = {2, 1, 2, 3, 2, 2, 1, 2, 3};
     Matrix3x3<float> M(array);
     printMatrix3x3("M(array): ", M);
-    printResult(F("det M: "), M.Determinant()); // v6.4.1: links T06 to T07
+    // v6.4.1: links T06 to T07
+    printResult(F("det M: "), M.Determinant());
     M = M.Adjoint();
     printMatrix3x3("M.Adjoint(): ", M);
     // Verified Output
@@ -681,6 +688,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L12_Matrix3x3
+// namespace L12_Matrix3x3
+}
 
-#endif // Lesson_L12_Matrix3x3_h
+// Lesson_L12_Matrix3x3_h
+#endif

@@ -33,7 +33,7 @@
 // is printed (Discrepancies.md, entry 85).
 // Revised 20261021 (v4.0.0): the steps are renumbered (Step1_Joystick
 // is new; this program is Step3_Generator again), and the indicator
-// LED is on D12, as in Circuit-1 and Step2_JUL (line 50).
+// LED is on D12, as in Circuit-1 and Step2_JUL (the ledPin line).
 // Revised 20261025 (v6.4.0): a new first check shows the joystick
 // center of include/JoystickCenter.h, printed by Step1_Joystick; the
 // printed program passes it to ace.h as X_CENTER and Y_CENTER. The
@@ -67,14 +67,15 @@
 //            by Step1_Joystick and upload this program again.
 //   Check 2: the six L298N pins, the push button, and the LED, each
 //            as an Uno pin and an ATmega328P port pin, for example
-//            D5 (PD5). Type y if they match Step2_JUL, lines 47, 50,
-//            and 66 to 71. For n, change the constants below to the
+//            D5 (PD5). Type y if they match the buttonPin, ledPin, and
+//            six pin lines of Step2_JUL. For n, change the constants below to
+//            the
 //            pins of Step2_JUL and upload this program again.
 //   Check 3: the joystick lines, x on A0 (PC0) and y on A1 (PC1).
-//            Type y if lines 114 and 115 of Step2_JUL read the same.
+//            Type y if the analogRead() lines of Step2_JUL read the same.
 //            For n, restore those two lines in Step2_JUL and find the
 //            Bits() value again with the checklist.
-//   Question 4: the four binary digits of line 103 of Step2_JUL,
+//   Question 4: the four binary digits of the Bits() line of Step2_JUL,
 //            motors.Bits(BitsL298N::bits_????); typed as four
 //            characters of 0 and 1.
 //   Question 5: debug data in Step4_Generated, y or n. For y the
@@ -105,7 +106,7 @@
 // Uno and USB cable only. This program writes nothing to D5 to D10.
 //
 // Build: in platformio.ini, select this program with
-//   build_src_filter, lines 31 to 37: +<Step3_Generator/>, and - before the
+//   build_src_filter: +<Step3_Generator/>, and - before the
 //   other four folders
 // then Upload and Monitor. Serial monitor: 9600 baud. The PlatformIO
 // monitor also saves the output in a log file (monitor_filters =
@@ -128,19 +129,26 @@
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
 
-// Uno pins of the L298N, the same as Step2_JUL (lines 66 to 71)
-const uint8_t ENB = 5;  // L298N ENB (Article 1009, Circuit-1)
-const uint8_t IN4 = 6;  // L298N IN4
-const uint8_t IN3 = 7;  // L298N IN3
-const uint8_t IN2 = 8;  // L298N IN2
-const uint8_t IN1 = 9;  // L298N IN1
-const uint8_t ENA = 10; // L298N ENA
-// Push button and indicator LED, the same as Step2_JUL (lines 47, 50)
+// Uno pins of the L298N, the same as the six pin lines of Step2_JUL
+// L298N ENB (Article 1009, Circuit-1)
+const uint8_t ENB = 5;
+// L298N IN4
+const uint8_t IN4 = 6;
+// L298N IN3
+const uint8_t IN3 = 7;
+// L298N IN2
+const uint8_t IN2 = 8;
+// L298N IN1
+const uint8_t IN1 = 9;
+// L298N ENA
+const uint8_t ENA = 10;
+// Push button and indicator LED, the same as Step2_JUL (buttonPin, ledPin)
 const uint8_t BUTTON_PIN = 2;
 const uint8_t LED_PIN = 12;
 // Advanced wiring of Article 1003 (LED on D3):
 // const uint8_t LED_PIN = 3;
-// Joystick, the same as Step2_JUL (lines 114 and 115); not changed
+// Joystick, the same as the analogRead() lines of Step2_JUL;
+// not changed
 const uint8_t X_PIN = A0;
 const uint8_t Y_PIN = A1;
 // Joystick center, from include/JoystickCenter.h (v6.4.0)
@@ -148,7 +156,7 @@ const uint16_t X_CENTER = JOYSTICK_A0_CENTER;
 const uint16_t Y_CENTER = JOYSTICK_A1_CENTER;
 #if JOYSTICK_A0_CENTER < 461 || JOYSTICK_A0_CENTER > 561 || \
     JOYSTICK_A1_CENTER < 461 || JOYSTICK_A1_CENTER > 561
-#error "JoystickCenter.h: each center must be 461 to 561 (Step1_Joystick, Test 3)"
+#error "JoystickCenter.h: each center must be 461 to 561 (Step1, Test 3)"
 #endif
 
 // Filled by the answers
@@ -181,7 +189,17 @@ void emit(LineMode mode)
     }
     else if (mode == CODE)
     {
-        Serial.print(F("    Serial.println(F(\""));
+        // A printed line over 80 characters is continued: the string
+        // moves to the next line after a backslash (coding rules)
+        if (strlen(lineBuffer) + 26 > 80)
+        {
+            Serial.println(F("    Serial.println(F( \\"));
+            Serial.print(F("        \""));
+        }
+        else
+        {
+            Serial.print(F("    Serial.println(F(\""));
+        }
         Serial.print(lineBuffer);
         Serial.println(F("\"));"));
     }
@@ -216,13 +234,19 @@ void pinLine(LineMode mode, const char *name, uint8_t pin)
 void centerLines(LineMode mode)
 {
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("Joystick center (include/JoystickCenter.h, Step1_Joystick)"));
+               PSTR( \
+                   "Joystick center (include/JoystickCenter.h, " \
+                   "Step1_Joystick)"));
     emit(mode);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("  A0 center %u (offset %d)"), X_CENTER, (int)X_CENTER - 511);
+               PSTR( \
+                   "  A0 center %u (offset " \
+                   "%d)"), X_CENTER, (int)X_CENTER - 511);
     emit(mode);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("  A1 center %u (offset %d)"), Y_CENTER, (int)Y_CENTER - 511);
+               PSTR( \
+                   "  A1 center %u (offset " \
+                   "%d)"), Y_CENTER, (int)Y_CENTER - 511);
     emit(mode);
 }
 
@@ -230,7 +254,7 @@ void centerLines(LineMode mode)
 void pinLines(LineMode mode)
 {
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("L298N pins (Step2_JUL, lines 66 to 71)"));
+               PSTR("L298N pins (Step2_JUL, the six pin lines)"));
     emit(mode);
     pinLine(mode, "ENB", ENB);
     pinLine(mode, "IN4", IN4);
@@ -239,7 +263,7 @@ void pinLines(LineMode mode)
     pinLine(mode, "IN1", IN1);
     pinLine(mode, "ENA", ENA);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("Push button and LED (Step2_JUL, lines 47 and 50)"));
+               PSTR("Push button and LED (Step2_JUL, buttonPin and ledPin)"));
     emit(mode);
     pinLine(mode, "SW", BUTTON_PIN);
     pinLine(mode, "LED", LED_PIN);
@@ -257,7 +281,7 @@ void analogLine(LineMode mode, char axis, uint8_t pin)
 void analogLines(LineMode mode)
 {
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("Joystick (Step2_JUL, lines 114 and 115)"));
+               PSTR("Joystick (Step2_JUL, the analogRead() lines)"));
     emit(mode);
     analogLine(mode, 'x', X_PIN);
     analogLine(mode, 'y', Y_PIN);
@@ -276,7 +300,7 @@ void bitsLines(LineMode mode)
 {
     int value = pins.GetBitsValue();
     snprintf_P(lineBuffer, sizeof(lineBuffer),
-               PSTR("Bits value (Step2_JUL, line 103)"));
+               PSTR("Bits value (Step2_JUL, the Bits() line)"));
     emit(mode);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
                PSTR("  motors.Bits(BitsL298N::bits_%u%u%u%u);"),
@@ -328,7 +352,8 @@ void readLine(char *line, int size)
         lastWasCR = (c == '\r');
         if (c == '\r' || c == '\n')
             break;
-        if (c == 8 || c == 127) // Backspace or Delete
+        // Backspace or Delete
+        if (c == 8 || c == 127)
         {
             if (n > 0)
             {
@@ -402,7 +427,8 @@ void printDots()
 bool checkCenter()
 {
     printDots();
-    Serial.println(F("Check 1 of 5: the joystick center measured by Step1_Joystick"));
+    Serial.println(F( \
+        "Check 1 of 5: the joystick center measured by Step1_Joystick"));
     centerLines(MONITOR);
     Serial.println(F("Does it match the report of Step1_Joystick?"));
     if (askYesNo())
@@ -410,7 +436,8 @@ bool checkCenter()
         Serial.println();
         return true;
     }
-    Serial.println(F("  Replace include/JoystickCenter.h with the lines printed by"));
+    Serial.println(F( \
+        "  Replace include/JoystickCenter.h with the lines printed by"));
     Serial.println(F("  Step1_Joystick, then upload this program again."));
     return false;
 }
@@ -419,7 +446,8 @@ bool checkCenter()
 bool checkPins()
 {
     printDots();
-    Serial.println(F("Check 2 of 5: the pins of Step2_JUL, Uno pin (ATmega328P pin)"));
+    Serial.println(F( \
+        "Check 2 of 5: the pins of Step2_JUL, Uno pin (ATmega328P pin)"));
     pinLines(MONITOR);
     Serial.println(F("Are these the pins of Step2_JUL?"));
     if (askYesNo())
@@ -427,8 +455,10 @@ bool checkPins()
         Serial.println();
         return true;
     }
-    Serial.println(F("  Change ENB, IN4 to IN1, ENA, BUTTON_PIN, and LED_PIN at the"));
-    Serial.println(F("  top of Step3_Generator/main.cpp to the pins of Step2_JUL,"));
+    Serial.println(F( \
+        "  Change ENB, IN4 to IN1, ENA, BUTTON_PIN, and LED_PIN at the"));
+    Serial.println(F( \
+        "  top of Step3_Generator/main.cpp to the pins of Step2_JUL,"));
     Serial.println(F("  then upload this program again."));
     return false;
 }
@@ -439,15 +469,20 @@ bool checkJoystick()
     printDots();
     Serial.println(F("Check 3 of 5: the joystick lines of Step2_JUL"));
     analogLines(MONITOR);
-    Serial.println(F("Do lines 114 and 115 of Step2_JUL read the same?"));
+    Serial.println(F("Do the analogRead() lines of Step2_JUL read the same?"));
     if (askYesNo())
     {
         Serial.println();
         return true;
     }
-    Serial.println(F("  Restore lines 114 and 115 of Step2_JUL as shown above, upload"));
-    Serial.println(F("  it, and find the Bits() value again with the Motor Movement"));
-    Serial.println(F("  Checklist. The value found belongs to the lines it was found with."));
+    Serial.println(F( \
+        "  Restore the analogRead() lines of Step2_JUL as shown above, " \
+        "upload"));
+    Serial.println(F( \
+        "  it, and find the Bits() value again with the Motor Movement"));
+    Serial.println(F( \
+        "  Checklist. The value found belongs to the lines it was found " \
+        "with."));
     return false;
 }
 
@@ -455,9 +490,11 @@ bool checkJoystick()
 void askBits()
 {
     printDots();
-    Serial.println(F("Question 4 of 5: which Bits value is used in Step2_JUL?"));
+    Serial.println(F( \
+        "Question 4 of 5: which Bits value is used in Step2_JUL?"));
     // Split so that ??) is not read as a trigraph by strict C++ modes
-    Serial.println(F("  Line 103: motors.Bits(BitsL298N::bits_???" "?);"));
+    Serial.println(F( \
+        "  The Bits() line: motors.Bits(BitsL298N::bits_???" "?);"));
 
     int value = -1;
     while (true)
@@ -476,7 +513,8 @@ void askBits()
 void askDebug()
 {
     printDots();
-    Serial.println(F("Question 5 of 5: show this data in the serial monitor when"));
+    Serial.println(F( \
+        "Question 5 of 5: show this data in the serial monitor when"));
     Serial.println(F("  Step4_Generated starts (DEBUG_GENERATED)?"));
     withDebug = askYesNo();
     Serial.println();
@@ -492,7 +530,8 @@ bool askConfirm()
     analogLines(MONITOR);
     bitsLines(MONITOR);
     if (withDebug)
-        Serial.println(F("Debug data in Step4_Generated: yes (DEBUG_GENERATED)"));
+        Serial.println(F( \
+            "Debug data in Step4_Generated: yes (DEBUG_GENERATED)"));
     else
         Serial.println(F("Debug data in Step4_Generated: no"));
     while (true)
@@ -508,8 +547,15 @@ bool askConfirm()
 void printIntro()
 {
     char line[8];
-    Serial.println(F("\n................................................\nStep3_Generator: prints the program Step4_Generated\nSelected in platformio.ini: +<Step3_Generator/>\nStep3_Generator: three checks and two questions about Steps 1 and 2.")); // v6.4.1: program title
-    Serial.println(F("Answer and press Enter. Backspace corrects a typing error."));
+    // v6.4.1: program title
+    Serial.println(F( \
+        "\n................................................" \
+        "\nStep3_Generator: prints the program Step4_Generated" \
+        "\nSelected in platformio.ini: +<Step3_Generator/>" \
+        "\nStep3_Generator: three checks and two questions about Steps 1 " \
+        "and 2."));
+    Serial.println(F( \
+        "Answer and press Enter. Backspace corrects a typing error."));
     Serial.println(F("Arduino IDE monitor: set the line ending to Newline."));
     Serial.print(F("Press Enter to begin."));
     readLine(line, sizeof(line));
@@ -551,15 +597,26 @@ void printProgram()
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
     Serial.println(F("// STEPS 2 TO 4"));
-    Serial.println(F("//   Step2_JUL:       the drive program; the Motor Movement Checklist"));
-    Serial.println(F("//                    finds its Bits() value (Article 1009, L298N"));
-    Serial.println(F("//                    Setup). The joystick lines stay as written,"));
+    Serial.println(F( \
+        "//   Step2_JUL:       the drive program; the Motor Movement " \
+        "Checklist"));
+    Serial.println(F( \
+        "//                    finds its Bits() value (Article 1009, L298N"));
+    Serial.println(F( \
+        "//                    Setup). The joystick lines stay as written,"));
     Serial.println(F("//                    x on A0 and y on A1."));
-    Serial.println(F("//   Step3_Generator: checks the pins and the joystick lines, asks for"));
-    Serial.println(F("//                    the Bits() value, and prints this file with the"));
+    Serial.println(F( \
+        "//   Step3_Generator: checks the pins and the joystick lines, " \
+        "asks for"));
+    Serial.println(F( \
+        "//                    the Bits() value, and prints this file " \
+        "with the"));
     Serial.println(F("//                    answers written in as constants."));
-    Serial.println(F("//   Step4_Generated: this file. It drives the robot as Step2_JUL does,"));
-    Serial.println(F("//                    with the Bits() value fixed when it is built."));
+    Serial.println(F( \
+        "//   Step4_Generated: this file. It drives the robot as " \
+        "Step2_JUL does,"));
+    Serial.println(F( \
+        "//                    with the Bits() value fixed when it is built."));
     Serial.println(F("//"));
     Serial.println(F("// DATA CHECKED IN STEP3_GENERATOR"));
     centerLines(COMMENT);
@@ -569,37 +626,64 @@ void printProgram()
     Serial.println(F("//"));
     if (withDebug)
     {
-        Serial.println(F("// DEBUG_GENERATED (below the include lines): while it is defined,"));
-        Serial.println(F("// setup() prints the same data in the serial monitor (9600 baud)"));
-        Serial.println(F("// once, before the motors can run. Comment the line out to leave"));
-        Serial.println(F("// the serial port unused; the drive is the same either way."));
-        Serial.println(F("// The push button is read after the last line, Ready; a press"));
-        Serial.println(F("// made while the data is printing (about 1 s) is not seen."));
+        Serial.println(F( \
+            "// DEBUG_GENERATED (below the include lines): while it is " \
+            "defined,"));
+        Serial.println(F( \
+            "// setup() prints the same data in the serial monitor (9600 " \
+            "baud)"));
+        Serial.println(F( \
+            "// once, before the motors can run. Comment the line out to " \
+            "leave"));
+        Serial.println(F( \
+            "// the serial port unused; the drive is the same either way."));
+        Serial.println(F( \
+            "// The push button is read after the last line, Ready; a press"));
+        Serial.println(F( \
+            "// made while the data is printing (about 1 s) is not seen."));
         Serial.println(F("//"));
     }
-    Serial.println(F("// include/claude/ace.h holds everything this program needs in one"));
-    Serial.println(F("// file: the joystick algorithm, the mapping and dead zone, the push"));
-    Serial.println(F("// button, the timer, and the L298N pins. It includes Arduino.h only"));
-    Serial.println(F("// and is never edited; a new run of Step3 changes only this file."));
-    Serial.println(F("// For the same joystick readings it sets the same pin states as"));
-    Serial.println(F("// Step2_JUL, with a control tick about 2.5 times faster (see ace.h)."));
-    Serial.println(F("// ace.h also moves each reading by the joystick center (X_CENTER"));
-    Serial.println(F("// and Y_CENTER below); Step2_JUL keeps the center 511."));
-    Serial.println(F("// The tick repeats every 50 ms (TICK_MS of ace.h); Step2_JUL uses"));
+    Serial.println(F( \
+        "// include/claude/ace.h holds everything this program needs in one"));
+    Serial.println(F( \
+        "// file: the joystick algorithm, the mapping and dead zone, the " \
+        "push"));
+    Serial.println(F( \
+        "// button, the timer, and the L298N pins. It includes Arduino.h " \
+        "only"));
+    Serial.println(F( \
+        "// and is never edited; a new run of Step3 changes only this file."));
+    Serial.println(F( \
+        "// For the same joystick readings it sets the same pin states as"));
+    Serial.println(F( \
+        "// Step2_JUL, with a control tick about 2.5 times faster (see " \
+        "ace.h)."));
+    Serial.println(F( \
+        "// ace.h also moves each reading by the joystick center (X_CENTER"));
+    Serial.println(F( \
+        "// and Y_CENTER below); Step2_JUL keeps the center 511."));
+    Serial.println(F( \
+        "// The tick repeats every 50 ms (TICK_MS of ace.h); Step2_JUL uses"));
     Serial.println(F("// 100 ms."));
     Serial.println(F("//"));
     Serial.print(F("// Push button: SW on D"));
     Serial.print(BUTTON_PIN);
     Serial.println(F(" with the external 10 kOhm pull up to 5 V"));
-    Serial.println(F("// (pressed reads LOW), line 58 of Step2_JUL as written. The"));
+    Serial.println(F( \
+        "// (pressed reads LOW), the shipped form of Step2_JUL. The"));
     Serial.println(F("// internal pull up is off."));
     Serial.println(F("//"));
     Serial.println(F("// Build: in platformio.ini, select this program with"));
-    Serial.println(F("//   build_src_filter, lines 31 to 37: +<Step4_Generated/>, and - before the"));
+    Serial.println(F( \
+        "//   build_src_filter: +<Step4_Generated/>, and - before the"));
     Serial.println(F("//   other four folders"));
-    Serial.println(F("// In a project of its own, copy include/claude/ace.h with this file."));
+    Serial.println(F( \
+        "// In a project of its own, copy include/claude/ace.h with this " \
+        "file."));
     Serial.println(F("//"));
-    Serial.println(F("// SAFETY COMES FIRST (WATCH YOUR FINGERS): the motors run only while"));
+    Serial.println(F( \
+        "// SAFETY COMES FIRST (WATCH YOUR FINGERS): the motors run only " \
+        "while"));
     Serial.print(F("// the push button state is ON (indicator LED on D"));
     Serial.print(LED_PIN);
     Serial.println(F(")."));
@@ -609,7 +693,8 @@ void printProgram()
     Serial.println();
     if (withDebug)
     {
-        Serial.println(F("// Serial verification of the data checked in Step3_Generator."));
+        Serial.println(F( \
+            "// Serial verification of the data checked in Step3_Generator."));
         Serial.println(F("// Comment this line out to turn the output off."));
         Serial.println(F("#define DEBUG_GENERATED"));
         Serial.println();
@@ -638,21 +723,25 @@ void printProgram()
     printConst(F("RIGHT_FWD"), right.FWD);
     printConst(F("RIGHT_REV"), right.REV);
     Serial.println();
-    Serial.println(F("// Push button and indicator LED, the same as Step2_JUL"));
+    Serial.println(F( \
+        "// Push button and indicator LED, the same as Step2_JUL"));
     printConst(F("BUTTON_PIN"), BUTTON_PIN);
     printConst(F("LED_PIN"), LED_PIN);
     Serial.println();
-    Serial.println(F("// Control tick and debounce, in ms (the defaults of ace.h)"));
+    Serial.println(F( \
+        "// Control tick and debounce, in ms (the defaults of ace.h)"));
     Serial.println(F("const uint16_t TICK_MS = 50;"));
     Serial.println(F("const uint16_t DEBOUNCE_MS = 50;"));
     Serial.println();
-    Serial.println(F("// Joystick center measured by Step1_Joystick (JoystickCenter.h)"));
+    Serial.println(F( \
+        "// Joystick center measured by Step1_Joystick (JoystickCenter.h):"));
+    Serial.println(F("// X_CENTER of A0, Y_CENTER of A1"));
     Serial.print(F("const uint16_t X_CENTER = "));
     Serial.print(X_CENTER);
-    Serial.println(F("; // A0"));
+    Serial.println(';');
     Serial.print(F("const uint16_t Y_CENTER = "));
     Serial.print(Y_CENTER);
-    Serial.println(F("; // A1"));
+    Serial.println(';');
     Serial.println();
     Serial.println(F("Ace<X_PIN, Y_PIN,"));
     Serial.println(F("    LEFT_EN, LEFT_FWD, LEFT_REV,"));
@@ -662,7 +751,8 @@ void printProgram()
     Serial.println();
     Serial.println(F("void setup()"));
     Serial.println(F("{"));
-    Serial.println(F("    // D5 to D10 as outputs and LOW before anything else (SAFETY)"));
+    Serial.println(F( \
+        "    // D5 to D10 as outputs and LOW before anything else (SAFETY)"));
     Serial.println(F("    robot.begin();"));
     if (withDebug)
     {
@@ -671,13 +761,27 @@ void printProgram()
         Serial.println(F("    while (!Serial)"));
         Serial.println(F("    {"));
         Serial.println(F("    }"));
-        Serial.println(F("    Serial.println(F(\"\\n................................................\\nStep4_Generated: the drive program printed by Step3_Generator\\nSelected in platformio.ini: +<Step4_Generated/>\"));"));
-        Serial.println(F("    Serial.println(F(\"Step4_Generated: data checked in Step3_Generator\"));"));
+        // The title, one statement over four lines (coding rules)
+        Serial.println(F("    Serial.println(F( \\"));
+        Serial.print(F("        \"\\n"));
+        Serial.print(F("................................................"));
+        Serial.println(F("\" \\"));
+        Serial.println(F( \
+            "        \"\\nStep4_Generated: the drive program printed by " \
+            "Step3_Generator\" \\"));
+        Serial.println(F( \
+            "        \"\\nSelected in platformio.ini: " \
+            "+<Step4_Generated/>\"));"));
+        Serial.println(F( \
+            "    Serial.println(F(\"Step4_Generated: data checked in " \
+            "Step3_Generator\"));"));
         centerLines(CODE);
         pinLines(CODE);
         analogLines(CODE);
         bitsLines(CODE);
-        Serial.print(F("    Serial.println(F(\"Ready: press the push button; the LED on D"));
+        Serial.print(F( \
+            "    Serial.println(F(\"Ready: press the push button; the LED " \
+            "on D"));
         Serial.print(LED_PIN);
         Serial.println(F(" shows ON.\"));"));
         Serial.println(F("#endif"));
@@ -686,7 +790,9 @@ void printProgram()
     Serial.println();
     Serial.println(F("void loop()"));
     Serial.println(F("{"));
-    Serial.println(F("    // Button, 50 ms timer, and one control tick when the timer fires"));
+    Serial.println(F( \
+        "    // Button, 50 ms timer, and one control tick when the timer " \
+        "fires"));
     Serial.println(F("    robot.update();"));
     Serial.println(F("}"));
     Serial.println(F("// ----- END main.cpp -----"));
@@ -710,8 +816,10 @@ void runGenerator()
     }
     Serial.println();
     printDots();
-    Serial.println(F("Copy every line between the two marker lines. The PlatformIO"));
-    Serial.println(F("monitor also saves this output in a log file (log2file)."));
+    Serial.println(F( \
+        "Copy every line between the two marker lines. The PlatformIO"));
+    Serial.println(F( \
+        "monitor also saves this output in a log file (log2file)."));
     Serial.println();
     printProgram();
     Serial.println(F("Type r and Enter to start again."));

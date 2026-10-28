@@ -198,7 +198,8 @@ void Vector2_T13_VectorScalarProduct()
     printVector2("v1", v1);
 
     float scalar = 3;
-    printResult(F("scalar: "), scalar); // v6.4.1: print the input
+    // v6.4.1: print the input
+    printResult(F("scalar: "), scalar);
 
     Vector2<float> v2 = v1 * scalar;
     printVector2("v2 = v1 * scalar", v2);
@@ -356,12 +357,14 @@ void Vector2_T09_DotPerp()
     printVector3("v4", v4);
 
     Vector3<float> v5 = v3 ^ v4;
-    printVector3(F("v5 = v3 ^ v4"), v5); // v6.4.1: print the whole result
+    // v6.4.1: print the whole result
+    printVector3(F("v5 = v3 ^ v4"), v5);
     float zComponent = v5.z();
     Serial.print("zComponent = v5.z() ");
     Serial.println(zComponent);
 
-    printSubTitle(F("Notice DotPerp and zComponent must be equal...")); // v6.4.1: name of the function
+    // v6.4.1: name of the function
+    printSubTitle(F("Notice DotPerp and zComponent must be equal..."));
 }
 
 // T08: Perp(v1) = (-2.00, 1.00), length 2.24; UnitPerp(v1) =
@@ -393,14 +396,16 @@ void Vector2_T08_UnitPerp()
     printVector2("v2 = v1.Perp()", v2);
 
     float mag = v2.Magnitude();
-    Serial.print(F("mag = v2.Magnitude() = ")); // v6.4.1: label of the value
+    // v6.4.1: label of the value
+    Serial.print(F("mag = v2.Magnitude() = "));
     Serial.println(mag);
 
     // Comparison with Perp()
     Vector2<float> v3 = v1.UnitPerp();
     printVector2("v3 = v1.UnitPerp()", v3);
 
-    printSubTitle("The dot product of perpendicular vectors ought to be zero...");
+    printSubTitle( \
+        "The dot product of perpendicular vectors ought to be zero...");
     float dot = v1 * v2;
     Serial.print("dot = v1 * v2 = ");
     Serial.println(dot);
@@ -426,7 +431,8 @@ void Vector2_T08_UnitPerp()
 //   v2 = v1.Perp() (-2.00, 1.00)
 //   dot = v1 * v2 0.00
 // ---------------------------------------------------------------
-void Vector2_T07_Perp() // ----------------------- BUGFIX ok
+// ----------------------- BUGFIX ok
+void Vector2_T07_Perp()
 {
     printTitle(F("Vector2 T07 Perpendicular"));
 
@@ -436,7 +442,8 @@ void Vector2_T07_Perp() // ----------------------- BUGFIX ok
     Vector2<float> v2 = v1.Perp();
     printVector2("v2 = v1.Perp()", v2);
 
-    printSubTitle("The dot product of perpendicular vectors ought to be zero...");
+    printSubTitle( \
+        "The dot product of perpendicular vectors ought to be zero...");
     float dot = v1 * v2;
     Serial.print("dot = v1 * v2 ");
     Serial.println(dot);
@@ -737,6 +744,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L07_Vector2
+// namespace L07_Vector2
+}
 
-#endif // Lesson_L07_Vector2_h
+// Lesson_L07_Vector2_h
+#endif

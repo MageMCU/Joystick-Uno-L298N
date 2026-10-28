@@ -55,4 +55,5 @@
 #define BUTTON_TIMER_mS 100
 #endif
 
-#endif // Common_h
+// Common_h
+#endif

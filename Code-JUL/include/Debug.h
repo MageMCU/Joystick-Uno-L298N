@@ -148,12 +148,12 @@ namespace csjc
         {
             // Source: Arduino's float data-types
             // The float data type has only 6-7 decimal digits of precision.
-            // NOTE: Since the floats printed are mostly less-than the value of one (<1.0)
-            //       than 7 decimal digits were used...
-            // https://www.arduino.cc/reference/en/language/variables/data-types/float/
+            // NOTE: Since the floats printed are mostly less-than the value
+            //       of one (<1.0) than 7 decimal digits were used...
+            // arduino.cc, Language Reference, Data Types: float
             //
             // Source: Arduino's String Object data-types (see note above...)
-            // https://www.arduino.cc/reference/en/language/variables/data-types/stringobject/
+            // arduino.cc, Language Reference, Data Types: String()
             //
             // To 7 decimal places
             Serial.print(String(q.Element(i), 7));
@@ -166,7 +166,8 @@ namespace csjc
     }
 
     template <typename real>
-    void printQuaternion(String s, Quaternion<real> q, real angle) // -------------- Experimental
+    // -------------- Experimental
+    void printQuaternion(String s, Quaternion<real> q, real angle)
     {
         // Float to String takes time (SLOW)
         Serial.print(s);
@@ -174,12 +175,12 @@ namespace csjc
         {
             // Source: Arduino's float data-types
             // The float data type has only 6-7 decimal digits of precision.
-            // NOTE: Since the floats printed are mostly less-than the value of one (<1.0)
-            //       than 7 decimal digits were used...
-            // https://www.arduino.cc/reference/en/language/variables/data-types/float/
+            // NOTE: Since the floats printed are mostly less-than the value
+            //       of one (<1.0) than 7 decimal digits were used...
+            // arduino.cc, Language Reference, Data Types: float
             //
             // Source: Arduino's String Object data-types (see note above...)
-            // https://www.arduino.cc/reference/en/language/variables/data-types/stringobject/
+            // arduino.cc, Language Reference, Data Types: String()
             //
             // To 7 decimal places
             Serial.print(String(q.Element(i), 3));

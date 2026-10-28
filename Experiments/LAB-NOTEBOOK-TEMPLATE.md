@@ -5,7 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Bench status:** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1), with the indicator LED on D12; all passed. Since v6.0.0 Step1_Joystick is a self test that reports PASS or FAIL, since v6.2.0 each test waits for Enter, and since v6.3.0 the program asks for Enter before Test 1 (bench test pending); Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, lines 21 and 22, 3000 ms control tick), Step4_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. The other labs and the math lessons are build checked and simulated, and their bench tests are pending. Since v5.0.0 a math lesson is selected with `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp`. Record the release tag of the code used in each entry. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
+**Bench status:** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1), with the indicator LED on D12, and again on 20261028 (release v6.7.0); all passed. Since v6.0.0 Step1_Joystick is a self test that reports PASS or FAIL, since v6.2.0 each test waits for Enter, and since v6.3.0 the program asks for Enter before Test 1 (bench test pending); Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, at the top of the program, 3000 ms control tick), Step4_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. The other labs and the math lessons are build checked and simulated, and their bench tests are pending. Since v5.0.0 a math lesson is selected with `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp`. Record the release tag of the code used in each entry. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -88,7 +88,7 @@ Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
 The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 
-### Joystick Setup: the Step1_Joystick self test (Article 1009)
+### Step1: the Step1_Joystick self test (Article 1009)
 
 Motor supply off. Press Enter at the start question, then copy the report from the serial monitor (v6.2.1: each test waits for Enter; any press during Tests 3 to 5 fails the self test; v6.3.0: the start question repeats every 3 s until Enter, and the report prints in aligned columns).
 

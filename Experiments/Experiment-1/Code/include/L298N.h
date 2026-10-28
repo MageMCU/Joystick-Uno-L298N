@@ -41,7 +41,8 @@ namespace csjc
         // Swap motors
         bitEN,
         // Motors A&B
-        bits_0000, // 4
+        // 4
+        bits_0000,
         bits_0001,
         bits_0010,
         bits_0011,
@@ -72,10 +73,14 @@ namespace csjc
 
         // Used for motors setup() which aligns the
         // correct left and right directions...
-        bool _bitRightIN_Flag; // Right Motor Direction
-        bool _bitLeftIN_Flag;  // Left Motor Direction
-        bool _bitPWM_Flag;     // Switch L298N Inputs
-        bool _bitEN_Flag;      // Swap Motors
+        // Right Motor Direction
+        bool _bitRightIN_Flag;
+        // Left Motor Direction
+        bool _bitLeftIN_Flag;
+        // Switch L298N Inputs
+        bool _bitPWM_Flag;
+        // Swap Motors
+        bool _bitEN_Flag;
 
         // Used for L298N Pins
         uint8_t _EN_A;
@@ -91,7 +96,8 @@ namespace csjc
 
         // Private Methods
         void _SetDirectionPins();
-        void _LeftSet1(); // Priority Left
+        // Priority Left
+        void _LeftSet1();
         void _LeftSet2();
         void _RightSet1();
         void _RightSet2();
@@ -206,13 +212,17 @@ namespace csjc
         // For my setup, bits 1010 was used...
 
         // Swap motors (Bit-3)
-        _bitEN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitEN, _bitsValue);
+        _bitEN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitEN, _bitsValue);
         // Reverse L298N Inputs (Bit-2)
-        _bitPWM_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitPWM, _bitsValue);
+        _bitPWM_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitPWM, _bitsValue);
         // Change the Direction Left Motor (Bit-1)
-        _bitLeftIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitLeftIN, _bitsValue);
+        _bitLeftIN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitLeftIN, _bitsValue);
         // Change the Direction Right Motor (Bit-0)
-        _bitRightIN_Flag = _bWise.IsBitNumberSetToBitsValue((int)BitsL298N::bitRightIN, _bitsValue);
+        _bitRightIN_Flag = _bWise.IsBitNumberSetToBitsValue(
+            (int)BitsL298N::bitRightIN, _bitsValue);
 
         // DEBUG
 #ifdef DEBUG_L298N
@@ -221,10 +231,13 @@ namespace csjc
     }
 
     // Used with a timer within loop()
-    void L298N::UpdateL298N(int outMapLeft, int outMapRight, bool SafetyMotorFlag = false)
+    void L298N::UpdateL298N(int outMapLeft, int outMapRight,
+                            bool SafetyMotorFlag = false)
     {
-        uint8_t enPinA; // enable pin of _pwmA (class channel A, not L298N ENA)
-        uint8_t enPinB; // enable pin of _pwmB (class channel B, not L298N ENB)
+        // enable pin of _pwmA (class channel A, not L298N ENA)
+        uint8_t enPinA;
+        // enable pin of _pwmB (class channel B, not L298N ENB)
+        uint8_t enPinB;
 
         if (_bitEN_Flag)
         {

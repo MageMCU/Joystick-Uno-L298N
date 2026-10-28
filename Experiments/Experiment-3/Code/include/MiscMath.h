@@ -80,7 +80,8 @@ namespace csjc
     }
 
     template <typename real>
-    void DirectionComponents(real angleRadian, real &x, real &y, real &z, Plane2D plane2D)
+    void DirectionComponents(real angleRadian, real &x, real &y, real &z,
+                             Plane2D plane2D)
     {
         Vector3<real> vector = DirectionVector(angleRadian, plane2D);
         x = vector.x();
@@ -100,20 +101,28 @@ namespace csjc
         switch (plane2D)
         {
         case XY:
-            x = a; // X
-            y = b; // Y
+            // X
+            x = a;
+            // Y
+            y = b;
             break;
         case XZ:
-            x = a; // X
-            z = b; // Z
+            // X
+            x = a;
+            // Z
+            z = b;
             break;
         case YZ:
-            y = a; // Y
-            z = b; // Z
+            // Y
+            y = a;
+            // Z
+            z = b;
             break;
         default:
-            x = a; // X
-            y = b; // Y
+            // X
+            x = a;
+            // Y
+            y = b;
             break;
         }
         Vector3<real> vector(x, y, z);

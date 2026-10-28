@@ -15,7 +15,7 @@ Project folder: open `Experiments/Experiment-3/Code` in Visual Studio Code, neve
 
 ## Notes for the bench
 
-- Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output. `button = Button(buttonPin, ledPin);` is on line 97 with the default `activeLow = true`, and lines 103 and 104 (`button.begin();` and `pinMode(buttonPin, INPUT);`, added in v3.2.0) turn the internal pull up of D2 off, as Step2_JUL does. The external 10 kOhm pull up from D2 to 5 V of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `Button(buttonPin, ledPin, false)` on line 97.
+- Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output. `button = Button(buttonPin, ledPin);` is on line 102 (97 up to v6.6.0) with the default `activeLow = true`, and lines 108 and 109 (103 and 104 up to v6.6.0; `button.begin();` and `pinMode(buttonPin, INPUT);`, added in v3.2.0) turn the internal pull up of D2 off, as Step2_JUL does. The external 10 kOhm pull up from D2 to 5 V of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `Button(buttonPin, ledPin, false)` on line 102.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

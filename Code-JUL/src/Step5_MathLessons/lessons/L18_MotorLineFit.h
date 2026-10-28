@@ -4,7 +4,8 @@
 //         (carpentersoftware.com)
 // File: L18_MotorLineFit.h
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L18_MotorLineFit, selected with LESSON 18 in Step5_MathLessons/main.cpp
+// Namespace: L18_MotorLineFit, selected with LESSON 18 in
+// Step5_MathLessons/main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 //
@@ -72,7 +73,8 @@ void prompt()
 {
     Serial.print(F("PWM "));
     Serial.print((int)pwm[step]);
-    Serial.println(F(": count revolutions in 10 s, type the count, press Enter"));
+    Serial.println(F( \
+        ": count revolutions in 10 s, type the count, press Enter"));
 }
 
 void finish()
@@ -141,13 +143,15 @@ void readEntry()
             if (!button.isButtonOn())
             {
                 entry = "";
-                Serial.println(F("Button OFF: count discarded; press button and re-enter"));
+                Serial.println(F( \
+                    "Button OFF: count discarded; press button and re-enter"));
                 prompt();
                 continue;
             }
             float revolutions = entry.toFloat();
             entry = "";
-            rpm[step] = revolutions * 6.0; // revolutions in 10 s to RPM
+            // revolutions in 10 s to RPM
+            rpm[step] = revolutions * 6.0;
             // v6.4.1: echo the count that was entered, then the RPM.
             Serial.print(F("Count: "));
             Serial.print(revolutions, 1);
@@ -174,8 +178,10 @@ void Setup()
     }
     Serial.println(F("Lesson 18: motor calibration"));
 
-    int buttonPin = 2; // UNO D2, joystick SW
-    int ledPin = 12;   // UNO D12, indicator LED (3 in the advanced wiring)
+    // UNO D2, joystick SW
+    int buttonPin = 2;
+    // UNO D12, indicator LED (3 in the advanced wiring)
+    int ledPin = 12;
     button = Button(buttonPin, ledPin);
     // FIXED 20261018 (v3.2.0): internal pull up off, as in Step2_JUL.
     // begin() configures D2 as INPUT_PULLUP; pinMode(INPUT) after it
@@ -212,7 +218,8 @@ void Loop()
         motors.UpdateL298N(command, command, true);
     }
 }
-} // namespace L18_MotorLineFit
+// namespace L18_MotorLineFit
+}
 
 // Number of topics of this lesson; main.cpp checks TOPIC against it.
 // One topic: the bench program of Setup() and Loop(); TOPIC 0 and 1
@@ -305,4 +312,5 @@ void Loop()
 //   UpdateL298N(command, command, true) drives both motors forward at
 //   the PWM value of the current step.
 // ---------------------------------------------------------------
-#endif // Lesson_L18_MotorLineFit_h
+// Lesson_L18_MotorLineFit_h
+#endif

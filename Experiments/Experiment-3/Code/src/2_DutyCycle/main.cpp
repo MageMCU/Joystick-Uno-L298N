@@ -49,9 +49,12 @@ Timer timerUpdate;
 const int dutyValue[] = {0, 64, 128, 191, 255};
 const int dutyPercent[] = {0, 25, 50, 75, 100};
 
-int level = 0;          // index into dutyValue[]
-int direction = 1;      // 1 forward, -1 reverse
-int newDirection = 1;   // requested by the f or r key
+// index into dutyValue[]
+int level = 0;
+// 1 forward, -1 reverse
+int direction = 1;
+// requested by the f or r key
+int newDirection = 1;
 unsigned long zeroStart = 0;
 bool holdingZero = false;
 const unsigned long ZERO_HOLD_mS = 300;
@@ -92,8 +95,10 @@ void setup()
     Serial.println("Serial 9600 baudrate");
 
     // Button & Button-LED
-    int buttonPin = 2; // UNO D2 (CHIP-PD2), joystick SW
-    int ledPin = 12;   // UNO D12 (CHIP-PB4), indicator LED
+    // UNO D2 (CHIP-PD2), joystick SW
+    int buttonPin = 2;
+    // UNO D12 (CHIP-PB4), indicator LED
+    int ledPin = 12;
     button = Button(buttonPin, ledPin);
     // FIXED 20261018 (v3.2.0): internal pull up off, as in Step2_JUL.
     // begin() configures D2 as INPUT_PULLUP; pinMode(INPUT) after it

@@ -77,7 +77,8 @@ void printData(const __FlashStringHelper *xLabel, const float *x,
     Serial.println();
 }
 
-void check(const __FlashStringHelper *label, float observed, float expected, float tolerance)
+void check(const __FlashStringHelper *label, float observed,
+           float expected, float tolerance)
 {
     bool pass = fabs(observed - expected) <= tolerance;
     if (!pass)
@@ -122,7 +123,8 @@ void LineFit_T01_ExactLine()
     printTitle(F("LineFit T01 Exact Line y = 2x + 1"));
     float x[] = {0, 1, 2, 3, 4};
     float y[] = {1, 3, 5, 7, 9};
-    printData(F("x:"), x, F("y:"), y, 5); // v6.4.1
+    // v6.4.1
+    printData(F("x:"), x, F("y:"), y, 5);
     LineFit2<float> fit;
     check(F("Fit() returns true"), fit.Fit(x, y, 5) ? 1 : 0, 1, 0);
     check(F("Slope"), fit.Slope(), 2.0, 0.0001);
@@ -158,7 +160,8 @@ void LineFit_T02_MotorCalibration()
     printTitle(F("LineFit T02 Motor Calibration (PWM to RPM)"));
     float pwm[] = {60, 100, 140, 180, 220};
     float rpm[] = {12, 38, 61, 88, 113};
-    printData(F("PWM:"), pwm, F("RPM:"), rpm, 5); // v6.4.1
+    // v6.4.1
+    printData(F("PWM:"), pwm, F("RPM:"), rpm, 5);
     LineFit2<float> fit;
     fit.Fit(pwm, rpm, 5);
     check(F("Slope (RPM per PWM step)"), fit.Slope(), 0.63, 0.0001);
@@ -194,9 +197,11 @@ void LineFit_T03_Degenerate()
     printTitle(F("LineFit T03 Degenerate Data"));
     float x[] = {3, 3, 3};
     float y[] = {1, 2, 3};
-    printData(F("x:"), x, F("y:"), y, 3); // v6.4.1
+    // v6.4.1
+    printData(F("x:"), x, F("y:"), y, 3);
     LineFit2<float> fit;
-    check(F("All x equal: Fit() returns false"), fit.Fit(x, y, 3) ? 1 : 0, 0, 0);
+    check(F("All x equal: Fit() returns false"),
+          fit.Fit(x, y, 3) ? 1 : 0, 0, 0);
     check(F("One point: Fit() returns false"), fit.Fit(x, y, 1) ? 1 : 0, 0, 0);
 }
 
@@ -225,6 +230,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L15_LineFit
+// namespace L15_LineFit
+}
 
-#endif // Lesson_L15_LineFit_h
+// Lesson_L15_LineFit_h
+#endif

@@ -75,7 +75,8 @@ void setup()
     }
     Serial.println("Serial 9600 baudrate");
 
-    const float points[6][2] = {{1, 0}, {1, 1}, {0, 1}, {-1, 0}, {0, -1}, {0, 0}};
+    const float points[6][2] = {{1, 0}, {1, 1}, {0, 1},
+                                {-1, 0}, {0, -1}, {0, 0}};
     for (int i = 0; i < 6; i++)
     {
         printVector(points[i][0], points[i][1]);
@@ -100,6 +101,7 @@ void loop()
         // (x A0, y A1; changed here 20261018, v3.2.0)
         int xDigital = analogRead(A0);
         int yDigital = analogRead(A1);
-        printVector(mapInput.Map((float)xDigital), mapInput.Map((float)yDigital));
+        printVector(mapInput.Map((float)xDigital),
+                    mapInput.Map((float)yDigital));
     }
 }

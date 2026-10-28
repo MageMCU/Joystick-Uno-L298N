@@ -111,12 +111,14 @@ void Bitwise_T06_ReverseBits()
 
     Bitwise<int> bw;
     int a = 0b1011001000000000;
-    Serial.print(F("int a = ")); // v6.4.1: label and value of a
+    // v6.4.1: label and value of a
+    Serial.print(F("int a = "));
     Serial.println(a);
     bw.SetBitsValue(a);
     Serial.println(bw.PrintBinaryBits());
     int b = ReverseBits(a);
-    Serial.print(F("int b = ReverseBits(a) = ")); // v6.4.1
+    // v6.4.1
+    Serial.print(F("int b = ReverseBits(a) = "));
     Serial.println(b);
     bw.SetBitsValue(b);
     Serial.println(bw.PrintBinaryBits());
@@ -170,7 +172,8 @@ void Bitwise_T05_GetBitsValue()
         if (testTimer.isTimer(500))
         {
             bw.SetBitsValue(cnt);
-            printSpecial("Bits Value: ", bw.GetBitsValue(), bw.PrintBinaryBits());
+            printSpecial("Bits Value: ", bw.GetBitsValue(),
+                         bw.PrintBinaryBits());
             // counter
             cnt--;
         }
@@ -399,6 +402,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L01_Bitwise
+// namespace L01_Bitwise
+}
 
-#endif // Lesson_L01_Bitwise_h
+// Lesson_L01_Bitwise_h
+#endif

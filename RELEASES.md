@@ -6,6 +6,35 @@
 
 ---
 
+## v6.7.0 (2026-10-27), Coding rules in every program; Article 1009 references
+
+Tag: v6.7.0, to be set by the author on the commit that holds this release and v6.6.0 (v6.6.0 was not committed on its own; download v6.7.0.b). Requested by the author on 20261027 after the review of Article 1009 revision 20261027b (Discrepancies.md, 221 to 226): the coding rules of Step2_JUL apply to the whole repository, without changing the code shown in the Article 1009 images. The layout of every program changes and the line numbers move, so the second number (MINOR) counts it; the author pushes MINOR releases.
+
+- **Coding rules (221).** Every `.cpp` and `.h` file of `Code-JUL` and of the five experiment projects: no line over 80 characters, strings included; every comment on its own line above its statement (125 comments moved); comment lines wrapped at spaces, no word split; a long string continued after a backslash, or cut into adjacent strings, one per line, each piece starting with `\n` when the string does. Long statements are split after a comma or an operator. Two `#error` messages are shorter so that they fit (Step3_Generator and Step5_MathLessons). Two web addresses in `Debug.h` are written as Arduino reference names. The commented out `m_ptrSorted` of `Statistics.h` moves to a comment above its statement. The experiment copies of the headers are identical again in Experiments 1 to 5.
+- **Not changed (221).** `Code-JUL/src/Step2_JUL/main.cpp` (Article 1009, Code-2a to Code-4, already within the rules) and every line of `L298N.h` shown in Article 1009, Image-4. `platformio.ini` keeps its layout, so `build_src_filter` stays on lines 31 to 37.
+- **Step3_Generator and Step4_Generated (222).** Step4_Generated writes its title as one statement over four lines and its joystick center line after a backslash; the comment beside X_CENTER and Y_CENTER moves above them. Step3_Generator prints that layout: a printed `Serial.println()` line over 80 characters continues after a backslash. The serial output of both programs is unchanged.
+- **Article 1009 references (223 to 225).** `L298N.h` cites Table-4 (the flags table; Table-3 before) and no longer names the author's Bits() value; Article 1009, Joystick Setup, becomes Article 1009, Step1, The Joystick Self Test, in the README files, `platformio.ini`, Step1_Joystick, the Experiment-2 card, and `LAB-NOTEBOOK-TEMPLATE.md`; the README tree cites Code-2a to Code-4; the README signal chain calls X_OFFSET and Y_OFFSET dead zones, not center offsets.
+- **Line numbers (226).** The lab cards cite the lines moved by this release: Experiment-3 (lines 102, 108, and 109), Experiment-4 (`L298N.h`, lines 237 to 290), Experiment-5 Lab 1 (lines 102 and 103), Experiment-6 (lesson 17, lines 144 and 145), Experiment-7 (lesson 18, lines 185, 191, and 192), Experiment-8 (lesson 19, lines 124 and 125). Their Step2_JUL line numbers stay as they were (219, with Article 1004).
+- **Documents.** `README.md` (Coding Rules, Status, tree, signal chain), `Code-JUL/README.md`, `Code-JUL/src/Step5_MathLessons/README.md`, `Motor-Movement-Checklist/ReadMe.md`, `Experiments.md`, lab cards 2 to 8, `LAB-NOTEBOOK-TEMPLATE.md`, `Discrepancies.md`.
+
+Verified 20261027 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra -std=gnu++11`, link time optimization): 155 builds (Step1_Joystick to Step4_Generated, Step2_JUL with its debug switches off, every lesson with every topic, and the 13 lab programs), no warnings. All but Step3_Generator build to the same Intel HEX as v6.6.0, so their behavior is unchanged; Step3_Generator grows from 13676 to 13846 bytes of flash. In simavr, Step3_Generator (answers Enter, y, y, y, 0000, y, p) prints the same monitor text as v6.6.0 up to the program (Article 1009, Code-6, unchanged) and then prints the shipped Step4_Generated line for line. Article 1009 images: Code-1, Code-2a to Code-6, and Image-4 are unchanged. Bench tested by the author on 2026-10-28 (v6.7.0.a): passed.
+
+Download v6.7.0.b (2026-10-28): the same code as v6.7.0.a (the same Intel HEX for all 155 builds); the documents record the bench test, the commit that holds v6.6.0 and v6.7.0, and the release tags (Discrepancies.md, 227).
+
+---
+
+## v6.6.0 (2026-10-27), Step2_JUL fits the article listings; line numbers replaced by names
+
+Tag: none. v6.6.0 was not committed on its own; it is committed and tagged with v6.7.0. Requested by the author with Article 1009 revision 20261027a (Discrepancies.md, 216 to 220). The program behavior is unchanged; the release is MINOR so that it is pushed and Article 1009 can cite it.
+
+- **Step2_JUL layout (216, 217).** Every line fits the 80 character cutoff of the Article 1009 listings: statements are 72 characters at most (78 in v6.5.0) and comments 76, so Code-2 to Code-4 show every line whole. Long strings are written as several strings, each starting with `\n` and closed before a backslash, which joins the next line to the statement; a backslash inside a string would print the indentation. Every comment is on its own line above its statement.
+- **Names instead of line numbers (218).** Comments and printed text name the Bits() line, the analogRead() lines, the six pin lines, the debug switches, X_OFFSET and Y_OFFSET, and the line `pinMode(buttonPin, INPUT)`, so a moved line no longer makes a citation wrong. Step3_Generator and the shipped Step4_Generated print the new names; `platformio.ini` names its settings (build_src_filter, build_flags) instead of its line numbers.
+- **Documents.** `README.md`, `Code-JUL/README.md`, `Code-JUL/include/claude/README.md`, `Code-JUL/src/Step5_MathLessons/README.md`, `Motor-Movement-Checklist/ReadMe.md`, `Discrepancies.md`. The lab cards keep their line numbers until Article 1004 is revised (219).
+
+Verified 20261027 (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`, link time optimization): Step2_JUL builds to the same Intel HEX as v6.5.0; Step1_Joystick, Step3_Generator, Step4_Generated, and lessons 17 and 20 build with no warnings. In simavr, Step3_Generator (answers Enter, y, y, y, 0000, y, p) prints the shipped Step4_Generated line for line. Not bench tested on its own; v6.7.0, which holds it, was bench tested by the author on 2026-10-28: passed.
+
+---
+
 ## v6.5.0 (2026-10-25), Step1 center warning; Simple Drive and Fast Drive
 
 Tag: v6.5.0, to be set by the author. Requested by the author after his review of v6.4.1.a with Article 1009 (Discrepancies.md, 210 to 215). A new feature (the Test 3 warning) that keeps the existing program names, so the second number (MINOR) counts it; the author pushes MINOR releases.

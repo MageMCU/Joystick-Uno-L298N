@@ -97,7 +97,8 @@ namespace csjc
         Matrix3x3<real> Inverse(bool *invertible = nullptr);
         Vector3<real> Cramer(Vector3<real> b);
         Vector3<real> Solve(Vector3<real> b);
-        Matrix3x3<real> Rotation(real xAngleRadian, real yAngleRadian, real zAngleRadian);
+        Matrix3x3<real> Rotation(real xAngleRadian, real yAngleRadian,
+                                 real zAngleRadian);
 
         // OPERATORS
         Matrix3x3<real> operator-();
@@ -284,7 +285,8 @@ namespace csjc
     Vector3<real> Matrix3x3<real>::Cramer(Vector3<real> b)
     {
         real dDet = Determinant();
-        Vector3<real> zero; // (0, 0, 0)
+        // (0, 0, 0)
+        Vector3<real> zero;
         if (dDet == (real)0)
             return zero;
         // indices start at zero....
@@ -333,7 +335,8 @@ namespace csjc
         // INCLUDE BOOLEAN OPTIONS for CW CCW
 
         // X
-        Matrix3x3<real> xM; // Identity
+        // Identity
+        Matrix3x3<real> xM;
         // 0 1 2     1   0   0
         // 3 4 5  =  0  cs -sn
         // 6 7 8     0  sn  cs
@@ -345,7 +348,8 @@ namespace csjc
         xM.SetElement(8, cs);
 
         // Y
-        Matrix3x3<real> yM; // Identity
+        // Identity
+        Matrix3x3<real> yM;
         // 0 1 2     cs   0   sn
         // 3 4 5  =   0   1   0
         // 6 7 8    -sn   0   cs
@@ -357,7 +361,8 @@ namespace csjc
         yM.SetElement(8, cs);
 
         // Z
-        Matrix3x3<real> zM; // Identity
+        // Identity
+        Matrix3x3<real> zM;
         // 0 1 2     cs -sn   0
         // 3 4 5  =  sn  cs   0
         // 6 7 8     0    0   1

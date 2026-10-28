@@ -21,7 +21,7 @@
 //
 // INSTRUCTIONS
 //   1. In platformio.ini, select Step5_MathLessons in
-//        build_src_filter, lines 31 to 37 (one folder per line since
+//        build_src_filter (one folder per line since
 //        v6.4.0): +<Step5_MathLessons/>, and - before the other four
 //        folders.
 //   2. Below, set LESSON to the number of ONE lesson, 1 to 20.
@@ -195,7 +195,7 @@
 
 // Each lesson file defines LESSON_TOPICS, its number of topics.
 #if TOPIC < 0 || TOPIC > LESSON_TOPICS
-#error "Set TOPIC to 0 or to a topic number of this lesson (LESSON_TOPICS in the lesson file)"
+#error "Set TOPIC to 0 or to a topic of this lesson (its LESSON_TOPICS)"
 #endif
 
 // v6.4.1: the program title, printed before the lesson starts, names
@@ -222,9 +222,13 @@ void setup()
     }
     Serial.println();
     Serial.println(F("................................................"));
-    Serial.println(F("Step5_MathLessons: lesson " STEP5_TEXT(LESSON) " (" STEP5_TEXT(LESSON_NS) "), topic " STEP5_TEXT(TOPIC) " (0: every topic)"));
+    Serial.println(F( \
+        "Step5_MathLessons: lesson " STEP5_TEXT(LESSON) \
+        " (" STEP5_TEXT(LESSON_NS) "), topic " STEP5_TEXT(TOPIC) \
+        " (0: every topic)"));
     Serial.println(F("Selected in platformio.ini: +<Step5_MathLessons/>"));
-    Serial.flush(); // send the title before the lesson calls Serial.begin() again
+    // send the title before the lesson calls Serial.begin() again
+    Serial.flush();
     LESSON_NS::Setup();
 }
 

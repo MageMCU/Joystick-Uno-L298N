@@ -193,19 +193,27 @@ namespace csjc
         // Configuration
         int m_buttonPin;
         int m_ledPin;
-        bool m_activeLow; // true: pressed reads LOW; false: pressed reads HIGH
-        bool m_latching;  // true: press toggles; false: on only while held
+        // true: pressed reads LOW; false: pressed reads HIGH
+        bool m_activeLow;
+        // true: press toggles; false: on only while held
+        bool m_latching;
         unsigned long m_debounceMs;
 
         // Debounce state
-        int m_lastReading;              // raw pin level at previous update
-        int m_stableState;              // debounced pin level
-        unsigned long m_lastChangeTime; // millis() when the raw level last changed
-        unsigned long m_stableSince;    // millis() when the debounced level last changed
+        // raw pin level at previous update
+        int m_lastReading;
+        // debounced pin level
+        int m_stableState;
+        // millis() when the raw level last changed
+        unsigned long m_lastChangeTime;
+        // millis() when the debounced level last changed
+        unsigned long m_stableSince;
 
         // Outputs
-        bool m_latched;      // the on/off flag reported by isButtonOn()
-        bool m_pressedEvent; // set on an accepted press, cleared by wasPressed()
+        // the on/off flag reported by isButtonOn()
+        bool m_latched;
+        // set on an accepted press, cleared by wasPressed()
+        bool m_pressedEvent;
         bool m_begun;
 
         // Pin level that means "pressed" for the configured wiring.
@@ -401,7 +409,8 @@ namespace csjc
             }
 
             // The level has held for the full window: accept it.
-            if ((now - m_lastChangeTime) >= m_debounceMs && reading != m_stableState)
+            if ((now - m_lastChangeTime) >= m_debounceMs &&
+                reading != m_stableState)
             {
                 m_stableState = reading;
                 m_stableSince = now;

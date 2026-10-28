@@ -28,9 +28,9 @@ void loop()
     Serial.println("LED HIGH");
     delay(1000);
 
-    digitalWrite(LED_PIN, LOW); 
+    digitalWrite(LED_PIN, LOW);
     Serial.println("LED LOW");
-    delay(1000); 
+    delay(1000);
 
     Serial.println("-----------");
 }

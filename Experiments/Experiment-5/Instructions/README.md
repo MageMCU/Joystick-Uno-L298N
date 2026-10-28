@@ -16,7 +16,7 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
 
 ## Notes for the bench
 
-- Lab 1: leave the two `analogRead()` lines of `loop()` as shipped, lines 101 and 102, x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed here in v3.2.0; up to v3.1.2 this lab read x on A1 and y on A0; see Discrepancies.md, 68). `setup()` first sets D5 to D10 as outputs and LOW; upload and open the serial monitor before the bench supply is applied, and remove the supply before any upload or reset.
+- Lab 1: leave the two `analogRead()` lines of `loop()` as shipped, lines 102 and 103 (101 and 102 up to v6.6.0), x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed here in v3.2.0; up to v3.1.2 this lab read x on A1 and y on A0; see Discrepancies.md, 68). `setup()` first sets D5 to D10 as outputs and LOW; upload and open the serial monitor before the bench supply is applied, and remove the supply before any upload or reset.
 - Lab 3 uses the Code-JUL folder with Step2_JUL selected in platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick, which checks the joystick first; in `build_src_filter`, lines 31 to 37, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other four folders the sign `-`):
 
   ```

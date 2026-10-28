@@ -4,8 +4,10 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L14_Quaternion, selected with LESSON 14 in Step5_MathLessons/main.cpp
-// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestQuaternion.h (merged 20261008)
+// Namespace: L14_Quaternion, selected with LESSON 14 in
+// Step5_MathLessons/main.cpp
+// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestQuaternion.h (merged
+// 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //
@@ -79,12 +81,15 @@ void Quaternion_T09_ToAngleAxis()
     float angle;
     Vector3<float> axis(1, 0, 0);
     // Constant
-    Quaternion<float> c(axis, radian); // Constant set to 2-degrees
+    // Constant set to 2-degrees
+    Quaternion<float> c(axis, radian);
     // Multiplicative
     Quaternion<float> q(axis, 0.0);
     // v6.4.1: print the inputs and name the columns.
     printVector3(F("axis"), axis);
-    Serial.println(F("c: 2 degrees about the axis; each line: step in degrees, w,x,y,z, angle"));
+    Serial.println(F( \
+        "c: 2 degrees about the axis; each line: step in degrees, " \
+        "w,x,y,z, angle"));
 
     // Game Loop 1 with first quaternion multiplication
     int iAngle = 0;
@@ -98,7 +103,8 @@ void Quaternion_T09_ToAngleAxis()
         // Quaternion Multiplication --- FIRST method
         q = q * c;
         // Counter
-        iAngle += 2; // --------------------- Constant set to 2-degrees
+        // --------------------- Constant set to 2-degrees
+        iAngle += 2;
     } while (iAngle < 360);
 
     // v6.4.1: the axis read back out of a quaternion, the second half
@@ -212,7 +218,8 @@ void Quaternion_T07_Inverse()
     Vector3<float> axis(1, 1, 1);
     printVector3("axis(1, 1, 1)", axis);
     Quaternion<float> q(axis, angleRadian);
-    printQuaternion(F("q(axis, 30 degrees) "), q); // v6.4.1: angle in the label
+    // v6.4.1: angle in the label
+    printQuaternion(F("q(axis, 30 degrees) "), q);
 
     Quaternion<float> qI = q.Inverse();
     printQuaternion("qI = q.Inverse(): ", qI);
@@ -348,14 +355,16 @@ void Quaternion_T02_NormSquared()
     Quaternion<float> q(-1, -2, -3, -4);
     printQuaternion("q: ", q);
     q = q.UnitQuaternion();
-    printQuaternion(F("q = q.UnitQuaternion(): "), q); // v6.4.1: label
+    // v6.4.1: label
+    printQuaternion(F("q = q.UnitQuaternion(): "), q);
 
     float n = q.NormSquared();
     Serial.print("n = q.NormSquared(): ");
     Serial.println(String(n, 4));
 
     bool flag = q.NormDeviation(n);
-    Serial.print(F("Norm Deviation (norm not 1): ")); // v6.4.1: label
+    // v6.4.1: label
+    Serial.print(F("Norm Deviation (norm not 1): "));
     if (flag) Serial.println("TRUE");
     else Serial.println("FALSE");
 }
@@ -495,6 +504,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L14_Quaternion
+// namespace L14_Quaternion
+}
 
-#endif // Lesson_L14_Quaternion_h
+// Lesson_L14_Quaternion_h
+#endif

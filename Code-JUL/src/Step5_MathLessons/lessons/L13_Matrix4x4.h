@@ -4,7 +4,8 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L13_Matrix4x4, selected with LESSON 13 in Step5_MathLessons/main.cpp
+// Namespace: L13_Matrix4x4, selected with LESSON 13 in
+// Step5_MathLessons/main.cpp
 // Origin: MageMCU/Numerics, Algebra/src/TESTS/TestMatrix4x4.h (merged 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
@@ -186,6 +187,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L13_Matrix4x4
+// namespace L13_Matrix4x4
+}
 
-#endif // Lesson_L13_Matrix4x4_h
+// Lesson_L13_Matrix4x4_h
+#endif

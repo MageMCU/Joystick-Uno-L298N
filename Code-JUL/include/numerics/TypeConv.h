@@ -44,7 +44,8 @@ namespace csjc
     class TypeConv
     {
     private:
-        // REVIEW 20261008: the shifts and masks below give the same result on any
+        // REVIEW 20261008: the shifts and masks below give the same result on
+        // any
         // processor; byte order in memory (the AVR is little endian) does not
         // affect them. The comment below refers to bit numbering.
         // AVR-LSB Word Order bit15, bit14, ... , bit1, bit0.
@@ -78,8 +79,10 @@ namespace csjc
 
     public:
         // Constructor
-        // REVIEW 20261008: the default constructor leaves every member uninitialized.
-        // A global TypeConv starts at zero; a local one holds unpredictable values
+        // REVIEW 20261008: the default constructor leaves every member
+        // uninitialized.
+        // A global TypeConv starts at zero; a local one holds unpredictable
+        // values
         // until a conversion has been made (for example BytesToWord() called
         // before WordTo2Bytes()).
         TypeConv() = default;
@@ -103,7 +106,8 @@ namespace csjc
         uint8_t GetByte2();
         uint8_t GetByte1();
         uint8_t GetByte0();
-        // REVIEW 20261008: identical to DWordTo4Bytes(); the two differ only in the
+        // REVIEW 20261008: identical to DWordTo4Bytes(); the two differ only in
+        // the
         // capital letter.
         void dWordTo4Bytes(uint32_t dWord);
     };
@@ -241,7 +245,8 @@ namespace csjc
 
     // The same for four bytes: each byte is widened, shifted to its place
     // (24, 16, 8, 0), and joined with OR.
-    uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2, uint8_t b1, uint8_t b0)
+    uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2,
+                                     uint8_t b1, uint8_t b0)
     {
         return ((((uint32_t)b3 << 24) & (uint32_t)0xff000000) |
                 (((uint32_t)b2 << 16) & (uint32_t)0x00ff0000) |

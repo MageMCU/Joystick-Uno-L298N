@@ -17,7 +17,8 @@
 //
 
 // Statistics<real>: mean, sample standard deviation, and median of an array
-// owned by the caller. Merged from MageMCU/Numerics (Algebra/include, 20241202).
+// owned by the caller. Merged from MageMCU/Numerics (Algebra/include,
+// 20241202).
 
 #ifndef Numerics_Statistics_h
 #define Numerics_Statistics_h
@@ -342,14 +343,19 @@ namespace csjc
         {
             // ODD: math includes the zero index
             // index = ((m_tuplesSize + 1) / 2) - 1;
-            index = ((m_tuplesSize) / 2); // Same as above...
-            median = /*m_ptrSorted*/ m_ptrTuplesX[index];
+            // Same as above...
+            index = ((m_tuplesSize) / 2);
+            // m_ptrSorted was used here in place of m_ptrTuplesX
+            median = m_ptrTuplesX[index];
         }
         else
         {
             // EVEN: math includes the zero index
-            index = (m_tuplesSize / 2) - 1; // confirmed jc
-            median = (/*m_ptrSorted*/ m_ptrTuplesX[index] + /*m_ptrSorted*/ m_ptrTuplesX[index + 1]) * (real)0.5;
+            // confirmed jc
+            index = (m_tuplesSize / 2) - 1;
+            // m_ptrSorted was used here in place of m_ptrTuplesX
+            median = (m_ptrTuplesX[index] + m_ptrTuplesX[index + 1]) *
+                     (real)0.5;
         }
 
         m_median = median;

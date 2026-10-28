@@ -2,12 +2,12 @@
 
 Math lessons, namespace **csjc** ([Carpenter Software](https://carpentersoftware.com), Jesse Carpenter).
 
-This folder holds the test programs of the MageMCU **Numerics** repository (Algebra, last updated 20241202), merged into Joystick-Uno-L298N on 20261008 as lessons 01 to 14, plus lessons 15 and 16, which use code adapted from David Eberly's Geometric Tools Engine (see Credits), and the hardware lessons 17 to 19 of Article 1004, Experiments 6 to 8, and lesson 20 (v6.1.0), the full range and two segment maps on the live joystick, which follows the Step1_Joystick self test (Article 1009, Joystick Setup). The lessons use the math headers in `Code-JUL/include/numerics/` and the print helpers in `Code-JUL/include/Debug.h`.
+This folder holds the test programs of the MageMCU **Numerics** repository (Algebra, last updated 20241202), merged into Joystick-Uno-L298N on 20261008 as lessons 01 to 14, plus lessons 15 and 16, which use code adapted from David Eberly's Geometric Tools Engine (see Credits), and the hardware lessons 17 to 19 of Article 1004, Experiments 6 to 8, and lesson 20 (v6.1.0), the full range and two segment maps on the live joystick, which follows the Step1_Joystick self test (Article 1009, Step1, The Joystick Self Test). The lessons use the math headers in `Code-JUL/include/numerics/` and the print helpers in `Code-JUL/include/Debug.h`.
 
 ## Quick Use (PlatformIO)
 
 1. Open the folder `Code-JUL/` in VS Code (not the repository root).
-2. In `platformio.ini`, select Step5_MathLessons with `build_src_filter`, lines 31 to 37 (one folder per line since v6.4.0):
+2. In `platformio.ini`, select Step5_MathLessons with `build_src_filter` (one folder per line since v6.4.0):
    ```
    build_src_filter =
        +<*>
@@ -50,7 +50,7 @@ Example: `Vector3_T16_Copy()`, the 16th topic of lesson 9, prints the title `Vec
 #endif
 ```
 
-The preprocessor keeps the call when TOPIC is 0 or 16 and drops it otherwise. The linker leaves out every function that is never called, so one topic uses less flash and RAM than the whole lesson (the table in the comments of `main.cpp`). Each lesson defines `LESSON_TOPICS`, its number of topics, and `main.cpp` stops the build with `#error` when TOPIC is below 0 or above that number. Lessons 17 and 18 are one topic each, the bench program of `Setup()` and `Loop()`; TOPIC 0 and 1 both run it, and their `LESSON_TOPICS` is at the end of the file so that the line numbers cited by the lab cards do not change. The output lines added in v6.4.1 sit above the cited lines of lessons 17 and 18, so the lab cards cite the new numbers (lesson 17, lines 139 and 140; lesson 18, lines 179, 185, and 186). Lesson 19 has two topics: `JoystickFrame_T01_RotationChecks()` (Part 1) and `JoystickFrame_T02_LiveJoystick()` (Part 2, called from `Loop()`).
+The preprocessor keeps the call when TOPIC is 0 or 16 and drops it otherwise. The linker leaves out every function that is never called, so one topic uses less flash and RAM than the whole lesson (the table in the comments of `main.cpp`). Each lesson defines `LESSON_TOPICS`, its number of topics, and `main.cpp` stops the build with `#error` when TOPIC is below 0 or above that number. Lessons 17 and 18 are one topic each, the bench program of `Setup()` and `Loop()`; TOPIC 0 and 1 both run it, and their `LESSON_TOPICS` is at the end of the file so that the line numbers cited by the lab cards do not change. The output lines added in v6.4.1 sit above the cited lines of lessons 17 and 18, so the lab cards cite the new numbers (lesson 17, lines 139 and 140; lesson 18, lines 179, 185, and 186). The coding rules of v6.7.0 moved them again: lesson 17, lines 144 and 145; lesson 18, lines 185, 191, and 192; lesson 19, lines 124 and 125. Lesson 19 has two topics: `JoystickFrame_T01_RotationChecks()` (Part 1) and `JoystickFrame_T02_LiveJoystick()` (Part 2, called from `Loop()`).
 
 The renamed functions of v5.1.0 (old name, new name) are listed in `RELEASES.md`, v5.1.0.
 

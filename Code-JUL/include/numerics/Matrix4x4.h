@@ -230,7 +230,8 @@ namespace csjc
     // each element is a sum of products of two quaternion components.
     // Example: axis (0, 0, 1) and 90 degrees maps (1, 0, 0) to (0, 1, 0).
     template <typename real>
-    Matrix4x4<real> Matrix4x4<real>::Rotation(Vector3<real> axis, real angleRadian)
+    Matrix4x4<real> Matrix4x4<real>::Rotation(Vector3<real> axis,
+                                              real angleRadian)
     {
         real tuples[16];
         //  0  1  2  3

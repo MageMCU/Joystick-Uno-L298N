@@ -64,7 +64,8 @@ void MiscMath_T06_AbsoluteValue()
     printTitle(F("MiscMath T06 Absolute Value"));
 
     float value = -4.9384;
-    Serial.print(F("value = ")); // v6.4.1: print the input
+    // v6.4.1: print the input
+    Serial.print(F("value = "));
     Serial.println(value, 4);
     value = absT<float>(value);
     Debug<String>("absT<float>(-4.9384): ", String(value, 6));
@@ -94,7 +95,9 @@ void MiscMath_T05_DirectionVector()
 {
     printTitle(F("MiscMath T05 Direction Vector"));
     // v6.4.1: name the columns: the input angle, the vector, the result.
-    Serial.println(F("deg: angle in degrees; dv = DirectionVector(rad, XZ); result: AngleRadian(x, z) in radians"));
+    Serial.println(F( \
+        "deg: angle in degrees; dv = DirectionVector(rad, XZ); result: " \
+        "AngleRadian(x, z) in radians"));
 
     float rad;
     Vector3<float> vector;
@@ -136,7 +139,9 @@ void MiscMath_T04_DirectionComponents()
 {
     printTitle(F("MiscMath T04 Direction Components"));
     // v6.4.1: name the columns: the input angle, the vector, the result.
-    Serial.println(F("deg: angle in degrees; dv = DirectionComponents(rad, x, y, z, XY); result: AngleRadian(x, y) in radians"));
+    Serial.println(F( \
+        "deg: angle in degrees; dv = DirectionComponents(rad, x, y, z, " \
+        "XY); result: AngleRadian(x, y) in radians"));
 
     float x;
     float y;
@@ -181,7 +186,9 @@ void MiscMath_T03_Angle2Radian()
 {
     printTitle(F("MiscMath T03 Angle2Radian"));
     // v6.4.1: name the columns: the input angle, the vector, the result.
-    Serial.println(F("deg: angle in degrees; v = (cos, sin); result: Angle2Radian(x, y) in radians"));
+    Serial.println(F( \
+        "deg: angle in degrees; v = (cos, sin); result: Angle2Radian(x, " \
+        "y) in radians"));
     float x;
     float y;
     float rad;
@@ -226,7 +233,9 @@ void MiscMath_T02_AngleRadian()
 {
     printTitle(F("MiscMath T02 AngleRadian"));
     // v6.4.1: name the columns: the input angle, the vector, the result.
-    Serial.println(F("deg: angle in degrees; v = (cos, sin); result: AngleRadian(x, y) in radians"));
+    Serial.println(F( \
+        "deg: angle in degrees; v = (cos, sin); result: AngleRadian(x, y) " \
+        "in radians"));
     float x;
     float y;
     float rad;
@@ -277,7 +286,8 @@ void MiscMath_T01_Map()
     float fahrenheit = 77;
     Serial.print("fahrenheit: ");
     Serial.println(fahrenheit);
-    float celcius = Map<float>(fahrenheit, (float)32, (float)212, (float)0, (float)100);
+    float celcius = Map<float>(fahrenheit, (float)32, (float)212,
+                               (float)0, (float)100);
     Serial.print("celcius = Map<float>(fahrenheit, 32, 212, 0, 100): ");
     Serial.println(celcius);
 
@@ -285,7 +295,8 @@ void MiscMath_T01_Map()
     celcius = 25;
     Serial.print("celcius: ");
     Serial.println(celcius);
-    fahrenheit = Map<float>(celcius, (float)0, (float)100, (float)32, (float)212);
+    fahrenheit = Map<float>(celcius, (float)0, (float)100,
+                            (float)32, (float)212);
     Serial.print("fahrenheit = Map<float>(celcius, 0, 100, 32, 212): ");
     Serial.println(fahrenheit);
 }
@@ -321,6 +332,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L04_MiscMath
+// namespace L04_MiscMath
+}
 
-#endif // Lesson_L04_MiscMath_h
+// Lesson_L04_MiscMath_h
+#endif

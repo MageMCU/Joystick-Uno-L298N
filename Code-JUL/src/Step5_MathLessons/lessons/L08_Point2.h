@@ -163,8 +163,9 @@ void Point2_T01_Constructor()
     float array[] = {3, 4};
     Point2<float> p3(array);
     printPoint2("p3(array) =", p3);
-    
-    printSubTitle(F("Vector2<float> v(1, 2);")); // v6.4.1: the name is v (it read v1)
+
+    // v6.4.1: the name is v (it read v1)
+    printSubTitle(F("Vector2<float> v(1, 2);"));
     Vector2<float> v(1, 2);
     printVector2("v(1, 2) =", v);
     Point2<float> p4(v);
@@ -212,6 +213,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L08_Point2
+// namespace L08_Point2
+}
 
-#endif // Lesson_L08_Point2_h
+// Lesson_L08_Point2_h
+#endif

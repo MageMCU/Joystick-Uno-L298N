@@ -4,8 +4,10 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L06_Statistics, selected with LESSON 6 in Step5_MathLessons/main.cpp
-// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestStatistics.h (merged 20261008)
+// Namespace: L06_Statistics, selected with LESSON 6 in
+// Step5_MathLessons/main.cpp
+// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestStatistics.h (merged
+// 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //
@@ -68,12 +70,14 @@ void Statistics_T06_Queue100()
 {
     printTitle(F("Statistics T06 Queue of 100 values"));
 
-    const int size = 100; // const: fixed size array, not a variable length array (20261008)
+    // const: fixed size array, not a variable length array (20261008)
+    const int size = 100;
     float tuples[size];
     Statistics<float> stats = Statistics<float>(tuples, size);
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
     // v6.4.1: print the interval and the number of values.
-    Serial.println(F("RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
+    Serial.println(F( \
+        "RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
 
     int cnt = 0;
     while (cnt < size)
@@ -127,13 +131,15 @@ void Statistics_T05_QueueReset()
 
     float tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5};
     // v6.4.1: the starting values, replaced one at a time by Queue().
-    Serial.println(F("tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5}"));
+    Serial.println(F( \
+        "tuples[]{3.2, 5.3, 7.0, 2.2, 9.8, 4.6, 0.5, 4.5, 7.4, 6.5}"));
     int size = 10;
 
     Statistics<float> stats = Statistics<float>(tuples, size);
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
     // v6.4.1: print the interval and the number of values.
-    Serial.println(F("RandomNumber<float>(0, 10): 10 values, 0 up to (not including) 10"));
+    Serial.println(F( \
+        "RandomNumber<float>(0, 10): 10 values, 0 up to (not including) 10"));
     float randomNum;
 
     // randomNumber.Random()
@@ -193,7 +199,9 @@ void Statistics_T04_Median()
     int size = 200;
     RandomNumber<float> rnd = RandomNumber<float>(-1.9, 2.3);
     // v6.4.1: print the interval and the number of values.
-    Serial.println(F("RandomNumber<float>(-1.9, 2.3): 200 values, -1.9 up to (not including) 2.3"));
+    Serial.println(F( \
+        "RandomNumber<float>(-1.9, 2.3): 200 values, -1.9 up to (not " \
+        "including) 2.3"));
 
     for (int i = 0; i < size; i++)
     {
@@ -409,6 +417,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L06_Statistics
+// namespace L06_Statistics
+}
 
-#endif // Lesson_L06_Statistics_h
+// Lesson_L06_Statistics_h
+#endif

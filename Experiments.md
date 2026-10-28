@@ -2,6 +2,11 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v6.7.0 (20261027)
+
+- **Coding rules.** The lab programs and their headers follow the coding rules of Step2_JUL: no line over 80 characters, every comment on its own line above its statement (see `README.md`, Coding Rules). The 13 lab programs build to the same Intel HEX as in v6.6.0.
+- **Cited lines.** Experiment-3, lines 102, 108, and 109; Experiment-4, `L298N.h`, lines 237 to 290; Experiment-5 Lab 1, lines 102 and 103; Experiment-6, lesson 17, lines 144 and 145; Experiment-7, lesson 18, lines 185, 191, and 192; Experiment-8, lesson 19, lines 124 and 125. The Step2_JUL line numbers of the cards are revised with Article 1004.
+
 ## Changes in Release v6.4.1 (20261025)
 
 - **Program titles.** Every step prints its name first, after a blank line and a dotted line, with the `build_src_filter` entry that selects it, for example `Step2_JUL: the diagnostic program (L298N Setup)` and `Selected in platformio.ini: +<Step2_JUL/>`. Step5_MathLessons also names the lesson and the topic. A wrong name in the serial monitor means `platformio.ini` still selects another program. Step2_JUL prints its title only with a debug switch on, as shipped for Experiment-2 Lab 3 and Experiment-5 Lab 3, and Step4_Generated only with `DEBUG_GENERATED`; no cited line of Step1_Joystick or Step2_JUL moves.

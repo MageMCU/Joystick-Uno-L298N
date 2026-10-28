@@ -4,8 +4,10 @@
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL/src/Step5_MathLessons/lessons
-// Namespace: L05_RandomNumber, selected with LESSON 5 in Step5_MathLessons/main.cpp
-// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestRandomNumber.h (merged 20261008)
+// Namespace: L05_RandomNumber, selected with LESSON 5 in
+// Step5_MathLessons/main.cpp
+// Origin: MageMCU/Numerics, Algebra/src/TESTS/TestRandomNumber.h (merged
+// 20261008)
 //
 // By Jesse Carpenter (carpentersoftware.com)
 //
@@ -69,7 +71,8 @@ void RandomNumber_T01_Random()
 
     RandomNumber<float> randomNumber = RandomNumber<float>((float)0, (float)10);
     // v6.4.1: print the interval and the number of values.
-    Serial.println(F("RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
+    Serial.println(F( \
+        "RandomNumber<float>(0, 10): 100 values, 0 up to (not including) 10"));
 
     int cnt = 0;
     while (cnt < 100)
@@ -96,6 +99,8 @@ void Setup()
 void Loop()
 {
 }
-} // namespace L05_RandomNumber
+// namespace L05_RandomNumber
+}
 
-#endif // Lesson_L05_RandomNumber_h
+// Lesson_L05_RandomNumber_h
+#endif

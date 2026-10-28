@@ -46,7 +46,8 @@ namespace csjc
     {
     private:
         // MEMBERS
-        // REVIEW 20261008: m_size always holds 3 and costs 2 bytes per vector; Vector2.h
+        // REVIEW 20261008: m_size always holds 3 and costs 2 bytes per vector;
+        // Vector2.h
         // has already removed its m_size.
         int m_size;
         real m_x;

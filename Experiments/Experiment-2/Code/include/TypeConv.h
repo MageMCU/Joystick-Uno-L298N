@@ -202,7 +202,8 @@ namespace csjc
         return ((((uint16_t)hi << 8) & (uint16_t)0xff00) | (uint16_t)lo);
     }
 
-    uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2, uint8_t b1, uint8_t b0)
+    uint32_t TypeConv::b_fGlue4Bytes(uint8_t b3, uint8_t b2,
+                                     uint8_t b1, uint8_t b0)
     {
         return ((((uint32_t)b3 << 24) & (uint32_t)0xff000000) |
                 (((uint32_t)b2 << 16) & (uint32_t)0x00ff0000) |
