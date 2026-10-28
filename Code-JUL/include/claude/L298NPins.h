@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L298NPins.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Added 20261017 for Step3_Generator.
 //
 // FOLDER include/claude

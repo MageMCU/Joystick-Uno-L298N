@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   LineFit2.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // CREDIT: the algorithm is by David Eberly, Geometric Tools
 // (https://www.geometrictools.com), from the Geometric Tools Engine file
 // GTE/Mathematics/ApprHeightLine2.h. His notice follows, as the Boost
@@ -192,4 +197,5 @@ namespace csjc
     };
 }
 
-#endif /* Numerics_LineFit2_h */
+// Numerics_LineFit2_h
+#endif

@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Matrix3x3.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Matrix3x3<real>: 3 x 3 matrix, row major (index = row * 3 + col).
 // Verified on a desktop 20261008: Determinant, Adjoint, Inverse, Cramer, and

@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   MiscMath.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // MiscMath.h: function templates (Square, angle functions, direction vectors,
 // Map, absT) and the Debug() serial print helpers.
@@ -251,4 +256,5 @@ namespace csjc
     }
 }
 
-#endif /* Numerics_Misc_h */
+// Numerics_Misc_h
+#endif

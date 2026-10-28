@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Matrix2x2.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Matrix2x2<real>: 2 x 2 matrix, row major (index = row * 2 + col).
 // Verified on a desktop 20261008: Determinant, Inverse, Solve, Rotation,

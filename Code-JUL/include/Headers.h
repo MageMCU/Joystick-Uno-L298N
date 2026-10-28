@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Headers.h last changed: 2026-10-08  v2.3.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 #ifndef Headers_h
 #define Headers_h

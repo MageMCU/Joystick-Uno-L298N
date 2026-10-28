@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   2_Joystick/main.cpp last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-5, Lab 2: Joystick.h, test vectors.
 // Uno and USB cable only.
 //

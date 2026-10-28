@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   2_TypeConv/main.cpp last changed: 2026-10-08  v2.3.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-4, Lab 2: TypeConv.h, bytes and words.
 // Uno and USB cable only.
 //

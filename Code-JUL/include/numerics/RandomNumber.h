@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   RandomNumber.h last changed: 2026-10-22  v6.3.1
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // RandomNumber<real>: random real numbers between a minimum and a maximum.
 // Merged from MageMCU/Numerics (Algebra/include, 20241202).

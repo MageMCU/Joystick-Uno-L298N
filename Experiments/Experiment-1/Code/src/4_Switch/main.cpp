@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   4_Switch/main.cpp last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-1, Lab 4: Switch.h and contact bounce.
 // Wiring: the circuit of Lab 3, unchanged. Push button from D2 to 5 V,
 // 10 kOhm pull-down resistor from D2 to GND, indicator LED on D3

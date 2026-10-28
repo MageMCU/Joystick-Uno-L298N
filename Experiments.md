@@ -2,6 +2,11 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v6.8.0 (20261028)
+
+- **Line names.** The lab cards name the lines they cite (for example the Button line of `setup()`, the `analogRead()` lines, the debug switch lines of Step2_JUL) instead of giving line numbers, so a moved line no longer makes a card wrong. This closes Discrepancies.md, 219.
+- **RELEASE block.** Every lab program and header copy ends its comment header with a RELEASE block (see `README.md`, Coding Rules). Experiment-1, Labs 1 to 3, received the comment header they lacked. The `#endif` lines of `MiscMath.h` and `Vector3.h` carry their comment on the line above. The 13 lab programs build to the same Intel HEX as v6.7.0.
+
 ## Changes in Release v6.7.0 (20261027)
 
 - **Coding rules.** The lab programs and their headers follow the coding rules of Step2_JUL: no line over 80 characters, every comment on its own line above its statement (see `README.md`, Coding Rules). The 13 lab programs build to the same Intel HEX as in v6.6.0.

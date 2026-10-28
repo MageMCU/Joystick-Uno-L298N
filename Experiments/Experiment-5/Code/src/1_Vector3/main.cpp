@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   1_Vector3/main.cpp last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-5, Lab 1: Vector3.h and the joystick vector.
 //
 // Wiring: the drive as wired since Experiment-3; power the joystick as in

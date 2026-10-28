@@ -9,6 +9,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   JoystickCenter.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // The joystick center (added 20261025, v6.4.0)
 //
 // WHY THIS FILE WAS ADDED
@@ -49,6 +54,11 @@
 // Allowed range: 461 to 561 (Step1_Joystick, Test 3 fails a center
 // more than 50 counts from 511 and warns above 25 counts: a new
 // joystick is recommended; v6.5.0).
+//
+// SELF TEST REPORT
+// None: the shipped values 511 and 511 were not measured. The file
+// printed by Step1_Joystick holds the report of its self test here
+// (v6.8.0).
 //
 
 #ifndef JoystickCenter_h

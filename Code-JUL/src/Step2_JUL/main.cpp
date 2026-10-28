@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Step2_JUL/main.cpp last changed: 2026-10-27  v6.6.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Layout (v6.6.0): every line fits the code listings of Article 1009
 // (cutoff 80 characters), and each comment is written on its own line
 // above the statement it explains.

@@ -17,6 +17,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L11_Matrix2x2.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // TEACHING NOTES (v6.1.1)
 // Lesson 11: 2 x 2 matrices. Every term used here (element, row major

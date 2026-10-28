@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   ace.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Added 20261017 for Step4_Generated (named Step4_Generated until
 // v3.1.0). Revised 20261018 (v3.1.0): the template parameters
 // X_REVERSED and Y_REVERSED and the two reversal lines of tick() were

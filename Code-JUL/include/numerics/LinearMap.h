@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   LinearMap.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // LinearMap<T>: straight line mapping of x in [x1, x2] onto y in [y1, y2].
 // Step2_JUL uses LinearMap<float> for ADC to unit range and unit range to PWM.

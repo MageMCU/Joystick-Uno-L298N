@@ -16,6 +16,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L20_JoystickMap.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Lesson 20 (v6.1.0): the full range map and the two segment map on
 // the live joystick. Wiring: Article 1009, Circuit-1, with the motor
 // supply off; D5 to D10 are held LOW.

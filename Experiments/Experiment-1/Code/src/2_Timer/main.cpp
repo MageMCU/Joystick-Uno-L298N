@@ -1,3 +1,28 @@
+//
+// Author: Jesse Carpenter
+// Website: Carpenter Software
+//         (carpentersoftware.com)
+// File: main.cpp
+// Folder: Experiments/Experiment-1/Code/src/2_Timer
+// Github: MageMCU
+// Repository: Joystick-Uno-L298N
+//
+// Testing Platform:
+//  * MCU:Atmega328P
+//  * IDE:PlatformIO
+//  * Editor: VSCode
+//
+// MIT LICENSE
+//
+// RELEASE
+//   2026-10-28  v6.8.0
+//   2_Timer/main.cpp last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
+// Experiment-1, Lab 2: The Timer Class.
+// Wiring: Uno and USB cable.
+// Header added 20261028 (v6.8.0); the code is unchanged.
+//
 
 #include <Arduino.h>
 #include "Timer.h"

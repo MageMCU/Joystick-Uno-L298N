@@ -16,6 +16,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L04_MiscMath.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // TEACHING NOTES (v6.1.1)
 // Lesson 4: the function templates of include/numerics/MiscMath.h:

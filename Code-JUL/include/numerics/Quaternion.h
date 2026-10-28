@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Quaternion.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Quaternion<real>: w + xi + yj + zk, stored as q_tuples[4] = {w, x, y, z},
 // for rotations about an axis. Verified on a desktop 20261008: the product,

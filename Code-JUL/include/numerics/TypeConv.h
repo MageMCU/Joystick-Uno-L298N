@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   TypeConv.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // TypeConv: split a 16 bit word into two bytes or a 32 bit double word into
 // four bytes, and join them again (for example to send a 10 bit ADC reading

@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Bitwise.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Bitwise<integer>: set, clear, and test single bits of an integer.
 // Bit numbers run from 0 (least significant) to 8 * sizeof(integer) - 1.

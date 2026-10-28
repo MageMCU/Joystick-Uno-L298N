@@ -17,7 +17,7 @@ Project folder: open `Experiments/Experiment-1/Code` in Visual Studio Code, neve
 
 ## Notes for the bench
 
-- Lab 3: `button = Button(buttonPin, buttonLED, false);` (line 48) is written for the pull down resistor of Circuit-1.
+- Lab 3: `button = Button(buttonPin, buttonLED, false);` (the Button line of `setup()`) is written for the pull down resistor of Circuit-1.
 - Lab 4, step 4: move the call to `m_pins()` after the two assignments in the `Switch` constructor of `include/Switch.h` (the copy in this folder only).
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).

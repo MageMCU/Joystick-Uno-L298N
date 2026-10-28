@@ -16,6 +16,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L17_DeadZone.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Lesson 17: statistics of the joystick at rest and the dead zone.
 // Added 20261008 for Article 1004, Experiment-6.
 //

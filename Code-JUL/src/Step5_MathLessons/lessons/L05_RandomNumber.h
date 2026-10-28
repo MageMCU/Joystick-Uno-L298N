@@ -18,6 +18,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L05_RandomNumber.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // TEACHING NOTES (v6.1.1)
 // Lesson 5: pseudorandom numbers. The seed, the interval [min, max), and

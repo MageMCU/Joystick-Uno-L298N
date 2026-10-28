@@ -15,18 +15,12 @@
 //
 // MIT LICENSE
 //
-// STEPS 2 TO 4
-//   Step2_JUL:       the drive program; the Motor Movement Checklist
-//                    finds its Bits() value (Article 1009, L298N
-//                    Setup). The joystick lines stay as written,
-//                    x on A0 and y on A1.
-//   Step3_Generator: checks the pins and the joystick lines, asks for
-//                    the Bits() value, and prints this file with the
-//                    answers written in as constants.
-//   Step4_Generated: this file. It drives the robot as Step2_JUL does,
-//                    with the Bits() value fixed when it is built.
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Step4_Generated/main.cpp printed by Step3_Generator
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
-// DATA CHECKED IN STEP3_GENERATOR
+// SUMMARY: the data for Step4_Generated
 //   Joystick center (include/JoystickCenter.h, Step1_Joystick)
 //     A0 center 511 (offset 0)
 //     A1 center 511 (offset 0)
@@ -47,6 +41,19 @@
 //     motors.Bits(BitsL298N::bits_0000);
 //     Left command:  EN D5, D8 HIGH for +, D9 HIGH for -
 //     Right command: EN D10, D6 HIGH for +, D7 HIGH for -
+//   Debug data in Step4_Generated: yes (DEBUG_GENERATED)
+//
+// STEPS 2 TO 4
+//   Step2_JUL:       the drive program; the Motor Movement Checklist
+//                    finds its Bits() value (Article 1009, L298N
+//                    Setup). The joystick lines stay as written,
+//                    x on A0 and y on A1.
+//   Step3_Generator: checks the joystick center, the pins, and the
+//                    joystick lines, asks for the Bits() value and
+//                    the debug data, and prints this file with the
+//                    answers written in as constants.
+//   Step4_Generated: this file. It drives the robot as Step2_JUL does,
+//                    with the Bits() value fixed when it is built.
 //
 // DEBUG_GENERATED (below the include lines): while it is defined,
 // setup() prints the same data in the serial monitor (9600 baud)

@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Matrix.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Matrix<real>: empty base class of Matrix2x2, Matrix3x3, and Matrix4x4.
 // Merged from MageMCU/Numerics (Algebra/include, 20241202).
@@ -225,4 +230,5 @@ namespace csjc
     */
 }
 
-#endif /* Numerics_Matrix_h */
+// Numerics_Matrix_h
+#endif

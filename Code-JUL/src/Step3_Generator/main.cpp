@@ -1,6 +1,6 @@
 //
 // Carpenter Software
-// Folder: src/Step3_Generator: File: Class main.cpp
+// Folder: src/Step3_Generator: File: main.cpp
 // Github: MageMCU
 // Repository: Joystick-Uno-L298N
 // Folder: Code-JUL
@@ -14,12 +14,18 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Step3_Generator/main.cpp last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Added 20261017. Written with Claude (Anthropic), an AI assistant;
 // see include/claude/README.md. Revised 20261017: Step1_Joystick was
 // removed and the steps renumbered. Revised 20261017 (v3.0.1): the
 // Bits value is typed as four binary digits, and the program is
 // selected with build_src_filter in env:uno.
-// Revised 20261018 (v3.1.0): renamed from Step3_Generator. Before the
+// Revised 20261018 (v3.1.0): renamed Step2_Generator (formerly
+// Step3_Generator); Step3_Generator again since v4.0.0. Before the
 // Bits value, the student checks the L298N pins (Uno pin and
 // ATmega328P port pin) and the joystick lines against Step2_JUL. The
 // last question decides whether the printed program shows the same
@@ -40,6 +46,10 @@
 // checks and questions are numbered 1 to 5.
 // Revised 20261025 (v6.5.0): the allowed center is 461 to 561, the
 // Test 3 limit of Step1_Joystick (50 counts from 511).
+// Revised 20261028 (v6.8.0): the summary of the five answers is
+// written into the printed program, under its comment header
+// (SUMMARY), in place of the section DATA CHECKED IN STEP3_GENERATOR,
+// and the printed program carries the RELEASE block.
 //
 // STEPS 1 TO 5
 //   Step1_Joystick:    checks the joystick connections first and
@@ -68,9 +78,9 @@
 //   Check 2: the six L298N pins, the push button, and the LED, each
 //            as an Uno pin and an ATmega328P port pin, for example
 //            D5 (PD5). Type y if they match the buttonPin, ledPin, and
-//            six pin lines of Step2_JUL. For n, change the constants below to
-//            the
-//            pins of Step2_JUL and upload this program again.
+//            six pin lines of Step2_JUL. For n, change the constants
+//            below to the pins of Step2_JUL and upload this program
+//            again.
 //   Check 3: the joystick lines, x on A0 (PC0) and y on A1 (PC1).
 //            Type y if the analogRead() lines of Step2_JUL read the same.
 //            For n, restore those two lines in Step2_JUL and find the
@@ -84,8 +94,10 @@
 //            line can be commented out later. For n the program is
 //            printed without the debug data, as before v3.1.0.
 //   A summary of all five follows; p prints the program, r starts
-//   over. Backspace corrects a typing error. After the program, or
-//   after a check answered n, r and Enter starts over.
+//   over. The printed program repeats the summary under its comment
+//   header (SUMMARY, v6.8.0). Backspace corrects a typing error.
+//   After the program, or after a check answered n, r and Enter
+//   starts over.
 //
 // WHY THE JOYSTICK LINES ARE FIXED
 //   The joystick algorithm satisfies F(-x, y) = (R, L),
@@ -166,7 +178,7 @@ bool withDebug = true;
 // ---------------------------------------------------------------
 // Output of the answer lines
 // The same lines are shown in the checks and the summary (MONITOR),
-// written into the header of the printed program (COMMENT), and
+// written into the SUMMARY of the printed program (COMMENT), and
 // written as print statements into its setup() (CODE), so that
 // Step4_Generated shows in the serial monitor exactly what was
 // checked here.
@@ -308,6 +320,19 @@ void bitsLines(LineMode mode)
     emit(mode);
     commandLine(mode, "Left command: ", pins.Left());
     commandLine(mode, "Right command:", pins.Right());
+}
+
+// Question 5 answer: the debug data in the printed program (v6.8.0)
+void debugLine(LineMode mode)
+{
+    if (withDebug)
+        snprintf_P(lineBuffer, sizeof(lineBuffer),
+                   PSTR("Debug data in Step4_Generated: yes " \
+                        "(DEBUG_GENERATED)"));
+    else
+        snprintf_P(lineBuffer, sizeof(lineBuffer),
+                   PSTR("Debug data in Step4_Generated: no"));
+    emit(mode);
 }
 
 // ---------------------------------------------------------------
@@ -529,11 +554,7 @@ bool askConfirm()
     pinLines(MONITOR);
     analogLines(MONITOR);
     bitsLines(MONITOR);
-    if (withDebug)
-        Serial.println(F( \
-            "Debug data in Step4_Generated: yes (DEBUG_GENERATED)"));
-    else
-        Serial.println(F("Debug data in Step4_Generated: no"));
+    debugLine(MONITOR);
     while (true)
     {
         Serial.print(F("Type p to print the program, or r to start again: "));
@@ -596,6 +617,21 @@ void printProgram()
     Serial.println(F("//"));
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
+    Serial.println(F("// RELEASE"));
+    Serial.println(F("//   2026-10-28  v6.8.0"));
+    Serial.println(F( \
+        "//   Step4_Generated/main.cpp printed by Step3_Generator"));
+    Serial.println(F( \
+        "//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)"));
+    Serial.println(F("//"));
+    // v6.8.0: the summary of the answers, under the comment header
+    Serial.println(F("// SUMMARY: the data for Step4_Generated"));
+    centerLines(COMMENT);
+    pinLines(COMMENT);
+    analogLines(COMMENT);
+    bitsLines(COMMENT);
+    debugLine(COMMENT);
+    Serial.println(F("//"));
     Serial.println(F("// STEPS 2 TO 4"));
     Serial.println(F( \
         "//   Step2_JUL:       the drive program; the Motor Movement " \
@@ -606,23 +642,18 @@ void printProgram()
         "//                    Setup). The joystick lines stay as written,"));
     Serial.println(F("//                    x on A0 and y on A1."));
     Serial.println(F( \
-        "//   Step3_Generator: checks the pins and the joystick lines, " \
-        "asks for"));
+        "//   Step3_Generator: checks the joystick center, the pins, and the"));
     Serial.println(F( \
-        "//                    the Bits() value, and prints this file " \
-        "with the"));
+        "//                    joystick lines, asks for the Bits() value and"));
+    Serial.println(F( \
+        "//                    the debug data, and prints this file with " \
+        "the"));
     Serial.println(F("//                    answers written in as constants."));
     Serial.println(F( \
         "//   Step4_Generated: this file. It drives the robot as " \
         "Step2_JUL does,"));
     Serial.println(F( \
         "//                    with the Bits() value fixed when it is built."));
-    Serial.println(F("//"));
-    Serial.println(F("// DATA CHECKED IN STEP3_GENERATOR"));
-    centerLines(COMMENT);
-    pinLines(COMMENT);
-    analogLines(COMMENT);
-    bitsLines(COMMENT);
     Serial.println(F("//"));
     if (withDebug)
     {

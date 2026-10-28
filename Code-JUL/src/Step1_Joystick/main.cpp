@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Step1_Joystick/main.cpp last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // ---------------------------------------------------------------
 // Step1_Joystick, the joystick self test
 // (Article 1009, Step1, The Joystick Self Test)
@@ -63,6 +68,11 @@
 // counts from 511 (100 in v6.4.0 and v6.4.1), and a center more than
 // 25 counts from 511 passes with a warning that a new joystick is
 // recommended (author decision).
+// Revised 20261028 (v6.8.0): after a pass the Self Test Report is
+// written into the printed include/JoystickCenter.h, under SELF TEST
+// REPORT, so it no longer scrolls away above the file; the monitor
+// shows the result, the centers, and the copy instructions. After a
+// failure the report prints in the monitor, as before.
 // ---------------------------------------------------------------
 #include <Arduino.h>
 #include "Button.h"
@@ -346,8 +356,10 @@ void printPass(bool pass)
     Serial.println(pass ? F("PASS") : F("FAIL"));
 }
 
-void printResult(int number, const __FlashStringHelper *label)
+void printResult(const __FlashStringHelper *prefix, int number,
+                 const __FlashStringHelper *label)
 {
+    Serial.print(prefix);
     Serial.print(F("Test "));
     Serial.print(number);
     Serial.print(F("  "));
@@ -378,8 +390,9 @@ void printColumn(long value, uint8_t width)
 // Width of each column of the report, in characters
 const uint8_t COLUMN = 8;
 
-void printAxisRow(const Axis &axis)
+void printAxisRow(const __FlashStringHelper *prefix, const Axis &axis)
 {
+    Serial.print(prefix);
     Serial.print(axis.name);
     Serial.print(F(": "));
     printColumn(axis.low, COLUMN);
@@ -398,8 +411,10 @@ void printSigned(int value)
 }
 
 // The center of one axis and its offset from 511
-void printCenterLine(const __FlashStringHelper *name, int center)
+void printCenterLine(const __FlashStringHelper *prefix,
+                     const __FlashStringHelper *name, int center)
 {
+    Serial.print(prefix);
     Serial.print(F("  "));
     Serial.print(name);
     Serial.print(F(" center "));
@@ -419,11 +434,65 @@ bool centerWarning()
     return abs(offsetA0) > CENTER_WARNING || abs(offsetA1) > CENTER_WARNING;
 }
 
+// true when every test passed and no press was counted during Tests
+// 3 to 5 (v6.2.1)
+bool allPassed()
+{
+    bool all = extraPresses == 0;
+    for (int i = 0; i < 5; i++)
+        all = all && passed[i];
+    return all;
+}
+
+// The lines of the Self Test Report (v6.8.0). prefix starts each line:
+// nothing in the serial monitor, "// " inside the printed
+// include/JoystickCenter.h, where the report becomes comments.
+void printReportLines(const __FlashStringHelper *prefix)
+{
+    Serial.print(prefix);
+    // "Axis" and each heading fill the width of the columns below
+    Serial.println(F("Axis     low  center    high    rest"));
+    printAxisRow(prefix, axisA0);
+    printAxisRow(prefix, axisA1);
+    printResult(prefix, 1, F("Button press                 "));
+    printResult(prefix, 2, F("Button release               "));
+    printResult(prefix, 3, F("Center (511, within 50)      "));
+    printResult(prefix, 4, F("Ends (200 counts each way)   "));
+    printResult(prefix, 5, F("Return (within 25 of center) "));
+    Serial.print(prefix);
+    Serial.print(F("Presses during Tests 3 to 5: "));
+    Serial.print(extraPresses);
+    Serial.println(F(" (0 expected)"));
+    Serial.print(prefix);
+    Serial.println(allPassed() ? F("Result: PASS") : F("Result: FAIL"));
+    // v6.5.0: a center more than 25 counts from 511 passes with a warning
+    if (allPassed() && centerWarning())
+    {
+        Serial.print(prefix);
+        Serial.println(F( \
+            "WARNING: a center lies more than 25 counts from 511."));
+        Serial.print(prefix);
+        Serial.println(F( \
+            "A new joystick is recommended. Step4_Generated corrects"));
+        Serial.print(prefix);
+        Serial.println(F( \
+            "the center; Step2_JUL does not, so its motors may turn"));
+        Serial.print(prefix);
+        Serial.println(F( \
+            "slowly with the grip released (push button OFF stops them)."));
+    }
+    Serial.print(prefix);
+    Serial.println(F("Joystick center measured by Test 3:"));
+    printCenterLine(prefix, F("A0"), axisA0.center);
+    printCenterLine(prefix, F("A1"), axisA1.center);
+}
+
 // ---------------------------------------------------------------
 // The joystick center file (v6.4.0)
 // After a pass, the report prints a complete include/JoystickCenter.h,
 // with the same comments as the shipped file (v6.5.0),
-// between two marker lines. Copy every line between the markers and
+// between two marker lines; since v6.8.0 it also holds the Self Test
+// Report under SELF TEST REPORT. Copy every line between the markers and
 // replace the whole file with them; the PlatformIO monitor also saves
 // the output in a log file (monitor_filters = log2file), so the lines
 // can be copied from that file. Step3_Generator writes its values into
@@ -444,6 +513,12 @@ void printCenterFile()
     Serial.println(F("// By Jesse Carpenter (carpentersoftware.com)"));
     Serial.println(F("//"));
     Serial.println(F("// MIT LICENSE"));
+    Serial.println(F("//"));
+    Serial.println(F("// RELEASE"));
+    Serial.println(F("//   2026-10-28  v6.8.0"));
+    Serial.println(F("//   JoystickCenter.h printed by Step1_Joystick"));
+    Serial.println(F( \
+        "//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)"));
     Serial.println(F("//"));
     Serial.println(F("// The joystick center (added 20261025, v6.4.0)"));
     Serial.println(F("//"));
@@ -526,6 +601,9 @@ void printCenterFile()
         "// more than 50 counts from 511 and warns above 25 counts: a new"));
     Serial.println(F("// joystick is recommended; v6.5.0)."));
     Serial.println(F("//"));
+    Serial.println(F("// SELF TEST REPORT"));
+    printReportLines(F("// "));
+    Serial.println(F("//"));
     Serial.println();
     Serial.println(F("#ifndef JoystickCenter_h"));
     Serial.println(F("#define JoystickCenter_h"));
@@ -574,69 +652,45 @@ void printAxisReadings(int valueA0, int valueA1)
 void printReport()
 {
     printDots();
-    Serial.println(F("Self Test Report"));
-    // "Axis" and each heading fill the width of the columns below
-    Serial.println(F("Axis     low  center    high    rest"));
-    printAxisRow(axisA0);
-    printAxisRow(axisA1);
-    printResult(1, F("Button press                 "));
-    printResult(2, F("Button release               "));
-    printResult(3, F("Center (511, within 50)      "));
-    printResult(4, F("Ends (200 counts each way)   "));
-    printResult(5, F("Return (within 25 of center) "));
-    Serial.print(F("Presses during Tests 3 to 5: "));
-    Serial.print(extraPresses);
-    Serial.println(F(" (0 expected)"));
-
-    // Any press during Tests 3 to 5 fails the self test (v6.2.1)
-    bool all = extraPresses == 0;
-    for (int i = 0; i < 5; i++)
-        all = all && passed[i];
-
-    if (all)
+    if (!allPassed())
     {
-        Serial.println(F( \
-            "Result: PASS. The joystick is ready for L298N Setup."));
-        // v6.5.0: a center more than 25 counts from 511 passes with a warning
-        if (centerWarning())
-        {
-            Serial.println(F( \
-                "WARNING: a center lies more than 25 counts from 511."));
-            Serial.println(F( \
-                "A new joystick is recommended. Step4_Generated corrects"));
-            Serial.println(F( \
-                "the center; Step2_JUL does not, so its motors may turn"));
-            Serial.println(F( \
-                "slowly with the grip released (push button OFF stops them)."));
-        }
-        Serial.println(F("Joystick center measured by Test 3:"));
-        printCenterLine(F("A0"), axisA0.center);
-        printCenterLine(F("A1"), axisA1.center);
-        Serial.println(F("Joystick center now in include/JoystickCenter.h:"));
-        printCenterLine(F("A0"), JOYSTICK_A0_CENTER);
-        printCenterLine(F("A1"), JOYSTICK_A1_CENTER);
-        if (axisA0.center == JOYSTICK_A0_CENTER &&
-            axisA1.center == JOYSTICK_A1_CENTER)
-            Serial.println(F("They match; the file needs no change."));
-        printDots();
-        Serial.println(F( \
-            "Copy every line between the two marker lines and replace"));
-        Serial.println(F( \
-            "all of include/JoystickCenter.h with them (Step3_Generator"));
-        Serial.println(F("uses the file). The PlatformIO monitor also"));
-        Serial.println(F("saves this output in a log file (log2file)."));
-        Serial.println();
-        printCenterFile();
-    }
-    else
-    {
+        Serial.println(F("Self Test Report"));
+        printReportLines(F(""));
         if (extraPresses > 0)
             Serial.println(F( \
                 "Presses were counted: check the pull up resistor on D2."));
-        Serial.println(F("Result: FAIL. See the notes above printReport() in"));
+        Serial.println(F("See the notes above printReport() in"));
         Serial.println(F( \
             "src/Step1_Joystick/main.cpp, then run the test again."));
+        return;
     }
+    // v6.8.0: after a pass the report is written into the printed file
+    Serial.println(F( \
+        "Result: PASS. The joystick is ready for L298N Setup."));
+    if (centerWarning())
+        Serial.println(F( \
+            "WARNING: a center lies more than 25 counts from 511."));
+    Serial.println(F("Joystick center measured by Test 3:"));
+    printCenterLine(F(""), F("A0"), axisA0.center);
+    printCenterLine(F(""), F("A1"), axisA1.center);
+    Serial.println(F("Joystick center now in include/JoystickCenter.h:"));
+    printCenterLine(F(""), F("A0"), JOYSTICK_A0_CENTER);
+    printCenterLine(F(""), F("A1"), JOYSTICK_A1_CENTER);
+    if (axisA0.center == JOYSTICK_A0_CENTER &&
+        axisA1.center == JOYSTICK_A1_CENTER)
+        Serial.println(F("They match; the file needs no change."));
+    Serial.println(F( \
+        "The Self Test Report is written into the file below, under"));
+    Serial.println(F("SELF TEST REPORT."));
+    printDots();
+    Serial.println(F( \
+        "Copy every line between the two marker lines and replace"));
+    Serial.println(F( \
+        "all of include/JoystickCenter.h with them (Step3_Generator"));
+    Serial.println(F("uses the file). The PlatformIO monitor also"));
+    Serial.println(F("saves this output in a log file (log2file)."));
+    Serial.println();
+    printCenterFile();
 }
 
 // ---------------------------------------------------------------

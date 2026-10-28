@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Vector3.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 #ifndef Numerics_Vector3_h
 #define Numerics_Vector3_h
@@ -328,4 +333,5 @@ namespace csjc
     }
 
 }
-#endif /* Numerics_Vector3_h */
+// Numerics_Vector3_h
+#endif

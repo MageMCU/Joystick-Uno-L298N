@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   1_Bitwise/main.cpp last changed: 2026-10-08  v2.3.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-4, Lab 1: Bitwise.h, bits and masks.
 // Uno and USB cable only.
 //

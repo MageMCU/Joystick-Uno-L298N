@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Vector2.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Vector2<real>: two component vector with magnitude, unit vector, dot product
 // (operator*), perpendicular, perp dot product, angle, and projection.
@@ -405,4 +410,5 @@ namespace csjc
     }
 }
 
-#endif /* Numerics_Vector2_h */
+// Numerics_Vector2_h
+#endif

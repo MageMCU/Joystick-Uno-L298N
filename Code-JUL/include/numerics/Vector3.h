@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Vector3.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Vector3<real>: three component vector with magnitude, unit vector, dot
 // product (operator*), cross product (operator^), angle, and projection.
@@ -361,4 +366,5 @@ namespace csjc
     }
 
 }
-#endif /* Numerics_Vector3_h */
+// Numerics_Vector3_h
+#endif

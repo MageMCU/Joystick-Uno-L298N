@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   2_DutyCycle/main.cpp last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Experiment-3, Lab 2: one motor and the duty cycle.
 //
 // Wiring: Table-1 of Article 1004 (Article 1009, Circuit-1). One motor on

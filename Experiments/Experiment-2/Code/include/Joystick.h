@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Joystick.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // NOTE: This implementation is the revised joystick algorithm.
 // It includes improved octant routing, tolerance-based dead zone,
 // and forward/backward direction getters for better motor control.

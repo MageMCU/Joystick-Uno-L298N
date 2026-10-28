@@ -14,6 +14,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Step5_MathLessons/main.cpp last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Step5_MathLessons: the program of the 20 math lessons (v6.1.0,
 // 20261022). Each lesson is a header file in the folder lessons/, and
 // this file compiles ONE of them. Each lesson is divided into topics,

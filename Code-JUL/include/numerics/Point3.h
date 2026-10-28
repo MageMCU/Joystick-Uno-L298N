@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Point3.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Point3<real>: a 3D position. Point - Point gives a Vector3; Point + Vector3
 // gives a Point3. Merged from MageMCU/Numerics (Algebra/include, 20241202).
@@ -173,4 +178,5 @@ namespace csjc
     }
 }
 
-#endif /* Numerics_Point3_h */
+// Numerics_Point3_h
+#endif

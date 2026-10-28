@@ -16,6 +16,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   L15_LineFit.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // Lesson 15: least squares line fit with LineFit2.h. Added 20261008.
 // CREDIT: LineFit2.h is adapted from the work of David Eberly, Geometric
 // Tools Engine, GTE/Mathematics/ApprHeightLine2.h (Boost Software License

@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated October 28, 2026 (v6.7.0.b); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated October 28, 2026 (v6.8.0); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 Open as of 2026-10-12: 11 (Article 1000 axis mapping), 29 (bench check of the joystick power procedure only), 36 (Experiment-5, Lab 3, step 4, against Article 1009), 37 (tag v2.4.0 and Bibliography [1] date), 38 (Eberly credits for the matrix and quaternion fixes, author decision).
 
@@ -11,6 +11,8 @@ Open as of 2026-10-17 (v3.0.1): 61 (the line 31 filter printed in Article 1009).
 Open as of 2026-10-18 (v3.1.0): 68 (Experiment-5 Lab 1 and lessons 17 and 19 keep x on A1 and y on A0), 69 (Article 1009, folder names, joystick lines, and the generator).
 
 Open as of 2026-10-18 (v3.1.1): 71 (button polarity of Step3_Generated).
+
+Open as of 2026-10-28 (v6.8.0): 233 (Article 1009 Code images and the Step2_JUL header, author check); 107 (release tags: commands in 227); bench test of v6.8.0 by the author. 219 is closed.
 
 Open as of 2026-10-28 (v6.7.0.b): 219 (Step2_JUL line numbers in the lab cards); 107 (release tags: commands in 227). The bench test of v6.7.0 passed.
 
@@ -63,6 +65,19 @@ Open as of 2026-10-22 (v6.2.3): 107 (release tags not on GitHub); 137 and 152 (b
 Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.0, with the Step1_Joystick of 188 and 189), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests; 192 and 193 (author decisions).
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
+
+## RELEASE Block; Report and Summary in the Printed Files (2026-10-28, v6.8.0)
+
+Requested by the author after his bench test of v6.7.0.a: the release on every code file, the Self Test Report of Step1_Joystick written into the printed file (it scrolled away above it), and the summary of Step3_Generator written into the printed program; the whole repository reviewed for a push.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 228 | No code file named its release. | every `.cpp` and `.h` | **Fixed 2026-10-28 (v6.8.0).** RELEASE block below MIT LICENSE: release date and version, the release of the last change, the repository address. See `RELEASES.md`, v6.8.0. |
+| 229 | After a pass, Step1_Joystick printed the Self Test Report and then the whole `JoystickCenter.h`, so the report scrolled out of view. | Step1_Joystick | **Fixed 2026-10-28 (v6.8.0).** The report is written into the printed file, under SELF TEST REPORT; the monitor keeps the result, the centers, and the copy instructions. After a failure the report prints in the monitor. |
+| 230 | The summary of Step3_Generator was not kept in the printed program (the section DATA CHECKED IN STEP3_GENERATOR lacked the debug answer and sat below STEPS 2 TO 4). The header said `File: Class main.cpp`, its v3.1.0 note said "renamed from Step3_Generator", the Check 2 note was wrapped after "to" and "the", and the printed STEPS section did not name the center check. | Step3_Generator, Step4_Generated | **Fixed 2026-10-28 (v6.8.0).** SUMMARY under the comment header with the debug answer; header corrected. Step2_JUL keeps `File: Class main.cpp` (Article 1009 images, 233). |
+| 231 | The lab cards cited line numbers, wrong for Step2_JUL since v6.6.0 (219) and moved by 228 for the others. | lab cards 1 to 8, `Step5_MathLessons/README.md` | **Fixed 2026-10-28 (v6.8.0).** Line names in place of numbers. 219 is closed. History entries keep the numbers of their time. |
+| 232 | Experiment-1, Labs 1 to 3, had no comment header; 18 `#endif` lines carried a comment beside the statement. | Experiment-1; `numerics`; Experiment copies of `MiscMath.h` and `Vector3.h` | **Fixed 2026-10-28 (v6.8.0).** Headers added; each comment moved above its `#endif`. The Intel HEX is unchanged. |
+| 233 | The RELEASE block adds 5 lines to the header of Step2_JUL; Article 1009 may show the header in its Code images. | Article 1009 | **Open.** Author check. No code line of Step2_JUL changed. |
 
 ## Bench Test of v6.7.0.a and Commit Plan (2026-10-28, v6.7.0.b)
 

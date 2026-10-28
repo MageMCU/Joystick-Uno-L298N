@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Statistics.h last changed: 2026-10-27  v6.7.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 
 // Statistics<real>: mean, sample standard deviation, and median of an array
 // owned by the caller. Merged from MageMCU/Numerics (Algebra/include,

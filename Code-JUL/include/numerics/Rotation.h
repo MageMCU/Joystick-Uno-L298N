@@ -15,6 +15,11 @@
 //
 // MIT LICENSE
 //
+// RELEASE
+//   2026-10-28  v6.8.0
+//   Rotation.h last changed: 2026-10-28  v6.8.0
+//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
+//
 // CREDIT: the conversion and interpolation methods are by David Eberly,
 // Geometric Tools (https://www.geometrictools.com), from the Geometric
 // Tools Engine files GTE/Mathematics/Rotation.h (quaternion to matrix and
@@ -237,4 +242,5 @@ namespace csjc
     }
 }
 
-#endif /* Numerics_Rotation_h */
+// Numerics_Rotation_h
+#endif
