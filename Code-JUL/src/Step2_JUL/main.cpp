@@ -15,7 +15,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
+//   2026-10-30  v7.3.0
 //   Step2_JUL/main.cpp last changed: 2026-10-27  v6.6.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
@@ -122,7 +122,7 @@ void setup()
     // NOTICE: Whatever the joystick orientation and the L298N connections
     // (rules at the end of this file), one four digit value corrects a
     // working bench. Start at bits_0000. This is the Bits() line.
-    motors.Bits(BitsL298N::bits_0000);
+    motors.Bits(BitsL298N::bits_1101);
 }
 
 void updateJoystick()

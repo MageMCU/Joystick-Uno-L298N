@@ -16,6 +16,7 @@ This folder holds the test programs of the MageMCU **Numerics** repository (Alge
        -<Step3_Generator/>
        -<Step4_Generated/>
        +<Step5_MathLessons/>
+       -<Step6_Circuit/>
    ```
 3. In `main.cpp` of this folder, set `#define LESSON` to the number of ONE lesson, 1 to 20.
 4. On the line below it, set `#define TOPIC` to the number of ONE topic of that lesson, or to 0 for every topic, in order (since v5.1.0).
@@ -81,7 +82,7 @@ Code-JUL/src/Step5_MathLessons/
     ├── L17_DeadZone.h            1 topic: joystick at rest, Article 1004 Experiment-6 (hardware; any key repeats)
     ├── L18_MotorLineFit.h        1 topic: motor calibration, Article 1004 Experiment-7 (hardware; n starts a new set)
     ├── L19_JoystickFrame.h       2 topics: rotated joystick frame, Article 1004 Experiment-8 (4 checks plus hardware)
-    └── L20_JoystickMap.h         1 topic: full range and two segment maps on the live joystick (hardware, v6.1.0; the four low and high values of a Step1_Joystick report, and since v6.4.1 the two centers of `include/JoystickCenter.h`)
+    └── L20_JoystickMap.h         1 topic: full range and two segment maps on the live joystick (hardware, v6.1.0; since v7.0.0 all six values of `include/JoystickMeasurements.h`; up to v6.8.0 the four low and high values were copied from a Step1_Joystick report and, since v6.4.1, the centers read from `include/JoystickCenter.h`)
 ```
 
 Each lesson header holds the topic functions of one class, moved from the original `TestClass.h` file, and a `Setup()` that calls them in order of their topic number, each call inside an `#if` on TOPIC. Since v5.1.0 the functions carry the topic names above and print their titles with `F("...")`; their code is otherwise unchanged. The Button and Timer tests of the original repository were not carried over; those classes are studied in Experiment-1.

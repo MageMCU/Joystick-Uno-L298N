@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
-//   Step5_MathLessons/main.cpp last changed: 2026-10-27  v6.7.0
+//   2026-10-30  v7.3.0
+//   Step5_MathLessons/main.cpp last changed: 2026-10-30  v7.3.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Step5_MathLessons: the program of the 20 math lessons (v6.1.0,
@@ -27,7 +27,7 @@
 // INSTRUCTIONS
 //   1. In platformio.ini, select Step5_MathLessons in
 //        build_src_filter (one folder per line since
-//        v6.4.0): +<Step5_MathLessons/>, and - before the other four
+//        v6.4.0): +<Step5_MathLessons/>, and - before the other five
 //        folders.
 //   2. Below, set LESSON to the number of ONE lesson, 1 to 20.
 //   3. Below, set TOPIC to the number of ONE topic of that lesson, or

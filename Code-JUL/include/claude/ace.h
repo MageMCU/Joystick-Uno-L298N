@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
-//   ace.h last changed: 2026-10-27  v6.7.0
+//   2026-10-30  v7.3.0
+//   ace.h last changed: 2026-10-29  v7.2.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Added 20261017 for Step4_Generated (named Step4_Generated until
@@ -26,8 +26,8 @@
 // Revised 20261018 (v3.1.1): the push button pin is an input with the
 // internal pull up off, as in Step2_JUL; the joystick switch module
 // supplies its own resistor, or an external 10 kOhm resistor is added.
-// The button is read active LOW (pressed reads LOW), the form of line
-// 45 of Step2_JUL as written.
+// The button is read active LOW (pressed reads LOW), the form of the
+// line pinMode(buttonPin, INPUT) of Step2_JUL as written.
 // Revised 20261018 (v3.2.0): requested by the author after a bench
 // test. The default control tick TICK_MS is 50 ms in place of the
 // 100 ms of Step2_JUL (BUTTON_TIMER_mS of Common.h), for a faster
@@ -48,11 +48,30 @@
 // offset of its center from 511 before compute(); Step2_JUL keeps
 // the center 511 (author decision). With the defaults the compiled program is
 // unchanged, so a Step4_Generated printed before v6.4.0 still builds
-// and drives as before.
+// and drives as before (up to v6.8.0).
 // Revised 20261025 (v6.5.0): the allowed center is 461 to 561, the
 // Test 3 limit of Step1_Joystick (50 counts from 511); Path B is
 // now called Fast Drive (Article 1009). The compiled program is
 // unchanged.
+// Revised 20261028 (v7.0.0): requested by the author. Each axis is
+// corrected at the center and at both ends by two linear equations,
+// one on each side of the center (THE JOYSTICK EQUATIONS below). Five
+// template parameters follow Y_CENTER: X_LOW, X_HIGH, Y_LOW, Y_HIGH
+// (defaults 0 and 1023), the ends measured by Step1_Joystick Test 4
+// (include/JoystickMeasurements.h), and DEAD_ZONE (default 25 counts),
+// which replaces the dead zones 0.05 and 0.06 of Step2_JUL. centered()
+// is removed. A Step4_Generated printed before v7.0.0 still builds; it
+// gets the default ends and the new dead zone. For the same readings
+// the commands now differ from Step2_JUL, which is unchanged (center
+// 511, float dead zones; author decision).
+// Revised 20261029 (v7.2.0): requested by the author. The default
+// control tick TICK_MS is 45 ms (50 ms from v3.2.0), about 2.2 times
+// the rate of Step2_JUL (100 ms). A tick takes about 249 microseconds
+// (PERFORMANCE below), so 45 ms leaves ample time; isTimer() measures
+// from the start of one tick to the start of the next, so the time
+// spent in a tick does not lengthen the period. Each tick sets the
+// same pin states for the same readings. Step3_Generator prints
+// TICK_MS = 45.
 //
 // FOLDER include/claude
 // The files in include/claude were written with Claude (Anthropic),
@@ -74,15 +93,17 @@
 // ORIGINAL CODE INCORPORATED (rewritten, same behavior)
 //   Joystick.h             class Joystick<float>: the octant algorithm,
 //                          UpdateInputs(), Left(), Right(), tolerance
-//   numerics/LinearMap.h   class LinearMap<float>: 0 to 1023 onto -1
-//                          to 1, and -1 to 1 onto -255 to 255
+//   numerics/LinearMap.h   class LinearMap<float>: -1 to 1 onto -255
+//                          to 255 (the input map is replaced by THE
+//                          JOYSTICK EQUATIONS since v7.0.0)
 //   numerics/MiscMath.h    function template absT()
 //   Button.h               class Button: active LOW, latching, 50 ms
 //                          debounce, LED; the internal pull up is off,
 //                          as in Step2_JUL (THE PUSH BUTTON)
 //   Timer.h                class Timer: isTimer(), armed on first call
 //   Common.h               BUTTON_TIMER_mS, the control tick: 100 ms
-//                          in Step2_JUL, 50 ms here (TICK_MS, v3.2.0)
+//                          in Step2_JUL, 45 ms here (TICK_MS, v7.2.0;
+//                          50 ms from v3.2.0)
 //   L298N.h                UpdateL298N() and PowerDownL298N(), with the
 //                          Bits() decision already made by Step3
 //   Arduino core           analogRead(), digitalWrite(), analogWrite(),
@@ -110,7 +131,8 @@
 //      instruction on a port register or a timer compare register,
 //      with the same pin states as digitalWrite() and analogWrite().
 //
-// PERFORMANCE (20261017, avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, simavr
+// PERFORMANCE up to v6.8.0 (20261017, avr-gcc 7.3.0, ArduinoCore-avr
+// 1.8.6, simavr
 // at 16 MHz, 1024 simulated joystick positions, bits_1010)
 //   Stage, microseconds per tick       Step2_JUL   ace.h   times
 //   Joystick math                          322.5     16.4    19.6
@@ -126,9 +148,18 @@
 //   0.46 percent of the processor time; Step2_JUL, at 100 ms, about
 //   0.57 percent.
 //
+// PERFORMANCE of v7.0.0 (20261028, avr-gcc 7.3.0, simavr at 16 MHz)
+//   axis(), one reading to N, all 1024 readings: at most 218 cycles
+//   (13.6 microseconds) in a test loop, 120 cycles as a function
+//   alone; the center shift it replaces took at most 79. The control
+//   tick grows by at most about 17 microseconds for the two axes,
+//   beside the 212 microseconds of the two ADC readings.
+//   At one tick every 45 ms (TICK_MS since v7.2.0) the tick of about
+//   249 microseconds uses about 0.55 percent of the processor time.
+//
 // VERIFIED (20261017)
-//   * compute() gives the same left and right commands as the float
-//     chain of Step2_JUL for all 1024 x 1024 pairs of readings.
+//   * Up to v6.8.0, compute() gave the same left and right commands
+//     as the float chain of Step2_JUL for all 1024 x 1024 pairs.
 //   * On the simulated Uno, the port, timer, and compare registers
 //     after each motor update match Step2_JUL's driveMotor() code
 //     for 12519 pairs, and the float results match the host test.
@@ -145,11 +176,30 @@
 //   PWM frequency: D5 and D6 about 980 Hz (Timer0); D9, D10, D3, D11
 //   about 490 Hz (Timer1, Timer2).
 //
-// Scaled values: an ADC reading a (0 to 1023) gives N = 2a - 1023,
-// so N / 1023 is the value LinearMap gives (-1 to 1). The dead zones
-// 0.05 and 0.06 of Step2_JUL become |N| <= 51 and |N| <= 61. The
-// output map gives 255 * N / 1023, truncated toward zero as the
-// (int) cast of Step2_JUL does.
+// Scaled values: each axis gives N from -1023 to 1023, so N / 1023
+// is the value -1 to 1 of Step2_JUL. Up to v6.8.0 an ADC reading a
+// gave N = 2a - 1023, with the dead zones |N| <= 51 and |N| <= 61
+// (0.05 and 0.06 of Step2_JUL). The output map gives 255 * N / 1023,
+// truncated toward zero as the (int) cast of Step2_JUL does.
+//
+// THE JOYSTICK EQUATIONS (v7.0.0)
+// Each axis has three measured points: LOW, CENTER, and HIGH, in ADC
+// counts (LOW_END, CENTER, and HIGH_END in axis(); LOW and HIGH are
+// pin states of Arduino.h). The ends are moved in by ACE_INSET (10
+// counts), so a normal push still reaches the full command:
+// LOW' = LOW + 10 and HIGH' = HIGH - 10. D is DEAD_ZONE. For a reading r:
+//   r - CENTER > D    N = 1023 * (r - CENTER - D) / (HIGH' - CENTER - D)
+//   CENTER - r > D    N = -1023 * (CENTER - D - r) / (CENTER - D - LOW')
+//   otherwise         N = 0
+// and N stays within -1023 to 1023. Each line starts at 0 at the
+// edge of the dead zone and ends at 1023 at its end, so the center
+// and both ends are corrected and there is no step at the dead zone.
+// No division is made in the control tick: each side has the factor
+// K = ceil(1023 * 2^20 / den), computed when the program is built
+// (den is the denominator above), and N = (dr * K) >> 20, where dr is
+// the counts past the dead zone. The product is made of two 16 bit
+// multiplications (scale()), which give the same integer. This form
+// matches the equations above for every reading (Discrepancies.md).
 
 #ifndef ace_h
 #define ace_h
@@ -170,6 +220,16 @@ namespace csjc
     {
         return pin == 3 || pin == 5 || pin == 6 ||
                pin == 9 || pin == 10 || pin == 11;
+    }
+
+    // v7.0.0: counts each measured end is moved in (THE JOYSTICK
+    // EQUATIONS)
+    const uint16_t ACE_INSET = 10;
+
+    // v7.0.0: K = ceil(1023 * 2^20 / den), the factor of one side
+    constexpr uint32_t aceFactor(uint16_t den)
+    {
+        return ((1023UL << 20) + den - 1) / den;
     }
 
     template <uint8_t P>
@@ -295,13 +355,23 @@ namespace csjc
               uint8_t LEFT_EN, uint8_t LEFT_FWD, uint8_t LEFT_REV,
               uint8_t RIGHT_EN, uint8_t RIGHT_FWD, uint8_t RIGHT_REV,
               uint8_t BUTTON_PIN = 2, uint8_t LED_PIN = 12,
-              uint16_t TICK_MS = 50, uint16_t DEBOUNCE_MS = 50,
-              uint16_t X_CENTER = 511, uint16_t Y_CENTER = 511>
+              uint16_t TICK_MS = 45, uint16_t DEBOUNCE_MS = 50,
+              uint16_t X_CENTER = 511, uint16_t Y_CENTER = 511,
+              uint16_t X_LOW = 0, uint16_t X_HIGH = 1023,
+              uint16_t Y_LOW = 0, uint16_t Y_HIGH = 1023,
+              uint16_t DEAD_ZONE = 25>
     class Ace
     {
         static_assert(X_CENTER >= 461 && X_CENTER <= 561 &&
                           Y_CENTER >= 461 && Y_CENTER <= 561,
                       "each joystick center must be 461 to 561");
+        // v7.0.0: Step1_Joystick Test 4 requires 200 counts each way
+        static_assert(X_CENTER - X_LOW >= 200 && X_HIGH - X_CENTER >= 200 &&
+                          Y_CENTER - Y_LOW >= 200 &&
+                          Y_HIGH - Y_CENTER >= 200 && X_HIGH <= 1023 &&
+                          Y_HIGH <= 1023,
+                      "each end must lie 200 counts from its center");
+        static_assert(DEAD_ZONE <= 50, "the dead zone must be 0 to 50");
         static_assert(X_PIN >= A0 && X_PIN <= A5 && Y_PIN >= A0 && Y_PIN <= A5,
                       "joystick pins must be A0 to A5");
         static_assert(acePwmPin(LEFT_EN) && acePwmPin(RIGHT_EN),
@@ -313,7 +383,8 @@ namespace csjc
         bool _stableState = true;
         bool _on = false;
         unsigned long _lastChange = 0;
-        // Timer (Timer.h, isTimer()); TICK_MS 50 ms since v3.2.0
+        // Timer (Timer.h, isTimer()); TICK_MS 45 ms since v7.2.0
+        // (50 ms from v3.2.0)
         bool _armed = false;
         unsigned long _previous = 0;
 
@@ -414,19 +485,53 @@ namespace csjc
             return false;
         }
 
+        // v7.0.0: (dr * K) >> 20 with K = KH * 65536 + KL, made of two
+        // 16 bit multiplications; dr is at most 1023
+        static inline uint16_t scale(uint16_t dr, uint16_t kh,
+                                     uint16_t kl)
+        {
+            uint16_t low = (uint16_t)(((uint32_t)dr * kl) >> 16);
+            return (uint16_t)((dr * kh + low) >> 4);
+        }
+
     public:
-        // The joystick chain of Step2_JUL from two readings (0 to
-        // 1023) to the two commands (-255 to 255).
+        // v7.0.0: THE JOYSTICK EQUATIONS for one axis, a reading (0 to
+        // 1023) to N (-1023 to 1023). The factors are computed when
+        // the program is built.
+        template <uint16_t LOW_END, uint16_t CENTER, uint16_t HIGH_END>
+        static inline int16_t axis(uint16_t reading)
+        {
+            const uint16_t start = CENTER + DEAD_ZONE;
+            const uint16_t stop = CENTER - DEAD_ZONE;
+            const uint16_t denHigh = HIGH_END - ACE_INSET - start;
+            const uint16_t denLow = stop - (LOW_END + ACE_INSET);
+            const uint32_t kHigh = aceFactor(denHigh);
+            const uint32_t kLow = aceFactor(denLow);
+            if (reading > start)
+            {
+                uint16_t dr = reading - start;
+                if (dr > denHigh)
+                    dr = denHigh;
+                return (int16_t)scale(dr, kHigh >> 16, kHigh & 0xFFFF);
+            }
+            if (reading < stop)
+            {
+                uint16_t dr = stop - reading;
+                if (dr > denLow)
+                    dr = denLow;
+                return -(int16_t)scale(dr, kLow >> 16, kLow & 0xFFFF);
+            }
+            return 0;
+        }
+
+        // The joystick chain from two readings (0 to 1023) to the two
+        // commands (-255 to 255): THE JOYSTICK EQUATIONS (v7.0.0),
+        // then the octant algorithm of Joystick.h.
         static void compute(uint16_t xDigital, uint16_t yDigital,
                             int16_t &left, int16_t &right)
         {
-            int16_t x = 2 * (int16_t)xDigital - 1023;
-            int16_t y = 2 * (int16_t)yDigital - 1023;
-            // Dead zones, X_OFFSET 0.05 and Y_OFFSET 0.06
-            if (x >= -51 && x <= 51)
-                x = 0;
-            if (y >= -61 && y <= 61)
-                y = 0;
+            int16_t x = axis<X_LOW, X_CENTER, X_HIGH>(xDigital);
+            int16_t y = axis<Y_LOW, Y_CENTER, Y_HIGH>(yDigital);
 
             int16_t ax = x < 0 ? -x : x;
             int16_t ay = y < 0 ? -y : y;
@@ -525,29 +630,13 @@ namespace csjc
             AcePin<RIGHT_EN>::pwm(0);
         }
 
-        // The joystick center correction (v6.4.0): the reading moves
-        // by CENTER - 511 and stays inside 0 to 1023, so a resting
-        // grip reads 511 and gives the command 0. For CENTER 511 the test below
-        // is
-        // false when the program is built, and no code is added.
-        template <uint16_t CENTER>
-        static inline uint16_t centered(uint16_t reading)
-        {
-            if (CENTER == 511)
-                return reading;
-            int16_t moved = (int16_t)reading - ((int16_t)CENTER - 511);
-            if (moved < 0)
-                return 0;
-            if (moved > 1023)
-                return 1023;
-            return (uint16_t)moved;
-        }
-
-        // One control tick: read, center, compute, drive
+        // One control tick: read, compute, drive. The center
+        // correction of v6.4.0 (centered()) is part of axis() since
+        // v7.0.0.
         static void tick()
         {
-            uint16_t xd = centered<X_CENTER>(adc<X_PIN>());
-            uint16_t yd = centered<Y_CENTER>(adc<Y_PIN>());
+            uint16_t xd = adc<X_PIN>();
+            uint16_t yd = adc<Y_PIN>();
             int16_t left;
             int16_t right;
             compute(xd, yd, left, right);

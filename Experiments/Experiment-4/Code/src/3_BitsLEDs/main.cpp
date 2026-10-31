@@ -15,7 +15,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
+//   2026-10-30  v7.3.0
 //   3_BitsLEDs/main.cpp last changed: 2026-10-12  v2.4.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //

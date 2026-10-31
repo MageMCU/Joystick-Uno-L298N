@@ -2,6 +2,15 @@
 
 The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
 
+## Changes in Release v7.3.0 (20261030)
+
+- **A sixth program.** `Code-JUL/src` adds Step6_Circuit, the test of Circuit-4 (Article 1009, Appendix C). The `build_src_filter` settings of the lab cards of Experiments 2 and 5 to 9 carry the sixth line `-<Step6_Circuit/>`, so each setting still selects one program. The labs are unchanged.
+
+## Changes in Release v7.2.0 (20261029)
+
+- **Fast Drive tick.** Step4_Generated, printed by Step3_Generator, ticks every 45 ms (`TICK_MS` of `ace.h`; 50 ms from v3.2.0). The Experiment-5 lab card gives the new tick. Simple Drive, Step2_JUL, keeps 100 ms. The 13 lab programs build to the same Intel HEX as v7.1.0.
+- **Step1 report.** Step1_Joystick prints its report in the format of the bench test check list, and a star marks each line of values to copy; the Step1 table of `LAB-NOTEBOOK-TEMPLATE.md` takes the same raw values.
+
 ## Changes in Release v6.8.0 (20261028)
 
 - **Line names.** The lab cards name the lines they cite (for example the Button line of `setup()`, the `analogRead()` lines, the debug switch lines of Step2_JUL) instead of giving line numbers, so a moved line no longer makes a card wrong. This closes Discrepancies.md, 219.

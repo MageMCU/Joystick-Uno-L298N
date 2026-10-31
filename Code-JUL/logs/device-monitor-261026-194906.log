@@ -1,0 +1,31 @@
+ button; the LED on D12 shows ON.
+, D7 HIGH for -
+  Right command: EN D10, D9 HIGH for +, D8 HIGH for -
+Ready: press the push button; the LED on D12 shows ON.
+
+................................................
+Step4_Generated: the drive program printed by Step3_Generator
+Selected in platformio.ini: +<Step4_Generated/>
+Step4_Generated: data checked in Step3_Generator
+Joystick measurements (JoystickMeasurements.h, Step1_Joystick)
+  A0 low 0  center 517 (offset 6)  high 1020
+  A1 low 0  center 503 (offset -8)  high 1020
+  Dead zone 25 counts
+L298N pins (Step2_JUL, the six pin lines)
+  ENB  D5   (PD5)
+  IN4  D6   (PD6)
+  IN3  D7   (PD7)
+  IN2  D8   (PB0)
+  IN1  D9   (PB1)
+  ENA  D10  (PB2)
+Push button and LED (Step2_JUL, buttonPin and ledPin)
+  SW   D2   (PD2)
+  LED  D12  (PB4)
+Joystick (Step2_JUL, the analogRead() lines)
+  int xDigital = analogRead(A0);  x on A0 (PC0)
+  int yDigital = analogRead(A1);  y on A1 (PC1)
+Bits value (Step2_JUL, the Bits() line)
+  motors.Bits(BitsL298N::bits_1101);
+  Left command:  EN D5, D6 HIGH for +, D7 HIGH for -
+  Right command: EN D10, D9 HIGH for +, D8 HIGH for -
+Ready: press the push button; the LED on D12 shows ON.

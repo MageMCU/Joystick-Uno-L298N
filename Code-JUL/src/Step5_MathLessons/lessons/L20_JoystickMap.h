@@ -17,8 +17,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
-//   L20_JoystickMap.h last changed: 2026-10-27  v6.7.0
+//   2026-10-30  v7.3.0
+//   L20_JoystickMap.h last changed: 2026-10-28  v7.0.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Lesson 20 (v6.1.0): the full range map and the two segment map on
@@ -29,15 +29,18 @@
 // line, 0 to 1023 onto -1 to 1, which assumes the center is 511, and
 // then set values inside the dead zone (X_OFFSET 0.05, Y_OFFSET 0.06)
 // to 0. Since v6.4.0 Step4_Generated (ace.h) first moves each reading
-// by the center of include/JoystickCenter.h; Step2_JUL does not. Lesson 3,
-// topic 3, introduces the two segment map: low to
+// by the center of include/JoystickCenter.h; Step2_JUL does not. Since
+// v7.0.0 Step4_Generated corrects each axis with two segments as well
+// (THE JOYSTICK EQUATIONS of ace.h, with a dead zone and an inset of
+// the ends). Lesson 3, topic 3, introduces the two segment map: low to
 // center onto -1 to 0, center to high onto 0 to 1, from the readings
 // that the Step1_Joystick self test measures.
 //
-// Before the upload, copy the low and high readings of A0 and A1 from
-// a Step1_Joystick report into the four constants below; the two
-// centers are read from include/JoystickCenter.h (v6.4.1), the file
-// the reader copied from the same report.
+// Since v7.0.0 all six values (low end, center, and high end of A0
+// and A1) are read from include/JoystickMeasurements.h, the file
+// Step1_Joystick prints and the reader copies; nothing is copied by
+// hand (up to v6.8.0 the four low and high values were copied into
+// this file and the centers read from include/JoystickCenter.h).
 // Once per second the lesson prints, for each axis, the raw reading,
 // the full range map, the full range map after the dead zone, and the
 // two segment map. Leave the grip at rest, then hold it at each edge.
@@ -55,25 +58,23 @@
 #include <Arduino.h>
 #include "Timer.h"
 #include "numerics/LinearMap.h"
-// v6.4.1: the centers printed by Step1_Joystick
-#include "JoystickCenter.h"
+// v7.0.0: the measurements printed by Step1_Joystick
+#include "JoystickMeasurements.h"
 
 namespace L20_JoystickMap
 {
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
 
-// ---------- Copy these from a Step1_Joystick report ----------
-// v6.4.1: the two centers come from include/JoystickCenter.h, the
-// file Step1_Joystick prints and the reader copies (shipped 511, 511);
-// copy only the four low and high values below.
-const float A0_LOW = 0;
+// v7.0.0: all six values come from include/JoystickMeasurements.h,
+// the file Step1_Joystick prints and the reader copies (shipped 0,
+// 511, and 1023 for each axis)
+const float A0_LOW = JOYSTICK_A0_LOW;
 const float A0_CENTER = JOYSTICK_A0_CENTER;
-const float A0_HIGH = 1023;
-const float A1_LOW = 0;
+const float A0_HIGH = JOYSTICK_A0_HIGH;
+const float A1_LOW = JOYSTICK_A1_LOW;
 const float A1_CENTER = JOYSTICK_A1_CENTER;
-const float A1_HIGH = 1023;
-// --------------------------------------------------------------
+const float A1_HIGH = JOYSTICK_A1_HIGH;
 
 // The dead zones of Step2_JUL (X_OFFSET and Y_OFFSET)
 const float X_OFFSET = 0.05;
@@ -147,10 +148,9 @@ void printConstants(const __FlashStringHelper *name, float low, float center,
 // What is learnt:
 //   Two maps, one input: fullRange.Map() (Step2_JUL) and twoSegment()
 //                  (the Step1_Joystick measurements, lesson 3, T03).
-//   Constants from measurement: the four low and high values at the top
-//                  of the file are copied from the Step1_Joystick report
-//                  before upload; the two centers come from
-//                  include/JoystickCenter.h (v6.4.1).
+//   Constants from measurement: the six values come from
+//                  include/JoystickMeasurements.h (v7.0.0), printed by
+//                  Step1_Joystick.
 //   Objects declared globally and assigned in Setup(): belowA0 =
 //                  LinearMap<float>(...); builds each map once.
 //   F() text and a dotted line mark each new output.
@@ -158,7 +158,7 @@ void printConstants(const __FlashStringHelper *name, float low, float center,
 // Expected output (bench, grip at rest, values copied in):
 //   A0  low 12  center 498  high 1010  dead zone offset 0.05
 //   A1  low 8  center 523  high 1015  dead zone offset 0.06
-//   Centers: include/JoystickCenter.h; low and high: this file
+//   Values: include/JoystickMeasurements.h
 //   (v6.4.1: the constants, printed once), then once per second
 //   A0  raw 508  full range -0.007  after dead zone 0.000  two segment 0.000
 //   At an edge the two segment column reads -1.000 or 1.000.
@@ -204,8 +204,7 @@ void Setup()
     // v6.4.1: the constants of the two maps and of the dead zone.
     printConstants(F("A0"), A0_LOW, A0_CENTER, A0_HIGH, X_OFFSET);
     printConstants(F("A1"), A1_LOW, A1_CENTER, A1_HIGH, Y_OFFSET);
-    Serial.println(F( \
-        "Centers: include/JoystickCenter.h; low and high: this file"));
+    Serial.println(F("Values: include/JoystickMeasurements.h"));
     timer.resetTimer();
 }
 

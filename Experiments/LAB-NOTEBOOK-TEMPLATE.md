@@ -5,7 +5,7 @@ experiments. This template is a guide for the entries; preserve original
 observations and do not replace them with corrected values after the fact.
 If an entry needs correction, add a dated note explaining the change.
 
-**Bench status:** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1), with the indicator LED on D12, and again on 20261028 (release v6.7.0); all passed. Since v6.0.0 Step1_Joystick is a self test that reports PASS or FAIL, since v6.2.0 each test waits for Enter, and since v6.3.0 the program asks for Enter before Test 1 (bench test pending); Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, at the top of the program, 3000 ms control tick), Step4_Generated ticks every 50 ms, and the upload port must be set in `platformio.ini`. The other labs and the math lessons are build checked and simulated, and their bench tests are pending. Since v5.0.0 a math lesson is selected with `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp`. Record the release tag of the code used in each entry. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
+**Bench status:** The author bench tested Step1_Joystick, Step2_JUL, Step3_Generator, and Step4_Generated on 20261021 (release v4.0.1), with the indicator LED on D12, and again on 20261028 (release v6.7.0); all passed. Since v6.0.0 Step1_Joystick is a self test that reports PASS or FAIL, since v6.2.0 each test waits for Enter, and since v6.3.0 the program asks for Enter before Test 1 (bench test pending); Step2_JUL ships with both debug switches on (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, at the top of the program, 3000 ms control tick), Step4_Generated ticks every 45 ms (v7.2.0), and the upload port must be set in `platformio.ini`. The other labs and the math lessons are build checked and simulated, and their bench tests are pending. Since v5.0.0 a math lesson is selected with `#define LESSON` in `Code-JUL/src/Step5_MathLessons/main.cpp`. Record the release tag of the code used in each entry. This template does not authorize a powered test. Review the [experiment safety notice](../Experiments.md), Article 1009, Safety and Supervision, and the
 [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Black-box inquiry record
@@ -90,18 +90,22 @@ The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
 
 ### Step1: the Step1_Joystick self test (Article 1009)
 
-Motor supply off. Press Enter at the start question, then copy the report from the serial monitor (v6.2.1: each test waits for Enter; any press during Tests 3 to 5 fails the self test; v6.3.0: the start question repeats every 3 s until Enter, and the report prints in aligned columns).
+Motor supply off. Press Enter at the start question, then copy the report from the serial monitor (v6.2.1: each test waits for Enter; any press during Tests 3 to 6 fails the self test; v6.3.0: the start question repeats every 3 s until Enter; v7.1.0: six tests, in the order of the bench test check list; v7.2.0: the report prints the check list format, and a star marks each line of values to copy).
 
-| Test | Reading at Enter | Pass or fail | Notes |
+| Test | Reading at Enter (raw, from the report) | Pass or fail | Notes |
 |------|------------------|--------------|-------|
 | 1 Button pressed and held | SW: | | LED on? |
 | 2 Button released | SW: | | LED off? |
-| 3 Grip at rest (center) | A0: ____ A1: ____ | | |
-| 4 To every edge (low, high) | A0: ____ ____ A1: ____ ____ | | |
-| 5 Released (rest) | A0: ____ A1: ____ | | |
-| Presses during Tests 3 to 5 | ____ (0 expected) | | |
+| 3 Grip at rest (CENTER) | A0C: ____ A1C: ____ | | |
+| 4 First entry, held UP | A0: ____ A1: ____ | | |
+| 4 First entry, held DOWN | A0: ____ A1: ____ | | |
+| 4 First entry, held LEFT | A0: ____ A1: ____ | | |
+| 4 First entry, held RIGHT | A0: ____ A1: ____ | | |
+| 5 Second entry, circle twice | A0SL: ____ A0SH: ____ A1SL: ____ A1SH: ____ | | |
+| 6 Released (Return) | A0: ____ A1: ____ | | |
+| Presses during Tests 3 to 6 | ____ (0 expected) | | |
 
-The four `map()` lines of a PASS report, or the wire checked after a FAIL: ________
+The six values of the printed `JoystickMeasurements.h`, or the wire checked after a FAIL: ________
 
 ### Experiment-1: Timing and button input
 

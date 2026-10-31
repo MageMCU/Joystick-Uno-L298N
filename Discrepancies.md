@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated October 28, 2026 (v6.8.0); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated October 29, 2026 (v7.2.0); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 Open as of 2026-10-12: 11 (Article 1000 axis mapping), 29 (bench check of the joystick power procedure only), 36 (Experiment-5, Lab 3, step 4, against Article 1009), 37 (tag v2.4.0 and Bibliography [1] date), 38 (Eberly credits for the matrix and quaternion fixes, author decision).
 
@@ -11,6 +11,12 @@ Open as of 2026-10-17 (v3.0.1): 61 (the line 31 filter printed in Article 1009).
 Open as of 2026-10-18 (v3.1.0): 68 (Experiment-5 Lab 1 and lessons 17 and 19 keep x on A1 and y on A0), 69 (Article 1009, folder names, joystick lines, and the generator).
 
 Open as of 2026-10-18 (v3.1.1): 71 (button polarity of Step3_Generated).
+
+Open as of 2026-10-29 (v7.2.0): 233 (Article 1009 Code images, author check); 250 (Article 1009: the report format, the 45 ms tick, release v7.2.0); 247 and 248 (author check); 107 (release tags); bench test of v7.2.0 by the author. 243 is open for Article 1009 only.
+
+Open as of 2026-10-28 (v7.1.0): 233 (Article 1009 Code images, author check); 239 and 243 (Article 1009: the file, Fast Drive, and the six tests of Step1_Joystick); 107 (release tags); bench test of v7.1.0 by the author.
+
+Open as of 2026-10-28 (v7.0.0): 233 (Article 1009 Code images, author check); 239 (Article 1009 and the bench test check lists for v7.0.0); 107 (release tags); bench test of v7.0.0 by the author. The bench test of v6.8.0 passed.
 
 Open as of 2026-10-28 (v6.8.0): 233 (Article 1009 Code images and the Step2_JUL header, author check); 107 (release tags: commands in 227); bench test of v6.8.0 by the author. 219 is closed.
 
@@ -65,6 +71,44 @@ Open as of 2026-10-22 (v6.2.3): 107 (release tags not on GitHub); 137 and 152 (b
 Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.0, with the Step1_Joystick of 188 and 189), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests; 192 and 193 (author decisions).
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
+
+## The Check List Format in Step1; Fast Drive Tick 45 ms (2026-10-29, v7.2.0)
+
+Requested by the author after his bench test of v7.1.0.a: the check list and the Step1 report could not be read side by side. Review method: the report format agreed with the author compared line by line with the output of Step1_Joystick run on the host with the readings of the author's log; every program built and compared with v7.1.0; Step3_Generator run in simavr; the README and the other Markdown files read for the tick, the report, and the release.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 244 | The check list and the Step1 report used different layouts: the report printed each equation with its values in it, the verification gave the direction in another place than the Ends line, and the results were text lines; the student had to translate while copying (bench test of v7.1.0.a: a center copied as 489 for 498). | Step1_Joystick; check list | **Fixed 2026-10-29 (v7.2.0).** One format for both: the equations once, then tables of values, raw first; a star marks each line of values for the check list; RESULTS in a table. |
+| 245 | The author asked for a faster Fast Drive tick. A tick takes about 249 µs, so 45 ms leaves ample time. | `ace.h`, Step3_Generator, Step4_Generated, documents | **Fixed 2026-10-29 (v7.2.0).** `TICK_MS` 45 ms (50 ms from v3.2.0); `DEBOUNCE_MS` stays 50 ms. |
+| 246 | The v3.1.1 note of `ace.h` cited line 45 of Step2_JUL; that line has moved. | `ace.h` | **Fixed 2026-10-29 (v7.2.0).** Names the line `pinMode(buttonPin, INPUT)`. |
+| 247 | In the author's bench log of Step4_Generated the Ready line reads "D12shows"; the program in the Step3_Generator log reads "D12 shows". The space was lost when the printed program was copied into `Step4_Generated/main.cpp`. | Bench copy of `Step4_Generated/main.cpp` | **Open (author check).** Copy from the log file (log2file), not from the monitor window; the shipped file is correct. |
+| 248 | The PlatformIO log files of the bench test are named 261026 (yymmdd), while the programs print the release of 2026-10-28; the date of the bench computer may be wrong. | Bench computer | **Open (author check).** Check the date and time of the computer before the next bench test; the log names are the record of the test. |
+| 249 | `Code-JUL/README.md`, the Step1_Joystick row, said that a press during Tests 3 to 5 fails the self test; since v7.1.0 it is Tests 3 to 6. | `Code-JUL/README.md` | **Fixed 2026-10-29 (v7.2.0).** |
+| 250 | Article 1009 shows the report of v7.1.0 (one equation per line), the 50 ms tick of Fast Drive, and cites release v7.1.0. | Article 1009 | **Open (author).** Replacement Wording 20261029b. |
+
+## Step1 Follows the Bench Test Check List (2026-10-28, v7.1.0)
+
+Requested by the author: the bench test check list leads; Step1_Joystick follows its order and prints every value it records. Review method: the equations of the check list compared line by line with the code of Step1_Joystick; every program built; Step1_Joystick run on the host with a scripted joystick for a pass, the two warnings, and a fail.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 240 | The check list recorded the grip held UP, DOWN, LEFT, and RIGHT as raw data; Step1_Joystick had no such test, only the live values, one reading every 250 ms, read off a scrolling monitor. | Step1_Joystick, check lists | **Fixed 2026-10-28 (v7.1.0).** Test 4, the first entry, holds each direction and takes the average of 16 readings; its smallest and largest reading of each axis are the ends of the file. |
+| 241 | The check list verified the ends (circle end minus the held reading nearest to it); Step1_Joystick did not compute it, and the circle came before the held directions. | Step1_Joystick | **Fixed 2026-10-28 (v7.1.0).** Test 5, the second entry, after Test 4; the verification names the direction of each held end (A0HD, A0LD, A1HD, A1LD), with a warning outside -5 to 10. Return is Test 6. |
+| 242 | "They match" required equal centers; two measurements of the same joystick differ by a count (the average of 16 readings), so a rerun could print "They differ". | Step1_Joystick | **Fixed 2026-10-28 (v7.1.0).** Centers within 1 count, ends within 10 counts. |
+| 243 | The documents and the lab notebook described five tests and a table of low, center, high, and rest readings. | `README.md`, `Code-JUL/README.md`, `LAB-NOTEBOOK-TEMPLATE.md`; Article 1009 | **Fixed 2026-10-28 (v7.1.0)** in the repository. **Open** for Article 1009 (author). |
+
+## The Joystick Equations; Review of v6.8.0 (2026-10-28, v7.0.0)
+
+Requested by the author: correct the joystick at the center and at both ends with linear equations, rename the measurement file, and review v6.8.0 for correctness and discrepancies. Review method: every program, lesson, and lab built with avr-gcc 7.3.0 and ArduinoCore-avr 1.8.6 (no warnings); coding rules and house style checked by script over every file; documents read against the code.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 234 | The documents said that Simple Drive and Fast Drive set the same motor pins for the same joystick readings. True up to v6.3.1; from v6.4.0 Fast Drive moved each reading by the measured center and Step2_JUL did not, so the commands differed for any center other than 511. | `README.md`, `Code-JUL/README.md`, Experiment-5 lab card | **Fixed 2026-10-28 (v7.0.0).** The texts say that both drives use the octant algorithm and that the commands may differ, and why. |
+| 235 | The Status of v6.8.0 said its bench test was pending; the author bench tested v6.8.0.a on 2026-10-28: passed, and pushed it. | `README.md`, `Code-JUL/README.md` | **Fixed 2026-10-28 (v7.0.0).** Bench result recorded. |
+| 236 | The comment of `centered()` in `ace.h` was wrapped after "test below" and after "is" (three lines for one sentence). | `ace.h` | **Fixed 2026-10-28 (v7.0.0).** `centered()` is removed (237). |
+| 237 | `ace.h` corrected the center only. With an off center joystick one side lost up to 25 of 255 duty steps at full push (center 461: -230 at the low end), and a joystick that stops short of 0 and 1023 lost about 30 on both sides; the dead zone, applied after the map, made the duty step from 0 to 13 at its edge. | `ace.h` | **Fixed 2026-10-28 (v7.0.0).** THE JOYSTICK EQUATIONS: full command at both measured ends (moved in by 10 counts), equal response on both sides, dead zone of 25 counts inside the equations, no step. Simulation and performance reports of 20261028. |
+| 238 | `JoystickCenter.h` held the centers only; the ends measured by Test 4 were printed in the report but not kept, and lesson 20 had them copied by hand. | `include/`, Step1_Joystick, Step3_Generator, lessons 17 and 20 | **Fixed 2026-10-28 (v7.0.0).** `JoystickMeasurements.h` with the low end, center, and high end of each axis. The rename makes the release MAJOR. |
+| 239 | Article 1009 describes `JoystickCenter.h`, the Step1 report, Check 1, and Fast Drive as of v6.8.0; the bench test check lists record the centers only. | Article 1009; check lists | **Open.** Author: Article 1009 before the push; check lists updated 20261028. |
 
 ## RELEASE Block; Report and Summary in the Printed Files (2026-10-28, v6.8.0)
 

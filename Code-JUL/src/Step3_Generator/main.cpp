@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
-//   Step3_Generator/main.cpp last changed: 2026-10-28  v6.8.0
+//   2026-10-30  v7.3.0
+//   Step3_Generator/main.cpp last changed: 2026-10-30  v7.3.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Added 20261017. Written with Claude (Anthropic), an AI assistant;
@@ -50,10 +50,21 @@
 // written into the printed program, under its comment header
 // (SUMMARY), in place of the section DATA CHECKED IN STEP3_GENERATOR,
 // and the printed program carries the RELEASE block.
+// Revised 20261028 (v7.0.0): Check 1 shows the six values of
+// include/JoystickMeasurements.h (in place of include/JoystickCenter.h):
+// the low end, center, and high end of each axis. The printed program
+// passes them to ace.h, with DEAD_ZONE (25 counts), for THE JOYSTICK
+// EQUATIONS, which correct each axis at the center and both ends.
+// Revised 20261028 (v7.1.0): the printed program carries the release
+// v7.1.0; nothing else changed (Step1_Joystick finds the ends with
+// the grip held at each edge since v7.1.0).
+// Revised 20261029 (v7.2.0): requested by the author. The printed
+// program sets the control tick TICK_MS = 45 (50 from v3.2.0), the
+// new default of include/claude/ace.h, and carries the release v7.2.0.
 //
 // STEPS 1 TO 5
 //   Step1_Joystick:    checks the joystick connections first and
-//                      prints include/JoystickCenter.h.
+//                      prints include/JoystickMeasurements.h.
 //   Step2_JUL:         the drive program. The Motor Movement Checklist
 //                      finds its Bits() value (Article 1009, L298N
 //                      Setup). The joystick lines stay as written,
@@ -66,15 +77,17 @@
 //                      Step4_Generated.
 //   Step4_Generated:   the printed program. It drives the robot as
 //                      Step2_JUL does, with the Bits() value fixed
-//                      when it is built, through include/claude/ace.h.
+//                      when it is built, through include/claude/ace.h,
+//                      which also corrects the joystick (v7.0.0).
 //   Step5_MathLessons: math lessons, not used by Steps 2 to 4.
 //
 // THE CHECKS AND THE QUESTIONS
-//   Check 1: the joystick center of include/JoystickCenter.h, the
-//            rest reading of A0 and A1. Type y if it matches the
-//            report of Step1_Joystick (511 and 511 as shipped). For n,
-//            replace include/JoystickCenter.h with the lines printed
-//            by Step1_Joystick and upload this program again.
+//   Check 1: the joystick measurements of
+//            include/JoystickMeasurements.h, the low end, center, and
+//            high end of A0 and A1. Type y if they match the report of
+//            Step1_Joystick (0, 511, and 1023 as shipped). For n,
+//            replace include/JoystickMeasurements.h with the lines
+//            printed by Step1_Joystick and upload this program again.
 //   Check 2: the six L298N pins, the push button, and the LED, each
 //            as an Uno pin and an ATmega328P port pin, for example
 //            D5 (PD5). Type y if they match the buttonPin, ledPin, and
@@ -119,7 +132,7 @@
 //
 // Build: in platformio.ini, select this program with
 //   build_src_filter: +<Step3_Generator/>, and - before the
-//   other four folders
+//   other five folders
 // then Upload and Monitor. Serial monitor: 9600 baud. The PlatformIO
 // monitor also saves the output in a log file (monitor_filters =
 // log2file in platformio.ini), so the printed program can be copied
@@ -136,7 +149,7 @@
 #include <Arduino.h>
 #include "L298N.h"
 #include "claude/L298NPins.h"
-#include "JoystickCenter.h"
+#include "JoystickMeasurements.h"
 
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
@@ -163,12 +176,26 @@ const uint8_t LED_PIN = 12;
 // not changed
 const uint8_t X_PIN = A0;
 const uint8_t Y_PIN = A1;
-// Joystick center, from include/JoystickCenter.h (v6.4.0)
+// Joystick measurements, from include/JoystickMeasurements.h
+// (v7.0.0; the centers since v6.4.0)
+const uint16_t X_LOW = JOYSTICK_A0_LOW;
 const uint16_t X_CENTER = JOYSTICK_A0_CENTER;
+const uint16_t X_HIGH = JOYSTICK_A0_HIGH;
+const uint16_t Y_LOW = JOYSTICK_A1_LOW;
 const uint16_t Y_CENTER = JOYSTICK_A1_CENTER;
+const uint16_t Y_HIGH = JOYSTICK_A1_HIGH;
+// Dead zone of THE JOYSTICK EQUATIONS, in counts (v7.0.0)
+const uint16_t DEAD_ZONE = 25;
 #if JOYSTICK_A0_CENTER < 461 || JOYSTICK_A0_CENTER > 561 || \
     JOYSTICK_A1_CENTER < 461 || JOYSTICK_A1_CENTER > 561
-#error "JoystickCenter.h: each center must be 461 to 561 (Step1, Test 3)"
+#error "JoystickMeasurements.h: each center must be 461 to 561 (Step1)"
+#endif
+#if JOYSTICK_A0_CENTER - JOYSTICK_A0_LOW < 200 || \
+    JOYSTICK_A0_HIGH - JOYSTICK_A0_CENTER < 200 || \
+    JOYSTICK_A1_CENTER - JOYSTICK_A1_LOW < 200 || \
+    JOYSTICK_A1_HIGH - JOYSTICK_A1_CENTER < 200 || \
+    JOYSTICK_A0_HIGH > 1023 || JOYSTICK_A1_HIGH > 1023
+#error "JoystickMeasurements.h: each end 200 counts from its center (Step1)"
 #endif
 
 // Filled by the answers
@@ -242,23 +269,29 @@ void pinLine(LineMode mode, const char *name, uint8_t pin)
     emit(mode);
 }
 
-// Check 1 data: the joystick center (v6.4.0)
+// Check 1 data: the joystick measurements (v7.0.0; the center
+// since v6.4.0)
 void centerLines(LineMode mode)
 {
     snprintf_P(lineBuffer, sizeof(lineBuffer),
                PSTR( \
-                   "Joystick center (include/JoystickCenter.h, " \
+                   "Joystick measurements (JoystickMeasurements.h, " \
                    "Step1_Joystick)"));
     emit(mode);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
                PSTR( \
-                   "  A0 center %u (offset " \
-                   "%d)"), X_CENTER, (int)X_CENTER - 511);
+                   "  A0 low %u  center %u (offset %d)  " \
+                   "high %u"),
+               X_LOW, X_CENTER, (int)X_CENTER - 511, X_HIGH);
     emit(mode);
     snprintf_P(lineBuffer, sizeof(lineBuffer),
                PSTR( \
-                   "  A1 center %u (offset " \
-                   "%d)"), Y_CENTER, (int)Y_CENTER - 511);
+                   "  A1 low %u  center %u (offset %d)  " \
+                   "high %u"),
+               Y_LOW, Y_CENTER, (int)Y_CENTER - 511, Y_HIGH);
+    emit(mode);
+    snprintf_P(lineBuffer, sizeof(lineBuffer),
+               PSTR("  Dead zone %u counts"), DEAD_ZONE);
     emit(mode);
 }
 
@@ -448,12 +481,12 @@ void printDots()
     Serial.println(F("................................................"));
 }
 
-// Check 1: returns true when the student confirms the center
+// Check 1: returns true when the student confirms the measurements
 bool checkCenter()
 {
     printDots();
     Serial.println(F( \
-        "Check 1 of 5: the joystick center measured by Step1_Joystick"));
+        "Check 1 of 5: the joystick measured by Step1_Joystick"));
     centerLines(MONITOR);
     Serial.println(F("Does it match the report of Step1_Joystick?"));
     if (askYesNo())
@@ -462,8 +495,9 @@ bool checkCenter()
         return true;
     }
     Serial.println(F( \
-        "  Replace include/JoystickCenter.h with the lines printed by"));
-    Serial.println(F("  Step1_Joystick, then upload this program again."));
+        "  Replace include/JoystickMeasurements.h with the lines printed"));
+    Serial.println(F( \
+        "  by Step1_Joystick, then upload this program again."));
     return false;
 }
 
@@ -592,6 +626,16 @@ void printConst(const __FlashStringHelper *name, uint8_t value)
     Serial.println(';');
 }
 
+// One uint16_t constant of the printed program (v7.0.0)
+void printValue(const __FlashStringHelper *name, uint16_t value)
+{
+    Serial.print(F("const uint16_t "));
+    Serial.print(name);
+    Serial.print(F(" = "));
+    Serial.print(value);
+    Serial.println(';');
+}
+
 // Prints the Step4_Generated main.cpp for the answers
 void printProgram()
 {
@@ -618,7 +662,7 @@ void printProgram()
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
     Serial.println(F("// RELEASE"));
-    Serial.println(F("//   2026-10-28  v6.8.0"));
+    Serial.println(F("//   2026-10-30  v7.3.0"));
     Serial.println(F( \
         "//   Step4_Generated/main.cpp printed by Step3_Generator"));
     Serial.println(F( \
@@ -642,9 +686,11 @@ void printProgram()
         "//                    Setup). The joystick lines stay as written,"));
     Serial.println(F("//                    x on A0 and y on A1."));
     Serial.println(F( \
-        "//   Step3_Generator: checks the joystick center, the pins, and the"));
+        "//   Step3_Generator: checks the joystick measurements, the pins, " \
+        "and"));
     Serial.println(F( \
-        "//                    joystick lines, asks for the Bits() value and"));
+        "//                    the joystick lines, asks for the Bits() value " \
+        "and"));
     Serial.println(F( \
         "//                    the debug data, and prints this file with " \
         "the"));
@@ -685,16 +731,17 @@ void printProgram()
     Serial.println(F( \
         "// and is never edited; a new run of Step3 changes only this file."));
     Serial.println(F( \
-        "// For the same joystick readings it sets the same pin states as"));
+        "// It uses the octant algorithm of Step2_JUL, with a control tick"));
     Serial.println(F( \
-        "// Step2_JUL, with a control tick about 2.5 times faster (see " \
-        "ace.h)."));
+        "// about 2.5 times faster (see ace.h). ace.h also corrects"));
     Serial.println(F( \
-        "// ace.h also moves each reading by the joystick center (X_CENTER"));
+        "// each axis at the center and both ends with THE JOYSTICK"));
     Serial.println(F( \
-        "// and Y_CENTER below); Step2_JUL keeps the center 511."));
+        "// EQUATIONS, from the measurements and the dead zone below;"));
     Serial.println(F( \
-        "// The tick repeats every 50 ms (TICK_MS of ace.h); Step2_JUL uses"));
+        "// Step2_JUL keeps the center 511 and its float dead zones."));
+    Serial.println(F( \
+        "// The tick repeats every 45 ms (TICK_MS of ace.h); Step2_JUL uses"));
     Serial.println(F("// 100 ms."));
     Serial.println(F("//"));
     Serial.print(F("// Push button: SW on D"));
@@ -707,7 +754,7 @@ void printProgram()
     Serial.println(F("// Build: in platformio.ini, select this program with"));
     Serial.println(F( \
         "//   build_src_filter: +<Step4_Generated/>, and - before the"));
-    Serial.println(F("//   other four folders"));
+    Serial.println(F("//   other five folders"));
     Serial.println(F( \
         "// In a project of its own, copy include/claude/ace.h with this " \
         "file."));
@@ -761,24 +808,27 @@ void printProgram()
     Serial.println();
     Serial.println(F( \
         "// Control tick and debounce, in ms (the defaults of ace.h)"));
-    Serial.println(F("const uint16_t TICK_MS = 50;"));
+    Serial.println(F("const uint16_t TICK_MS = 45;"));
     Serial.println(F("const uint16_t DEBOUNCE_MS = 50;"));
     Serial.println();
     Serial.println(F( \
-        "// Joystick center measured by Step1_Joystick (JoystickCenter.h):"));
-    Serial.println(F("// X_CENTER of A0, Y_CENTER of A1"));
-    Serial.print(F("const uint16_t X_CENTER = "));
-    Serial.print(X_CENTER);
-    Serial.println(';');
-    Serial.print(F("const uint16_t Y_CENTER = "));
-    Serial.print(Y_CENTER);
-    Serial.println(';');
+        "// Joystick measured by Step1_Joystick (JoystickMeasurements.h),"));
+    Serial.println(F("// raw ADC counts: X of A0, Y of A1"));
+    printValue(F("X_LOW"), X_LOW);
+    printValue(F("X_CENTER"), X_CENTER);
+    printValue(F("X_HIGH"), X_HIGH);
+    printValue(F("Y_LOW"), Y_LOW);
+    printValue(F("Y_CENTER"), Y_CENTER);
+    printValue(F("Y_HIGH"), Y_HIGH);
+    Serial.println(F("// Dead zone of THE JOYSTICK EQUATIONS, in counts"));
+    printValue(F("DEAD_ZONE"), DEAD_ZONE);
     Serial.println();
     Serial.println(F("Ace<X_PIN, Y_PIN,"));
     Serial.println(F("    LEFT_EN, LEFT_FWD, LEFT_REV,"));
     Serial.println(F("    RIGHT_EN, RIGHT_FWD, RIGHT_REV,"));
     Serial.println(F("    BUTTON_PIN, LED_PIN, TICK_MS, DEBOUNCE_MS,"));
-    Serial.println(F("    X_CENTER, Y_CENTER> robot;"));
+    Serial.println(F("    X_CENTER, Y_CENTER, X_LOW, X_HIGH, Y_LOW, Y_HIGH,"));
+    Serial.println(F("    DEAD_ZONE> robot;"));
     Serial.println();
     Serial.println(F("void setup()"));
     Serial.println(F("{"));
@@ -822,7 +872,7 @@ void printProgram()
     Serial.println(F("void loop()"));
     Serial.println(F("{"));
     Serial.println(F( \
-        "    // Button, 50 ms timer, and one control tick when the timer " \
+        "    // Button, 45 ms timer, and one control tick when the timer " \
         "fires"));
     Serial.println(F("    robot.update();"));
     Serial.println(F("}"));

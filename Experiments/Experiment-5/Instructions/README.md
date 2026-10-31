@@ -17,7 +17,7 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
 ## Notes for the bench
 
 - Lab 1: leave the two `analogRead()` lines of `loop()` as shipped, x on A0 and y on A1, the lines of Step2_JUL since v3.1.0 (changed here in v3.2.0; up to v3.1.2 this lab read x on A1 and y on A0; see Discrepancies.md, 68). `setup()` first sets D5 to D10 as outputs and LOW; upload and open the serial monitor before the bench supply is applied, and remove the supply before any upload or reset.
-- Lab 3 uses the Code-JUL folder with Step2_JUL selected in platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick, which checks the joystick first; in `build_src_filter`, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other four folders the sign `-`):
+- Lab 3 uses the Code-JUL folder with Step2_JUL selected in platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick, which checks the joystick first; in `build_src_filter`, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other five folders the sign `-`):
 
   ```
   build_src_filter =
@@ -27,6 +27,7 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
       -<Step3_Generator/>
       -<Step4_Generated/>
       -<Step5_MathLessons/>
+      -<Step6_Circuit/>
   ```
 
   Since v3.0.1 the shipped line also excludes the generator programs, named Step2_Generator and Step3_Generated since v3.1.0, when the math lessons became Step4_MathLessons.
@@ -38,9 +39,9 @@ Project folder: open `Experiments/Experiment-5/Code` in Visual Studio Code, neve
   | Drive | What to do | Control tick |
   |---|---|---|
   | Simple Drive, Step2_JUL | Comment out the two debug switch lines of Step2_JUL (`DEBUG_STEP2_JOYSTICK`, `DEBUG_STEP2_L298N`), then upload Step2_JUL again | 100 ms |
-  | Fast Drive, Step3_Generator and Step4_Generated (optional, advanced) | With the motor supply off, select Step3_Generator, answer its checks with the value found, copy the printed program into `Code-JUL/src/Step4_Generated/main.cpp`, select Step4_Generated, and upload it; apply the motor supply after the upload | 50 ms |
+  | Fast Drive, Step3_Generator and Step4_Generated (optional, advanced) | With the motor supply off, select Step3_Generator, answer its checks with the value found, copy the printed program into `Code-JUL/src/Step4_Generated/main.cpp`, select Step4_Generated, and upload it; apply the motor supply after the upload | 45 ms |
 
-  Both drives set the same motor pins for the same joystick readings, with the center offsets of Step2_JUL as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06); `ace.h` keeps these values, so offsets changed in Experiment-6 apply to Simple Drive only. Fast Drive uses `include/claude/ace.h` only, not `Common.h`; its `DEBUG_GENERATED` output prints once at startup and may stay on; press the push button after the line Ready (v6.2.3). The `build_src_filter` lines for Step3_Generator and Step4_Generated are in `Code-JUL/platformio.ini` (notes below the filter) and `Code-JUL/README.md` (Selecting a Program); Article 1009 gives the Fast Drive procedure step by step (Step3 and Step4).
+  Both drives use the octant algorithm of Joystick.h. Simple Drive keeps the center 511 and the center offsets of Step2_JUL as shipped (X_OFFSET 0.05 and Y_OFFSET 0.06), so offsets changed in Experiment-6 apply to Simple Drive only. Since v7.0.0 Fast Drive corrects each axis at the center and both ends from `include/JoystickMeasurements.h`, with a dead zone of 25 counts, so the two drives may give different commands for the same readings. Fast Drive uses `include/claude/ace.h` only, not `Common.h`; its `DEBUG_GENERATED` output prints once at startup and may stay on; press the push button after the line Ready (v6.2.3). The `build_src_filter` lines for Step3_Generator and Step4_Generated are in `Code-JUL/platformio.ini` (notes below the filter) and `Code-JUL/README.md` (Selecting a Program); Article 1009 gives the Fast Drive procedure step by step (Step3 and Step4).
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

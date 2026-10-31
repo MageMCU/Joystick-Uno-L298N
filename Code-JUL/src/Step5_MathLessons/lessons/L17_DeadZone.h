@@ -17,8 +17,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-28  v6.8.0
-//   L17_DeadZone.h last changed: 2026-10-27  v6.7.0
+//   2026-10-30  v7.3.0
+//   L17_DeadZone.h last changed: 2026-10-28  v7.0.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Lesson 17: statistics of the joystick at rest and the dead zone.
@@ -45,7 +45,7 @@
 #include "numerics/LinearMap.h"
 #include "numerics/Statistics.h"
 // v6.4.1: the centers printed by Step1_Joystick
-#include "JoystickCenter.h"
+#include "JoystickMeasurements.h"
 
 namespace L17_DeadZone
 {
@@ -85,15 +85,16 @@ void report(const char *axis, float *data, float stepOffset, int fileCenter)
     Serial.println(")");
 
     // v6.4.1: the same average in ADC counts (Reverse() of lesson 3
-    // undoes the map), beside the center of include/JoystickCenter.h,
+    // undoes the map), beside the center of include/JoystickMeasurements.h,
     // and the offset measured about that center, the form Step4_Generated
-    // uses (ace.h moves each reading by the center before the dead zone).
+    // uses (ace.h measures its dead zone about the center; since v7.0.0
+    // it is DEAD_ZONE in counts, about the offset times 511.5).
     float fileCenterMapped = mapInput.Map((float)fileCenter);
     float aboutCenter = fabs(average - fileCenterMapped) + 3.0 * deviation;
     Serial.print(axis);
     Serial.print(F("  average in counts: "));
     Serial.print(mapInput.Reverse(average), 1);
-    Serial.print(F("  (JoystickCenter.h: "));
+    Serial.print(F("  (JoystickMeasurements.h: "));
     Serial.print(fileCenter);
     Serial.println(F(")"));
     Serial.print(axis);
@@ -119,7 +120,7 @@ void Setup()
     // v6.4.1: the inputs of the measurement.
     Serial.println(F( \
         "x on A0, y on A1; map 0 to 1023 onto -1 to 1 (Step2_JUL)"));
-    Serial.print(F("JoystickCenter.h: A0 "));
+    Serial.print(F("JoystickMeasurements.h: A0 "));
     Serial.print(JOYSTICK_A0_CENTER);
     Serial.print(F(", A1 "));
     Serial.println(JOYSTICK_A1_CENTER);
@@ -194,7 +195,7 @@ void measure()
 //   Parameters     const char *axis is the text "x" or "y"; float *data
 //                  points to the first of the 100 values; stepOffset is the
 //                  offset of Step2_JUL for comparison; fileCenter (v6.4.1)
-//                  is the center of the axis in include/JoystickCenter.h.
+//                  is the center of the axis in include/JoystickMeasurements.h.
 //   Statistics<float> stats(data, size); declared inside the function:
 //                  the object exists only until the function returns (a
 //                  local, automatic object on the stack).
@@ -205,11 +206,11 @@ void measure()
 // Expected output (bench, values depend on the joystick):
 //   x  average: 0.0120  std dev: 0.0040  median: ...  min: ...  max: ...
 //   x  suggested offset: 0.024  (Step2_JUL uses 0.05)
-//   x  average in counts: 517.6  (JoystickCenter.h: 511)
+//   x  average in counts: 517.6  (JoystickMeasurements.h: 511)
 //   x  suggested offset about the file center: 0.025
 //   (v6.4.1: the last two lines. The first offset is measured about 511,
 //   the center of Step2_JUL; the second about the center of
-//   include/JoystickCenter.h, the center of Step4_Generated.)
+//   include/JoystickMeasurements.h, the center of Step4_Generated.)
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // Setup (teaching notes, v6.3.0)
