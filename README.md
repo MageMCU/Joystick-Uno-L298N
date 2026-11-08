@@ -298,27 +298,26 @@ Use the shared [lab notebook template](Experiments/LAB-NOTEBOOK-TEMPLATE.md).
 ## Articles
 
 Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html):
-- The goal, at least, is to start the articles from experiements as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page.
+- The goal, at least, is to start the articles from experiements as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page.  Articles, for beginners, are meant to be used for this repository many of which are near completion.*
 
 | Article | Title |
 |---------|-------|
-| * 1000 | [Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I) |
-| * 1001 | [Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO) |
-| * 1002 | [Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE) |
-| * 1003 | [L298N Motor Driver](https://drive.google.com/file/d/1cQfxdIUlXiAoD6GPD3dZ_7hIDGQJJKiW) |
-| * 1004 | Experiments for Joystick-Uno-L298N (in progress) |
-| 1005 | Math, Kinematics [Study of Quaternions](https://carpentersoftware.com/pages/projects/robotics/robotics.html) |
-| 1006 | Sensors (in progress) |
-| 1007 | PID (in progress) |
-| 1008 | Artificial Intelligence (AI): Finite State Machines (in progress) |
-| * 1009 | [Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1eVH4kntCpTSyVyZ2q-tJzoaz3n5dW2Te) |
-| * 1009 | [Supplemental - Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1qN4ODM8J2FFuQ3IqFSUlLsWBZv0XQW9X) (Unlike the other articles, this can be download for printing.) |
-| * 1009 | [MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ) |
-| * 1009 | [MMC Results for nRF24L01+](https://drive.google.com/file/d/11rTdUBuKK-MIu4N-AC_g-3Bj84E3aSp4) |
-| 1010 | Differential Two Wheeled Drive Mobile Robot (DDMR) Orientation (in progress) |
-| 1011 | Communication (in progress) |
-| 1018 | Wireless Commincation (in progress) |
-| * | Articles, for beginners, are meant to be used for this repository many of which are near completion.
+| *1000 | [Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I) |
+| *1001 | [Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO) |
+| *1002 | [Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE) |
+| *1003 | [L298N Motor Driver](https://drive.google.com/file/d/1cQfxdIUlXiAoD6GPD3dZ_7hIDGQJJKiW) |
+| *1004 | Experiments for Joystick-Uno-L298N (in progress) |
+|  1005 | Math, Kinematics [Study of Quaternions](https://carpentersoftware.com/pages/projects/robotics/robotics.html) |
+|  1006 | Sensors (in progress) |
+|  1007 | PID (in progress) |
+|  1008 | Artificial Intelligence (AI): Finite State Machines (in progress) |
+| *1009 | [Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1eVH4kntCpTSyVyZ2q-tJzoaz3n5dW2Te) |
+| *1009 | [Supplemental - Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1qN4ODM8J2FFuQ3IqFSUlLsWBZv0XQW9X) (Unlike the other articles, this can be download for printing.) |
+| *1009 | [MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ) |
+| *1009 | [MMC Results for nRF24L01+](https://drive.google.com/file/d/11rTdUBuKK-MIu4N-AC_g-3Bj84E3aSp4) |
+|  1010 | Differential Two Wheeled Drive Mobile Robot (DDMR) Orientation (in progress) |
+|  1011 | Communication (in progress) |
+|  1018 | Wireless Commincation (in progress) |
 | Video | [Joystick Algorithm Simulation](https://carpentersoftware.com/pages/projects/ytube/joystickAlgoSim.html) |
 
 ---
