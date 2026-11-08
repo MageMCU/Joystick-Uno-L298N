@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
-//   Step2_JUL/main.cpp last changed: 2026-10-27  v6.6.0
+//   2026-11-07  v7.4.0
+//   Step2_JUL/main.cpp last changed: 2026-11-07  v7.4.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Layout (v6.6.0): every line fits the code listings of Article 1009
@@ -36,6 +36,8 @@
 #include "Common.h"
 #include "Joystick.h"
 #include "Headers.h"
+// The joystick correction with the Step1 measurements (v7.4.0)
+#include "JoystickCorrection.h"
 
 // Carpenter Software - Jesse Carpenter
 using namespace csjc;
@@ -46,6 +48,9 @@ LinearMap<float> mapInputFromDigital;
 LinearMap<float> mapOutFromJoystick;
 Timer timerDebug;
 Button buttonDebug;
+// The joystick correction of A0 and A1 (v7.4.0)
+JoystickCorrection correctX;
+JoystickCorrection correctY;
 
 void setup()
 {
@@ -82,6 +87,12 @@ void setup()
     mapInputFromDigital = LinearMap<float>(0, 1023, -1.0, 1.0);
     // Joystick output (-1 to 1) to PWM command (-255 to 255)
     mapOutFromJoystick = LinearMap<float>(-1.0, 1.0, -255, 255);
+    // Joystick correction (v7.4.0): the low end, center, and high end of
+    // each axis, measured by Step1 (include/JoystickMeasurements.h)
+    correctX = JoystickCorrection(JOYSTICK_A0_LOW, JOYSTICK_A0_CENTER,
+                                  JOYSTICK_A0_HIGH);
+    correctY = JoystickCorrection(JOYSTICK_A1_LOW, JOYSTICK_A1_CENTER,
+                                  JOYSTICK_A1_HIGH);
 
     // Uno pins, named after the L298N input each is wired to in Circuit-1
     // of Article 1009
@@ -141,6 +152,15 @@ void updateJoystick()
 
 #ifdef DEBUG_JOYSTICK
         Debug<int>("Analogs", xDigital, yDigital);
+#endif
+
+        // Joystick correction (v7.4.0): the measured center reads 511 and
+        // the ends 0 and 1023 (include/JoystickCorrection.h)
+        xDigital = correctX.Correct(xDigital);
+        yDigital = correctY.Correct(yDigital);
+
+#ifdef DEBUG_JOYSTICK
+        Debug<int>("Corrected", xDigital, yDigital);
 #endif
 
         // MAP
@@ -251,7 +271,7 @@ void loop()
 // The push button is the joystick switch, SW, on D2; pressed, it connects
 // SW to GND. D2 needs a pull up resistor (Article 1009, The Thumb
 // Joystick, The Push Button):
-//   * External 10 kOhm pull up from D2 to the 5V pin of the Uno
+//   * External 10 kOhm pull up from D2 to the 5 V bus
 //     (Circuit-1a): keep the line pinMode(buttonPin, INPUT) as written.
 //     begin() sets D2 to INPUT_PULLUP, and that line sets it to INPUT,
 //     which turns the internal pull up off. Step4_Generated reads the

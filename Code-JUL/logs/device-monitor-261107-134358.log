@@ -1,0 +1,510 @@
+Button OFF
+n platformio.ini: +<Step2_JUL/>
+bit-order(3210): 1101 val: 13
+
+................................................
+Button OFF
+
+................................................
+Step2_JUL: the diagnostic program (L298N Setup)
+Selected in platformio.ini: +<Step2_JUL/>
+bit-order(3210): 1101 val: 13
+
+................................................
+Button OFF
+
+................................................
+Button ON
+Analogs a: 503 b: 490
+Corrected a: 504 b: 504
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 490
+Corrected a: 0 b: 504
+Joystick Map Out:  a: -1.00 b: -0.01
+Joystick Input with OFFSET:  a: -1.00 b: 0.00
+Joystick INPUT a: -1.00 b: 0.00
+Octant-4 a: -1.00 b: 1.00
+Joystick Process Out:  a: -1.00 b: 1.00
+L298N Input:  a: -255 b: 255
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 503 b: 490
+Corrected a: 504 b: 504
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 993 b: 512
+Corrected a: 1017 b: 526
+Joystick Map Out:  a: 0.99 b: 0.03
+Joystick Input with OFFSET:  a: 0.99 b: 0.00
+Joystick INPUT a: 0.99 b: 0.00
+Octant-1 a: 0.99 b: -0.99
+Joystick Process Out:  a: 0.99 b: -0.99
+L298N Input:  a: 252 b: -252
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(2) RightIn43
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 490
+Corrected a: 505 b: 504
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 503 b: 0
+Corrected a: 504 b: 0
+Joystick Map Out:  a: -0.01 b: -1.00
+Joystick Input with OFFSET:  a: 0.00 b: -1.00
+Joystick INPUT a: 0.00 b: -1.00
+Octant-6 a: -1.00 b: -1.00
+Joystick Process Out:  a: -1.00 b: -1.00
+L298N Input:  a: -255 b: -255
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(2) RightIn43
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 490
+Corrected a: 505 b: 504
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 994
+Corrected a: 505 b: 1017
+Joystick Map Out:  a: -0.01 b: 0.99
+Joystick Input with OFFSET:  a: 0.00 b: 0.99
+Joystick INPUT a: 0.00 b: 0.99
+Octant-2 a: 0.99 b: 0.99
+Joystick Process Out:  a: 0.99 b: 0.99
+L298N Input:  a: 252 b: 252
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 995
+Corrected a: 505 b: 1018
+Joystick Map Out:  a: -0.01 b: 0.99
+Joystick Input with OFFSET:  a: 0.00 b: 0.99
+Joystick INPUT a: 0.00 b: 0.99
+Octant-2 a: 0.99 b: 0.99
+Joystick Process Out:  a: 0.99 b: 0.99
+L298N Input:  a: 252 b: 252
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 0
+Corrected a: 0 b: 0
+Joystick Map Out:  a: -1.00 b: -1.00
+Joystick Input with OFFSET:  a: -1.00 b: -1.00
+Joystick INPUT a: -1.00 b: -1.00
+Octant-5 a: -1.00 b: 0.00
+Joystick Process Out:  a: -1.00 b: 0.00
+L298N Input:  a: -255 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 995
+Corrected a: 0 b: 1018
+Joystick Map Out:  a: -1.00 b: 0.99
+Joystick Input with OFFSET:  a: -1.00 b: 0.99
+Joystick INPUT a: -1.00 b: 0.99
+Octant-4 a: -0.01 b: 1.00
+Joystick Process Out:  a: -0.01 b: 1.00
+L298N Input:  a: -2 b: 255
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 995 b: 995
+Corrected a: 1019 b: 1018
+Joystick Map Out:  a: 0.99 b: 0.99
+Joystick Input with OFFSET:  a: 0.99 b: 0.99
+Joystick INPUT a: 0.99 b: 0.99
+Octant-1 a: 0.99 b: -0.00
+Joystick Process Out:  a: 0.99 b: -0.00
+L298N Input:  a: 253 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 995 b: 0
+Corrected a: 1019 b: 0
+Joystick Map Out:  a: 0.99 b: -1.00
+Joystick Input with OFFSET:  a: 0.99 b: -1.00
+Joystick INPUT a: 0.99 b: -1.00
+Octant-7 a: -0.01 b: -1.00
+Joystick Process Out:  a: -0.01 b: -1.00
+L298N Input:  a: -1 b: -255
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(2) RightIn43
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 0
+Corrected a: 0 b: 0
+Joystick Map Out:  a: -1.00 b: -1.00
+Joystick Input with OFFSET:  a: -1.00 b: -1.00
+Joystick INPUT a: -1.00 b: -1.00
+Octant-5 a: -1.00 b: 0.00
+Joystick Process Out:  a: -1.00 b: 0.00
+L298N Input:  a: -255 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 0
+Corrected a: 0 b: 0
+Joystick Map Out:  a: -1.00 b: -1.00
+Joystick Input with OFFSET:  a: -1.00 b: -1.00
+Joystick INPUT a: -1.00 b: -1.00
+Octant-5 a: -1.00 b: 0.00
+Joystick Process Out:  a: -1.00 b: 0.00
+L298N Input:  a: -255 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 505 b: 492
+Corrected a: 506 b: 506
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 505 b: 491
+Corrected a: 506 b: 505
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 505 b: 491
+Corrected a: 506 b: 505
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 491
+Corrected a: 505 b: 505
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 504 b: 491
+Corrected a: 505 b: 505
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 505 b: 491
+Corrected a: 506 b: 505
+Joystick Map Out:  a: -0.01 b: -0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 516 b: 502
+Corrected a: 517 b: 516
+Joystick Map Out:  a: 0.01 b: 0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 1015
+Corrected a: 0 b: 1023
+Joystick Map Out:  a: -1.00 b: 1.00
+Joystick Input with OFFSET:  a: -1.00 b: 1.00
+Joystick INPUT a: -1.00 b: 1.00
+Octant-4 a: 0.00 b: 1.00
+Joystick Process Out:  a: 0.00 b: 1.00
+L298N Input:  a: 0 b: 255
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 0 b: 0
+Corrected a: 0 b: 0
+Joystick Map Out:  a: -1.00 b: -1.00
+Joystick Input with OFFSET:  a: -1.00 b: -1.00
+Joystick INPUT a: -1.00 b: -1.00
+Octant-5 a: -1.00 b: 0.00
+Joystick Process Out:  a: -1.00 b: 0.00
+L298N Input:  a: -255 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(1) LeftIn12
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 1019 b: 0
+Corrected a: 1023 b: 0
+Joystick Map Out:  a: 1.00 b: -1.00
+Joystick Input with OFFSET:  a: 1.00 b: -1.00
+Joystick INPUT a: 1.00 b: -1.00
+Octant-8 a: 0.00 b: -1.00
+Joystick Process Out:  a: 0.00 b: -1.00
+L298N Input:  a: 0 b: -255
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(2) RightIn43
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 1019 b: 0
+Corrected a: 1023 b: 0
+Joystick Map Out:  a: 1.00 b: -1.00
+Joystick Input with OFFSET:  a: 1.00 b: -1.00
+Joystick INPUT a: 1.00 b: -1.00
+Octant-8 a: 0.00 b: -1.00
+Joystick Process Out:  a: 0.00 b: -1.00
+L298N Input:  a: 0 b: -255
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(2) RightIn43
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 1020 b: 1020
+Corrected a: 1023 b: 1023
+Joystick Map Out:  a: 1.00 b: 1.00
+Joystick Input with OFFSET:  a: 1.00 b: 1.00
+Joystick INPUT a: 1.00 b: 1.00
+Octant-1 a: 1.00 b: 0.00
+Joystick Process Out:  a: 1.00 b: 0.00
+L298N Input:  a: 255 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 517 b: 503
+Corrected a: 518 b: 517
+Joystick Map Out:  a: 0.01 b: 0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 517 b: 503
+Corrected a: 518 b: 517
+Joystick Map Out:  a: 0.01 b: 0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 517 b: 503
+Corrected a: 518 b: 517
+Joystick Map Out:  a: 0.01 b: 0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13
+
+................................................
+Button ON
+Analogs a: 517 b: 503
+Corrected a: 518 b: 517
+Joystick Map Out:  a: 0.01 b: 0.01
+Joystick Input with OFFSET:  a: 0.00 b: 0.00
+Joystick INPUT a: 0.00 b: 0.00
+STOP a: 0.00 b: 0.00
+Joystick Process Out:  a: 0.00 b: 0.00
+L298N Input:  a: 0 b: 0
+(A) Bit-EN
+(A) Bit-PWM
+(2) LeftIn21
+(1) RightIn34
+bit-order(3210): 1101 val: 13

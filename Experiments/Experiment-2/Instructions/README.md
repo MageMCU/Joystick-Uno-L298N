@@ -1,6 +1,6 @@
 # Experiment-2: Wiring and Reading the Thumb Joystick
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag. Updated 20261017 for release v3.0.0: Step1_Joystick was removed and the Code-JUL programs renumbered (Step2_JUL is now Step1_JUL); the notes below give the new names, and Article 1004 DRAFT 4 keeps the v2.4.0 names until it is revised. Updated 20261018 for release v3.2.0: the upload port is required in `platformio.ini`; `Code-JUL/include/Common.h` ships with every debug flag on, so Lab 3 needs no change to it; the joystick switch requires the external 10 kOhm pull up of Circuit-2. Updated 20261021 for release v4.0.0: the Code-JUL programs are renumbered (Step1_Joystick, the joystick connection check, is new; Step2_JUL, Step3_Generator, Step4_Generated, Step5_MathLessons), and the notes below give the new names.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.0 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -12,12 +12,12 @@ Project folder: open `Experiments/Experiment-2/Code` in Visual Studio Code, neve
 |---|---|---|---|
 | Lab 1: Common.h, Headers.h, and the Preprocessor | `src/1_Preprocessor` | `build_src_filter = +<*> +<1_Preprocessor/> -<2_LinearMap/>` | Uno and USB cable |
 | Lab 2: LinearMap.h, One Formula, Three Types | `src/2_LinearMap` | `build_src_filter = +<*> -<1_Preprocessor/> +<2_LinearMap/>` | Uno and USB cable |
-| Lab 3: Reading the Joystick in Step2_JUL | Code-JUL, Step2_JUL | see the notes below | [Circuit-2](../../Circuits/Circuit-2.svg) |
+| Lab 3: The Joystick Self Test and the Readings | Code-JUL, Step1_Joystick, then Step2_JUL | see the notes below | [Circuit-2](../../Circuits/Circuit-2.svg) |
 
 ## Notes for the bench
 
 - Lab 1, step 2: `build_flags = -std=gnu++11 -D DEBUG_JOYSTICK`, then restore the line.
-- Lab 3 uses the Code-JUL folder with Step2_JUL selected in its platformio.ini (since v4.0.0 the shipped setting selects Step1_Joystick; in `build_src_filter`, one folder per line since v6.4.0, give `Step2_JUL` the sign `+` and the other five folders the sign `-`):
+- Lab 3 uses the Code-JUL folder. The shipped setting of `build_src_filter` selects Step1_Joystick; for Step2_JUL give `Step2_JUL` the sign `+` and the other five folders the sign `-`:
 
   ```
   build_src_filter =
@@ -30,9 +30,9 @@ Project folder: open `Experiments/Experiment-2/Code` in Visual Studio Code, neve
       -<Step6_Circuit/>
   ```
 
-  Since v3.0.1 the shipped line also excludes the generator programs, named Step2_Generator and Step3_Generated since v3.1.0, when the math lessons became Step4_MathLessons.
-
-  Step2_JUL ships with both debug switches on (since v6.0.0 the two `#define` lines at the top of `Code-JUL/src/Step2_JUL/main.cpp`: `DEBUG_STEP2_JOYSTICK`, `DEBUG_STEP2_L298N`; from v3.2.0 to v5.1.0 the flags `DEBUG_JOYSTICK` and `DEBUG_L298N` in `Code-JUL/include/Common.h`), so it needs no change for this lab; up to v3.1.2 the student removed the comment marks from `#define DEBUG_JOYSTICK`. The `DEBUG_STEP2_L298N` lines also print the L298N pin states. The motor supply stays off. Since v4.0.0 Step2_JUL ships with the indicator LED on D12 (the line `int ledPin = 12;`), as in Circuit-2; the advanced wiring on D3 is the commented line `// int ledPin = 3;` above it. The two `analogRead()` lines need no change: the student confirms that the push button toggles "Button ON" and "Button OFF" once per press, that each axis changes the `Analogs` line over most of 0 to 1023, and that both readings rest near 511 (Article 1009 first checks the same connections with the Step1_Joystick self test, Step1). Wire the push button as in Circuit-2, with the external 10 kOhm pull up from D2 to 5 V, or use the internal pull up with comment marks on the line `pinMode(buttonPin, INPUT);` of Step2_JUL (Article 1009, The Thumb Joystick). The author's bench test (v3.2.0) showed that the thumb joystick module has no resistor on SW. Without a pull up, "Button ON" and "Button OFF" change by themselves with the switch untouched. Step1_Joystick, used here up to v2.4.0 to correct the axes, was removed on 20261017, because the Bits() value found with the Motor Movement Checklist corrects any joystick orientation; since v4.0.0 a new Step1_Joystick checks the connections only.
+  1. Step1_Joystick, the self test (Article 1009, Step1 Procedure). With the result PASS, copy the file the report prints between its two marker lines over `Code-JUL/include/JoystickMeasurements.h`, from the log file of the monitor (log2file); upload Step1 again and confirm They match.
+  2. Step2_JUL with both debug switches on, as shipped (`DEBUG_STEP2_JOYSTICK` and `DEBUG_STEP2_L298N`, the two `#define` lines at the top of `Code-JUL/src/Step2_JUL/main.cpp`): every 3000 ms it prints the `Analogs` line, the raw readings, then the `Corrected` line, the readings after the joystick correction of `include/JoystickCorrection.h` (v7.4.0). With the grip at rest the Corrected line reads 511 for both axes, within a count or two; at the ends of each axis it reads 0 and 1023. The motor supply stays off and the L298N is not connected. The push button toggles "Button ON" and "Button OFF" once per press.
+  3. The two `analogRead()` lines, x on A0 and y on A1, are never edited; the Bits() value of Experiment-5 corrects the joystick orientation. Step2_JUL ships with the indicator LED on D12 (`int ledPin = 12;`). The push button needs the external 10 kOhm pull up from D2 to 5 V of Circuit-2, with the line `pinMode(buttonPin, INPUT);` as written; the thumb joystick module has no resistor on SW. A module that connects SW to 5 V when pressed takes the resistor from SW to GND (pull down) and `activeLow = false` in the Button line of Step1_Joystick and Step2_JUL (Circuit-2, note); Fast Drive supports the pull up only.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

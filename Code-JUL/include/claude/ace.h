@@ -15,7 +15,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
+//   2026-11-07  v7.4.0
 //   ace.h last changed: 2026-10-29  v7.2.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //

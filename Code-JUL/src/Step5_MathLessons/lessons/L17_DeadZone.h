@@ -17,8 +17,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
-//   L17_DeadZone.h last changed: 2026-10-28  v7.0.0
+//   2026-11-07  v7.4.0
+//   L17_DeadZone.h last changed: 2026-11-07  v7.4.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Lesson 17: statistics of the joystick at rest and the dead zone.
@@ -28,7 +28,7 @@
 // joystick powered as in Experiment-3, Powering the Joystick after
 // Experiment-3 (bench supply applied, D5 to D10 held LOW). Leave the grip
 // at rest. The program takes 100 readings of each axis, maps them into
-// the range -1 to 1 exactly as Step2_JUL does, and prints
+// the range -1 to 1 with the full range map of Step2_JUL, and prints
 // the average, the standard deviation, and the median of each axis. The
 // suggested offset is |average| + 3 standard deviations: a resting grip
 // then falls inside the dead zone for nearly every reading. Compare it
@@ -209,8 +209,10 @@ void measure()
 //   x  average in counts: 517.6  (JoystickMeasurements.h: 511)
 //   x  suggested offset about the file center: 0.025
 //   (v6.4.1: the last two lines. The first offset is measured about 511,
-//   the center of Step2_JUL; the second about the center of
-//   include/JoystickMeasurements.h, the center of Step4_Generated.)
+//   the middle of the full range map; the second about the center of
+//   include/JoystickMeasurements.h, the center to which Step2_JUL
+//   (since v7.4.0) and Step4_Generated correct each reading. Choose
+//   X_OFFSET and Y_OFFSET from the second.)
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // Setup (teaching notes, v6.3.0)
@@ -234,7 +236,8 @@ void measure()
 // ---------------------------------------------------------------
 // measure (teaching notes, v6.3.0)
 // Hint: measure, take 100 readings of each axis.
-// Purpose: sample the resting joystick, map it like Step2_JUL, and report.
+// Purpose: sample the resting joystick, map it with the full range map
+// of Step2_JUL, and report.
 // What is learnt:
 //   Global arrays xs[] and ys[] (100 floats each, 800 bytes of RAM) hold
 //   the samples; they are global so the stack stays small.

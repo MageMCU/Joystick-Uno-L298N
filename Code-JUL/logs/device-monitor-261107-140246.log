@@ -1,0 +1,19 @@
+tions if dot is ONE **
+ dot = v2.Normalize() * v3.Normalize() 1.00
+AD_TO_DEG 0.00
+ ** Normalized v2 & v3 have identical directions if dot is ONE **
+ dot = v2.Normalize() * v3.Normalize() 1.00
+
+................................................
+Step5_MathLessons: lesson 7 (L07_Vector2), topic 11 (0: every topic)
+Selected in platformio.ini: +<Step5_MathLessons/>
+---------------- + Vector2 T11 Project v1 onto v2 +
+v1 (1.00, 2.00) 
+v2 (3.00, 4.00) 
+v3 = v1.ProjV(v2) (1.32, 1.76) 
+angle = v1.Angle(v2) * RAD_TO_DEG 10.30
+angle = v1.Angle(v3) * RAD_TO_DEG 10.30
+ ** Zero Degrees **
+angle = v2.Angle(v3) * RAD_TO_DEG 0.00
+ ** Normalized v2 & v3 have identical directions if dot is ONE **
+ dot = v2.Normalize() * v3.Normalize() 1.00

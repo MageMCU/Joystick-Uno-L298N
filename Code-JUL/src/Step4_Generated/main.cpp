@@ -17,14 +17,14 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
+//   2026-11-07  v7.4.0
 //   Step4_Generated/main.cpp printed by Step3_Generator
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // SUMMARY: the data for Step4_Generated
 //   Joystick measurements (JoystickMeasurements.h, Step1_Joystick)
-//     A0 low 0  center 517 (offset 6)  high 1020
-//     A1 low 0  center 503 (offset -8)  high 1020
+//     A0 low 0  center 510 (offset -1)  high 1008
+//     A1 low 0  center 497 (offset -14)  high 1009
 //     Dead zone 25 counts
 //   L298N pins (Step2_JUL, the six pin lines)
 //     ENB  D5   (PD5)
@@ -72,7 +72,8 @@
 // about 2.5 times faster (see ace.h). ace.h also corrects
 // each axis at the center and both ends with THE JOYSTICK
 // EQUATIONS, from the measurements and the dead zone below;
-// Step2_JUL keeps the center 511 and its float dead zones.
+// Step2_JUL corrects with the same measurements and keeps its
+// float dead zones.
 // The tick repeats every 45 ms (TICK_MS of ace.h); Step2_JUL uses
 // 100 ms.
 //
@@ -123,11 +124,11 @@ const uint16_t DEBOUNCE_MS = 50;
 // Joystick measured by Step1_Joystick (JoystickMeasurements.h),
 // raw ADC counts: X of A0, Y of A1
 const uint16_t X_LOW = 0;
-const uint16_t X_CENTER = 517;
-const uint16_t X_HIGH = 1020;
+const uint16_t X_CENTER = 510;
+const uint16_t X_HIGH = 1008;
 const uint16_t Y_LOW = 0;
-const uint16_t Y_CENTER = 503;
-const uint16_t Y_HIGH = 1020;
+const uint16_t Y_CENTER = 497;
+const uint16_t Y_HIGH = 1009;
 // Dead zone of THE JOYSTICK EQUATIONS, in counts
 const uint16_t DEAD_ZONE = 25;
 
@@ -154,8 +155,8 @@ void setup()
     Serial.println(F("Step4_Generated: data checked in Step3_Generator"));
     Serial.println(F( \
         "Joystick measurements (JoystickMeasurements.h, Step1_Joystick)"));
-    Serial.println(F("  A0 low 0  center 517 (offset 6)  high 1020"));
-    Serial.println(F("  A1 low 0  center 503 (offset -8)  high 1020"));
+    Serial.println(F("  A0 low 0  center 510 (offset -1)  high 1008"));
+    Serial.println(F("  A1 low 0  center 497 (offset -14)  high 1009"));
     Serial.println(F("  Dead zone 25 counts"));
     Serial.println(F("L298N pins (Step2_JUL, the six pin lines)"));
     Serial.println(F("  ENB  D5   (PD5)"));

@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
-//   Step1_Joystick/main.cpp last changed: 2026-10-30  v7.3.0
+//   2026-11-07  v7.4.0
+//   Step1_Joystick/main.cpp last changed: 2026-11-07  v7.4.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // ---------------------------------------------------------------
@@ -108,6 +108,10 @@
 // values for the check list. The directions of the held ends are in
 // the ENDS table; RESULTS gives the result and the warning of each
 // test in a table. The tests and the calculations are unchanged.
+// Revised 20261107 (v7.4.0): comments only. Step2_JUL now corrects
+// each reading with include/JoystickMeasurements.h (through
+// include/JoystickCorrection.h), so the comments and the printed
+// file say so; the tests and the calculations are unchanged.
 // ---------------------------------------------------------------
 #include <Arduino.h>
 #include "Button.h"
@@ -132,15 +136,13 @@ using namespace csjc;
 //   CENTER_WARNING           Test 3 passes a rest reading farther
 //                            than this many counts from ADC_MIDDLE
 //                            with a warning: a new joystick is
-//                            recommended (v6.5.0). The dead zone of
-//                            Step2_JUL, X_OFFSET 0.05 of 511 counts,
-//                            is about 25 counts, and Step2_JUL keeps
-//                            the center 511, so beyond 25 counts its
-//                            motors may turn slowly with the grip
-//                            released. Step4_Generated corrects each
-//                            reading with the measured center
+//                            recommended (v6.5.0). Step2_JUL and
+//                            Step4_Generated correct each reading
+//                            with the measured center
 //                            (include/JoystickMeasurements.h), so a
-//                            resting grip gives 0 there.
+//                            resting grip gives 0 in both; a center
+//                            far from 511 leaves less travel on one
+//                            side of the axis.
 //   MIN_TRAVEL               Each direction must reach this many
 //                            counts from the center: the held
 //                            readings of Test 4 and the circle of
@@ -908,13 +910,13 @@ void printReportLines(const __FlashStringHelper *prefix)
             "WARNING: a center lies more than 25 counts from 511."));
         Serial.print(prefix);
         Serial.println(F( \
-            "A new joystick is recommended. Step4_Generated corrects"));
+            "A new joystick is recommended. Step2_JUL and"));
         Serial.print(prefix);
         Serial.println(F( \
-            "the center; Step2_JUL does not, so its motors may turn"));
+            "Step4_Generated correct the center, but less travel"));
         Serial.print(prefix);
         Serial.println(F( \
-            "slowly with the grip released (push button OFF stops them)."));
+            "remains on one side of the axis."));
     }
     // v7.1.0: the other axis moved while one axis was held
     if (crossWarning())
@@ -947,10 +949,10 @@ void printReportLines(const __FlashStringHelper *prefix)
 // under SELF TEST REPORT. Copy every line between the markers and
 // replace the whole file with them; the PlatformIO monitor also
 // saves the output in a log file (monitor_filters = log2file), so
-// the lines can be copied from that file. Step3_Generator writes its
-// values into Step4_Generated. Step2_JUL does not use the file; it
-// keeps the center 511. Run this self test again after the
-// joystick is exchanged, and copy the new file.
+// the lines can be copied from that file. Step2_JUL corrects each
+// reading with its values, and Step3_Generator writes them into
+// Step4_Generated. Run this self test again after the joystick is
+// exchanged, or moved to another 5 V supply, and copy the new file.
 // ---------------------------------------------------------------
 void printMeasurementsFile()
 {
@@ -967,7 +969,7 @@ void printMeasurementsFile()
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
     Serial.println(F("// RELEASE"));
-    Serial.println(F("//   2026-10-30  v7.3.0"));
+    Serial.println(F("//   2026-11-07  v7.4.0"));
     Serial.println(F("//   JoystickMeasurements.h printed by Step1_Joystick"));
     Serial.println(F( \
         "//   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)"));
@@ -994,17 +996,16 @@ void printMeasurementsFile()
         "// UP, DOWN, LEFT, and RIGHT (Test 4), verified by a circle (Test " \
         "5)."));
     Serial.println(F( \
-        "// This file keeps those six measured values in one place."));
+        "// This file keeps those six measured values in one place. " \
+        "Step2_JUL"));
     Serial.println(F( \
-        "// Step4_Generated corrects each axis at the center and at both " \
-        "ends"));
+        "// and Step4_Generated correct each axis at the center and at both"));
     Serial.println(F( \
-        "// with two linear equations, one on each side of the center"));
+        "// ends with two linear equations, one on each side of the center, " \
+        "so"));
     Serial.println(F( \
-        "// (include/claude/ace.h, THE JOYSTICK EQUATIONS), so a resting " \
-        "grip"));
-    Serial.println(F( \
-        "// gives 0 and a full push gives the full command on both sides."));
+        "// a resting grip gives 0 and a full push gives the full command on"));
+    Serial.println(F("// both sides."));
     Serial.println(F("//"));
     Serial.println(F("// WHERE IT IS USED"));
     Serial.println(F( \
@@ -1030,12 +1031,22 @@ void printMeasurementsFile()
         "writes"));
     Serial.println(F("//                      them into Step4_Generated."));
     Serial.println(F( \
+        "//   Step2_JUL          Through include/JoystickCorrection.h: the"));
+    Serial.println(F( \
+        "//                      class JoystickCorrection corrects each " \
+        "reading"));
+    Serial.println(F( \
+        "//                      with these values before the input map."));
+    Serial.println(F( \
         "//   Step4_Generated    Does not include this file. It holds the " \
         "copied"));
     Serial.println(F( \
         "//                      values, which claude/ace.h uses in THE " \
         "JOYSTICK"));
     Serial.println(F("//                      EQUATIONS."));
+    Serial.println(F( \
+        "//   Step6_Circuit      Corrects each axis of the joystick of " \
+        "Circuit-4."));
     Serial.println(F( \
         "//   Lesson 17          DeadZone: prints the centers and suggests " \
         "the"));
@@ -1045,22 +1056,19 @@ void printMeasurementsFile()
         "//   Lesson 20          JoystickMap: the low end, center, and high " \
         "end"));
     Serial.println(F("//                      of each two segment map."));
-    Serial.println(F( \
-        "//   Step2_JUL          Does not use it; it keeps the center 511"));
-    Serial.println(F("//                      (author decision, v6.4.0)."));
     Serial.println(F("//"));
     Serial.println(F("// HOW TO UPDATE IT"));
     Serial.println(F( \
-        "// Shipped with 0, 511, and 1023 for each axis; these were not"));
+        "// Shipped with the measurements of the author's joystick. After a"));
     Serial.println(F( \
-        "// measured. After a passing self test, replace the whole file with"));
+        "// passing self test, replace the whole file with the lines"));
     Serial.println(F( \
-        "// the lines Step1_Joystick prints between its two marker lines. " \
-        "Then"));
+        "// Step1_Joystick prints between its two marker lines. Then run"));
     Serial.println(F( \
-        "// run Step3_Generator again so Step4_Generated receives the new"));
+        "// Step3_Generator again so Step4_Generated receives the new " \
+        "values."));
     Serial.println(F( \
-        "// values. Limits (Step1_Joystick): each center 461 to 561 (Test 3"));
+        "// Limits (Step1_Joystick): each center 461 to 561 (Test 3"));
     Serial.println(F( \
         "// fails a center more than 50 counts from 511 and warns above 25"));
     Serial.println(F( \
@@ -1169,8 +1177,9 @@ void printReport()
     Serial.println(F( \
         "Copy every line between the two marker lines and replace"));
     Serial.println(F( \
-        "all of include/JoystickMeasurements.h with them (Step3_Generator"));
-    Serial.println(F("uses the file). The PlatformIO monitor also"));
+        "all of include/JoystickMeasurements.h with them (Step2_JUL and"));
+    Serial.println(F( \
+        "Step3_Generator use the file). The PlatformIO monitor also"));
     Serial.println(F("saves this output in a log file (log2file)."));
     Serial.println();
     printMeasurementsFile();

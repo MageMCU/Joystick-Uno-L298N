@@ -15,7 +15,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
+//   2026-11-07  v7.4.0
 //   Step5_MathLessons/main.cpp last changed: 2026-10-30  v7.3.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
@@ -131,7 +131,7 @@
 // ---------- Select ONE lesson here (1 to 20) ----------
 #define LESSON 7
 // ---------- Select ONE topic here (0 runs every topic) -
-#define TOPIC 0
+#define TOPIC 11
 // -------------------------------------------------------
 
 #if   LESSON == 1

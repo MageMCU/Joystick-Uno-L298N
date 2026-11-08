@@ -15,8 +15,8 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-10-30  v7.3.0
-//   Step3_Generator/main.cpp last changed: 2026-10-30  v7.3.0
+//   2026-11-07  v7.4.0
+//   Step3_Generator/main.cpp last changed: 2026-11-07  v7.4.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Added 20261017. Written with Claude (Anthropic), an AI assistant;
@@ -61,6 +61,9 @@
 // Revised 20261029 (v7.2.0): requested by the author. The printed
 // program sets the control tick TICK_MS = 45 (50 from v3.2.0), the
 // new default of include/claude/ace.h, and carries the release v7.2.0.
+// Revised 20261107 (v7.4.0): comment text only. The printed program
+// says that Step2_JUL corrects with the same measurements (since v7.4.0
+// it no longer keeps the center 511); the code is unchanged.
 //
 // STEPS 1 TO 5
 //   Step1_Joystick:    checks the joystick connections first and
@@ -662,7 +665,7 @@ void printProgram()
     Serial.println(F("// MIT LICENSE"));
     Serial.println(F("//"));
     Serial.println(F("// RELEASE"));
-    Serial.println(F("//   2026-10-30  v7.3.0"));
+    Serial.println(F("//   2026-11-07  v7.4.0"));
     Serial.println(F( \
         "//   Step4_Generated/main.cpp printed by Step3_Generator"));
     Serial.println(F( \
@@ -739,7 +742,8 @@ void printProgram()
     Serial.println(F( \
         "// EQUATIONS, from the measurements and the dead zone below;"));
     Serial.println(F( \
-        "// Step2_JUL keeps the center 511 and its float dead zones."));
+        "// Step2_JUL corrects with the same measurements and keeps its"));
+    Serial.println(F("// float dead zones."));
     Serial.println(F( \
         "// The tick repeats every 45 ms (TICK_MS of ace.h); Step2_JUL uses"));
     Serial.println(F("// 100 ms."));

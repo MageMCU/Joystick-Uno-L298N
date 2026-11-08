@@ -1,6 +1,13 @@
 # Experiments
 
-The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article, and their `Instructions/README.md` files hold the full steps. The article refers to release v2.4.0 of this repository; schematics Circuit-1 to Circuit-4 are in [Experiments/Circuits](Experiments/Circuits).
+The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article and Experiments 10 to 12 in Part C, and their `Instructions/README.md` files hold the full steps. The article refers to release v7.4.0 of this repository; schematics Circuit-1 to Circuit-7 are in [Experiments/Circuits](Experiments/Circuits).
+
+## Changes in Release v7.4.0 (20261107)
+
+- **Part C, the Circuit-4 experiments (new).** Experiment-10, The Bus Monitor; Experiment-11, The Motor Power Switch; Experiment-12, The Robot Supply, from the easiest to the most difficult. They use Circuit-4A and Circuit-4B of Article 1009 and Step6_Circuit, and three new figures of measurement points, Circuit-5 to Circuit-7 (designed by Jesse Carpenter and Claude (Anthropic)). No new program.
+
+- **Joystick correction in Step2_JUL.** Experiment-2, Lab 3, now runs the Step1_Joystick self test, copies its measurements into `Code-JUL/include/JoystickMeasurements.h`, and reads the Analogs line (raw) and the Corrected line of Step2_JUL. Experiment-5, Lab 3, reads the Corrected line when it tunes the dead zone. Both drives now correct the center and the ends.
+- **Lab cards.** Each card refers to Article 1004, revision 20261107g, and release v7.4.0; the notes of earlier releases are in `RELEASES.md`. The lab programs are unchanged.
 
 ## Changes in Release v7.3.0 (20261030)
 
@@ -143,6 +150,16 @@ The `include/` folder of each core experiment holds copies of the original heade
 | [Experiment-7: Line Fit and Motor Calibration](Experiments/Experiment-7/Instructions/README.md) | L15_LineFit, L18_MotorLineFit |
 | [Experiment-8: Vectors, Matrices, and the Joystick Frame](Experiments/Experiment-8/Instructions/README.md) | L07 to L13, L19_JoystickFrame |
 | [Experiment-9: Quaternions](Experiments/Experiment-9/Instructions/README.md) | L14_Quaternion, L16_Rotation (Article 1005, on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html)) |
+
+## Part C: Circuit-4 Experiments (Step6_Circuit)
+
+Built after Article 1009, Appendix C, Circuit-4, and both tests of Step6_Circuit, in order from the easiest to the most difficult: measurements only, then the switch under load, then the battery. A supervising adult operates every supply.
+
+| Experiment | Program and switches | Figure |
+|------------|----------------------|--------|
+| [Experiment-10: The Bus Monitor](Experiments/Experiment-10/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT`, `STEP6_LAB`, variac supply | [Circuit-5](Experiments/Circuits/Circuit-5.svg) |
+| [Experiment-11: The Motor Power Switch](Experiments/Experiment-11/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT` then `STEP6_MOTORS`, `STEP6_LAB` | [Circuit-6](Experiments/Circuits/Circuit-6.svg) |
+| [Experiment-12: The Robot Supply](Experiments/Experiment-12/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT` then `STEP6_MOTORS`, `STEP6_ROBOT` | [Circuit-7](Experiments/Circuits/Circuit-7.svg) |
 
 ## Lab Notebook
 

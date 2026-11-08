@@ -86,7 +86,7 @@ Identify what remains uncertain or untested.
 
 Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
-The tables follow Article 1004, Update 20261012 Rev 2, and release v2.4.0.
+The tables follow Article 1004, revision 20261107g, and release v7.4.0.
 
 ### Step1: the Step1_Joystick self test (Article 1009)
 
@@ -125,13 +125,17 @@ The six values of the printed `JoystickMeasurements.h`, or the wire checked afte
 
 Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (the external 10 kOhm pull up from D2 to 5 V of Circuit-2, required since v3.2.0 for a module with no resistor on SW, as on the author's bench; or a pull down), and the `activeLow` value used.
 
-| Grip position | VRx to GND (V) | VRy to GND (V) | x reading | y reading | Expected N (Equation-2) | Notes |
-|---------------|----------------|----------------|-----------|-----------|-------------------------|-------|
-| At rest | | | | | | |
-| Left | | | | | | |
-| Right | | | | | | |
-| Forward | | | | | | |
-| Backward | | | | | | |
+Lab 3, steps 2 and 3: Step1_Joystick result (PASS or FAIL), the check list copied, and JoystickMeasurements.h copied (They match): ______.
+
+Lab 3, steps 4 to 6 (v7.4.0): raw values first (the Analogs line of Step2_JUL), then the corrected values (the Corrected line), then the calculated N of Equation-2.
+
+| Grip position | VRx to GND (V) | VRy to GND (V) | x raw (A0) | y raw (A1) | x corrected | y corrected | Expected N (Equation-2) | Notes |
+|---------------|----------------|----------------|------------|------------|-------------|-------------|-------------------------|-------|
+| At rest | | | | | | | | |
+| Left | | | | | | | | |
+| Right | | | | | | | | |
+| Forward | | | | | | | | |
+| Backward | | | | | | | | |
 
 Record which reading follows which axis and whether it approaches 0 or 1023 in each position (the `analogRead()` lines stay as shipped, x on A0 and y on A1; the `Bits()` value corrects the orientation), and the two readings at rest, three times. Supervisor signature.
 
@@ -201,6 +205,54 @@ Final dead zone: X_OFFSET ____ , Y_OFFSET ____ ; inputs printed at rest. Supervi
 ### Experiments 6 to 9
 
 Use the common entry fields and the record named in each step of `Experiments/Experiment-n/Instructions/README.md`: the suggested offsets of lesson 17 (Experiment-6), the five counts and the fit of lesson 18 (Experiment-7), the octants at each mounting angle of lesson 19 (Experiment-8), and the T8 plot and T5 values (Experiment-9).
+
+### Experiments 10 to 12: Circuit-4 (Part C)
+
+Circuit-4 built and both tests of Step6_Circuit passed: ______. Supply: Electronics Lab (fixed or variac) or robot (BT1). Supervisor signature before power is applied.
+
+Experiment-10 (Circuit-5): R15 ____ Ω, R16 ____ Ω measured; V(ref) at TP3 ____ V.
+
+| V(bus) set | Count printed | V(bus), TP1 | V(A2), TP2 | Bus printed, range | Count calculated |
+|------------|---------------|-------------|------------|--------------------|------------------|
+| 10 V | | | | | |
+| 12 V | | | | | |
+| 13.2 V | | | | | |
+| 14 V | | | | | |
+| 15 V | | | | | |
+| 16 V | | | | | |
+| 17 V | | | | | |
+| 18 V | | | | | |
+| 18.5 V | | | | | |
+
+Lab 2: VS off going down at ____ V (count ____); going up at ____ V (count ____).
+
+Experiment-11 (Circuit-6), raw readings first, then IB and IC calculated:
+
+| Reading | SW OFF | SW ON | Units |
+|---------|--------|-------|-------|
+| A2 count printed | | | |
+| V(bus), TP1 | | | V |
+| V(D4), TP7 | | | V |
+| V(CE), TP6 | | | V |
+| V(BE) of Q2 | | | V |
+| V(GS) of Q1, TP4 to TP1 | | | V |
+| V(VS), TP5 | | | V |
+| V(SD) of Q1, TP1 to TP5, motors running | | | V |
+| IB and IC (Equations 11.1, 11.2) | | | mA |
+
+Experiment-12 (Circuit-7):
+
+| Reading | S3 OFF | RUN, motors stopped | RUN, full forward | Units |
+|---------|--------|---------------------|-------------------|-------|
+| A2 count printed | | | | |
+| V(BT1), TP8 | | | | V |
+| V(bus), TP1 | | | | V |
+| V(DS) of Q3, TP9 to TP1 | | | | V |
+| V(GS) of Q3, TP10 to TP1 | | | | V |
+| V(GS) of Q1 (Circuit-6) | | | | V |
+| V(SD) of Q1 (Circuit-6) | | | | V |
+
+Lowest V(bus) at a motor start (MIN): ____ V. Count margin above 346: ____.
 
 Record who supervised powered testing and any supply or motor changes
 requiring repeated measurements.

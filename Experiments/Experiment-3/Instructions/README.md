@@ -1,6 +1,6 @@
 # Experiment-3: L298N Single Motor
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), Update 20261012 Rev 2. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v2.4.0 of the repository, so the line numbers and printed values agree. A later release may differ; compare it with the tag. Updated 20261017 for release v3.0.0: Step1_Joystick was removed and the Code-JUL programs renumbered (Step3_MathLessons became Step2_MathLessons, and Step4_MathLessons since v3.1.0); the notes below give the new names, and Article 1004 DRAFT 4 keeps the v2.4.0 names until it is revised. Updated 20261018 for release v3.2.0: the upload port is required in `platformio.ini`; Lab 2 turns the internal pull up of D2 off, and the joystick switch requires the external 10 kOhm pull up of Circuit-2. Updated 20261021 for release v4.0.0: the Code-JUL programs are renumbered (Step1_Joystick, the joystick connection check, is new; Step2_JUL, Step3_Generator, Step4_Generated, Step5_MathLessons), and the notes below give the new names.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.0 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -16,6 +16,8 @@ Project folder: open `Experiments/Experiment-3/Code` in Visual Studio Code, neve
 ## Notes for the bench
 
 - Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output. `button = Button(buttonPin, ledPin);` uses the default `activeLow = true`, and the two lines after it, `button.begin();` and `pinMode(buttonPin, INPUT);` (added in v3.2.0), turn the internal pull up of D2 off, as Step2_JUL does. The external 10 kOhm pull up from D2 to 5 V of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `Button(buttonPin, ledPin, false)` in that Button line.
+
+- After Lab 2 the joystick 5V and GND leads stay on the 5 V bus and the common ground (Article 1004, Powering the Joystick after Experiment-3). Run the Step1_Joystick self test again on this supply, with the bench supply applied and the motor bus lead removed from VS, and copy the new `Code-JUL/include/JoystickMeasurements.h`: the 5 V bus and the 5V pin of the Uno may differ by 0.1 V, about 10 counts at the center.
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

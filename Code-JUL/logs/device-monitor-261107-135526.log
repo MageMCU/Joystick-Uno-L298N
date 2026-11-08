@@ -1,4 +1,4 @@
- button; the LED on D12 shows ON.
+ush button; the LED on D12 shows ON.
 , D7 HIGH for -
   Right command: EN D10, D9 HIGH for +, D8 HIGH for -
 Ready: press the push button; the LED on D12 shows ON.
@@ -8,8 +8,8 @@ Step4_Generated: the drive program printed by Step3_Generator
 Selected in platformio.ini: +<Step4_Generated/>
 Step4_Generated: data checked in Step3_Generator
 Joystick measurements (JoystickMeasurements.h, Step1_Joystick)
-  A0 low 0  center 517 (offset 6)  high 1020
-  A1 low 0  center 503 (offset -8)  high 1020
+  A0 low 0  center 510 (offset -1)  high 1008
+  A1 low 0  center 497 (offset -14)  high 1009
   Dead zone 25 counts
 L298N pins (Step2_JUL, the six pin lines)
   ENB  D5   (PD5)
