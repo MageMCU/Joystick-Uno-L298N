@@ -304,11 +304,11 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | 1000 | [Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I) |
 | 1001 | [Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO) |
 | 1002 | [Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE) |
-| 1003 | [L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq) |
+| 1003 | [L298N Motor Driver](https://drive.google.com/file/d/1cQfxdIUlXiAoD6GPD3dZ_7hIDGQJJKiW) |
 | 1004 | Experiments for Joystick-Uno-L298N (in progress) |
 | 1005 | Study of Quaternions, published on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html) |
-| 1009 | [Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr) |
-| 1009 | [Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4) (Expected Motor Movements and the Motor Movement Checklist, MMC) |
+| 1009 | [Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1eVH4kntCpTSyVyZ2q-tJzoaz3n5dW2Te) |
+| 1009 | [Supplemental - Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1qN4ODM8J2FFuQ3IqFSUlLsWBZv0XQW9X) (Additional information that can be lownloaded...) |
 | 1009 | [MMC Results for JUL](https://drive.google.com/file/d/17yNw5FNRORWgtDyey11OeKGRMB9qV0SZ) |
 | 1009 | [MMC Results for nRF24L01+](https://drive.google.com/file/d/11rTdUBuKK-MIu4N-AC_g-3Bj84E3aSp4) |
 | | [Joystick Algorithm Simulation](https://carpentersoftware.com/pages/projects/ytube/joystickAlgoSim.html) |
