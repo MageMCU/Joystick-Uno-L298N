@@ -298,7 +298,7 @@ Use the shared [lab notebook template](Experiments/LAB-NOTEBOOK-TEMPLATE.md).
 ## Articles
 
 Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html):
-- The goal, at least, is to start the articles from experiements as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page.  Articles, for beginners, are meant to be used for this repository many of which are near completion.*
+- The goal, at least, is to start the articles from experiements as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page.  The articles are frequently updated at [Carpenter Software](carpentersoftware.com). Those articles, for beginners, are meant to be used for this repository, Joystick-Uno-L298N, many of which are near completion.*
 
 | Article | Title |
 |---------|-------|
@@ -307,7 +307,7 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 | *1002 | [Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE) |
 | *1003 | [L298N Motor Driver](https://drive.google.com/file/d/1cQfxdIUlXiAoD6GPD3dZ_7hIDGQJJKiW) |
 | *1004 | Experiments for Joystick-Uno-L298N (in progress) |
-|  1005 | Math, Kinematics [Study of Quaternions](https://carpentersoftware.com/pages/projects/robotics/robotics.html) |
+|  1005 | Math, Kinematics [Study of Quaternions](https://drive.google.com/file/d/1xQS_DkKx-wXtF7fm8C6GPfF8NV9Qoxnr) |
 |  1006 | Sensors (in progress) |
 |  1007 | PID (in progress) |
 |  1008 | Artificial Intelligence (AI): Finite State Machines (in progress) |
