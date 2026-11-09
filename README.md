@@ -297,8 +297,7 @@ Use the shared [lab notebook template](Experiments/LAB-NOTEBOOK-TEMPLATE.md).
 
 ## Articles
 
-Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html):
-- The goal, at least, is to start the articles from experiements as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page.  The articles are frequently updated at [Carpenter Software](carpentersoftware.com). Those articles, for beginners, are meant to be used for this repository, Joystick-Uno-L298N, many of which are near completion.*
+Carpenter Software articles are frequently updated, as linked from [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html):
 
 | Article | Title |
 |---------|-------|
@@ -319,6 +318,8 @@ Carpenter Software articles, as linked from [carpentersoftware.com, Projects, Ro
 |  1011 | Communication (in progress) |
 |  1018 | Wireless Commincation (in progress) |
 | Video | [Joystick Algorithm Simulation](https://carpentersoftware.com/pages/projects/ytube/joystickAlgoSim.html) |
+
+The goal, at least, is to start the articles from experiments as one might view the list with gaps. There were attempts but lacked information so many were left unfinished. Scratch pad ideas that most likely will be moved to MageMCU front page. Those articles, for beginners, are meant to be used for this repository, Joystick-Uno-L298N, many of which are near completion.*
 
 ---
 
