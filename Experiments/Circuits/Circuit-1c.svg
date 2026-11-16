@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1950" height="1580" viewBox="0 0 1950 1580" stroke="#000" stroke-width="5"><rect width="1950" height="1580" fill="#fff" stroke="none"/><circle cx="170" cy="120" r="66" fill="#d4f6fa"/>
+<text x="170" y="134" font-size="38" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">GND</text>
+<circle cx="690" cy="120" r="66" fill="#f9d4f2"/>
+<text x="690" y="134" font-size="38" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">5V</text>
+<line x1="170" y1="182" x2="170" y2="320"/>
+<line x1="170" y1="320" x2="260" y2="320"/>
+<polyline fill="none" points="260,320 271.6666666666667,298 295.0,342 318.3333333333333,298 341.66666666666663,342 365.0,298 388.3333333333333,342 400,320"/>
+<line x1="400" y1="320" x2="450" y2="320"/>
+<circle cx="450" cy="320" r="9" fill="#000"/>
+<line x1="450" y1="320" x2="505" y2="320"/>
+<circle cx="520" cy="320" r="14" fill="#fff"/>
+<circle cx="610" cy="320" r="14" fill="#fff"/>
+<line x1="500" y1="280" x2="630" y2="280"/>
+<line x1="565" y1="280" x2="565" y2="258"/>
+<line x1="624" y1="320" x2="690" y2="320"/>
+<line x1="690" y1="320" x2="690" y2="182"/>
+<text x="330" y="270" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">10 kΩ</text>
+<text x="565" y="240" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">Button</text>
+<text x="305" y="400" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">Pull down</text>
+<text x="305" y="450" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">resistor</text>
+<line x1="450" y1="320" x2="450" y2="520"/>
+<rect x="432" y="520" width="36" height="36" fill="#000"/>
+<text x="415" y="552" font-size="42" text-anchor="end" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">D2</text>
+<text x="40" y="640" font-size="40" text-anchor="start" font-family="DejaVu Sans Mono" font-weight="normal" font-style="italic" fill="#444" stroke="none">button = Button(buttonPin, buttonLED, false);</text>
+<text x="830" y="200" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="bold">Closed button: </tspan><tspan font-weight="normal">D2 connects to 5 V;</tspan></text>
+<text x="830" y="250" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">D2 reads HIGH.</tspan></text>
+<text x="830" y="330.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="bold">Open button: </tspan><tspan font-weight="normal">the pull down</tspan></text>
+<text x="830" y="380.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">resistor holds D2 at GND;</tspan></text>
+<text x="830" y="430.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">D2 reads LOW.</tspan></text>
+<text x="830" y="510.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">Without the resistor, an open</tspan></text>
+<text x="830" y="560.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">input floats and reads at random.</tspan></text><g transform="translate(0,730)"><circle cx="170" cy="120" r="66" fill="#f9d4f2"/>
+<text x="170" y="134" font-size="38" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">5V</text>
+<circle cx="690" cy="120" r="66" fill="#d4f6fa"/>
+<text x="690" y="134" font-size="38" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">GND</text>
+<line x1="170" y1="182" x2="170" y2="320"/>
+<line x1="170" y1="320" x2="260" y2="320"/>
+<polyline fill="none" points="260,320 271.6666666666667,298 295.0,342 318.3333333333333,298 341.66666666666663,342 365.0,298 388.3333333333333,342 400,320"/>
+<line x1="400" y1="320" x2="450" y2="320"/>
+<circle cx="450" cy="320" r="9" fill="#000"/>
+<line x1="450" y1="320" x2="505" y2="320"/>
+<circle cx="520" cy="320" r="14" fill="#fff"/>
+<circle cx="610" cy="320" r="14" fill="#fff"/>
+<line x1="500" y1="280" x2="630" y2="280"/>
+<line x1="565" y1="280" x2="565" y2="258"/>
+<line x1="624" y1="320" x2="690" y2="320"/>
+<line x1="690" y1="320" x2="690" y2="182"/>
+<text x="330" y="270" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">10 kΩ</text>
+<text x="565" y="240" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">Button</text>
+<text x="305" y="400" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">Pull up</text>
+<text x="305" y="450" font-size="42" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-style="normal" fill="#000" stroke="none">resistor</text>
+<line x1="450" y1="320" x2="450" y2="520"/>
+<rect x="432" y="520" width="36" height="36" fill="#000"/>
+<text x="415" y="552" font-size="42" text-anchor="end" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">D2</text>
+<text x="40" y="640" font-size="40" text-anchor="start" font-family="DejaVu Sans Mono" font-weight="normal" font-style="italic" fill="#444" stroke="none">button = Button(buttonPin, buttonLED);</text>
+<text x="40" y="690" font-size="40" text-anchor="start" font-family="DejaVu Sans Mono" font-weight="normal" font-style="italic" fill="#444" stroke="none">button.begin();</text>
+<text x="40" y="740" font-size="40" text-anchor="start" font-family="DejaVu Sans Mono" font-weight="normal" font-style="italic" fill="#444" stroke="none">pinMode(buttonPin, INPUT);</text>
+<text x="830" y="200" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="bold">Closed button: </tspan><tspan font-weight="normal">D2 connects to GND;</tspan></text>
+<text x="830" y="250" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">D2 reads LOW.</tspan></text>
+<text x="830" y="330.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="bold">Open button: </tspan><tspan font-weight="normal">the pull up</tspan></text>
+<text x="830" y="380.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">resistor holds D2 at 5 V;</tspan></text>
+<text x="830" y="430.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">D2 reads HIGH.</tspan></text>
+<text x="830" y="510.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">Without the resistor, an open</tspan></text>
+<text x="830" y="560.0" font-size="38" font-family="DejaVu Sans Mono" fill="#000" stroke="none" xml:space="preserve"><tspan font-weight="normal">input floats and reads at random.</tspan></text>
+<text x="40" y="815" font-size="34" text-anchor="start" font-family="DejaVu Sans" font-weight="normal" font-style="normal" fill="#000" stroke="none">Revised 20261115. Designed: Jesse Carpenter and Claude (Anthropic).</text></g></svg>

@@ -1,6 +1,6 @@
 # Experiment-11: The Motor Power Switch
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 11.1 and Equation 11.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.4.0 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 11.1 and Equation 11.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
 
@@ -42,7 +42,7 @@ Collector current of Q2 and the gate to source voltage of Q1.
 1. With the power switch off, place the black lead on GND. Turn on S1. Wait for the first A2 count (about one second). Record the A2 count and the bus printed, then V(bus) at TP1.
 2. SW OFF. Record V(D4) at TP7, V(CE) at TP6, V(VS) at TP5, and V(GS), red lead at TP4 and black lead at TP1.
 3. Press SW once (ON). DS3 and DS2 light. Repeat the four readings of step 2, and measure V(BE), red lead at the base of Q2, black lead at GND.
-4. Calculate IB and IC with Equations 10.1 and 10.2, and their ratio.
+4. Calculate IB and IC with Equations 11.1 and 11.2, and their ratio.
 5. Press SW again (OFF) and time how long DS2 takes to go dark. C11, 470 µF, discharges through R6, 4.7 kΩ, and the module: the time constant of R6 and C11 alone is 4.7 kΩ × 470 µF = 2.2 s.
 
 **Table 11.1.** Expected readings on the fixed supply, 15.6 V bus, Vref 5 V.

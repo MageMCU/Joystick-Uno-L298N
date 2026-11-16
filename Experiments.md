@@ -1,6 +1,12 @@
 # Experiments
 
-The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article and Experiments 10 to 12 in Part C, and their `Instructions/README.md` files hold the full steps. The article refers to release v7.4.0 of this repository; schematics Circuit-1 to Circuit-7 are in [Experiments/Circuits](Experiments/Circuits).
+The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), revised November 15, 2026. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article and Experiments 10 to 12 in Part C, and their `Instructions/README.md` files hold the full steps. The article refers to release v7.4.1 of this repository; schematics Circuit-1, Circuit-1b, and Circuit-2 to Circuit-7 are in [Experiments/Circuits](Experiments/Circuits).
+
+## Changes in Release v7.4.1 (20261113)
+
+- **Figures.** Circuit-1 to Circuit-7 redrawn in one style, each with its notes and the credit line; Circuit-1b (new), the push button with a pull up resistor for Experiment-1, Lab 3; Circuit-1c (new, v7.4.1.c), the pull down and the pull up circuits side by side. Since v7.4.1.c every figure is drawn at the printed size, 6.5 in, and every LED driven from an Uno pin has a 1 kOhm resistor. Circuit-1 and Circuit-1b name the 5V pin of the Uno, powered by its USB cable, as the only supply of Experiment-1. Circuit-2 takes the joystick 5V and its pull up from the 5 V bus of the bench supply, as Article 1009 does (up to v7.4.0 the 5V pin of the Uno). Circuit-3 states the joystick wiring of Circuit-2. Circuit-4 has a junction dot at D10. Circuit-6 gives C11, 470 µF. Circuit-7 adds TP11, the negative lead of BT1.
+- **Experiment-1, Lab 3: The Signal of the Push Button** (from the 1020 Note, Numerics, Button.h and Timer.h, 20241205). The program holds the pull up form of the Button line in comments; the shipped program is unchanged.
+- **Lab cards.** Experiments 2, 3, 5, and 7: the pull up runs from D2 to the 5 V bus. Experiment-3: Step1_Joystick is not repeated, because the joystick has been on the 5 V bus since Experiment-2. Experiment-11, step 4: Equations 11.1 and 11.2. Experiment-12: V(BT1) from TP8 to TP11, because the second pole of S3 opens the ground lead at OFF.
 
 ## Changes in Release v7.4.0 (20261107)
 
@@ -159,7 +165,7 @@ Built after Article 1009, Appendix C, Circuit-4, and both tests of Step6_Circuit
 |------------|----------------------|--------|
 | [Experiment-10: The Bus Monitor](Experiments/Experiment-10/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT`, `STEP6_LAB`, variac supply | [Circuit-5](Experiments/Circuits/Circuit-5.svg) |
 | [Experiment-11: The Motor Power Switch](Experiments/Experiment-11/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT` then `STEP6_MOTORS`, `STEP6_LAB` | [Circuit-6](Experiments/Circuits/Circuit-6.svg) |
-| [Experiment-12: The Robot Supply](Experiments/Experiment-12/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT` then `STEP6_MOTORS`, `STEP6_ROBOT` | [Circuit-7](Experiments/Circuits/Circuit-7.svg) |
+| [Experiment-12: The Robot Supply](Experiments/Experiment-12/Instructions/README.md) | Step6_Circuit, `STEP6_CIRCUIT` then `STEP6_MOTORS`, `STEP6_ROBOT` | [Circuit-7](Experiments/Circuits/Circuit-7.svg) (TP11 since v7.4.1) |
 
 ## Lab Notebook
 

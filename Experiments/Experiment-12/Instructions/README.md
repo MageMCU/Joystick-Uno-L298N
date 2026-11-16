@@ -1,6 +1,6 @@
 # Experiment-12: The Robot Supply
 
-*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 12.1 and Equation 12.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.4.0 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
+*Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 12.1 and Equation 12.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
 
@@ -23,7 +23,7 @@ In `Code-JUL/src/Step6_Circuit/main.cpp` define one test switch, `STEP6_CIRCUIT`
 
 **Objective.** Measure the battery supply of the robot: the drop of the reverse polarity protection, the gate voltages of Q3 and Q1, and the fall of the battery bus when the motors start, against the cutoff of the bus monitor.
 
-**Wiring.** Circuit-4A, the robot supply, and Circuit-4B; the Electronics Lab supply is disconnected from B. BT1 is charged (about 16 V or more) with a balance charger under supervision, on a fireproof surface. Measurement points: [Circuit-7](../../Circuits/Circuit-7.svg), the robot supply with TP8, TP9, TP10, and TP1 (test point (2)); Circuit-6 for Q1.
+**Wiring.** Circuit-4A, the robot supply, and Circuit-4B; the Electronics Lab supply is disconnected from B. BT1 is charged (about 16 V or more) with a balance charger under supervision, on a fireproof surface. Measurement points: [Circuit-7](../../Circuits/Circuit-7.svg), the robot supply with TP8, TP9, TP10, TP11 (BT1 −, added in v7.4.1), and TP1 (test point (2)); Circuit-6 for Q1. The second pole of S3 opens the ground lead of BT1 at OFF, so V(BT1) is measured from TP8 to TP11, not to GND.
 
 The cutoff of a lithium polymer battery is the lowest voltage to which it may be discharged without damage: 3.3 V per cell, 13.2 V for BT1. Step6_Circuit with `STEP6_ROBOT` disconnects VS when the one second average of A2 falls to 346 or less (Article 1009, The bus monitor). This experiment does not discharge BT1 to its cutoff.
 
@@ -33,8 +33,8 @@ The cutoff of a lithium polymer battery is the lowest voltage to which it may be
 
 **Prediction.** For the voltage of BT1, predict V(bus), V(GS) of Q3 (D3 holds it at 12 V or less), V(DS) of Q3, and V(GS) of Q1 with SW ON.
 
-1. S3 at OFF. Record V(BT1) at TP8 and V(bus) at TP1.
-2. S3 to RUN. Record the A2 count and the bus printed, then V(BT1) at TP8, V(bus) at TP1, V(DS) of Q3 (red lead at TP9, black lead at TP1), and V(GS) of Q3 (red lead at TP10, black lead at TP1).
+1. S3 at OFF. Record V(BT1), red lead at TP8 and black lead at TP11, and V(bus) at TP1 to GND (about 0 V: R17 has drained C13).
+2. S3 to RUN. Record the A2 count and the bus printed, then V(BT1) (TP8 to TP11), V(bus) at TP1, V(DS) of Q3 (red lead at TP9, black lead at TP1), and V(GS) of Q3 (red lead at TP10, black lead at TP1).
 3. Press SW (ON). Record V(GS) of Q1 (Circuit-6, TP4 to TP1) and V(VS) (Circuit-6, TP5).
 4. Press SW (OFF), and turn S3 to OFF.
 

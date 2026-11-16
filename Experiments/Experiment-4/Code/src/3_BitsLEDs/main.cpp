@@ -15,14 +15,17 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
-//   3_BitsLEDs/main.cpp last changed: 2026-10-12  v2.4.0
+//   2026-11-15  v7.4.1
+//   3_BitsLEDs/main.cpp last changed: 2026-11-15  v7.4.1
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Experiment-4, Lab 3: L298N.h, reading the flags on the pins.
 //
-// Wiring: six LEDs, each through 220 Ohm to GND, on D5 to D10. The
+// Wiring: six LEDs, each through 1 kOhm to GND, on D5 to D10. The
 // L298N logic header is disconnected and the bench supply is unplugged.
+// Each LED takes about 3 mA, (5 V - Vf) / R; the six together and the
+// indicator LED on D12 take about 21 mA, well under the 100 mA limit of
+// the pin group D5 to D13 (Article 1004, Pin Current and LED Resistors).
 //
 // Type one hexadecimal digit, 0 to f, in the serial monitor. The digit
 // selects the Bits() value bits_0000 to bits_1111. The program then

@@ -15,15 +15,15 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
-//   2_DutyCycle/main.cpp last changed: 2026-10-27  v6.7.0
+//   2026-11-15  v7.4.1
+//   2_DutyCycle/main.cpp last changed: 2026-11-15  v7.4.1
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Experiment-3, Lab 2: one motor and the duty cycle.
 //
 // Wiring: Table-1 of Article 1004 (Article 1009, Circuit-1). One motor on
 // either output of the L298N; the joystick SW on D2 with its external
-// 10 kOhm resistor; the indicator LED on D12 through 220 Ohm.
+// 10 kOhm resistor; the indicator LED on D12 through 1 kOhm.
 //
 // The joystick push button (latching) enables the output. While the
 // button state is OFF, PowerDownL298N() holds both enable inputs LOW.

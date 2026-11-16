@@ -15,14 +15,19 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
-//   3_Button/main.cpp last changed: 2026-10-28  v6.8.0
+//   2026-11-13  v7.4.1
+//   3_Button/main.cpp last changed: 2026-11-13  v7.4.1
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Experiment-1, Lab 3: The Button Class with the Timer Class.
 // Wiring: Circuit-1: push button from D2 to 5 V, 10 kOhm pull down
-// resistor from D2 to GND.
-// Header added 20261028 (v6.8.0); the code is unchanged.
+// resistor from D2 to GND (active high). Circuit-1b: 10 kOhm pull up
+// resistor from D2 to 5 V, push button from D2 to GND (active low);
+// use the pull up form of the Button line in setup() (Article 1004,
+// The Signal of the Push Button). Both circuits take 5 V from the 5V
+// pin of the Uno, powered by its USB cable.
+// Header added 20261028 (v6.8.0). Revised 20261113 (v7.4.1): the pull
+// up form added in comments; the shipped program is unchanged.
 //
 
 #include <Arduino.h>
@@ -72,6 +77,16 @@ void setup()
     // activeLow = true, that first call would select INPUT_PULLUP and
     // replace a pinMode(buttonPin, INPUT) written here.
     button = Button(buttonPin, buttonLED, false);
+
+    // PULL UP FORM (Circuit-1b, v7.4.1): place comment marks on the
+    // Button line above and remove them from the three lines below.
+    // The pressed level is LOW, so activeLow keeps its default, true.
+    // button = Button(buttonPin, buttonLED);
+    // begin() configures the pins at once (INPUT_PULLUP for D2).
+    // button.begin();
+    // Turn the internal pull up off: only the 10 kOhm resistor of
+    // Circuit-1b sets the level, as in the drive programs.
+    // pinMode(buttonPin, INPUT);
 
     //
     timer.resetTimer();

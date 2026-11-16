@@ -92,7 +92,7 @@ Joystick-Uno-L298N/
 │   │                                  of the original headers) and Instructions/README.md (lab card)
 │   ├── Experiment-6/ to Experiment-9/ Advanced experiments: Instructions/README.md (code in Code-JUL)
 │   ├── Experiment-10/ to Experiment-12/ Circuit-4 experiments: Instructions/README.md (Step6_Circuit)
-│   ├── Circuits/                      Schematics Circuit-1 to Circuit-7 of Article 1004 (SVG, PNG)
+│   ├── Circuits/                      Schematics Circuit-1, Circuit-1b, Circuit-1c, and Circuit-2 to Circuit-7 of Article 1004 (SVG, PNG)
 │   └── LAB-NOTEBOOK-TEMPLATE.md
 ├── Motor-Movement-Checklist/          Bench validation of the eight octants; BitsProof.py (128 benches)
 ├── Experiments.md                     Experiment overview
@@ -126,7 +126,7 @@ From Article 1009, Table-2, and Article 1004, Table-1. The joystick orientation 
 | D8 | L298N IN2 | _RightIN_A (RightA) |
 | D9 | L298N IN1 | _RightIN_B (RightB) |
 | D10 | L298N ENA | _EN_B (RightEN) |
-| D12 | Indicator LED through 220 Ω to GND, as in Article 1009, Circuit-1. Since v4.0.0 Step1_Joystick, Step2_JUL (`ledPin`), and Step3_Generator ship with D12; the advanced wiring of Article 1003, Table-4, uses D3 (the commented `ledPin` line of Step2_JUL) | ledPin |
+| D12 | Indicator LED through 1 kΩ to GND (about 3 mA; Article 1004, Pin Current and LED Resistors), as in Article 1009, Circuit-1. Since v4.0.0 Step1_Joystick, Step2_JUL (`ledPin`), and Step3_Generator ship with D12; the advanced wiring of Article 1003, Table-4, uses D3 (the commented `ledPin` line of Step2_JUL) | ledPin |
 
 **Pin names in the code (v6.2.1).** Step2_JUL (the six pin lines), Step3_Generator (Check 1), and Step4_Generated name each Uno pin after the L298N input it is wired to in Article 1009, Circuit-1, as in the table above: `ENB = 5`, `IN4 = 6`, `IN3 = 7`, `IN2 = 8`, `IN1 = 9`, `ENA = 10`. Wire by the table and the circuit. Up to v6.2.0 the code gave the same pin numbers the opposite names (`ENA = 5`, `IN1 = 6` to `IN4 = 9`, `ENB = 10`). A bench wired by those old names (D5 to ENA, D6 to IN1, D7 to IN2, D8 to IN3, D9 to IN4, D10 to ENB) still keeps the connection rules, so it works without new wiring: the Motor Movement Checklist finds its `Bits()` value, and that value belongs to that wiring, not to Circuit-1. Record the wiring in the lab notebook. To match the articles, remove all power as Article 1009 directs, rewire to Circuit-1, and run the checklist again.
 
@@ -351,7 +351,7 @@ The code is written for the student who reads it as well as for the compiler (au
 | **IDE** | PlatformIO |
 | **Editor** | Visual Studio Code |
 | **Language** | C++ (GNU++11) |
-| **Status** | v7.4.0 (2026-11-07). Step2_JUL corrects each joystick reading with the Step1 measurements through the new class `JoystickCorrection` (`include/JoystickCorrection.h`): the measured center reads 511 and the ends, moved in by 10 counts, read 0 and 1023; the rest of the signal chain is unchanged. Step6_Circuit follows Circuit-4A and Circuit-4B (Article 1009, Appendix C): the bus monitor on A2 and the supply switch `STEP6_LAB` or `STEP6_ROBOT`. Step1_Joystick, Step3_Generator, Step4_Generated, and lesson 17 change in comments and printed text only; the other lessons and the labs are unchanged. Step2_JUL ships with `bits_0000`, and `platformio.ini` with Step1_Joystick selected. Bench test by the author pending. The history of every release is in [RELEASES.md](RELEASES.md) |
+| **Status** | v7.4.1 (2026-11-15, download v7.4.1.g), a FIXES release for Article 1004, revised November 15, 2026: LED resistors 1 kOhm (safety over brightness) and the figures redrawn at the printed size, Circuit-1c added; Circuit-1 to Circuit-7 redrawn and Circuit-1b added (Experiments/Circuits); Experiment-1, Lab 3, holds the pull up form of its Button line in comments (Circuit-1b, from the 1020 Note); the joystick of Experiment-2, Lab 3 (Circuit-2), takes 5 V from the 5 V bus; lab card corrections of Experiments 2, 3, 5, 7, 11, and 12. The Code-JUL programs are those of v7.4.0, with `bits_1101` in the Bits() line of Step2_JUL (the author's bench; the checklist starts at `bits_0000`) and Step5_MathLessons selected in `platformio.ini`, the settings of the author's bench logs of v7.4.0.h. Article 1004 cites v7.4.1. Bench test by the author pending. The history of every release is in [RELEASES.md](RELEASES.md) |
 
 ---
 

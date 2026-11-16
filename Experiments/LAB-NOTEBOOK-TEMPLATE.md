@@ -86,7 +86,7 @@ Identify what remains uncertain or untested.
 
 Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
-The tables follow Article 1004, revision 20261107g, and release v7.4.0.
+The tables follow Article 1004, revised November 15, 2026, and release v7.4.1.
 
 ### Step1: the Step1_Joystick self test (Article 1009)
 
@@ -114,6 +114,7 @@ The six values of the printed `JoystickMeasurements.h`, or the wire checked afte
 | 1: `delay()` | First three values of Number of Loops and the time between them | | |
 | 2: `Timer` | Number of Loops per one second interval | | |
 | 3: `Button` | Indicator LED, onboard LED, and serial output after the first and second press | | |
+| 3: Circuit-1b | D2 released and pressed (V); program of Circuit-1 on Circuit-1b: state changes at press or release; pull up form: press or release (v7.4.1) | | |
 | 4: `Switch` | Switch closures counted for ten presses, three trials; Lab 3 toggles for ten presses; LED after the constructor correction | | |
 
 ### Experiment-2: Wiring and reading the thumb joystick
@@ -123,11 +124,11 @@ The six values of the printed `JoystickMeasurements.h`, or the wire checked afte
 | 1: Preprocessor | Five printed lines with no flag and with `DEBUG_JOYSTICK`; Flash and RAM figures; first three linker errors of `second.cpp` | | |
 | 2: LinearMap | Table-4, three columns beside the prediction; the three Reverse lines | | |
 
-Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (the external 10 kOhm pull up from D2 to 5 V of Circuit-2, required since v3.2.0 for a module with no resistor on SW, as on the author's bench; or a pull down), and the `activeLow` value used.
+Lab 3, step 1: push button measurement (SW to GND and SW to 5V, released and pressed), resistor fitted (the external 10 kOhm pull up from D2 to the 5 V bus of Circuit-2, required since v3.2.0 for a module with no resistor on SW, as on the author's bench; or a pull down), and the `activeLow` value used.
 
-Lab 3, steps 2 and 3: Step1_Joystick result (PASS or FAIL), the check list copied, and JoystickMeasurements.h copied (They match): ______.
+Lab 3, step 2: Step1_Joystick result (PASS or FAIL), the check list copied, and JoystickMeasurements.h copied (They match): ______.
 
-Lab 3, steps 4 to 6 (v7.4.0): raw values first (the Analogs line of Step2_JUL), then the corrected values (the Corrected line), then the calculated N of Equation-2.
+Lab 3, steps 3 to 5 (v7.4.1): the 5 V bus and the 5V pin of the Uno (Vref) first, then raw values (the Analogs line of Step2_JUL), then the corrected values (the Corrected line), then the calculated N of Equation-2.
 
 | Grip position | VRx to GND (V) | VRy to GND (V) | x raw (A0) | y raw (A1) | x corrected | y corrected | Expected N (Equation-2) | Notes |
 |---------------|----------------|----------------|------------|------------|-------------|-------------|-------------------------|-------|
@@ -167,6 +168,8 @@ Lab 3 (Table-7), test command left 255, right −64:
 | 2 (0010) | | | | | | | |
 | a (1010) | | | | | | | |
 | f (1111) | | | | | | | |
+
+Lab 3, LED current (digit 0, D5 HIGH): V(R) measured ____ V; I = V(R) / 1000 Ohm = ____ mA; worst case total 7 x I = ____ mA (limit 100 mA).
 
 Lab 4: unloaded motor bus voltage ____ V; no motor turns while the button state is OFF (yes or no).
 
@@ -245,7 +248,7 @@ Experiment-12 (Circuit-7):
 | Reading | S3 OFF | RUN, motors stopped | RUN, full forward | Units |
 |---------|--------|---------------------|-------------------|-------|
 | A2 count printed | | | | |
-| V(BT1), TP8 | | | | V |
+| V(BT1), TP8 to TP11 | | | | V |
 | V(bus), TP1 | | | | V |
 | V(DS) of Q3, TP9 to TP1 | | | | V |
 | V(GS) of Q3, TP10 to TP1 | | | | V |

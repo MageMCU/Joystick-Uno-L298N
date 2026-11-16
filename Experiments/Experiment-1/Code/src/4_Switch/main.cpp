@@ -15,14 +15,14 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
-//   4_Switch/main.cpp last changed: 2026-10-27  v6.7.0
+//   2026-11-15  v7.4.1
+//   4_Switch/main.cpp last changed: 2026-11-15  v7.4.1
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 // Experiment-1, Lab 4: Switch.h and contact bounce.
 // Wiring: the circuit of Lab 3, unchanged. Push button from D2 to 5 V,
 // 10 kOhm pull-down resistor from D2 to GND, indicator LED on D3
-// through 220 Ohm to GND.
+// through 1 kOhm to GND.
 //
 // The Switch class reads the pin on every call to updateSwitch() and
 // does not debounce. The program counts every change of isSwitchOn()

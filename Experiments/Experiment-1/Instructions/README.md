@@ -1,6 +1,6 @@
 # Experiment-1: Timing and Button Input on the Uno
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 7, 2026 (revision 20261107g). The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.0 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -12,12 +12,14 @@ Project folder: open `Experiments/Experiment-1/Code` in Visual Studio Code, neve
 |---|---|---|---|
 | Lab 1: The delay() Function | `src/1_Delay` | `build_src_filter = +<*> +<1_Delay/> -<2_Timer/> -<3_Button/> -<4_Switch/>` | Uno and USB cable |
 | Lab 2: The Timer Class | `src/2_Timer` | `build_src_filter = +<*> -<1_Delay/> +<2_Timer/> -<3_Button/> -<4_Switch/>` | Uno and USB cable |
-| Lab 3: The Button Class with the Timer Class | `src/3_Button` | `build_src_filter = +<*> -<1_Delay/> -<2_Timer/> +<3_Button/> -<4_Switch/>` | [Circuit-1](../../Circuits/Circuit-1.svg) |
+| Lab 3: The Button Class with the Timer Class | `src/3_Button` | `build_src_filter = +<*> -<1_Delay/> -<2_Timer/> +<3_Button/> -<4_Switch/>` | [Circuit-1](../../Circuits/Circuit-1.svg), then [Circuit-1b](../../Circuits/Circuit-1b.svg); the two resistor circuits side by side: [Circuit-1c](../../Circuits/Circuit-1c.svg) |
 | Lab 4: Switch.h and Contact Bounce | `src/4_Switch` | `build_src_filter = +<*> -<1_Delay/> -<2_Timer/> -<3_Button/> +<4_Switch/>` | [Circuit-1](../../Circuits/Circuit-1.svg) |
 
 ## Notes for the bench
 
-- Lab 3: `button = Button(buttonPin, buttonLED, false);` (the Button line of `setup()`) is written for the pull down resistor of Circuit-1.
+- Lab 3: `button = Button(buttonPin, buttonLED, false);` (the Button line of `setup()`) is written for the pull down resistor of Circuit-1 (active high). For Circuit-1b, the pull up resistor (active low; Article 1004, The Signal of the Push Button), place comment marks on that line and remove them from the three lines of the PULL UP FORM below it: `button = Button(buttonPin, buttonLED);`, `button.begin();`, and `pinMode(buttonPin, INPUT);` (v7.4.1). Restore the pull down form and Circuit-1 before Lab 4.
+- LED resistor: the indicator LED on D3 takes a 1 kOhm resistor, about 3 mA (Article 1004, Pin Current and LED Resistors).
+- Supply: Experiment-1 is the only experiment in which the 5V pin of the Uno, powered by its USB cable, supplies the breadboard; from Experiment-2, Lab 3, onward every breadboard device takes 5 V from the 5 V bus of the bench supply.
 - Lab 4, step 4: move the call to `m_pins()` after the two assignments in the `Switch` constructor of `include/Switch.h` (the copy in this folder only).
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
