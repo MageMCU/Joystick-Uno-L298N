@@ -1,6 +1,6 @@
 # Discrepancies
 
-Review of the Joystick-Uno-L298N repository, updated November 13, 2026 (v7.4.1); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
+Review of the Joystick-Uno-L298N repository, updated November 16, 2026 (v7.5.0); full review October 12, 2026, against Article 1004 Update 20261012 Rev 2. Sections are dated, newest first. Each item lists what was found, where, and its current status. Items marked **Open** need author input or verification that cannot be completed from repository contents alone.
 
 Open as of 2026-10-12: 11 (Article 1000 axis mapping), 29 (bench check of the joystick power procedure only), 36 (Experiment-5, Lab 3, step 4, against Article 1009), 37 (tag v2.4.0 and Bibliography [1] date), 38 (Eberly credits for the matrix and quaternion fixes, author decision).
 
@@ -71,6 +71,17 @@ Open as of 2026-10-22 (v6.2.3): 107 (release tags not on GitHub); 137 and 152 (b
 Open as of 2026-10-22 (v6.3.0): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.0, with the Step1_Joystick of 188 and 189), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests; 192 and 193 (author decisions).
 
 Open as of 2026-10-22 (v6.3.1): 107 (release tags not on GitHub); 137 and 152 (bench tests, now of v6.3.1), next for the author; 82, 143, 150, and 177 (Articles 1004 and 1009), after the bench tests. 192 and 193 are closed.
+
+## L298N.h: _Limit() and the Brake Alternatives; Article 1003 (2026-11-16, v7.5.0)
+
+Requested by the author: Article 1003 lists the L298N class of the repository and cites the tagged release.
+
+| # | Finding | Location | Resolution |
+|---|---------|----------|------------|
+| 274 | Article 1003 (20260925) listed an earlier form of the L298N class: the local names `ENA` and `ENB` (renamed `enPinA` and `enPinB` in v6.2.2), `_Limit()`, `_SetPair()`, `_bitsValid`, and two commented brake alternatives; `L298N.h` had no limit and no brake alternatives. | Article 1003, L298N Code; `L298N.h` | **Fixed 2026-11-16 (v7.5.0):** `_Limit()` and BRAKE 1 and BRAKE 2 (comments) added to `L298N.h`; Article 1003, revision 20261116, lists the file of v7.5.0 without its header and its `DEBUG_L298N` lines. |
+| 275 | A command outside -255 to 255 reached `analogWrite()` as its absolute value, which the 8 bit register truncates. | `L298N.h`, `UpdateL298N()` | **Fixed 2026-11-16 (v7.5.0):** `_Limit()`. Host test of 1936 cases: identical pin writes within -255 to 255; at most 255 outside it. |
+| 276 | Comments of `L298N.h`: "differenation", "Contructors", and hyphenated "buttons-OFF", "saved-values", "Bit-1 Flag", "Bit-0 Flag". | `L298N.h` | **Fixed 2026-11-16 (v7.5.0)** (comments only). |
+| 277 | The `L298N.h` copies in Experiments 1 to 5 differ from Code-JUL. | `Experiments/Experiment-N/Code/include/` | **Not changed, by design:** the snapshots of commit f2307a1, kept as the notes of earlier releases state. |
 
 ## Circuit-4A and Circuit-4B; the Joystick Correction in Step2 (2026-11-07, v7.4.0)
 

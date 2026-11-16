@@ -6,6 +6,18 @@
 
 ---
 
+## v7.5.0 (2026-11-16), L298N.h: _Limit() and the two brake alternatives; Article 1003 lists the file
+
+Tag: v7.5.0, to be set by the author after his bench test and after Article 1003 is republished; Article 1003 cites this release. Requested by the author (20261116): Article 1003 listed an earlier form of the L298N class, from before v6.2.2, with `_Limit()` and two brake alternatives that `L298N.h` did not have. The repository now holds them, and Article 1003 lists `Code-JUL/include/L298N.h` of this release without its file header and without the `DEBUG_L298N` lines. A change to compiled code that keeps every existing name, so the second number (MINOR) counts it; download v7.5.0.a.
+
+- **`L298N.h`, `_Limit()` (new, private, static).** Keeps a command within -255 to 255 and keeps its sign. `UpdateL298N()` applies it to `_pwmA` and `_pwmB` after the Bit 2 assignment and before `_SetDirectionPins()`. Before v7.5.0 a command outside that range reached `analogWrite()` as `absT()` of the command, which the 8 bit register truncates (for example 256 wrote 0). The drive programs map their commands to -255 to 255, so on the bench nothing changes; the limit protects a program that passes a larger value.
+- **`L298N.h`, BRAKE 1 and BRAKE 2 (comments only).** BRAKE 1, in `UpdateL298N()` with the motors ON, brakes a motor whose command is 0 (IN pins LOW, EN HIGH); BRAKE 2, in `PowerDownL298N()`, brakes both motors instead of coasting. Both stay commented out: the class coasts, as Article 1009 states (no brake routine). Article 1003, Coast, Drive, and Brake, describes them and the limit of the braking current.
+- **`L298N.h`, comments.** RELEASE block 2026-11-16 v7.5.0, with the previous change (2026-10-27, v6.7.0) kept; "differenation", "Contructors", "buttons-OFF", "saved-values", and "Bit-1 Flag" and "Bit-0 Flag" rewritten.
+- **Verified 2026-11-16** (avr-gcc 7.3.0, ArduinoCore-avr 1.8.6, `-Os -Wall -Wextra`, link time optimization): the six programs of Code-JUL build with no warnings; lesson 18 (L18_MotorLineFit, TOPIC 0), which includes `L298N.h`, builds with no warnings. Intel HEX of Step1_Joystick, Step3_Generator, Step4_Generated, Step5_MathLessons (as shipped), and Step6_Circuit identical to v7.4.1; Step2_JUL differs (text 10234 to 10314 bytes, `_Limit()`). With both brake alternatives uncommented, Step2_JUL builds with no warnings (10442 bytes). Host test (g++ -std=gnu++11 -Wall -Wextra, stub Arduino.h): all 16 `Bits()` values with left and right commands of -400, -256, -255, -100, -1, 0, 1, 100, 255, 256, and 400 (1936 cases): every pin write equals that of v7.4.1 for commands within -255 to 255; for larger commands v7.5.0 writes at most 255 to the enable pins (v7.4.1 wrote up to 400 in 1152 cases); the motors OFF flag and `PowerDownL298N()` write 0 to both enable pins.
+- **Not changed.** The include folders of Experiments 1 to 5 keep the original `L298N.h` of commit f2307a1, by design, as the notes of earlier releases state; the Code-JUL programs, the headers other than `L298N.h`, and the documents of Articles 1004 and 1009.
+
+---
+
 ## v7.4.1 (2026-11-13), Article 1004 figures and lab cards; the 1020 Note
 
 Tag: v7.4.1, to be set by the author after his bench test and after Article 1004 is published; Article 1004, revised November 15, 2026, cites this release, and the author pushes it although it is a FIXES release (author decision, 20261113). Requested by the author: Article 1004 is updated against v7.4.0, its figures redrawn, and the 1020 Note (Numerics, Button.h and Timer.h, 20241205), to be removed from the website, is added to Article 1004. Figures, comments, and lab cards only, with no change to a compiled program, so the third number (FIXES) counts it; download v7.4.1.g.

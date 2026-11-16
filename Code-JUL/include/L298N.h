@@ -15,8 +15,9 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
-//   L298N.h last changed: 2026-10-27  v6.7.0
+//   2026-11-16  v7.5.0
+//   L298N.h last changed: 2026-11-16  v7.5.0 (_Limit(), brake comments)
+//   L298N.h changed before: 2026-10-27  v6.7.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //
 
@@ -69,10 +70,10 @@ namespace csjc
     class L298N
     {
         // The names LEFT & RIGHT are misnomers and are
-        // used only for name differenation...
+        // used only to tell the two channels apart.
 
         // Private Properties
-        // Although used, there are no saved-values
+        // Bits() uses it; it stores no values
         Bitwise<int> _bWise;
         int _bitsValue;
 
@@ -101,6 +102,8 @@ namespace csjc
 
         // Private Methods
         void _SetDirectionPins();
+        // Keeps a command within -255 to 255 (Article 1003)
+        static int _Limit(int value);
         // Priority Left
         void _LeftSet1();
         void _LeftSet2();
@@ -108,7 +111,7 @@ namespace csjc
         void _RightSet2();
 
     public:
-        // Contructors
+        // Constructors
         L298N();
         L298N(uint8_t LeftEN,
               uint8_t LeftA,
@@ -280,6 +283,10 @@ namespace csjc
 #endif
         }
 
+        // Each command is kept within -255 to 255 (Article 1003)
+        _pwmA = _Limit(_pwmA);
+        _pwmB = _Limit(_pwmB);
+
         // Direction Pins require the Negative and Positive values (-/+)
         _SetDirectionPins();
 
@@ -289,6 +296,22 @@ namespace csjc
         {
             analogWrite(enPinA, absT<int>(_pwmA));
             analogWrite(enPinB, absT<int>(_pwmB));
+
+            // Optional BRAKE 1 (Article 1003, Coast, Drive, and Brake):
+            // brakes a motor whose command is 0; the default is coast
+            // (EN LOW). On the diagonals one command is 0.
+            // if (_pwmA == 0)
+            // {
+            //     digitalWrite(_LeftIN_A, LOW);
+            //     digitalWrite(_LeftIN_B, LOW);
+            //     digitalWrite(enPinA, HIGH);
+            // }
+            // if (_pwmB == 0)
+            // {
+            //     digitalWrite(_RightIN_A, LOW);
+            //     digitalWrite(_RightIN_B, LOW);
+            //     digitalWrite(enPinB, HIGH);
+            // }
         }
         else
         {
@@ -302,11 +325,34 @@ namespace csjc
 #endif
     }
 
-    // Used with buttons-OFF
+    // Used when the button turns the motors OFF
     void L298N::PowerDownL298N()
     {
+        // Coast: both enable pins LOW
         analogWrite(_EN_A, LOW);
         analogWrite(_EN_B, LOW);
+
+        // Optional BRAKE 2 (Article 1003, Coast, Drive, and Brake):
+        // brakes both motors instead of coasting (IN pins LOW, then EN
+        // HIGH). PinsL298N() calls this method at startup, so with
+        // BRAKE 2 the motors start braked.
+        // digitalWrite(_LeftIN_A, LOW);
+        // digitalWrite(_LeftIN_B, LOW);
+        // digitalWrite(_RightIN_A, LOW);
+        // digitalWrite(_RightIN_B, LOW);
+        // digitalWrite(_EN_A, HIGH);
+        // digitalWrite(_EN_B, HIGH);
+    }
+
+    // Private Method
+    // Keeps the size of a command within 255 and keeps its sign
+    int L298N::_Limit(int value)
+    {
+        if (value > 255)
+            return 255;
+        if (value < -255)
+            return -255;
+        return value;
     }
 
     // Private Method
@@ -314,7 +360,7 @@ namespace csjc
     {
         if (_pwmA >= ZERO)
         {
-            // Left Motor Bit-1 Flag
+            // Left motor, bit 1 flag
             if (_bitLeftIN_Flag)
                 _LeftSet1();
             else
@@ -322,7 +368,7 @@ namespace csjc
         }
         else if (_pwmA < ZERO)
         {
-            // Left Motor Bit-1 Flag
+            // Left motor, bit 1 flag
             if (_bitLeftIN_Flag)
                 _LeftSet2();
             else
@@ -331,7 +377,7 @@ namespace csjc
 
         if (_pwmB >= ZERO)
         {
-            // Right Motor Bit-0 Flag
+            // Right motor, bit 0 flag
             if (_bitRightIN_Flag)
                 _RightSet1();
             else
@@ -339,7 +385,7 @@ namespace csjc
         }
         else if (_pwmB < ZERO)
         {
-            // Right Motor Bit-0 Flag
+            // Right motor, bit 0 flag
             if (_bitRightIN_Flag)
                 _RightSet2();
             else
