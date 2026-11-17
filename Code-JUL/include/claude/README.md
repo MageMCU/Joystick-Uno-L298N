@@ -1,6 +1,6 @@
 # include/claude
 
-The files in this folder were written with Claude (Anthropic), an AI assistant, at the request of Jesse Carpenter on 2026-10-17. They are kept apart from the original header files in `include/` and `include/numerics/`, which they do not change, so a reader can tell at once which code is original and which was generated. Each file was tested against the original code as described below, and on the bench by the author on 2026-10-21 (release v4.0.1).
+The files in this folder were written with Claude (Anthropic), an AI assistant, at the request of Jesse Carpenter on 2026-10-17. They are kept apart from the original header files in `include/` and `include/numerics/`, which they do not change, so a reader can tell at once which code is original and which was generated. Each file was tested against the original code as described below and bench tested by the author.
 
 | File | Used by | Purpose |
 |---|---|---|
@@ -8,8 +8,6 @@ The files in this folder were written with Claude (Anthropic), an AI assistant, 
 | `ace.h` | Step4_Generated | Class template `Ace`: the complete drive program in one file, for speed and size; includes `Arduino.h` only |
 
 Other files written with Claude on the same date: `src/Step3_Generator/main.cpp` and `src/Step4_Generated/main.cpp` (printed by Step3_Generator).
-
-Revised later on 2026-10-17: the programs were renumbered (Step4_Generator to Step3_Generator, Step5_Generated to Step4_Generated, Step2_JUL to Step1_JUL; since v4.0.0 the names are Step3_Generator, Step4_Generated, and Step2_JUL), and Step3_Generator now asks one question, the `Bits()` value. The joystick lines are fixed as in Step2_JUL, x on A1 and y on A0 with no reversal, because one `Bits()` value corrects any joystick orientation (see `../../README.md`, Setup with One Bits() Value). `ace.h` keeps `X_REVERSED` and `Y_REVERSED` as template parameters; the printed program sets them false. Printed for bits_1010, the program builds to the same Intel HEX as before the revision; the shipped Step4_Generated is printed for bits_0000, the first row of the checklist. `readLine()` of Step3_Generator now accepts LF, CR, and CR LF line endings.
 
 Revised for v3.0.1 (2026-10-17): Step3_Generator takes the four binary digits of the `Bits()` value only (no decimal entry and no table), and Step3_Generator and Step4_Generated no longer use the build flags `STEP3_GENERATOR` and `STEP4_GENERATED`; each is selected with `build_src_filter` in `platformio.ini`. The printed program has no `#ifdef` line, so it can be copied into a project of its own with `ace.h` unchanged. Step4_Generated, printed again for bits_0000, builds to the same Intel HEX as in v3.0.0.
 

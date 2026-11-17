@@ -2,7 +2,7 @@
 
 *Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
-Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision. A supervising adult operates the bench power supply.
+Safety: follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision. A supervising adult operates the bench power supply.
 
 Project folder: open `Experiments/Experiment-3/Code` in Visual Studio Code, never the repository root. Select one lab at a time with `build_src_filter` in `platformio.ini`; the serial monitor runs at 9600 baud.
 
@@ -27,8 +27,8 @@ Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-
 - [1000 Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I)
 - [1001 Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO)
 - [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
-- [1003 L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq)
-- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr)
-- [1009 Supplemental, Motor Movement Checklist](https://drive.google.com/file/d/1PRdfuvDG60wM1WI8K41EqfcYhycW6bE4)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1sPCllUSFPy56IU6-IgOWoAyB3GcKCKon)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC)
+- [1009 Supplemental, Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1xfzl9v4AlJra85AO-Mb8qxhmqGoAyuV9)
 
 Copyright Jesse Carpenter (Carpenter Software). Software: MIT License; see the repository LICENSE and DISCLAIMER.md.

@@ -2,7 +2,7 @@
 
 *Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 10.1 and Equation 10.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
-Safety: follow [Article 1009](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
+Safety: follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
 
 **Running Step6_Circuit.** Open `Code-JUL/` and select Step6_Circuit in `platformio.ini`:
 
@@ -66,8 +66,8 @@ With the nominal values and V(ref) = 5.00 V: count = V(bus) × 26.23.
 
 ## Related Articles
 
-- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/14dXfhFfpZYOAXZBTmZFWcl6XGlfDwLkr)
-- [1003 L298N Motor Driver](https://drive.google.com/file/d/1_BPALBsqgglQh7zsPZBlocXSksMZQOUq)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1sPCllUSFPy56IU6-IgOWoAyB3GcKCKon)
 - [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
