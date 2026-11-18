@@ -1,12 +1,29 @@
 # Releases & Active Study
 
-**This repository is under active development.** All releases represent milestones in the ongoing joystick algorithm study and software refinement.
-
 **Version numbers.** MAJOR.MINOR.FIXES. MAJOR changes break old names or the way of working; MINOR adds programs or features and keeps the existing names; FIXES counts debug fixes. A download file adds a letter for each attempt (v4.0.1.a, v4.0.1.b); the git tag carries the three numbers only. Adopted 20261021, from v4.0.1.
 
 **Article links.** The articles live on Google Drive and are listed on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html). A new upload gets a new Drive link; an upload made with Manage versions (Drive, File information, Manage versions) keeps the old link. After every article update, and before every release, compare each Drive link in the repository with the Robotics page and correct the links that differ. The links appear in `README.md` (Articles, Resources), `Experiments.md` (Safety), the Safety line and article list of every lab card (`Experiments/Experiment-n/Instructions/README.md`), and `Motor-Movement-Checklist/ReadMe.md`. Reviewer note (Claude): check these links against the Robotics page on every download. Adopted 20261117.
 
 **Articles to update.** Every release entry names the articles that need an update because of it, or states that none do. A change to compiled code, to a file an article lists, or to a name, pin, step, or output an article shows requires the update; the articles that cite an exact release (1003, 1004, 1009) are checked first. Adopted 20261117.
+
+**RELEASE block.** The comment header of every code file ends with a RELEASE block. Its first line, Last reviewed, gives the date and release of the last full check of the repository; its second line gives the date and release in which that file last changed. A full check rewrites the first line in place, so no line is added and every line number stays the same (the code images of the articles show line numbers). The two files printed by Step1_Joystick and Step3_Generator keep the line printed with them. Adopted 20261118 (it replaces the rule of v6.8.0, which wrote the release on the first line).
+
+**Full check.** Every release entry ends with a Full check line: the date, the builds, the simulations, and the articles checked (Repository Update Instructions, 20261118). Adopted 20261118.
+
+---
+
+## v7.5.1 (2026-11-18), full check; Last reviewed in every RELEASE block
+
+Tag: v7.5.1, to be set by the author after the push; the author pushes this FIXES release (author decision, 20261118). Comments and documents only: no compiled code changed, so Articles 1003 (v7.5.0), 1004 (v7.4.1), and 1009 (v7.4.0) keep their releases.
+
+- **RELEASE blocks.** In 126 code files the first line of the RELEASE block reads `Last reviewed: 2026-11-18  v7.5.1` in place of the release written by v7.4.0 (or v7.5.0 in `L298N.h`); the line count of every file is unchanged. `JoystickMeasurements.h` and Step4_Generated keep their printed lines.
+- **`Code-JUL/README.md`.** The Step4_Generated row names `bits_1101`, the value it is printed for, and replaces the old claim that its pin states match Step2_JUL.
+- **`Motor-Movement-Checklist/ReadMe.md`.** The code snippet is the code of Step2_JUL, with each comment on its own line above its statement (it had comments beside the statements and the old pin lines).
+- **`Code-JUL/include/claude/README.md`.** The nine "Revised for" history paragraphs removed (they stay in git); Verification replaced with the results of 20261118, including the difference between Step2_JUL and Step4_Generated.
+- **`README.md`.** The bench settings note names `upload_port = /dev/ttyACM0` of `platformio.ini`.
+- **Not changed.** The title string of Step3_Generator keeps one continued string that does not start with `\n` ("and 2."): the output is shown in Article 1009, Code-6.
+- **Articles to update.** None for this release. Found by the full check, in the article update files of 20261118: Article 1009, Simple Drive and Fast Drive, paragraph 2 (the two drives differ over the whole range, not only near the center); Article 1001, Code-1 (two lines differ from `Joystick.h`); every code listing of Articles 1000 to 1003 becomes a numbered image (Code-n).
+- **Full check (2026-11-18).** Builds: every program of Code-JUL, all 20 lessons, Step2_JUL and Step4_Generated with debug off, Step6_Circuit with `STEP6_ROBOT`, and the 14 programs of the experiments, no warnings (avr-gcc 7.3.0, `-Wall -Wextra`). Simulations (host): Step2_JUL gives Article 1009, Code-5, line for line; `JoystickCorrection` matches Article 1009, Equation-1, for all 1024 readings; Step2_JUL and Step4_Generated compared for all 1024 x 1024 readings; `BitsProof.py`: 128 benches, exactly one value each. Coding rules: no line over 80 characters, no comment beside a statement. Links: every Drive link matches the Robotics page; tags v7.4.0, v7.4.1, v7.5.0 on their commits. Articles: 1001, 1003, 1004, 1009.
 
 ---
 

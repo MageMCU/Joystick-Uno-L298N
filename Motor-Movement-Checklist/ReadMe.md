@@ -91,26 +91,38 @@ With **center offsets applied before the algorithm** (`X_OFFSET = 0.05`, `Y_OFFS
 
 ## Code Snippet
 
-Condensed from `Code-JUL/src/Step2_JUL/main.cpp`, `setup()` (the program assigns the pins through six variables, named since v6.2.1 after the L298N input of each pin: `ENB = 5`, `IN4 = 6`, `IN3 = 7`, `IN2 = 8`, `IN1 = 9`, `ENA = 10`). The names are the constructor names of the L298N class, not the silkscreen labels of the module: D5 is wired to L298N ENB and D10 to ENA (Article 1004, Table-1; Article 1009, Table-2). A bench wired by the names of v6.2.0 and earlier (D5 to ENA, D6 to IN1, and so on) keeps the connection rules and needs no new wiring; the checklist finds the value of that wiring. See the repository `README.md`, Wiring Checklist.
+From `Code-JUL/src/Step2_JUL/main.cpp`, `setup()` (the program assigns the pins through six variables, named since v6.2.1 after the L298N input of each pin: `ENB = 5`, `IN4 = 6`, `IN3 = 7`, `IN2 = 8`, `IN1 = 9`, `ENA = 10`). The names are the constructor names of the L298N class, not the silkscreen labels of the module: D5 is wired to L298N ENB and D10 to ENA (Article 1004, Table-1; Article 1009, Table-2). A bench wired by the names of v6.2.0 and earlier (D5 to ENA, D6 to IN1, and so on) keeps the connection rules and needs no new wiring; the checklist finds the value of that wiring. See the repository `README.md`, Wiring Checklist.
 
 ```cpp
-// Constructor setup the x-range and the y-range
+// Joystick reading (0 to 1023) to joystick input (-1 to 1)
 mapInputFromDigital = LinearMap<float>(0, 1023, -1.0, 1.0);
+// Joystick output (-1 to 1) to PWM command (-255 to 255)
 mapOutFromJoystick = LinearMap<float>(-1.0, 1.0, -255, 255);
 
-// L298N Setup: Uno pins D5 to D10 in the class default order
-int8_t LeftEN = 5;   // L298N ENB
-int8_t LeftA = 6;    // L298N IN4
-int8_t LeftB = 7;    // L298N IN3
-int8_t RightA = 8;   // L298N IN2
-int8_t RightB = 9;   // L298N IN1
-int8_t RightEN = 10; // L298N ENA
+// Uno pins, named after the L298N input each is wired to in Circuit-1
+// of Article 1009
+int8_t ENB = 5;
+int8_t IN4 = 6;
+int8_t IN3 = 7;
+int8_t IN2 = 8;
+int8_t IN1 = 9;
+int8_t ENA = 10;
+// L298N PINS
+int8_t LeftEN = ENB;
+int8_t LeftA = IN4;
+int8_t LeftB = IN3;
+int8_t RightA = IN2;
+int8_t RightB = IN1;
+int8_t RightEN = ENA;
 
-motors = L298N(LeftEN, LeftA, LeftB, RightA, RightB, RightEN);
+// L298N Constructor
+motors = L298N(LeftEN, LeftA, LeftB,
+               RightA, RightB, RightEN);
+// Initiate L298N Pins: outputs, LOW
 motors.PinsL298N();
 
-// Shipped as bits_0000, the first row of the checklist; the value
-// found with this checklist replaces it
+// A new bench starts at bits_0000, the first row of the checklist; the
+// repository ships bits_1101, the value of the author's bench
 motors.Bits(BitsL298N::bits_0000);
 ```
 

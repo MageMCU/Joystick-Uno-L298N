@@ -16,7 +16,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-07  v7.4.0
+//   Last reviewed: 2026-11-18  v7.5.1
 //   RandomNumber.h last changed: 2026-10-22  v6.3.1
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
 //

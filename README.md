@@ -87,7 +87,7 @@ Each program is selected with `build_src_filter` in `Code-JUL/platformio.ini`; d
 
 **Signal chain.** The joystick readings (0 to 1023) are corrected with the six values of `JoystickMeasurements.h`, mapped to the range minus 1 to 1, and passed through a dead zone; `Joystick.h` turns them into left and right commands of minus 1 to 1, which are mapped to minus 255 to 255. The sign sets the IN pair and the size sets the PWM on the enable pin.
 
-**One `Bits()` value.** Step2_JUL ships with `bits_1101` and `platformio.ini` selects Step5_MathLessons. These are the settings of the author's bench test, kept with its serial monitor logs in `Code-JUL/logs/`. A new bench starts at `bits_0000`, the first row of the Motor Movement Checklist, and selects Step1_Joystick first. The [Motor Movement Checklist](Motor-Movement-Checklist/ReadMe.md) finds the one value of the 16 that corrects both the joystick orientation and the L298N wiring of a bench; `BitsProof.py` shows that every bench that keeps the connection rules has exactly one.
+**One `Bits()` value.** Step2_JUL ships with `bits_1101`, and `platformio.ini` selects Step5_MathLessons and sets `upload_port = /dev/ttyACM0`. These are the settings of the author's bench test, kept with its serial monitor logs in `Code-JUL/logs/`. A new bench starts at `bits_0000`, the first row of the Motor Movement Checklist, selects Step1_Joystick first, and sets its own serial port (Quick Start, step 5). The [Motor Movement Checklist](Motor-Movement-Checklist/ReadMe.md) finds the one value of the 16 that corrects both the joystick orientation and the L298N wiring of a bench; `BitsProof.py` shows that every bench that keeps the connection rules has exactly one.
 
 ---
 
@@ -141,7 +141,7 @@ The code is written for the student who reads it as well as for the compiler.
 
 ## Releases
 
-The current release is v7.5.0. Versions are MAJOR.MINOR.FIXES; see [RELEASES.md](RELEASES.md) for the notes and for the articles each release affects.
+The current release is v7.5.1. Versions are MAJOR.MINOR.FIXES; see [RELEASES.md](RELEASES.md) for the notes and for the articles each release affects.
 
 ## Credits
 

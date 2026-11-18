@@ -15,7 +15,7 @@
 // MIT LICENSE
 //
 // RELEASE
-//   2026-11-16  v7.5.0
+//   Last reviewed: 2026-11-18  v7.5.1
 //   L298N.h last changed: 2026-11-16  v7.5.0 (_Limit(), brake comments)
 //   L298N.h changed before: 2026-10-27  v6.7.0
 //   https://github.com/MageMCU/Joystick-Uno-L298N (RELEASES.md)
