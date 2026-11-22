@@ -1,6 +1,6 @@
 # Experiment-3: L298N Single Motor
 
-*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 15, 2026. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.4.1 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
+*Lab card for Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 21, 2026. The article gives the objective, prediction, steps, and expected output of every lab, under the heading of the same name; this card gives the files and settings used at the bench. The article and this card refer to release v7.5.2 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
 Safety: follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision. A supervising adult operates the bench power supply.
 
@@ -14,6 +14,8 @@ Project folder: open `Experiments/Experiment-3/Code` in Visual Studio Code, neve
 | Lab 2: One Motor and the Duty Cycle | `src/2_DutyCycle` | `build_src_filter = +<*> -<1_MiscMath/> +<2_DutyCycle/>` | [Circuit-3](../../Circuits/Circuit-3.svg) |
 
 ## Notes for the bench
+
+- Lab 2, the load (v7.5.2): steps 1 to 6 use a 47 Ohm, 5 W resistor across OUT1 and OUT2, so that the meter reading can be compared with Equation-4 of the article; the motor replaces the resistor in steps 7 and 8. With the resistor the reading agrees with Equation-4 within the meter tolerance. With a turning motor the reading is higher at the low duty cycles: while the enable input is LOW the L298N turns all four transistors off, the motor coasts, and its terminals carry the back EMF of the turning motor, not 0 V (Article 1003, Back EMF). At key 4 the resistor dissipates about 2.2 W on a 12 V bus and becomes hot; do not touch it. Fix the body of the motor to the bench and leave its shaft free to turn: a held shaft draws the stall current, more than the 2 A rating of the L298N at key 4.
 
 - Lab 2: keys 0 to 4 set the duty cycle (0, 25, 50, 75, 100 percent), f forward, r reverse; the joystick button enables the output. `button = Button(buttonPin, ledPin);` uses the default `activeLow = true`, and the two lines after it, `button.begin();` and `pinMode(buttonPin, INPUT);` (added in v3.2.0), turn the internal pull up of D2 off, as Step2_JUL does. The external 10 kOhm pull up from D2 to the 5 V bus of Circuit-2 is required (Experiment-2, Lab 3). A module that closes SW to 5 V when pressed instead needs the resistor from D2 to GND and `Button(buttonPin, ledPin, false)` in that Button line.
 

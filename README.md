@@ -141,7 +141,7 @@ The code is written for the student who reads it as well as for the compiler.
 
 ## Releases
 
-The current release is v7.5.1. Versions are MAJOR.MINOR.FIXES; see [RELEASES.md](RELEASES.md) for the notes and for the articles each release affects.
+The current release is v7.5.2. Versions are MAJOR.MINOR.FIXES; see [RELEASES.md](RELEASES.md) for the notes and for the articles each release affects.
 
 ## Credits
 

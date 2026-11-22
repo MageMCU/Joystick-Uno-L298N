@@ -1,6 +1,6 @@
 # Experiments
 
-The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), revised November 15, 2026. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article and Experiments 10 to 12 in Part C, and their `Instructions/README.md` files hold the full steps. The article refers to release v7.4.1 of this repository; schematics Circuit-1, Circuit-1b, and Circuit-2 to Circuit-7 are in [Experiments/Circuits](Experiments/Circuits).
+The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Starter Kit Series, Part 5), revised November 21, 2026. The article gives the objective, prediction, steps, and expected output of Experiments 1 to 5; each of their `Instructions/README.md` files is a lab card with the folders, filter lines, and wiring used at the bench. Experiments 6 to 9 are summarized in Part B of the article and Experiments 10 to 12 in Part C, and their `Instructions/README.md` files hold the full steps. The article refers to release v7.5.2 of this repository; schematics Circuit-1, Circuit-1b, and Circuit-2 to Circuit-7 are in [Experiments/Circuits](Experiments/Circuits).
 
 ## Safety
 

@@ -12,6 +12,19 @@
 
 ---
 
+## v7.5.2 (2026-11-21), Article 1004 lab cards: the resistor of Experiment-3; release citations
+
+Tag: v7.5.2, to be set by the author after Article 1004, revised November 21, 2026, is published; Article 1004 cites this release. Documents only: no code file changed, so the compiled programs are those of v7.5.1.
+
+- **Experiment-3, Lab 2 (lab card).** Steps 1 to 6 use a 47 Ohm, 5 W resistor across OUT1 and OUT2, so the reading can be compared with Equation-4 of Article 1004; the motor follows in steps 7 and 8. A simulation of the L298N with the motor of Article 1003 (ngspice, 12 V bus, 490 Hz) found that a turning motor reads well above Equation-4 at the low duty cycles (about 5.0 V where Equation-4 gives 2.6 V at key 1), because the L298N lets the motor coast while the enable input is LOW and the terminals then carry the back EMF; the resistor agrees with Equation-4 within 3 percent. The card also says to fix the body of the motor and leave the shaft free: a held shaft draws about 2.3 A at key 4, above the 2 A rating of the L298N.
+- **Experiment-12, Lab 1, step 1 (lab card).** About 0 V on the bus only after R17 has drained C13: about one minute, five time constants of 10 kOhm × 1000 µF.
+- **`LAB-NOTEBOOK-TEMPLATE.md`.** Experiment-3, Lab 2: the columns Vavg resistor and Vavg motor, and the measured value of the resistor.
+- **Release citations.** The twelve lab cards, `Experiments.md`, and `LAB-NOTEBOOK-TEMPLATE.md` cite Article 1004, revised November 21, 2026, and release v7.5.2; `README.md` names v7.5.2 as the current release.
+- **Articles to update.** Article 1004, revised November 21, 2026 (update file 20261121b): the release v7.5.2 in the Introduction, Prerequisites, Repository Release and Code, How Each Experiment Is Organized, and Bibliography [1]; Experiment-3, Lab 2, with the resistor (Materials, Objective, Wiring, steps, Table-5, Expected output). Articles 1001 (v7.4.1), 1003 (v7.5.0), and 1009 (v7.4.0) keep their releases.
+- **Full check (2026-11-21).** No code file changed (`git diff v7.5.1`), so the builds of v7.5.1 stand. Simulations (ngspice 42): Circuit-1 to Circuit-7 of Article 1004 at their stated supplies, the levels of D2, the LED currents (2.75 mA to 2.99 mA, 21 mA for seven), the bus monitor counts against the limits of Step6_Circuit, the gate voltages of Q1 and Q3, the reverse polarity protection, and the L298N with a resistor and with the motor of Article 1003; host simulation of Experiment-4, Lab 3 (Table-7). Article 1004 checked against this release.
+
+---
+
 ## v7.5.1 (2026-11-18), full check; Last reviewed in every RELEASE block
 
 Tag: v7.5.1, to be set by the author after the push; the author pushes this FIXES release (author decision, 20261118). Comments and documents only: no compiled code changed, so Articles 1003 (v7.5.0), 1004 (v7.4.1), and 1009 (v7.4.0) keep their releases.

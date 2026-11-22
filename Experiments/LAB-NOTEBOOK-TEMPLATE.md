@@ -86,7 +86,7 @@ Identify what remains uncertain or untested.
 
 Use the relevant table with the common entry fields above. Add pages for
 repeated trials rather than squeezing distinct tests into a single result.
-The tables follow Article 1004, revised November 15, 2026, and release v7.4.1.
+The tables follow Article 1004, revised November 21, 2026, and release v7.5.2.
 
 ### Step1: the Step1_Joystick self test (Article 1009)
 
@@ -146,15 +146,15 @@ Lab 1: every printed `absT()`, `Map()`, and `Debug()` line beside the prediction
 
 Lab 2 (Table-5), one copy for f and one for r. Motor bus VS: ____ V; datasheet drop 1.8 V; meter model: ________
 
-| Key | analogWrite() | D | Vavg predicted | Vavg measured | Shaft turns |
-|-----|---------------|---|----------------|---------------|-------------|
-| 0 | 0 | 0.00 | | | |
-| 1 | 64 | 0.25 | | | |
-| 2 | 128 | 0.50 | | | |
-| 3 | 191 | 0.75 | | | |
-| 4 | 255 | 1.00 | | | |
+| Key | analogWrite() | D | Vavg predicted | Vavg resistor | Vavg motor | Shaft turns |
+|-----|---------------|---|----------------|---------------|------------|-------------|
+| 0 | 0 | 0.00 | | | | |
+| 1 | 64 | 0.25 | | | | |
+| 2 | 128 | 0.50 | | | | |
+| 3 | 191 | 0.75 | | | | |
+| 4 | 255 | 1.00 | | | | |
 
-At key 4: VS to GND under load ____ V; L298N drop (loaded bus minus motor voltage) ____ V. Lowest duty cycle at which the motor starts: ____
+Resistor (47 Ohm, 5 W), measured with the ohmmeter before it is fitted: ____ Ohm. At key 4 with the motor: VS to GND under load ____ V; L298N drop (loaded bus minus motor voltage) ____ V. Lowest duty cycle at which the motor starts: ____ (v7.5.2: the resistor column added)
 
 ### Experiment-4: The Bits table
 
