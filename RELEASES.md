@@ -12,6 +12,17 @@
 
 ---
 
+## v7.5.3 (2026-11-22), new links of the republished articles
+
+Tag: v7.5.3, to be set by the author after this commit is pushed. Documents only: no code file changed, so the compiled programs are those of v7.5.1.
+
+- **Article links.** The articles republished from November 18 to 21, 2026 have new Google Drive links: 1000 and 1001 (November 18), 1002 and 1003 (November 19), 1004, 1009, and 1009 Supplemental (November 21). Every link to them is replaced in `README.md`, `Experiments.md`, the twelve lab cards, and `Motor-Movement-Checklist/ReadMe.md`. The links of 1005, 1018, and the two MMC Results are unchanged.
+- **`README.md`.** Names v7.5.3 as the current release.
+- **Articles to update.** None. The articles cite their releases by tag: 1001 (v7.4.1), 1003 (v7.5.0), 1004 (v7.5.2), and 1009 (v7.4.0).
+- **Full check (2026-11-22).** No code file changed (`git diff v7.5.2`). Every Google Drive link in the repository was listed (`git grep drive.google.com`): 84 links to the seven articles replaced, none of the old ones left; the 7 links to 1005, 1018, and the two MMC Results kept.
+
+---
+
 ## v7.5.2 (2026-11-21), Article 1004 lab cards: the resistor of Experiment-3; release citations
 
 Tag: v7.5.2, to be set by the author after Article 1004, revised November 21, 2026, is published; Article 1004 cites this release. Documents only: no code file changed, so the compiled programs are those of v7.5.1.

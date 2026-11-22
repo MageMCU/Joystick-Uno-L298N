@@ -4,7 +4,7 @@ The experiments of Article 1004, *Experiments for Joystick-Uno-L298N* (STEM Star
 
 ## Safety
 
-Follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision, in every experiment. A supervising adult operates the bench power supply; the motor supply is applied last and removed first, and the line cord is unplugged before any change of wiring. Build success and simulation confirm the code only; they do not confirm that the wiring is safe or that the motors behave correctly. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
+Follow [Article 1009](https://drive.google.com/file/d/1aoN7Wy96OosGRiRH86_kl4rql6KzG3AJ), Safety and Supervision, in every experiment. A supervising adult operates the bench power supply; the motor supply is applied last and removed first, and the line cord is unplugged before any change of wiring. Build success and simulation confirm the code only; they do not confirm that the wiring is safe or that the motors behave correctly. See the [Carpenter Software Disclaimer](https://github.com/MageMCU/MageMCU-Carpenter_Software-Disclaimer/blob/main/README_20260924.md).
 
 ## Part A: Core Experiments (original header files)
 

@@ -4,7 +4,7 @@
 
 - Previously updated for clarity, 20240814
 - **Current status:** verified with the revised joystick algorithm (octant based control, with both a center offset dead zone and an in algorithm tolerance)
-- **Related article:** [1009 Supplemental, Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1xfzl9v4AlJra85AO-Mb8qxhmqGoAyuV9), which holds both the Expected Motor Movements and the Motor Movement Checklist (MMC); the procedure is Article 1009, L298N Setup, and Article 1004, Experiment-5, Lab 3
+- **Related article:** [1009 Supplemental, Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1ZPUqsJA2_zEqW5BNZfWXJ0l-TpjlsxQl), which holds both the Expected Motor Movements and the Motor Movement Checklist (MMC); the procedure is Article 1009, L298N Setup, and Article 1004, Experiment-5, Lab 3
 
 ## MMC Results
 

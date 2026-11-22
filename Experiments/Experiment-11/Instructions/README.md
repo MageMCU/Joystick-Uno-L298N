@@ -2,7 +2,7 @@
 
 *Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 21, 2026. Part C of the article gives a one page summary of the Circuit-4 experiments; this file holds the full steps. Labels such as Table 11.1 and Equation 11.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.5.2 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
-Safety: follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
+Safety: follow [Article 1009](https://drive.google.com/file/d/1aoN7Wy96OosGRiRH86_kl4rql6KzG3AJ), Safety and Supervision, and Appendix C. A supervising adult builds Circuit-4, operates its power switch, and checks every measurement point before the meter leads are placed. Keep fingers clear of the wheels; the meter leads are placed and removed with the power switch off whenever a step allows it.
 
 **Running Step6_Circuit.** Open `Code-JUL/` and select Step6_Circuit in `platformio.ini`:
 
@@ -71,9 +71,9 @@ Collector current of Q2 and the gate to source voltage of Q1.
 
 ## Related Articles
 
-- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC)
-- [1003 L298N Motor Driver](https://drive.google.com/file/d/1sPCllUSFPy56IU6-IgOWoAyB3GcKCKon)
-- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1aoN7Wy96OosGRiRH86_kl4rql6KzG3AJ)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1NN20ubAJ1U8PtCcY_joyXP1Z9w3jP4b9)
+- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/1QsvlabLDVCZ909NkXF9pXSHtFbemSFMh)
 
 Record every lab in the notebook: [LAB-NOTEBOOK-TEMPLATE.md](../../LAB-NOTEBOOK-TEMPLATE.md).
 

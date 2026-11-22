@@ -2,7 +2,7 @@
 
 *Article 1004, Experiments for Joystick-Uno-L298N (STEM Starter Kit Series, Part 5), revised November 21, 2026. Part B of the article gives a one page summary of the advanced experiments; this file holds the full steps. Labels such as Table 9.1 and Equation 9.1 are local to this file; Table-n, Equation-n, and Circuit-n refer to the article. The article and this file refer to release v7.5.2 of the repository. A later release may differ; compare it with the tag. The notes of earlier releases are in `RELEASES.md`.*
 
-Safety: follow [Article 1009](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC), Safety and Supervision. A supervising adult operates the bench power supply.
+Safety: follow [Article 1009](https://drive.google.com/file/d/1aoN7Wy96OosGRiRH86_kl4rql6KzG3AJ), Safety and Supervision. A supervising adult operates the bench power supply.
 
 **Running a lesson (since v5.0.0; topics since v5.1.0).** Open `Code-JUL/` and select Step5_MathLessons in `platformio.ini`, `build_src_filter` (one folder per line since v6.4.0):
 
@@ -49,12 +49,12 @@ The unit quaternion of a rotation by θ about the unit axis u.
 
 ## Related Articles
 
-- [1000 Introduction Robotics](https://drive.google.com/file/d/1zrVOhhQ5teQx9XW6AWrdjCl55dKjni2I)
-- [1001 Joystick Algorithm](https://drive.google.com/file/d/1bwthz-K4lz5GrDGjECLExFufym-j3RJO)
-- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/18wztuThpOEHqyXEClBrly5ab4cSqFqrE)
-- [1003 L298N Motor Driver](https://drive.google.com/file/d/1sPCllUSFPy56IU6-IgOWoAyB3GcKCKon)
+- [1000 Introduction Robotics](https://drive.google.com/file/d/1_ci-7RF-qe_vzCAG-2QH0NEPkSKJkcHn)
+- [1001 Joystick Algorithm](https://drive.google.com/file/d/1cUT1BN4eB9ETgX-7wKgPt_AfXw8VgS6Z)
+- [1002 Arduino Uno: Pins, Ports, and Peripherals](https://drive.google.com/file/d/1QsvlabLDVCZ909NkXF9pXSHtFbemSFMh)
+- [1003 L298N Motor Driver](https://drive.google.com/file/d/1NN20ubAJ1U8PtCcY_joyXP1Z9w3jP4b9)
 - 1005 Study of Quaternions, published on [carpentersoftware.com, Projects, Robotics](https://carpentersoftware.com/pages/projects/robotics/robotics.html)
-- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1Vyc0tTbyL052Sz_xCbNz2F0aL16zDutC)
-- [1009 Supplemental, Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1xfzl9v4AlJra85AO-Mb8qxhmqGoAyuV9)
+- [1009 Parent, Teacher, and Student Guide to Joystick-Uno-L298N](https://drive.google.com/file/d/1aoN7Wy96OosGRiRH86_kl4rql6KzG3AJ)
+- [1009 Supplemental, Circuits, Diagrams, and Check Lists](https://drive.google.com/file/d/1ZPUqsJA2_zEqW5BNZfWXJ0l-TpjlsxQl)
 
 Copyright Jesse Carpenter (Carpenter Software). Software: MIT License; see the repository LICENSE and DISCLAIMER.md.
